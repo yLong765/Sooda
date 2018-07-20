@@ -267,7 +267,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count">657</span> / Reading time: <span class="post-count">2 min</span></span>
+                        <span>Word count: <span class="post-count">660</span> / Reading time: <span class="post-count">2 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -409,7 +409,7 @@ height:50vh;
 </ul>
 <h3 id="开始建立博客"><a href="#开始建立博客" class="headerlink" title="开始建立博客"></a>开始建立博客</h3><p>注：以下操作都基于Window系统，本人系统win10  </p>
 <p>如果已经安装上述必备程序，接下来就是Hexo的安装了，打开CMD，敲击第一段代码</p>
-<p><code>npm install -g hexo-cli</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 <p>等待安装完成后，以次执行以下代码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init &lt;folder&gt;  </span><br><span class="line">cd &lt;folder&gt;  </span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
 <ol>
@@ -418,11 +418,11 @@ height:50vh;
 <li>hexo会建立所需要的文件</li>
 </ol>
 <p>然后可以利用如下代码，运行以下命令启动服务，在浏览器中输入localhost:4000看看效果</p>
-<p><code>hexo server</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
 <h3 id="配置网站"><a href="#配置网站" class="headerlink" title="配置网站"></a>配置网站</h3><p>不论用jekyll或者hexo构建博客都会生成_config.yml的配置分解，里面大部分网站参数都是可配置的。关于配置的介绍点击<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">这里</a>。</p>
 <h3 id="皮肤"><a href="#皮肤" class="headerlink" title="皮肤"></a>皮肤</h3><p>Hexo官网就有很多的皮肤样式可供选择，<a href="https://hexo.io/themes/" target="_blank" rel="noopener">链接</a>。<br>从中选择一个你喜欢的皮肤就进行配置吧，这里推荐一下我自己的皮肤<a href="http://firework.studio/archer-demo/" target="_blank" rel="noopener">Archer</a>，皮肤的<a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="noopener">GitHub</a>。  </p>
 <h3 id="网站的部署"><a href="#网站的部署" class="headerlink" title="网站的部署"></a>网站的部署</h3><p>利用以下的代码建立Hexo与Git的桥梁</p>
-<p><code>npm install hexo-deployer-git --save</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 <p>利用以下代码来书写博客和提交博客</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;文件名&quot; // 建立博客的文章 等同于 hexo n</span><br><span class="line">hexo deloy       // 部署到GitHub上 等同于 hexo d</span><br><span class="line">hexo generate    // 提交本地仓库，类似于git的commit 等同于 hexo g</span><br><span class="line">hexo g -d        // 提交加部署</span><br></pre></td></tr></table></figure>
 <p>hexo new 创建的文件将会存放到sorce/_post目录中。</p>
