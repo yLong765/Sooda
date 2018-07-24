@@ -354,20 +354,52 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/Yinl-Blog/2018/07/24/Unity编译器/" >
+            
+                <span>Unity编辑器</span>
+        </a>
+        <div class="abstract-content">
+            Unity编辑器这篇文章主要总结一下最近工作时写的一些编辑器，总结了三种常用的编辑器编写方式：
+
+Inspector Editor
+EditorWindow
+ScriptableWizard
+
+Inspector Editor利用CustomEditor特性挂接Script来实现Inspector界面显示
+
+首先我们给出对应的Script代码，主要是为了提供Inspector面板的参数而用
+12345678public class SampleEditorScript : MonoBehaviour&#123;    public int sliderNum = 0;    public...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/07/24</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/Yinl-Blog/2018/07/21/图形学噪声解析/" >
             
                 <span>图形学Prelin噪声解析</span>
         </a>
         <div class="abstract-content">
-            Prelin噪声Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声。本篇文章借鉴各路大神的文章总结而来：
+            Prelin噪声Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声本篇文章借鉴各路大神的文章总结而来：
 
 冯乐乐：【图形学】谈谈噪声
 则卷大明：Unity3D教程：PerlinNoise原理及实现
 Unity API：Mathf.PerlinNoise
 
-此文章源码在我的个人GitHub上，本文章的仅仅实现了Prelin噪声中的最简单版本。上图先~  
+此文章源码在我的个人GitHub上，本文章的仅仅实现了Prelin噪声中的最简单版本。上图先~
 
-利用Unity实现2D Prelin噪声candycat的文章非常好，不过没有Unity的具体实现代码，而则卷大明的文章...
+利用Unity实现2D Prelin噪声candycat的文章非常好，不过没有Unity的具体实现代码，而则卷大明的文章中只给...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -401,9 +433,10 @@ Unity API：Mathf.PerlinNoise
 CENALULU : 比较详细的介绍了利用jekyll建立网站的步骤
 Huxpro : candycat的网站皮肤模板
 
-不过这里我们不利用jekyll建立网站，想利用jekyll建立网站的可以参考上面两个教程经过哥们的介绍认识了另一个比较方便建立GitHub个人博客的工具Hexo  
+不过这里我们不利用jekyll建立网站，想利用jekyll建立网站的可以参考上面两个教程经过哥们的介绍认识了另一个比较方便建立GitHub个人博客的工具Hexo
 利用Hexo创建Github博客下载HexoHexo的运行需要两个前置的组件：
-...
+
+N...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -638,9 +671,18 @@ Huxpro : candycat的网站皮肤模板
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 3
+        Total : 4
         </div>
         <!-- search  -->
         
@@ -653,6 +695,11 @@ Huxpro : candycat的网站皮肤模板
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/24</span><a class="archive-post-title" href= "/Yinl-Blog/2018/07/24/Unity编译器/" >Unity编辑器</a>
+        </li>
     
     
         <li class="archive-post-item">
