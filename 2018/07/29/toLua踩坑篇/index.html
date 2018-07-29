@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="Yinl">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Yinl">
+    <meta name="keywords" content="Yinl Blog | Yinl">
+    <meta name="description" content="这是一个描述">
+    <meta name="Cache-Control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>toLua踩坑篇 · Yinl-Blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/Yinl-Blog/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /Yinl-Blog/css/style.css?v=201807017_1502 as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= /Yinl-Blog/css/mobile.css?v=20180709 media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/Yinl-Blog/assets/bitbug_favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/Yinl-Blog/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/Yinl-Blog/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/Yinl-Blog/" >Yinl-Blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">toLua踩坑篇</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/Yinl-Blog/>Yinl-Blog.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/Yinl-Blog/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            toLua踩坑篇
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "toLua">toLua</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count">1,622</span> / Reading time: <span class="post-count">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/07/29</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/Yinl-Blog/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/Yinl-Blog/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="toLua踩坑篇"><a href="#toLua踩坑篇" class="headerlink" title="toLua踩坑篇"></a>toLua踩坑篇</h2><p>最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。</p>
+<h3 id="坑-toLua解析Lua属性"><a href="#坑-toLua解析Lua属性" class="headerlink" title="坑~toLua解析Lua属性"></a>坑~toLua解析Lua属性</h3><p>首先我们给出Lua文件的内容，基于toLua Examples 04修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'Objs2Spawn is: '</span>..Objs2Spawn)</span><br><span class="line">var2read = <span class="number">42</span></span><br><span class="line">varTable = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line">varTable.<span class="keyword">default</span> = <span class="number">1</span></span><br><span class="line">varTable.map = &#123;&#125;</span><br><span class="line">varTable.map.name = <span class="string">"map"</span></span><br><span class="line"></span><br><span class="line">meta = &#123;name = <span class="string">"meta"</span>&#125;</span><br><span class="line">setmetatable(varTable, meta)</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">TestFunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    <span class="title">print</span><span class="params">(<span class="string">'get func by variable'</span>)</span></span></span><br><span class="line"><span class="function">end</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">function varTable.<span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    <span class="title">print</span><span class="params">(<span class="string">"获取table中的函数"</span>)</span></span></span><br><span class="line"><span class="function">end</span></span><br></pre></td></tr></table></figure>
+<p>在展示坑之前先看看使用toLua，下面是解析全局变量的代码：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LuaState lua = <span class="keyword">new</span> LuaState();</span><br><span class="line">Debug.Log(lua[<span class="string">"全局变量名"</span>]);</span><br></pre></td></tr></table></figure>
+<p>缓存成函数类LuaFunction:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LuaFunction func = lua.GetFunction(<span class="string">"函数名"</span>);</span><br></pre></td></tr></table></figure>
+<p>缓存成表类LuaTable:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LuaTable table = lua.GetTable(<span class="string">"表名"</span>);</span><br></pre></td></tr></table></figure>
+<p>那么下面开始踩坑，上代码：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明lua解析器对象</span></span><br><span class="line">LuaState lua = <span class="keyword">new</span> LuaState();</span><br><span class="line">lua.Start();</span><br><span class="line"><span class="comment">// 添加lua执行路径</span></span><br><span class="line">lua.AddSearchPath(Application.dataPath + <span class="string">"/Lua"</span>);</span><br><span class="line"><span class="comment">// 将Objs2Spawn存到lua的全局变量中并赋值</span></span><br><span class="line">lua[<span class="string">"Objs2Spawn"</span>] = <span class="number">5</span>;</span><br><span class="line"><span class="comment">// 寻找文件并执行，如找到则返回一个对象。</span></span><br><span class="line">lua.DoFile(<span class="string">"CallLuaFunction.lua"</span>);</span><br><span class="line"><span class="comment">// 寻找文件并执行，第一次生成对象返回，之后返回之前生成过的对象。</span></span><br><span class="line">lua.Require(<span class="string">"AccessingLuaVariables"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过LuaState访问</span></span><br><span class="line">Debug.Log(lua[<span class="string">"var2read"</span>]); <span class="comment">// 输出-&gt; 42</span></span><br><span class="line">Debug.Log(lua[<span class="string">"varTable.default"</span>]); <span class="comment">// 输出-&gt; 1</span></span><br><span class="line"><span class="comment">// 直接利用LuaState获取name</span></span><br><span class="line">Debug.Log(lua[<span class="string">"varTable.map.name"</span>]); <span class="comment">// 输出-&gt; map</span></span><br><span class="line"></span><br><span class="line">LuaFunction func = lua[<span class="string">"TestFunc"</span>] <span class="keyword">as</span> LuaFunction;</span><br><span class="line">func.Call();</span><br><span class="line"></span><br><span class="line">func = lua[<span class="string">"varTable.func"</span>] <span class="keyword">as</span> LuaFunction;</span><br><span class="line">func.Call();</span><br><span class="line">func.Dispose();</span><br><span class="line"></span><br><span class="line"><span class="comment">//cache成LuaTable访问</span></span><br><span class="line">LuaTable table = lua.GetTable(<span class="string">"varTable"</span>);</span><br><span class="line">Debug.Log(table[<span class="string">"default"</span>]); <span class="comment">// 输出-&gt; 1</span></span><br><span class="line"><span class="comment">// 利用Table获取name，有Bug</span></span><br><span class="line">Debug.Log(table[<span class="string">"map.name"</span>]); <span class="comment">// 输出-&gt; Null</span></span><br><span class="line">LuaTable table1 = table.GetTable&lt;LuaTable&gt;(<span class="string">"map"</span>);</span><br><span class="line"><span class="comment">// 利用Table的Table获取name</span></span><br><span class="line">Debug.Log(table1[<span class="string">"name"</span>]); <span class="comment">// 输出-&gt; map</span></span><br></pre></td></tr></table></figure>
+<p>最后的结果为：<br><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-7-29/90876072.jpg" alt="Img"></p>
+<p>图中显示代码table[“map.name”]的结果为Null，这里是toLua的一个bug，在缓存成table的时候处理table中的table有些问题。解决方式上面的代码也给了，就是从table中再获取table，实在是非常的麻烦，还有个简单的方式为直接利用LuaState获取。</p>
+<h3 id="坑-Lua函数解析"><a href="#坑-Lua函数解析" class="headerlink" title="坑~Lua函数解析"></a>坑~Lua函数解析</h3><p>这里利用的是toLua Examples 03的内容作了一些修改，首先还是看Lua代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">CallLuaFunction = &#123;&#125;</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func1()</span><br><span class="line">    print(<span class="string">"Call Lua Function"</span>)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func2(num1, num2)</span><br><span class="line">    print(<span class="string">"执行func2"</span>)</span><br><span class="line">    <span class="keyword">return</span> num1 + num2</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func3(num)</span><br><span class="line">    <span class="keyword">return</span> num + <span class="number">1</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func4(num)</span><br><span class="line">    print(<span class="string">"执行func4 "</span> .. num)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction:func5()</span><br><span class="line">    self.a = <span class="number">1</span></span><br><span class="line">    self.b = <span class="number">2</span></span><br><span class="line">    print(self.a .. <span class="string">" "</span> .. self.b)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>这里一共有5个函数，我们分别针对这五个函数的解析做一些展示。首先是func1，这个函数没有任何的参数也没有返回值，所以调用它很简单（这里假设已经做完lua的建立和释放工作）：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取Lua函数</span></span><br><span class="line">LuaFunction func = lua.GetFunction(<span class="string">"CallLuaFunction.func1"</span>);</span><br><span class="line"><span class="comment">// 执行函数，无返回值，最多支持9个参数</span></span><br><span class="line">func.Call();</span><br></pre></td></tr></table></figure>
+<p>对于func2的函数，有两个参数和返回值，这里给出了示例中的4种执行方式，这里坑就来了</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注：必须进行委托初始化才能执行方式1，3，4</span></span><br><span class="line">DelegateFactory.Init();</span><br><span class="line"></span><br><span class="line">func = lua.GetFunction(<span class="string">"CallLuaFunction.func2"</span>);</span><br><span class="line"><span class="keyword">if</span> (func != <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 第一种方式</span></span><br><span class="line">    <span class="comment">// 执行函数，有返回值，最多支持9个参数1个返回值</span></span><br><span class="line">    <span class="keyword">int</span> num = func.Invoke&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    Debug.Log(num);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二种方式</span></span><br><span class="line">    num = CallFunc(func);</span><br><span class="line">    Debug.Log(num);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第三种方式</span></span><br><span class="line">    <span class="comment">// 向LuaFunction中添加委托，利用委托实现函数返回</span></span><br><span class="line">    <span class="comment">// 注：此委托ToLua作者并没有给，所以得自己补充</span></span><br><span class="line">    <span class="comment">// 作者只给了Func&lt;int, int&gt;的委托</span></span><br><span class="line">    Func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt; luaFunc = func.ToDelegate&lt;Func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;();</span><br><span class="line">    num = luaFunc(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    Debug.Log(num);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第四种方式</span></span><br><span class="line">    <span class="comment">// 直接利用LuaState执行函数，最多6个参数1个返回值</span></span><br><span class="line">    num = lua.Invoke&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;(<span class="string">"CallLuaFunction.func2"</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="literal">true</span>);</span><br><span class="line">    Debug.Log(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">CallFunc</span>(<span class="params">LuaFunction func</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 函数开始</span></span><br><span class="line">    func.BeginPCall();</span><br><span class="line">    <span class="comment">// 传第一个参</span></span><br><span class="line">    func.Push(<span class="number">10</span>);</span><br><span class="line">    <span class="comment">// 传第二个参</span></span><br><span class="line">    func.Push(<span class="number">20</span>);</span><br><span class="line">    <span class="comment">// 执行函数</span></span><br><span class="line">    func.PCall();</span><br><span class="line">    <span class="comment">// 检查返回值</span></span><br><span class="line">    <span class="keyword">int</span> num = (<span class="keyword">int</span>)func.CheckNumber();</span><br><span class="line">    <span class="comment">// 结束函数</span></span><br><span class="line">    func.EndPCall();</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再执行到第三种方式的时候会报错，提示no register（未注册），这是为什么呢？<br>因为代码中会注册委托，再进行调用，而Func&lt;int, int, int&gt;并没有被注册，所以报错了。<br>这里我们知道原因了，那就自己加一个注册呗，说干就干：</p>
+<p>DelegateFactory脚本的Register方法控制的委托注册在里面加上一行：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DelegateTraits&lt;System.Func&lt;<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt;.Init(factory.System_Func_int_int_int);</span><br></pre></td></tr></table></figure>
+<p>同是在DelegateFactory脚本中我们添加System_Func_int_int_int函数：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> System.<span class="function">Func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="title">System_Func_int_int_int</span>(<span class="params">LuaFunction func, LuaTable self, <span class="keyword">bool</span> flag</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (func == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        System.Func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt; fn = <span class="keyword">delegate</span> (<span class="keyword">int</span> param0, <span class="keyword">int</span> param1) &#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;;</span><br><span class="line">        <span class="keyword">return</span> fn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!flag)</span><br><span class="line">    &#123;</span><br><span class="line">        System_Func_int_int_int_Event target = <span class="keyword">new</span> System_Func_int_int_int_Event(func);</span><br><span class="line">        System.Func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt; d = target.Call;</span><br><span class="line">        target.method = d.Method;</span><br><span class="line">        <span class="keyword">return</span> d;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        System_Func_int_int_int_Event target = <span class="keyword">new</span> System_Func_int_int_int_Event(func, self);</span><br><span class="line">        System.Func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt; d = target.CallWithSelf;</span><br><span class="line">        target.method = d.Method;</span><br><span class="line">        <span class="keyword">return</span> d;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里我们还缺少System_Func_int_int_int_Event类，也同是在DelegateFactory脚本中添加：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">System_Func_int_int_int_Event</span> : <span class="title">LuaDelegate</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">System_Func_int_int_int_Event</span>(<span class="params">LuaFunction func</span>) : <span class="title">base</span>(<span class="params">func</span>) </span>&#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">System_Func_int_int_int_Event</span>(<span class="params">LuaFunction func, LuaTable self</span>) : <span class="title">base</span>(<span class="params">func, self</span>) </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Call</span>(<span class="params"><span class="keyword">int</span> param0, <span class="keyword">int</span> param1</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        func.BeginPCall();</span><br><span class="line">        func.Push(param0);</span><br><span class="line">        func.Push(param1);</span><br><span class="line">        func.PCall();</span><br><span class="line">        <span class="keyword">int</span> ret = (<span class="keyword">int</span>)func.CheckNumber();</span><br><span class="line">        func.EndPCall();</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">CallWithSelf</span>(<span class="params"><span class="keyword">int</span> param0, <span class="keyword">int</span> param1</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        func.BeginPCall();</span><br><span class="line">        func.Push(self);</span><br><span class="line">        func.Push(param0);</span><br><span class="line">        func.Push(param1);</span><br><span class="line">        func.PCall();</span><br><span class="line">        <span class="keyword">int</span> ret = (<span class="keyword">int</span>)func.CheckNumber();</span><br><span class="line">        func.EndPCall();</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>坑就这样踩过去了，运行以下，你会发现不会报错并且执行也是正确的了。</p>
+<p>接下来是func3函数，一个参数，这个就不用多说了与func2一样的。</p>
+<p>之后是func4函数，这里就展示一下func2中的最后一种执行方式，不过没有返回值：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lua.Call&lt;<span class="keyword">int</span>&gt;(<span class="string">"CallLuaFunction.func4"</span>, <span class="number">10</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>最后的func5就很神奇了，哪里神奇呢？你注意到表名和函数名的连接处用的是”:”了么，这里与”.”的区别就是会传入self，相当于C#中的this，那又会说了func5不是没有参数么，因为self是隐式的传入，如果你从C#调用它，必须得传这个参数。坑，这里用GetTable解决一下，感觉很麻烦，不过toLua应该是内置了”:”函数的形式。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LuaTable table = lua.GetTable(<span class="string">"CallLuaFunction"</span>);</span><br><span class="line">lua.Call&lt;LuaTable&gt;(<span class="string">"CallLuaFunction.func5"</span>, table, <span class="literal">true</span>);</span><br><span class="line">Debug.Log(table[<span class="string">"a"</span>]);</span><br></pre></td></tr></table></figure>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/Yinl-Blog/2018/07/24/Unity编译器/" title= Unity编辑器 >
+                    <div class="prevTitle">Unity编辑器</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC和WAP自适应版-->
+
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:yangshbb@163.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/yLong765" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#toLua踩坑篇"><span class="toc-number">1.</span> <span class="toc-text">toLua踩坑篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#坑-toLua解析Lua属性"><span class="toc-number">1.1.</span> <span class="toc-text">坑~toLua解析Lua属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坑-Lua函数解析"><span class="toc-number">1.2.</span> <span class="toc-text">坑~Lua函数解析</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 5
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/29</span><a class="archive-post-title" href= "/Yinl-Blog/2018/07/29/toLua踩坑篇/" >toLua踩坑篇</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/24</span><a class="archive-post-title" href= "/Yinl-Blog/2018/07/24/Unity编译器/" >Unity编辑器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/21</span><a class="archive-post-title" href= "/Yinl-Blog/2018/07/21/图形学噪声解析/" >图形学Prelin噪声解析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/20</span><a class="archive-post-title" href= "/Yinl-Blog/2018/07/20/网站的建立/" >网站的建立</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/19</span><a class="archive-post-title" href= "/Yinl-Blog/2018/07/19/初记/" >初记</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Unity Editor"><span class="iconfont-archer">&#xe606;</span>Unity Editor</span>
+    
+        <span class="sidebar-tag-name" data-tags="toLua"><span class="iconfont-archer">&#xe606;</span>toLua</span>
+    
+        <span class="sidebar-tag-name" data-tags="杂谈"><span class="iconfont-archer">&#xe606;</span>杂谈</span>
+    
+        <span class="sidebar-tag-name" data-tags="Web"><span class="iconfont-archer">&#xe606;</span>Web</span>
+    
+        <span class="sidebar-tag-name" data-tags="Graphics"><span class="iconfont-archer">&#xe606;</span>Graphics</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/Yinl-Blog/",
+        author: "Yinl"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/Yinl-Blog/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/Yinl-Blog/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/Yinl-Blog/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
