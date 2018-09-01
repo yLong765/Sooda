@@ -324,6 +324,175 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ylong765.github.io/Yinl-Blog/Yinl-Blog/2018/08/31/hexo支持mathjax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yinl">
+      <meta itemprop="description" content="不忘初心,天道酬勤">
+      <meta itemprop="image" content="/Yinl-Blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yinl-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Yinl-Blog/2018/08/31/hexo支持mathjax/" itemprop="url">
+                  hexo支持mathjax
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-31 08:33:08" itemprop="dateCreated datePublished" datetime="2018-08-31T08:33:08+08:00">2018-08-31</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-09-01 11:20:36" itemprop="dateModified" datetime="2018-09-01T11:20:36+08:00">2018-09-01</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="hexo支持mathjax"><a href="#hexo支持mathjax" class="headerlink" title="hexo支持mathjax"></a>hexo支持mathjax</h2><p>技术博客有时避免不了一些数学公式，利用Hexo建立博客后，最开始利用Google的公式库，但是得请求Google的网址，有时会被墙，所以不得不转战方向。让Hexo自己支持mathjax必然是一个省心的过程。然而事实并不省心。如果要建立一个支持数学公式的基于Hexo框架的博客，你得符合以下要求：</p>
+<ul>
+<li>博客：<a href="https://hexo.io/zh-tw/" target="_blank" rel="noopener">Hexo</a>，博客的搭建可以看我之前的文章</li>
+<li>支持mathjax的markdown渲染器：hexo-renderer-kramed</li>
+<li>支持mathjax的Theme：NexT：(<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT使用文档</a>，之前用的Archar，不过不支持mathjax)</li>
+<li>markdown编辑器：<a href="https://www.typora.io/" target="_blank" rel="noopener">Typora</a></li>
+</ul>
+<h3 id="安装渲染器"><a href="#安装渲染器" class="headerlink" title="安装渲染器"></a>安装渲染器</h3><p>hexo默认的渲染器是marked，并不支持mathjax。kramed是在marked基础上修改的，支持了mathjax。你的hexo工程目录下的node_modules中可以找到对应的渲染器文件夹。同时在你的工程目录下用以下命令安装kramed。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure>
+<p>如果你安装了hexo-math包，卸载再安装hexo-renderer-mathjax包</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-math --save</span><br><span class="line">npm install hexo-renderer-mathjax --save</span><br></pre></td></tr></table></figure>
+<p>更新mathjax的CDN链接，打开node_modules/hexo-renderer-mathjax/mathjax.html</p>
+<p>修改&lt;scripts&gt;标签</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="NexT开启mathjax"><a href="#NexT开启mathjax" class="headerlink" title="NexT开启mathjax"></a>NexT开启mathjax</h3><p>打开主题的_config.yml文件，找到math字段，新版的NexT主题支持两个数学渲染引擎mathjax和katex，这里我们使用mathjax</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">math:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  <span class="comment">// 省略很多注释</span></span><br><span class="line">  engine: mathjax</span><br></pre></td></tr></table></figure>
+<h3 id="Typoare"><a href="#Typoare" class="headerlink" title="Typoare"></a>Typoare</h3><p>Typoare原生支持数学公式的输入和渲染，而且还支持本地图片导入的图片复制位置。</p>
+<p>然后开启你的Typoare编辑器输入几串公式，看看效果吧~</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ylong765.github.io/Yinl-Blog/Yinl-Blog/2018/08/18/贝塞尔曲线/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1085,7 +1254,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-24 18:28:51" itemprop="dateModified" datetime="2018-07-24T18:28:51+08:00">2018-07-24</time>
+                <time title="修改时间：2018-08-31 08:34:02" itemprop="dateModified" datetime="2018-08-31T08:34:02+08:00">2018-08-31</time>
               
             
           </span>
@@ -1376,7 +1545,7 @@
                 
                   <a href="/Yinl-Blog/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1411,7 +1580,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1634,6 +1803,8 @@
 
   
   
+    
+      
     
       
     
