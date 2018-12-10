@@ -152,27 +152,25 @@
 
 
 
-  <meta name="description" content="贝塞尔曲线本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线. 原理在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线  下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t">
-<meta name="keywords" content="Unity,C#,BézierCurve">
+  <meta name="description" content="关于作者Charles Petzold 是Windows编程界的一位大师，1994年作为仅有的七人之一，被授予Windows Pioneer奖。其著作Programming Windows是尽人皆知的Win32 API编程经典，是学习Windows编程的必读之作。 此书作者采用的叙述方式奇特却又如此自然，他首先从历史的角度审视了计算机技术的发展脉络，继而自底向上地奖计算机体系结构方面的知识娓娓道来">
+<meta name="keywords" content="Read">
 <meta property="og:type" content="article">
-<meta property="og:title" content="贝塞尔曲线">
-<meta property="og:url" content="https://ylong765.github.io/2018/08/18/贝塞尔曲线/index.html">
+<meta property="og:title" content="《Code:The Hidden Language of Computer Hardware and Software》阅读精粹">
+<meta property="og:url" content="https://ylong765.github.io/2018/10/20/《编码-隐匿在计算机软硬件背后的语言》阅读精粹/index.html">
 <meta property="og:site_name" content="Yinl-Blog">
-<meta property="og:description" content="贝塞尔曲线本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线. 原理在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线  下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t">
+<meta property="og:description" content="关于作者Charles Petzold 是Windows编程界的一位大师，1994年作为仅有的七人之一，被授予Windows Pioneer奖。其著作Programming Windows是尽人皆知的Win32 API编程经典，是学习Windows编程的必读之作。 此书作者采用的叙述方式奇特却又如此自然，他首先从历史的角度审视了计算机技术的发展脉络，继而自底向上地奖计算机体系结构方面的知识娓娓道来">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg">
-<meta property="og:updated_time" content="2018-09-22T10:29:52.739Z">
+<meta property="og:updated_time" content="2018-12-03T15:32:58.350Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="贝塞尔曲线">
-<meta name="twitter:description" content="贝塞尔曲线本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线. 原理在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线  下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t">
-<meta name="twitter:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg">
+<meta name="twitter:title" content="《Code:The Hidden Language of Computer Hardware and Software》阅读精粹">
+<meta name="twitter:description" content="关于作者Charles Petzold 是Windows编程界的一位大师，1994年作为仅有的七人之一，被授予Windows Pioneer奖。其著作Programming Windows是尽人皆知的Win32 API编程经典，是学习Windows编程的必读之作。 此书作者采用的叙述方式奇特却又如此自然，他首先从历史的角度审视了计算机技术的发展脉络，继而自底向上地奖计算机体系结构方面的知识娓娓道来">
 
 
 
 
 
 
-  <link rel="canonical" href="https://ylong765.github.io/2018/08/18/贝塞尔曲线/"/>
+  <link rel="canonical" href="https://ylong765.github.io/2018/10/20/《编码-隐匿在计算机软硬件背后的语言》阅读精粹/"/>
 
 
 
@@ -182,7 +180,7 @@
   };
 </script>
 
-  <title>贝塞尔曲线 | Yinl-Blog</title>
+  <title>《Code:The Hidden Language of Computer Hardware and Software》阅读精粹 | Yinl-Blog</title>
   
 
 
@@ -353,7 +351,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ylong765.github.io/2018/08/18/贝塞尔曲线/">
+    <link itemprop="mainEntityOfPage" href="https://ylong765.github.io/2018/10/20/《编码-隐匿在计算机软硬件背后的语言》阅读精粹/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yinl">
@@ -370,7 +368,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">贝塞尔曲线
+          <h1 class="post-title" itemprop="name headline">《Code:The Hidden Language of Computer Hardware and Software》阅读精粹
               
             
           </h1>
@@ -395,7 +393,7 @@
                 
               
 
-              <time title="创建时间：2018-08-18 20:42:07" itemprop="dateCreated datePublished" datetime="2018-08-18T20:42:07+08:00">2018-08-18</time>
+              <time title="创建时间：2018-10-20 12:27:42" itemprop="dateCreated datePublished" datetime="2018-10-20T12:27:42+08:00">2018-10-20</time>
             
 
             
@@ -412,7 +410,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-22 18:29:52" itemprop="dateModified" datetime="2018-09-22T18:29:52+08:00">2018-09-22</time>
+                <time title="修改时间：2018-12-03 23:32:58" itemprop="dateModified" datetime="2018-12-03T23:32:58+08:00">2018-12-03</time>
               
             
           </span>
@@ -429,7 +427,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Read/" itemprop="url" rel="index"><span itemprop="name">Read</span></a></span>
 
                 
                 
@@ -463,22 +461,47 @@
       
 
       
-        <h2 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h2><p>本文章借鉴自<a href="http://gad.qq.com/article/detail/23531" target="_blank" rel="noopener">Unity中的曲线绘制</a>.</p>
-<p>贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线.</p>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线</p>
-<p><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg" alt="Img"></p>
-<p>下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:</p>
-<script type="math/tex; mode=display">B(t) = (1 - t)^2P_0 + 2t(1 - t)P_1 + t^2P_2 , t\epsilon[0,1]</script><p>而一阶曲线自然就是一个直线,公式为:</p>
-<script type="math/tex; mode=display">B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1]</script><p>从中我们可以发现规律从而推导到n阶的公式:</p>
-<script type="math/tex; mode=display">B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1]</script><p>而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>首先我们需要一个数据类Curve,存储简单的Vector3数组</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 贝塞尔曲线数据</span></span><br><span class="line"><span class="keyword">public</span> Vector3[] points;</span><br></pre></td></tr></table></figure>
-<p>然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: <a href="https://ylong765.github.io/Yinl-Blog/2018/07/24/Unity%E7%BC%96%E8%AF%91%E5%99%A8/">Unity编辑器</a></p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    serializedObject.Update();</span><br><span class="line">    EditorGUILayout.BeginVertical();</span><br><span class="line">    EditorGUILayout.PropertyField(points, <span class="keyword">new</span> GUIContent(<span class="string">"坐标组"</span>), <span class="literal">true</span>);</span><br><span class="line">    EditorGUILayout.EndVertical();</span><br><span class="line">    serializedObject.ApplyModifiedProperties();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后接下来时重写OnSceneGUI函数了,不过在之前我们要看看具体怎么用代码来实现刚才的N阶曲线.<br>因为我们要利用直线来绘制,所以需要一个for循环来执行绘制,利用GetPoint函数来获取具体每个精度点的位置然后绘制直线就好了.</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vector3 lineStart = GetPoint(<span class="number">0</span>f); <span class="comment">// GetPoint函数为获取当前点的位置</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= curve.lineSteps; i++) <span class="comment">// lineSteps为绘制精度</span></span><br><span class="line">&#123;</span><br><span class="line">    Vector3 lineEnd = GetPoint(i / (<span class="keyword">float</span>)curve.lineSteps);</span><br><span class="line">    Handles.DrawLine(lineStart, lineEnd);</span><br><span class="line">    lineStart = lineEnd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每次取差值就能减少一阶,所以利用递归从n阶到最后的一阶然后的返回值就是最终点的位置.</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Vector3 <span class="title">GetPoint</span>(<span class="params"><span class="keyword">float</span> t</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3[] pos = <span class="keyword">new</span> Vector3[curve.points.Length];</span><br><span class="line">    pos = (Vector3[])curve.points.Clone();</span><br><span class="line">    <span class="keyword">return</span> curve.transform.TransformPoint(GetLerpPoint(pos, t));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Vector3 <span class="title">GetLerpPoint</span>(<span class="params">Vector3[] pos, <span class="keyword">float</span> t</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (pos.Length == <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> Vector3.Lerp(pos[<span class="number">0</span>], pos[<span class="number">1</span>], t);</span><br><span class="line">    &#125;</span><br><span class="line">    Vector3[] newPos = <span class="keyword">new</span> Vector3[pos.Length - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pos.Length - <span class="number">1</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        newPos[i] = Vector3.Lerp(pos[i], pos[i + <span class="number">1</span>], t);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> GetLerpPoint(newPos, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>Charles Petzold 是Windows编程界的一位大师，1994年作为仅有的七人之一，被授予Windows Pioneer奖。其著作Programming Windows是尽人皆知的Win32 API编程经典，是学习Windows编程的必读之作。</p>
+<p>此书作者采用的叙述方式奇特却又如此自然，他首先从历史的角度审视了计算机技术的发展脉络，继而自底向上地奖计算机体系结构方面的知识娓娓道来。（引自译者序—薛佟佟）</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>此书打算从每一章的角度提取重点作为记录。</p>
+<h2 id="01-至密亲友"><a href="#01-至密亲友" class="headerlink" title="01 至密亲友"></a>01 至密亲友</h2><p>这一章介绍了编码的由来，和莫尔斯电码的发明，这里看似与计算机毫无关系，但是对于深入了解计算机软硬件内部结构以及隐匿在其背后的语言将大有裨益（背后的语言就为二进制，而二进制其实就是一种编码）。</p>
+<p>编码：指一种又来在机器和人之间传递信息的方式，编码就是交流。</p>
+<p>莫尔斯电码：一种表示26个字母的编码，如果利用手电筒传递信息，通过短闪和长闪来制作编码，而其最著名的就属SOS，SOS并不是一个缩写，而是一个易记得莫尔斯编码序列，即为短短短长长长短短短。</p>
+<h2 id="02-编码与组合"><a href="#02-编码与组合" class="headerlink" title="02 编码与组合"></a>02 编码与组合</h2><p>就01中我们总结的莫尔斯编码，可以把点（短闪）视为0把划（长闪）视为1，总结为二进制我们会发现规律：</p>
+<script type="math/tex; mode=display">码子的数目 = 2^{“点”和“划”的数目}</script><script type="math/tex; mode=display">码子的数目 = 2^{编码的位数}</script><p>用表格列出则为:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">点划的数目</th>
+<th style="text-align:center">码子的数目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2^1 = 2</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2^2 = 4</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2^3 = 8</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2^4 = 16</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">2^5 = 32</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="03布莱叶盲文与二进制码"><a href="#03布莱叶盲文与二进制码" class="headerlink" title="03布莱叶盲文与二进制码"></a>03布莱叶盲文与二进制码</h2><p>布莱叶盲文中，每个在书写中用到的符号——具体来说就是字母、数字和标点符号——都被编码成了2*3的点码单元中的一个或者多个凸起的点。通常用数字1-6来进行编码。而每个点也可以有两种表示方式为：不凸起和凸起，所以一共可以表示 $ 2^6 = 64 $ 种编码组合</p>
 
       
     </div>
@@ -499,11 +522,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Unity/" rel="tag"># Unity</a>
-          
-            <a href="/tags/C/" rel="tag"># C#</a>
-          
-            <a href="/tags/BezierCurve/" rel="tag"># BézierCurve</a>
+            <a href="/tags/Read/" rel="tag"># Read</a>
           
         </div>
       
@@ -516,8 +535,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/29/toLua踩坑篇/" rel="next" title="toLua踩坑篇">
-                <i class="fa fa-chevron-left"></i> toLua踩坑篇
+              <a href="/2018/09/08/线性代数内在原理/" rel="next" title="线性代数内在原理">
+                <i class="fa fa-chevron-left"></i> 线性代数内在原理
               </a>
             
           </div>
@@ -526,8 +545,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/31/hexo支持mathjax/" rel="prev" title="hexo支持mathjax">
-                hexo支持mathjax <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/23/Unity Framework/" rel="prev" title="Unity-Framework">
+                Unity-Framework <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -717,7 +736,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝塞尔曲线"><span class="nav-number">1.</span> <span class="nav-text">贝塞尔曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于作者"><span class="nav-number">1.</span> <span class="nav-text">关于作者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始"><span class="nav-number">2.</span> <span class="nav-text">开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01-至密亲友"><span class="nav-number">3.</span> <span class="nav-text">01 至密亲友</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-编码与组合"><span class="nav-number">4.</span> <span class="nav-text">02 编码与组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03布莱叶盲文与二进制码"><span class="nav-number">5.</span> <span class="nav-text">03布莱叶盲文与二进制码</span></a></li></ol></div>
             
 
           </div>
@@ -922,30 +941,6 @@
   
   
 
-  
-    
-      <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      },
-      TeX: {equationNumbers: { autoNumber: "AMS" }}
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    
   
 
 

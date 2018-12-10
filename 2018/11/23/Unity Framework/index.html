@@ -152,27 +152,28 @@
 
 
 
-  <meta name="description" content="贝塞尔曲线本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线. 原理在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线  下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t">
-<meta name="keywords" content="Unity,C#,BézierCurve">
+  <meta name="description" content="Unity 框架本文UI框架借鉴游客学院 本文章源码可在我的GitHub中找到 UI框架  UI框架简介本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。 框架流程Scene打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDate">
+<meta name="keywords" content="Unity,Framework">
 <meta property="og:type" content="article">
-<meta property="og:title" content="贝塞尔曲线">
-<meta property="og:url" content="https://ylong765.github.io/2018/08/18/贝塞尔曲线/index.html">
+<meta property="og:title" content="Unity-Framework">
+<meta property="og:url" content="https://ylong765.github.io/2018/11/23/Unity Framework/index.html">
 <meta property="og:site_name" content="Yinl-Blog">
-<meta property="og:description" content="贝塞尔曲线本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线. 原理在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线  下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t">
+<meta property="og:description" content="Unity 框架本文UI框架借鉴游客学院 本文章源码可在我的GitHub中找到 UI框架  UI框架简介本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。 框架流程Scene打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDate">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg">
-<meta property="og:updated_time" content="2018-09-22T10:29:52.739Z">
+<meta property="og:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-11-24/67442822.jpg">
+<meta property="og:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-11-24/68633890.jpg">
+<meta property="og:updated_time" content="2018-11-24T14:03:36.377Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="贝塞尔曲线">
-<meta name="twitter:description" content="贝塞尔曲线本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线. 原理在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线  下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t">
-<meta name="twitter:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg">
+<meta name="twitter:title" content="Unity-Framework">
+<meta name="twitter:description" content="Unity 框架本文UI框架借鉴游客学院 本文章源码可在我的GitHub中找到 UI框架  UI框架简介本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。 框架流程Scene打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDate">
+<meta name="twitter:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-11-24/67442822.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="https://ylong765.github.io/2018/08/18/贝塞尔曲线/"/>
+  <link rel="canonical" href="https://ylong765.github.io/2018/11/23/Unity Framework/"/>
 
 
 
@@ -182,7 +183,7 @@
   };
 </script>
 
-  <title>贝塞尔曲线 | Yinl-Blog</title>
+  <title>Unity-Framework | Yinl-Blog</title>
   
 
 
@@ -353,7 +354,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ylong765.github.io/2018/08/18/贝塞尔曲线/">
+    <link itemprop="mainEntityOfPage" href="https://ylong765.github.io/2018/11/23/Unity Framework/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yinl">
@@ -370,7 +371,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">贝塞尔曲线
+          <h1 class="post-title" itemprop="name headline">Unity-Framework
               
             
           </h1>
@@ -395,7 +396,7 @@
                 
               
 
-              <time title="创建时间：2018-08-18 20:42:07" itemprop="dateCreated datePublished" datetime="2018-08-18T20:42:07+08:00">2018-08-18</time>
+              <time title="创建时间：2018-11-23 20:57:40" itemprop="dateCreated datePublished" datetime="2018-11-23T20:57:40+08:00">2018-11-23</time>
             
 
             
@@ -412,7 +413,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-09-22 18:29:52" itemprop="dateModified" datetime="2018-09-22T18:29:52+08:00">2018-09-22</time>
+                <time title="修改时间：2018-11-24 22:03:36" itemprop="dateModified" datetime="2018-11-24T22:03:36+08:00">2018-11-24</time>
               
             
           </span>
@@ -463,22 +464,30 @@
       
 
       
-        <h2 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h2><p>本文章借鉴自<a href="http://gad.qq.com/article/detail/23531" target="_blank" rel="noopener">Unity中的曲线绘制</a>.</p>
-<p>贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线.</p>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线</p>
-<p><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg" alt="Img"></p>
-<p>下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:</p>
-<script type="math/tex; mode=display">B(t) = (1 - t)^2P_0 + 2t(1 - t)P_1 + t^2P_2 , t\epsilon[0,1]</script><p>而一阶曲线自然就是一个直线,公式为:</p>
-<script type="math/tex; mode=display">B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1]</script><p>从中我们可以发现规律从而推导到n阶的公式:</p>
-<script type="math/tex; mode=display">B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1]</script><p>而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>首先我们需要一个数据类Curve,存储简单的Vector3数组</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 贝塞尔曲线数据</span></span><br><span class="line"><span class="keyword">public</span> Vector3[] points;</span><br></pre></td></tr></table></figure>
-<p>然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: <a href="https://ylong765.github.io/Yinl-Blog/2018/07/24/Unity%E7%BC%96%E8%AF%91%E5%99%A8/">Unity编辑器</a></p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    serializedObject.Update();</span><br><span class="line">    EditorGUILayout.BeginVertical();</span><br><span class="line">    EditorGUILayout.PropertyField(points, <span class="keyword">new</span> GUIContent(<span class="string">"坐标组"</span>), <span class="literal">true</span>);</span><br><span class="line">    EditorGUILayout.EndVertical();</span><br><span class="line">    serializedObject.ApplyModifiedProperties();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后接下来时重写OnSceneGUI函数了,不过在之前我们要看看具体怎么用代码来实现刚才的N阶曲线.<br>因为我们要利用直线来绘制,所以需要一个for循环来执行绘制,利用GetPoint函数来获取具体每个精度点的位置然后绘制直线就好了.</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Vector3 lineStart = GetPoint(<span class="number">0</span>f); <span class="comment">// GetPoint函数为获取当前点的位置</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= curve.lineSteps; i++) <span class="comment">// lineSteps为绘制精度</span></span><br><span class="line">&#123;</span><br><span class="line">    Vector3 lineEnd = GetPoint(i / (<span class="keyword">float</span>)curve.lineSteps);</span><br><span class="line">    Handles.DrawLine(lineStart, lineEnd);</span><br><span class="line">    lineStart = lineEnd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每次取差值就能减少一阶,所以利用递归从n阶到最后的一阶然后的返回值就是最终点的位置.</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Vector3 <span class="title">GetPoint</span>(<span class="params"><span class="keyword">float</span> t</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3[] pos = <span class="keyword">new</span> Vector3[curve.points.Length];</span><br><span class="line">    pos = (Vector3[])curve.points.Clone();</span><br><span class="line">    <span class="keyword">return</span> curve.transform.TransformPoint(GetLerpPoint(pos, t));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Vector3 <span class="title">GetLerpPoint</span>(<span class="params">Vector3[] pos, <span class="keyword">float</span> t</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (pos.Length == <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> Vector3.Lerp(pos[<span class="number">0</span>], pos[<span class="number">1</span>], t);</span><br><span class="line">    &#125;</span><br><span class="line">    Vector3[] newPos = <span class="keyword">new</span> Vector3[pos.Length - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pos.Length - <span class="number">1</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        newPos[i] = Vector3.Lerp(pos[i], pos[i + <span class="number">1</span>], t);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> GetLerpPoint(newPos, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="Unity-框架"><a href="#Unity-框架" class="headerlink" title="Unity 框架"></a>Unity 框架</h2><p>本文UI框架借鉴游客学院</p>
+<p>本文章源码可在我的<a href="https://github.com/yLong765/Unity-Framework" target="_blank" rel="noopener">GitHub</a>中找到</p>
+<h3 id="UI框架"><a href="#UI框架" class="headerlink" title="UI框架"></a>UI框架</h3><p><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-11-24/67442822.jpg" alt=""></p>
+<p><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-11-24/68633890.jpg" alt=""></p>
+<h4 id="UI框架简介"><a href="#UI框架简介" class="headerlink" title="UI框架简介"></a>UI框架简介</h4><p>本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。</p>
+<h4 id="框架流程Scene"><a href="#框架流程Scene" class="headerlink" title="框架流程Scene"></a>框架流程Scene</h4><p>打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行</p>
+<ul>
+<li><p>InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。</p>
+</li>
+<li><p>InitSkin()：会自动执行，创建UI实例。</p>
+</li>
+<li><p>InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。</p>
+</li>
+</ul>
+<p>其他可重写函数</p>
+<ul>
+<li>onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。</li>
+</ul>
+<p>SceneLogin.cs代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SceneLogin</span> : <span class="title">SceneBase</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> InputField playerName;</span><br><span class="line">    <span class="keyword">private</span> Text warnText;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">InitDate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//初始化皮肤</span></span><br><span class="line">        setSkinPath(<span class="string">"UI/Scene/"</span> + SceneType.SceneLogin.ToString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">InitViewDate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//绑定界面UI</span></span><br><span class="line">        playerName = skin.transform.Find(<span class="string">"loginBackground/playerName"</span>).GetComponent&lt;InputField&gt;();</span><br><span class="line">        warnText = skin.transform.Find(<span class="string">"warnText"</span>).GetComponent&lt;Text&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onClick</span>(<span class="params">GameObject BtObject</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (BtObject.name.Equals(<span class="string">"BtGameStart"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">string</span> name = playerName.text;</span><br><span class="line">            <span class="keyword">if</span> (NameChick(name))</span><br><span class="line">            &#123;</span><br><span class="line">                SceneMgr.Instance.Sequencer(SceneType.SceneMain, name);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                warnText.text += <span class="string">"不符合规范"</span>;</span><br><span class="line">                warnText.gameObject.SetActive(<span class="literal">true</span>);</span><br><span class="line">            &#125;                </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">NameChick</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//正则表达式</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (name == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (name.Equals(<span class="string">"/0"</span>)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (name.Length &lt; <span class="number">0</span> || name.Length &gt; <span class="number">10</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="更新-—-17年04月01日"><a href="#更新-—-17年04月01日" class="headerlink" title="更新 —-  17年04月01日"></a>更新 —-  17年04月01日</h3><p>加入消息机制框架。</p>
+<h3 id="更新-—-17年12月23日"><a href="#更新-—-17年12月23日" class="headerlink" title="更新 —- 17年12月23日"></a>更新 —- 17年12月23日</h3><p>加入对象池：使用固定的对象池重用对象，取代单独地分配和释放对象，以此来达到提升性能和优化内存使用的目的。</p>
+<p>加入单例管理：MonoSingletonMgr和SingletonMgr。</p>
+<h3 id="更新-—-18年8月28日"><a href="#更新-—-18年8月28日" class="headerlink" title="更新 —- 18年8月28日"></a>更新 —- 18年8月28日</h3><p>重写MonoSingleton，修复Editor模式调用时产生多实例的问题，添加Create方法用于初始化。</p>
 
       
     </div>
@@ -501,9 +510,7 @@
           
             <a href="/tags/Unity/" rel="tag"># Unity</a>
           
-            <a href="/tags/C/" rel="tag"># C#</a>
-          
-            <a href="/tags/BezierCurve/" rel="tag"># BézierCurve</a>
+            <a href="/tags/Framework/" rel="tag"># Framework</a>
           
         </div>
       
@@ -516,8 +523,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/29/toLua踩坑篇/" rel="next" title="toLua踩坑篇">
-                <i class="fa fa-chevron-left"></i> toLua踩坑篇
+              <a href="/2018/10/20/《编码-隐匿在计算机软硬件背后的语言》阅读精粹/" rel="next" title="《Code:The Hidden Language of Computer Hardware and Software》阅读精粹">
+                <i class="fa fa-chevron-left"></i> 《Code:The Hidden Language of Computer Hardware and Software》阅读精粹
               </a>
             
           </div>
@@ -525,10 +532,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/31/hexo支持mathjax/" rel="prev" title="hexo支持mathjax">
-                hexo支持mathjax <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -717,7 +720,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝塞尔曲线"><span class="nav-number">1.</span> <span class="nav-text">贝塞尔曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-框架"><span class="nav-number">1.</span> <span class="nav-text">Unity 框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UI框架"><span class="nav-number">1.1.</span> <span class="nav-text">UI框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UI框架简介"><span class="nav-number">1.1.1.</span> <span class="nav-text">UI框架简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#框架流程Scene"><span class="nav-number">1.1.2.</span> <span class="nav-text">框架流程Scene</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新-—-17年04月01日"><span class="nav-number">1.2.</span> <span class="nav-text">更新 —-  17年04月01日</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新-—-17年12月23日"><span class="nav-number">1.3.</span> <span class="nav-text">更新 —- 17年12月23日</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新-—-18年8月28日"><span class="nav-number">1.4.</span> <span class="nav-text">更新 —- 18年8月28日</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -922,30 +925,6 @@
   
   
 
-  
-    
-      <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      },
-      TeX: {equationNumbers: { autoNumber: "AMS" }}
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    
   
 
 

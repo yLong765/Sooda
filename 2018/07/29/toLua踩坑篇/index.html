@@ -152,19 +152,19 @@
 
 
 
-  <meta name="description" content="toLua踩坑篇 最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。 坑~toLua解析Lua属性 首先我们给出Lua文件的内容，基于toLua Examples 04修改： 1234567891011121314151617print(&apos;Objs2Spawn is: &apos;..Objs2Spawn)var2read = 42varTable = &amp;#123;1,2,">
-<meta name="keywords" content="C#,toLua,Unity">
+  <meta name="description" content="toLua踩坑篇最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。 坑~toLua解析Lua属性首先我们给出Lua文件的内容，基于toLua Examples 04修改： 1234567891011121314151617print(&apos;Objs2Spawn is: &apos;..Objs2Spawn)var2read = 42varTable = &amp;#123;1,2,3,4,5&amp;">
+<meta name="keywords" content="Unity,C#,toLua">
 <meta property="og:type" content="article">
 <meta property="og:title" content="toLua踩坑篇">
 <meta property="og:url" content="https://ylong765.github.io/2018/07/29/toLua踩坑篇/index.html">
 <meta property="og:site_name" content="Yinl-Blog">
-<meta property="og:description" content="toLua踩坑篇 最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。 坑~toLua解析Lua属性 首先我们给出Lua文件的内容，基于toLua Examples 04修改： 1234567891011121314151617print(&apos;Objs2Spawn is: &apos;..Objs2Spawn)var2read = 42varTable = &amp;#123;1,2,">
+<meta property="og:description" content="toLua踩坑篇最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。 坑~toLua解析Lua属性首先我们给出Lua文件的内容，基于toLua Examples 04修改： 1234567891011121314151617print(&apos;Objs2Spawn is: &apos;..Objs2Spawn)var2read = 42varTable = &amp;#123;1,2,3,4,5&amp;">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-7-29/90876072.jpg">
 <meta property="og:updated_time" content="2018-09-22T10:30:19.792Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="toLua踩坑篇">
-<meta name="twitter:description" content="toLua踩坑篇 最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。 坑~toLua解析Lua属性 首先我们给出Lua文件的内容，基于toLua Examples 04修改： 1234567891011121314151617print(&apos;Objs2Spawn is: &apos;..Objs2Spawn)var2read = 42varTable = &amp;#123;1,2,">
+<meta name="twitter:description" content="toLua踩坑篇最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。 坑~toLua解析Lua属性首先我们给出Lua文件的内容，基于toLua Examples 04修改： 1234567891011121314151617print(&apos;Objs2Spawn is: &apos;..Objs2Spawn)var2read = 42varTable = &amp;#123;1,2,3,4,5&amp;">
 <meta name="twitter:image" content="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-7-29/90876072.jpg">
 
 
@@ -463,10 +463,8 @@
       
 
       
-        <h2 id="tolua踩坑篇">toLua踩坑篇</h2>
-<p>最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。</p>
-<h3 id="坑tolua解析lua属性">坑~toLua解析Lua属性</h3>
-<p>首先我们给出Lua文件的内容，基于toLua Examples 04修改：</p>
+        <h2 id="toLua踩坑篇"><a href="#toLua踩坑篇" class="headerlink" title="toLua踩坑篇"></a>toLua踩坑篇</h2><p>最近工作得用Lua实现逻辑，桥梁用的toLua，踩了很多坑，在这里记录一下。</p>
+<h3 id="坑-toLua解析Lua属性"><a href="#坑-toLua解析Lua属性" class="headerlink" title="坑~toLua解析Lua属性"></a>坑~toLua解析Lua属性</h3><p>首先我们给出Lua文件的内容，基于toLua Examples 04修改：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'Objs2Spawn is: '</span>..Objs2Spawn)</span><br><span class="line">var2read = <span class="number">42</span></span><br><span class="line">varTable = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line">varTable.<span class="keyword">default</span> = <span class="number">1</span></span><br><span class="line">varTable.map = &#123;&#125;</span><br><span class="line">varTable.map.name = <span class="string">"map"</span></span><br><span class="line"></span><br><span class="line">meta = &#123;name = <span class="string">"meta"</span>&#125;</span><br><span class="line">setmetatable(varTable, meta)</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">TestFunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    <span class="title">print</span><span class="params">(<span class="string">'get func by variable'</span>)</span></span></span><br><span class="line"><span class="function">end</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">function varTable.<span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    <span class="title">print</span><span class="params">(<span class="string">"获取table中的函数"</span>)</span></span></span><br><span class="line"><span class="function">end</span></span><br></pre></td></tr></table></figure>
 <p>在展示坑之前先看看使用toLua，下面是解析全局变量的代码：</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LuaState lua = <span class="keyword">new</span> LuaState();</span><br><span class="line">Debug.Log(lua[<span class="string">"全局变量名"</span>]);</span><br></pre></td></tr></table></figure>
@@ -476,10 +474,9 @@
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LuaTable table = lua.GetTable(<span class="string">"表名"</span>);</span><br></pre></td></tr></table></figure>
 <p>那么下面开始踩坑，上代码：</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明lua解析器对象</span></span><br><span class="line">LuaState lua = <span class="keyword">new</span> LuaState();</span><br><span class="line">lua.Start();</span><br><span class="line"><span class="comment">// 添加lua执行路径</span></span><br><span class="line">lua.AddSearchPath(Application.dataPath + <span class="string">"/Lua"</span>);</span><br><span class="line"><span class="comment">// 将Objs2Spawn存到lua的全局变量中并赋值</span></span><br><span class="line">lua[<span class="string">"Objs2Spawn"</span>] = <span class="number">5</span>;</span><br><span class="line"><span class="comment">// 寻找文件并执行，如找到则返回一个对象。</span></span><br><span class="line">lua.DoFile(<span class="string">"CallLuaFunction.lua"</span>);</span><br><span class="line"><span class="comment">// 寻找文件并执行，第一次生成对象返回，之后返回之前生成过的对象。</span></span><br><span class="line">lua.Require(<span class="string">"AccessingLuaVariables"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过LuaState访问</span></span><br><span class="line">Debug.Log(lua[<span class="string">"var2read"</span>]); <span class="comment">// 输出-&gt; 42</span></span><br><span class="line">Debug.Log(lua[<span class="string">"varTable.default"</span>]); <span class="comment">// 输出-&gt; 1</span></span><br><span class="line"><span class="comment">// 直接利用LuaState获取name</span></span><br><span class="line">Debug.Log(lua[<span class="string">"varTable.map.name"</span>]); <span class="comment">// 输出-&gt; map</span></span><br><span class="line"></span><br><span class="line">LuaFunction func = lua[<span class="string">"TestFunc"</span>] <span class="keyword">as</span> LuaFunction;</span><br><span class="line">func.Call();</span><br><span class="line"></span><br><span class="line">func = lua[<span class="string">"varTable.func"</span>] <span class="keyword">as</span> LuaFunction;</span><br><span class="line">func.Call();</span><br><span class="line">func.Dispose();</span><br><span class="line"></span><br><span class="line"><span class="comment">//cache成LuaTable访问</span></span><br><span class="line">LuaTable table = lua.GetTable(<span class="string">"varTable"</span>);</span><br><span class="line">Debug.Log(table[<span class="string">"default"</span>]); <span class="comment">// 输出-&gt; 1</span></span><br><span class="line"><span class="comment">// 利用Table获取name，有Bug</span></span><br><span class="line">Debug.Log(table[<span class="string">"map.name"</span>]); <span class="comment">// 输出-&gt; Null</span></span><br><span class="line">LuaTable table1 = table.GetTable&lt;LuaTable&gt;(<span class="string">"map"</span>);</span><br><span class="line"><span class="comment">// 利用Table的Table获取name</span></span><br><span class="line">Debug.Log(table1[<span class="string">"name"</span>]); <span class="comment">// 输出-&gt; map</span></span><br></pre></td></tr></table></figure>
-<p>最后的结果为： <img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-7-29/90876072.jpg" alt="Img"></p>
-<p>图中显示代码table[&quot;map.name&quot;]的结果为Null，这里是toLua的一个bug，在缓存成table的时候处理table中的table有些问题。解决方式上面的代码也给了，就是从table中再获取table，实在是非常的麻烦，还有个简单的方式为直接利用LuaState获取。</p>
-<h3 id="坑lua函数解析">坑~Lua函数解析</h3>
-<p>这里利用的是toLua Examples 03的内容作了一些修改，首先还是看Lua代码：</p>
+<p>最后的结果为：<br><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-7-29/90876072.jpg" alt="Img"></p>
+<p>图中显示代码table[“map.name”]的结果为Null，这里是toLua的一个bug，在缓存成table的时候处理table中的table有些问题。解决方式上面的代码也给了，就是从table中再获取table，实在是非常的麻烦，还有个简单的方式为直接利用LuaState获取。</p>
+<h3 id="坑-Lua函数解析"><a href="#坑-Lua函数解析" class="headerlink" title="坑~Lua函数解析"></a>坑~Lua函数解析</h3><p>这里利用的是toLua Examples 03的内容作了一些修改，首先还是看Lua代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">CallLuaFunction = &#123;&#125;</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func1()</span><br><span class="line">    print(<span class="string">"Call Lua Function"</span>)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func2(num1, num2)</span><br><span class="line">    print(<span class="string">"执行func2"</span>)</span><br><span class="line">    <span class="keyword">return</span> num1 + num2</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func3(num)</span><br><span class="line">    <span class="keyword">return</span> num + <span class="number">1</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction.func4(num)</span><br><span class="line">    print(<span class="string">"执行func4 "</span> .. num)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function CallLuaFunction:func5()</span><br><span class="line">    self.a = <span class="number">1</span></span><br><span class="line">    self.b = <span class="number">2</span></span><br><span class="line">    print(self.a .. <span class="string">" "</span> .. self.b)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 <p>这里一共有5个函数，我们分别针对这五个函数的解析做一些展示。首先是func1，这个函数没有任何的参数也没有返回值，所以调用它很简单（这里假设已经做完lua的建立和释放工作）：</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取Lua函数</span></span><br><span class="line">LuaFunction func = lua.GetFunction(<span class="string">"CallLuaFunction.func1"</span>);</span><br><span class="line"><span class="comment">// 执行函数，无返回值，最多支持9个参数</span></span><br><span class="line">func.Call();</span><br></pre></td></tr></table></figure>
@@ -496,7 +493,7 @@
 <p>接下来是func3函数，一个参数，这个就不用多说了与func2一样的。</p>
 <p>之后是func4函数，这里就展示一下func2中的最后一种执行方式，不过没有返回值：</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lua.Call&lt;<span class="keyword">int</span>&gt;(<span class="string">"CallLuaFunction.func4"</span>, <span class="number">10</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
-<p>最后的func5就很神奇了，哪里神奇呢？你注意到表名和函数名的连接处用的是&quot;:&quot;了么，这里与&quot;.&quot;的区别就是会传入self，相当于C#中的this，那又会说了func5不是没有参数么，因为self是隐式的传入，如果你从C#调用它，必须得传这个参数。坑，这里用GetTable解决一下，感觉很麻烦，不过toLua应该是内置了&quot;:&quot;函数的形式。</p>
+<p>最后的func5就很神奇了，哪里神奇呢？你注意到表名和函数名的连接处用的是”:”了么，这里与”.”的区别就是会传入self，相当于C#中的this，那又会说了func5不是没有参数么，因为self是隐式的传入，如果你从C#调用它，必须得传这个参数。坑，这里用GetTable解决一下，感觉很麻烦，不过toLua应该是内置了”:”函数的形式。</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LuaTable table = lua.GetTable(<span class="string">"CallLuaFunction"</span>);</span><br><span class="line">lua.Call&lt;LuaTable&gt;(<span class="string">"CallLuaFunction.func5"</span>, table, <span class="literal">true</span>);</span><br><span class="line">Debug.Log(table[<span class="string">"a"</span>]);</span><br></pre></td></tr></table></figure>
 
       
@@ -518,11 +515,11 @@
       
         <div class="post-tags">
           
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
             <a href="/tags/C/" rel="tag"># C#</a>
           
             <a href="/tags/toLua/" rel="tag"># toLua</a>
-          
-            <a href="/tags/Unity/" rel="tag"># Unity</a>
           
         </div>
       
@@ -626,7 +623,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -645,7 +642,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -680,7 +679,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -730,7 +733,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tolua踩坑篇"><span class="nav-number">1.</span> <span class="nav-text">toLua踩坑篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坑tolua解析lua属性"><span class="nav-number">1.1.</span> <span class="nav-text">坑~toLua解析Lua属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坑lua函数解析"><span class="nav-number">1.2.</span> <span class="nav-text">坑~Lua函数解析</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#toLua踩坑篇"><span class="nav-number">1.</span> <span class="nav-text">toLua踩坑篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坑-toLua解析Lua属性"><span class="nav-number">1.1.</span> <span class="nav-text">坑~toLua解析Lua属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坑-Lua函数解析"><span class="nav-number">1.2.</span> <span class="nav-text">坑~Lua函数解析</span></a></li></ol></li></ol></div>
             
 
           </div>
