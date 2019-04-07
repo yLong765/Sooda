@@ -9,16 +9,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[《软技能》阅读记录]]></title>
-    <url>%2F2019%2F03%2F17%2F%E3%80%8A%E8%BD%AF%E6%8A%80%E8%83%BD%E3%80%8B%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%2F</url>
-    <content type="text"></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>%2F2019%2F01%2F16%2F%E7%9F%A5%E8%AF%86%E7%82%B9%E5%BB%BA%E7%AB%8B%E4%B8%8E%E5%A4%8D%E4%B9%A0%2F</url>
-    <content type="text"></content>
-  </entry>
-  <entry>
     <title><![CDATA[Unity-Framework]]></title>
     <url>%2F2018%2F11%2F23%2FUnity%20Framework%2F</url>
     <content type="text"><![CDATA[Unity 框架本文UI框架借鉴游客学院 本文章源码可在我的GitHub中找到 UI框架 UI框架简介本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。 框架流程Scene打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行 InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。 其他可重写函数 onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。 SceneLogin.cs代码 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647public class SceneLogin : SceneBase &#123; private InputField playerName; private Text warnText; protected override void InitDate() &#123; //初始化皮肤 setSkinPath("UI/Scene/" + SceneType.SceneLogin.ToString()); &#125; protected override void InitViewDate() &#123; //绑定界面UI playerName = skin.transform.Find("loginBackground/playerName").GetComponent&lt;InputField&gt;(); warnText = skin.transform.Find("warnText").GetComponent&lt;Text&gt;(); &#125; protected override void onClick(GameObject BtObject) &#123; if (BtObject.name.Equals("BtGameStart")) &#123; string name = playerName.text; if (NameChick(name)) &#123; SceneMgr.Instance.Sequencer(SceneType.SceneMain, name); &#125; else &#123; warnText.text += "不符合规范"; warnText.gameObject.SetActive(true); &#125; &#125; &#125; private bool NameChick(string name) &#123; //正则表达式 if (name == null) return false; if (name.Equals("/0")) return false; if (name.Length &lt; 0 || name.Length &gt; 10) return false; return true; &#125;&#125; 更新 —- 17年04月01日加入消息机制框架。 更新 —- 17年12月23日加入对象池：使用固定的对象池重用对象，取代单独地分配和释放对象，以此来达到提升性能和优化内存使用的目的。 加入单例管理：MonoSingletonMgr和SingletonMgr。 更新 —- 18年8月28日重写MonoSingleton，修复Editor模式调用时产生多实例的问题，添加Create方法用于初始化。]]></content>
