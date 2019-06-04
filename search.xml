@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[C# Socket和protoBuf新手村教程]]></title>
+    <url>%2F2019%2F06%2F04%2FC-Socket%E5%92%8CprotoBuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B%2F</url>
+    <content type="text"><![CDATA[Boss-&gt;Socket此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道） 1级-&gt;Client创建 首先创建一个C#命令行工程（别告诉这个不会） 创建Socket实例，别忘了引用System.Net和System.Net.Sockets 1Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket 设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类 1IPAddress ip = IPAddress.Parse("127.0.0.1"); // 本地地址127.0.0.1（别说你不知道） IPAddress 设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类 1IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip 链接 12client.Connect(point);// client.Connect("127.0.0.1", 2333); // 等同于3,4 开启线程接收服务器消息，别忘了引用System.Threading 123Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket 12345678910111213141516// Recive函数static void Recive(object o)&#123; var client = o as Socket; while (true) &#123; byte[] buffer = new byte[1024 * 1024 * 2]; int effective = client.Receive(buffer); //二进制数据存储在buffer中，数据长度为effective if (effective == 0) &#123; break; &#125; var str = Encoding.UTF8.GetString(buffer, 0, effective); // 将二进制数据转换为UTF8格式的String Console.WriteLine(str); &#125;&#125; Recieve函数 发送自定义数据给服务器 1234567while (true)&#123; string s = Console.ReadLine(); byte[] buffer = Encoding.ASCII.GetBytes(s); // 将数据转换为ASCII编码的二进制数组形式 socketClient.Send(buffer); // 发送消息 Console.WriteLine("Send Message");&#125; client完整代码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748using System;using System.IO;using System.Net;using System.Net.Sockets;using System.Text;using System.Threading;namespace SocketTest&#123; class Program &#123; static void Main(string[] args) &#123; Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); IPAddress ip = IPAddress.Parse("127.0.0.1"); IPEndPoint point = new IPEndPoint(ip, 2333); client.Connect("127.0.0.1", 2333); Thread thread = new Thread(Recive); thread.IsBackground = true; thread.Start(client); while (true) &#123; string s = Console.ReadLine(); byte[] buffer = Encoding.ASCII.GetBytes(s); client.Send(buffer); Console.WriteLine("Send Message"); &#125; &#125; static void Recive(object o) &#123; var client = o as Socket; while (true) &#123; byte[] buffer = new byte[1024 * 1024 * 2]; var effective = client.Receive(buffer); if (effective == 0) &#123; break; &#125; var str = Encoding.UTF8.GetString(buffer, 0, effective); Console.WriteLine(str); &#125; &#125; &#125;&#125; 2级-&gt;Server创建 首先创建一个C#命令行工程（别告诉这个不会） 创建Socket实例（同client） 设置服务器的ip地址 123IPAddress ip = IPAddress.Parse("127.0.0.1");IPEndPoint point = new IPEndPoint(ip, 2333);server.Bind(point); 设置服务器的最大监听数 1server.Listen(10); 开启线程接收客户端连接和数据（※注意是连接） 123Thread thread = new Thread(Listen);thread.IsBackground = true;thread.Start(serverSocket); 123456789101112131415// Listen函数，等待客户端连接static void Listen(object o)&#123; var serverSocket = o as Socket; while (true) &#123; client = serverSocket.Accept(); // 等待客户端连接，返回客户端的Socket，之前的10限制就是在这里，最多有10个客户端可以建立连接 var sendIpoint = client.RemoteEndPoint.ToString(); // 客户端的ip和端口 Console.WriteLine($"&#123;sendIpoint&#125;Connection"); // 连接成功则开启一个接收线程接收客户端发来的消息 Thread thread = new Thread(Recive); thread.IsBackground = true; thread.Start(client); &#125;&#125; 1// Recive函数，同客户端 server完整代码 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556using System;using System.Net;using System.Net.Sockets;using System.Text;using System.Threading;namespace SocketServer&#123; class Program &#123; static void Main(string[] args) &#123; Socket server = new Socket(SocketType.Stream, ProtocolType.Tcp); IPAddress ip = IPAddress.Parse("127.0.0.1"); IPEndPoint point = new IPEndPoint(ip, 2333); server.Bind(point); server.Listen(10); Thread thread = new Thread(Listen); thread.IsBackground = true; thread.Start(server); Console.Read(); &#125; static void Listen(object o) &#123; var server = o as Socket; while (true) &#123; client = server.Accept(); var clientIpoint = client.RemoteEndPoint.ToString(); Console.WriteLine($"&#123;clientIpoint&#125;Connection"); Thread thread = new Thread(Recive); thread.IsBackground = true; thread.Start(client); &#125; &#125; static void Recive(object o) &#123; var client = o as Socket; while (true) &#123; byte[] buffer = new byte[1024 * 1024 * 2]; var effective = client.Receive(buffer); if (effective == 0) &#123; break; &#125; var str = Encoding.UTF8.GetString(buffer, 0, effective); Console.WriteLine(str); &#125; &#125; &#125;&#125; Boss-&gt;ProtoBuf如果我们要用ProtoBuf用在C#中就得集齐各种神器 ProtoBuf源码：其中有C#的示例代码 ProtoBuf编译器：编译.proto文件 ProtoBuf的C#工具集(你可能会需要下载nuget)：提供工程中的dll引用文件 ProtoBuf官方教程(科学上网) 1级-&gt;编写proto文件都说ProtoBuf不依赖于任何语言是一个跨语言的神器，然而他的语言格式是scheme(Lisp的方言)，并且编译器就是把.proto文件翻译成各个不同语言的编译器。 proto文件示例(教程中示例的文件) 12345678910111213141516171819202122232425262728293031323334353637383940414243// [START declaration]syntax = "proto3";package tutorial;import "google/protobuf/timestamp.proto";// [END declaration]// [START java_declaration]option java_package = "com.example.tutorial";option java_outer_classname = "AddressBookProtos";// [END java_declaration]// [START csharp_declaration]option csharp_namespace = "Google.Protobuf.Examples.AddressBook";// [END csharp_declaration]// [START messages]message Person &#123; string name = 1; int32 id = 2; // Unique ID number for this person. string email = 3; enum PhoneType &#123; MOBILE = 0; HOME = 1; WORK = 2; &#125; message PhoneNumber &#123; string number = 1; PhoneType type = 2; &#125; repeated PhoneNumber phones = 4; google.protobuf.Timestamp last_updated = 5;&#125;// Our address book file is just one of these.message AddressBook &#123; repeated Person people = 1;&#125;// [END messages] 2级-&gt;编译proto文件将上面的文件用proto.exe编译 12345格式：proto -I=当前目录 -out_csharp=当前目录 目录/文件名.扩展名例：文件名为：address.proto目录为：D:/Work下proto -I=D:/Work -out_csharp=D:/Work D:/Wrok/address.proto 编译完后会生成一个.cs文件，文件很长我就不展示了 3级-&gt;nuget下载dll1nuget install Google.Protobuf -Version 3.8.0 // 版本随意 下载下来找到dll 1Google.Protobuf.3.8.0/bin/net45/Google.Protobuf.dll 引用到客户端和服务器中，然后把生成的.cs文件也复制到项目中 4级-&gt;编写序列化和反序列化代码在客户端和服务器的Program（上面的代码）中加入序列化和反序列化的函数，需要引用Google.Protobuf、Google.Protobuf.Examples.AddressBook和static Google.Protobuf.Examples.AddressBook.Person.Types(C#6 才支持) 1234567891011public static byte[] Serialize&lt;T&gt;(T obj) where T : IMessage&#123; return obj.ToByteArray();&#125;public static T Deserialize&lt;T&gt;(byte[] data) where T : class, IMessage, new()&#123; T obj = new T(); IMessage message = obj.Descriptor.Parser.ParseFrom(data); return message as T;&#125; 注释： 可以看到由.proto转换成.cs的文件的父接口为IMessage ToByteArray()是protoBuf自带的类转二进制的函数（所谓的序列化） obj.Descriptor.Parser.ParseFrom是是protoBuf自带的二进制转类的函数（所谓的反序列化） 知道这些之后就可以传输二进制数据啦，所以我们的客户端代码的发送数据部分改为 12345678910111213141516// 建立数据Person john = new Person&#123; Id = 1234, Name = "John Doe", Email = "jdoe@example.com", Phones = &#123; new PhoneNumber &#123; Number = "555-4321", Type = PhoneType.Home &#125; &#125;&#125;;var message = Serialize(john); // 得到byte[]的messagewhile (true)&#123; string s = Console.ReadLine(); socketClient.Send(message); // 直接传输message Console.WriteLine("Send Message");&#125; 服务端的接受部分改一下，这部分注意反序列化素组的长度必须和序列化后的一致，所以这边新建了一个正确长度的b2数组把数据复制过去 123456789101112131415161718192021static void Recive(object o)&#123; var send = o as Socket; while (true) &#123; byte[] buffer = new byte[1024 * 1024 * 2]; var effective = send.Receive(buffer); byte[] b2 = new byte[effective]; Array.Copy(buffer, 0, b2, 0, effective); // 把数据拷贝给b2 if (effective == 0) &#123; break; &#125; var message = Deserialize&lt;Person&gt;(b2); // 解析时候必须为正确的长度 Console.WriteLine("ID = &#123;0&#125;", message.Id); Console.WriteLine("Name = &#123;0&#125;", message.Name); Console.WriteLine("Email = &#123;0&#125;", message.Email); Console.WriteLine("Phone Number = &#123;0&#125;", message.Phones[0].Number); Console.WriteLine("Phone Type = &#123;0&#125;", message.Phones[0].Type); &#125;&#125; 完结撒花~]]></content>
+      <tags>
+        <tag>C#</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[判断点在多边形内部]]></title>
     <url>%2F2019%2F04%2F07%2F%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8%2F</url>
     <content type="text"><![CDATA[点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。 推荐Milo Yip大神的知乎上的回答 射线法思想射线法是由从点出发向一个方向发送射线，判断与边相交的次数，如果为奇数则为多边形的内部，如果为偶数则为外部。 首先是数据类，存储多边形的点和最大最小的XY，用来做快速判断1234567891011121314151617181920212223242526// 多边形点的数据存储class PolygonConfig&#123; public float maxX; public float maxY; public float minX; public float minY; public List&lt;Vector2&gt; points = new List&lt;Vector2&gt;(); public void SetMaxAndMinXY() &#123; if (points.Count &gt; 0) &#123; maxX = points[0].x; maxY = points[0].y; minX = points[0].x; minY = points[0].y; &#125; for (int i = 1; i &lt; points.Count; i++) &#123; maxX = Mathf.Max(maxX, points[i].x); maxY = Mathf.Max(maxY, points[i].y); &#125; &#125;&#125; 下面是判断的核心方法 首先是通过最大最小的XY来快速筛选点是否在四边形中 核心代码部分 这里我们做向上的射线（射线方向随意，这里我们向上做） 第一组判断(points[i].x &lt;= point.x &amp;&amp; points[j].x &gt; point.x) || (points[j].x &lt;= point.x &amp;&amp; points[i].x &gt; point.x) 这里主要的意思就是点的x坐标是否在多边形的一个边的x轴坐标内。(可理解成: p1.x &lt; p.x &lt; p2.x) 第二组判断(points[j].y - points[i].y) / (points[j].x - points[i].x) * (point.x - points[i].x) + points[i].y &gt; point.y 让我们分开来理解，首先是(points[j].y - points[i].y) / (points[j].x - points[i].x)是x轴差值和y轴差值的比值，(point.x - points[i].x)是点与边中一点的x轴差值，两者的相乘就确定了一个y，y值再加上那边中一点的y值，如果大于点的y则穿过，否则没穿过。 进过所有边的判断完成后，奇数为在中心，所以小技巧就是inPolygon的取反。1234567891011121314151617181920private bool IsPointInPolygon(PolygonConfig polygon, Vector2 point)&#123; // 构建矩形，进行快速筛选 if (point.x &gt; polygon.maxX || point.x &lt; polygon.minX || point.y &gt; polygon.maxY || point.y &lt; polygon.minY) &#123; return false; &#125; bool inPolygon = false; var points = polygon.points; for (int i = 0, j = points.Count - 1; i &lt; points.Count; j = i++) &#123; if (((points[i].x &lt;= point.x &amp;&amp; points[j].x &gt; point.x) || (points[j].x &lt;= point.x &amp;&amp; points[i].x &gt; point.x)) &amp;&amp; ((points[j].y - points[i].y) / (points[j].x - points[i].x) * (point.x - points[i].x) + points[i].y &gt; point.y)) &#123; inPolygon = !inPolygon; &#125; &#125; return inPolygon;&#125;]]></content>
@@ -63,8 +71,8 @@
         <category>Unity</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>C#</tag>
+        <tag>Unity</tag>
         <tag>BézierCurve</tag>
       </tags>
   </entry>
@@ -76,9 +84,9 @@
         <category>Unity</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>C#</tag>
         <tag>toLua</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
@@ -89,9 +97,9 @@
         <category>Unity</category>
       </categories>
       <tags>
+        <tag>C#</tag>
         <tag>Unity</tag>
         <tag>Unity Editor</tag>
-        <tag>C#</tag>
       </tags>
   </entry>
   <entry>
@@ -102,8 +110,8 @@
         <category>Unity</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>C#</tag>
+        <tag>Unity</tag>
         <tag>Graphics</tag>
       </tags>
   </entry>
