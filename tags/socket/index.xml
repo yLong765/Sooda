@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Socket on Sooda</title>
+    <link>http://Yinl.fun/tags/socket/</link>
+    <description>Recent content in Socket on Sooda</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 04 Jun 2019 23:29:22 +0800</lastBuildDate>
+    
+	<atom:link href="http://Yinl.fun/tags/socket/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CSharpSocket和protpBuf新手村教程</title>
+      <link>http://Yinl.fun/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Tue, 04 Jun 2019 23:29:22 +0800</pubDate>
+      
+      <guid>http://Yinl.fun/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</guid>
+      <description>Boss-&amp;gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&amp;gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&amp;#34;127.0.0.1&amp;#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&amp;#34;127.0.0.1&amp;#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Sooda ">
+<meta name="description" content="Boss-&amp;gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&amp;gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&amp;#34;127.0.0.1&amp;#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&amp;#34;127.0.0.1&amp;#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client." />
+<meta name="keywords" content=", Socket, ProtpBuf" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://Yinl.fun/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/" />
+
+
+    <title>
+        
+            CSharpSocket和protpBuf新手村教程 :: Sooda  — Hello Friend NG Theme
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://Yinl.fun/main.min.7bfbbe12786fa0ded4b4c0d792cbb36a5bd0bdb0b856dde57aa7b1f6fe0f2b87.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://Yinl.fun/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://Yinl.fun/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://Yinl.fun/favicon-16x16.png">
+    <link rel="manifest" href="http://Yinl.fun/site.webmanifest">
+    <link rel="mask-icon" href="http://Yinl.fun/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://Yinl.fun/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="CSharpSocket和protpBuf新手村教程">
+<meta itemprop="description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client.">
+<meta itemprop="datePublished" content="2019-06-04T23:29:22&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-04T23:29:22&#43;08:00" />
+<meta itemprop="wordCount" content="763">
+<meta itemprop="image" content="http://Yinl.fun/"/>
+
+
+
+<meta itemprop="keywords" content="Socket,ProtpBuf," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://Yinl.fun/"/>
+
+<meta name="twitter:title" content="CSharpSocket和protpBuf新手村教程"/>
+<meta name="twitter:description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2019-06-04 23:29:22 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://Yinl.fun/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ Sooda</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://Yinl.fun/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>4 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://Yinl.fun/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/">CSharpSocket和protpBuf新手村教程</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <h2 id="boss-socket">Boss-&gt;Socket</h2>
+<p>此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）</p>
+<h3 id="1级-client创建">1级-&gt;Client创建</h3>
+<ol>
+<li>
+<p>首先创建一个C#命令行工程（别告诉这个不会）</p>
+</li>
+<li>
+<p>创建Socket实例，别忘了引用System.Net和System.Net.Sockets</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Socket client = <span style="color:#66d9ef">new</span> Socket(SocketType.Stream, ProtocolType.Tcp); <span style="color:#75715e">// TCP链接
+</span></code></pre></div><ul>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket?redirectedfrom=MSDN&amp;view=netframework-4.8">Socket</a></li>
+</ul>
+</li>
+<li>
+<p>设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>); <span style="color:#75715e">// 本地地址127.0.0.1（别说你不知道）
+</span></code></pre></div><ul>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.ipendpoint?redirectedfrom=MSDN&amp;view=netframework-4.8">IPAddress</a></li>
+</ul>
+</li>
+<li>
+<p>设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>); <span style="color:#75715e">// 端口为2333，ip为上一段代码的ip
+</span></code></pre></div></li>
+<li>
+<p>链接</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">client.Connect(point);
+<span style="color:#75715e">// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4
+</span></code></pre></div></li>
+<li>
+<p>开启线程接收服务器消息，别忘了引用System.Threading</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
+thread.IsBackground = <span style="color:#66d9ef">true</span>; <span style="color:#75715e">// 后台执行线程
+</span><span style="color:#75715e"></span>thread.Start(client); <span style="color:#75715e">// 传入客户端的Socket
+</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// Recive函数
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
+{
+    <span style="color:#66d9ef">var</span> client = o <span style="color:#66d9ef">as</span> Socket;
+    <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+    {
+        <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
+        <span style="color:#66d9ef">int</span> effective = client.Receive(buffer); <span style="color:#75715e">//二进制数据存储在buffer中，数据长度为effective
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
+        {
+            <span style="color:#66d9ef">break</span>;
+        }
+        <span style="color:#66d9ef">var</span> str = Encoding.UTF8.GetString(buffer, <span style="color:#ae81ff">0</span>, effective); <span style="color:#75715e">// 将二进制数据转换为UTF8格式的String
+</span><span style="color:#75715e"></span>        Console.WriteLine(str);
+    }
+}
+</code></pre></div><ul>
+<li><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.net.sockets.socket.receive?redirectedfrom=MSDN&amp;view=netframework-4.8#overloads">Recieve函数</a></li>
+</ul>
+</li>
+<li>
+<p>发送自定义数据给服务器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+{
+    <span style="color:#66d9ef">string</span> s = Console.ReadLine();
+    <span style="color:#66d9ef">byte</span>[] buffer = Encoding.ASCII.GetBytes(s); <span style="color:#75715e">// 将数据转换为ASCII编码的二进制数组形式
+</span><span style="color:#75715e"></span>    socketClient.Send(buffer); <span style="color:#75715e">// 发送消息
+</span><span style="color:#75715e"></span>    Console.WriteLine(<span style="color:#e6db74">&#34;Send Message&#34;</span>);
+}
+</code></pre></div></li>
+<li>
+<p>client完整代码</p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">using</span> System;
+<span style="color:#66d9ef">using</span> System.IO;
+<span style="color:#66d9ef">using</span> System.Net;
+<span style="color:#66d9ef">using</span> System.Net.Sockets;
+<span style="color:#66d9ef">using</span> System.Text;
+<span style="color:#66d9ef">using</span> System.Threading;
+
+<span style="color:#66d9ef">namespace</span> SocketTest
+{
+    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Program</span>
+    {
+        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main(<span style="color:#66d9ef">string</span>[] args)
+        {
+            Socket client = <span style="color:#66d9ef">new</span> Socket(SocketType.Stream, ProtocolType.Tcp);
+            IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>);
+            IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>);
+            client.Connect(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>, <span style="color:#ae81ff">2333</span>);
+
+            Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
+            thread.IsBackground = <span style="color:#66d9ef">true</span>;
+            thread.Start(client);
+
+            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+            {
+                <span style="color:#66d9ef">string</span> s = Console.ReadLine();
+                <span style="color:#66d9ef">byte</span>[] buffer = Encoding.ASCII.GetBytes(s);
+                client.Send(buffer);
+                Console.WriteLine(<span style="color:#e6db74">&#34;Send Message&#34;</span>);
+            }
+        }
+
+        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
+        {
+            <span style="color:#66d9ef">var</span> client = o <span style="color:#66d9ef">as</span> Socket;
+            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+            {
+                <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
+                <span style="color:#66d9ef">var</span> effective = client.Receive(buffer);
+                <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
+                {
+                    <span style="color:#66d9ef">break</span>;
+                }
+                <span style="color:#66d9ef">var</span> str = Encoding.UTF8.GetString(buffer, <span style="color:#ae81ff">0</span>, effective);
+                Console.WriteLine(str);
+            }
+        }
+    }
+}
+</code></pre></div><h3 id="2级-server创建">2级-&gt;Server创建</h3>
+<ol>
+<li>
+<p>首先创建一个C#命令行工程（别告诉这个不会）</p>
+</li>
+<li>
+<p>创建Socket实例（同client）</p>
+</li>
+<li>
+<p>设置服务器的ip地址</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>);
+IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>);
+server.Bind(point);
+</code></pre></div></li>
+<li>
+<p>设置服务器的最大监听数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">server.Listen(<span style="color:#ae81ff">10</span>);
+</code></pre></div></li>
+<li>
+<p>开启线程接收客户端连接和数据（※注意是连接）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Thread thread = <span style="color:#66d9ef">new</span> Thread(Listen);
+thread.IsBackground = <span style="color:#66d9ef">true</span>;
+thread.Start(serverSocket);
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// Listen函数，等待客户端连接
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Listen(<span style="color:#66d9ef">object</span> o)
+{
+    <span style="color:#66d9ef">var</span> serverSocket = o <span style="color:#66d9ef">as</span> Socket;
+    <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+    {
+        client = serverSocket.Accept(); <span style="color:#75715e">// 等待客户端连接，返回客户端的Socket，之前的10限制就是在这里，最多有10个客户端可以建立连接
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> sendIpoint = client.RemoteEndPoint.ToString(); <span style="color:#75715e">// 客户端的ip和端口
+</span><span style="color:#75715e"></span>        Console.WriteLine(<span style="color:#e6db74">$&#34;{sendIpoint}Connection&#34;</span>);
+        <span style="color:#75715e">// 连接成功则开启一个接收线程接收客户端发来的消息
+</span><span style="color:#75715e"></span>        Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
+        thread.IsBackground = <span style="color:#66d9ef">true</span>;
+        thread.Start(client);
+    }
+}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// Recive函数，同客户端
+</span></code></pre></div></li>
+<li>
+<p>server完整代码</p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">using</span> System;
+<span style="color:#66d9ef">using</span> System.Net;
+<span style="color:#66d9ef">using</span> System.Net.Sockets;
+<span style="color:#66d9ef">using</span> System.Text;
+<span style="color:#66d9ef">using</span> System.Threading;
+
+<span style="color:#66d9ef">namespace</span> SocketServer
+{
+    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Program</span>
+    {
+        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main(<span style="color:#66d9ef">string</span>[] args)
+        {
+            Socket server = <span style="color:#66d9ef">new</span> Socket(SocketType.Stream, ProtocolType.Tcp);
+            IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>);
+            IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>);
+            server.Bind(point);
+            server.Listen(<span style="color:#ae81ff">10</span>);
+
+            Thread thread = <span style="color:#66d9ef">new</span> Thread(Listen);
+            thread.IsBackground = <span style="color:#66d9ef">true</span>;
+            thread.Start(server);
+
+            Console.Read();
+        }
+
+        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Listen(<span style="color:#66d9ef">object</span> o)
+        {
+            <span style="color:#66d9ef">var</span> server = o <span style="color:#66d9ef">as</span> Socket;
+            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+            {
+                client = server.Accept();
+                <span style="color:#66d9ef">var</span> clientIpoint = client.RemoteEndPoint.ToString();
+                Console.WriteLine(<span style="color:#e6db74">$&#34;{clientIpoint}Connection&#34;</span>);
+                Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
+                thread.IsBackground = <span style="color:#66d9ef">true</span>;
+                thread.Start(client);
+            }
+        }
+
+        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
+        {
+            <span style="color:#66d9ef">var</span> client = o <span style="color:#66d9ef">as</span> Socket;
+            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+            {
+                <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
+                <span style="color:#66d9ef">var</span> effective = client.Receive(buffer);
+                <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
+                {
+                    <span style="color:#66d9ef">break</span>;
+                }
+                <span style="color:#66d9ef">var</span> str = Encoding.UTF8.GetString(buffer, <span style="color:#ae81ff">0</span>, effective);
+                Console.WriteLine(str);
+            }
+        }
+    }
+}
+</code></pre></div><h2 id="boss-protobuf">Boss-&gt;ProtoBuf</h2>
+<p>如果我们要用ProtoBuf用在C#中就得集齐各种神器</p>
+<ol>
+<li><a href="https://github.com/protocolbuffers/protobuf/tree/v3.8.0">ProtoBuf源码</a>：其中有C#的示例代码</li>
+<li><a href="https://github.com/protocolbuffers/protobuf/releases/tag/v3.8.0">ProtoBuf编译器</a>：编译<code>.proto</code>文件</li>
+<li><a href="https://www.nuget.org/packages/Google.Protobuf/3.8.0">ProtoBuf的C#工具集</a>(你可能会需要下载nuget)：提供工程中的dll引用文件</li>
+<li><a href="https://developers.google.com/protocol-buffers/">ProtoBuf官方教程</a>(科学上网)</li>
+</ol>
+<h3 id="1级-编写proto文件">1级-&gt;编写proto文件</h3>
+<p>都说ProtoBuf不依赖于任何语言是一个跨语言的神器，然而他的语言格式是scheme(Lisp的方言)，并且编译器就是把<code>.proto</code>文件翻译成各个不同语言的编译器。</p>
+<p>proto文件示例(教程中示例的文件)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// [START declaration]
+</span><span style="color:#75715e"></span>syntax = <span style="color:#e6db74">&#34;proto3&#34;</span>;
+package tutorial;
+
+import <span style="color:#e6db74">&#34;google/protobuf/timestamp.proto&#34;</span>;
+<span style="color:#75715e">// [END declaration]
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// [START java_declaration]
+</span><span style="color:#75715e"></span>option java_package = <span style="color:#e6db74">&#34;com.example.tutorial&#34;</span>;
+option java_outer_classname = <span style="color:#e6db74">&#34;AddressBookProtos&#34;</span>;
+<span style="color:#75715e">// [END java_declaration]
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// [START csharp_declaration]
+</span><span style="color:#75715e"></span>option csharp_namespace = <span style="color:#e6db74">&#34;Google.Protobuf.Examples.AddressBook&#34;</span>;
+<span style="color:#75715e">// [END csharp_declaration]
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// [START messages]
+</span><span style="color:#75715e"></span>message Person {
+  <span style="color:#66d9ef">string</span> name = <span style="color:#ae81ff">1</span>;
+  int32 id = <span style="color:#ae81ff">2</span>;  <span style="color:#75715e">// Unique ID number for this person.
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">string</span> email = <span style="color:#ae81ff">3</span>;
+
+  <span style="color:#66d9ef">enum</span> PhoneType {
+    MOBILE = <span style="color:#ae81ff">0</span>;
+    HOME = <span style="color:#ae81ff">1</span>;
+    WORK = <span style="color:#ae81ff">2</span>;
+  }
+
+  message PhoneNumber {
+    <span style="color:#66d9ef">string</span> number = <span style="color:#ae81ff">1</span>;
+    PhoneType type = <span style="color:#ae81ff">2</span>;
+  }
+
+  repeated PhoneNumber phones = <span style="color:#ae81ff">4</span>;
+
+  google.protobuf.Timestamp last_updated = <span style="color:#ae81ff">5</span>;
+}
+
+<span style="color:#75715e">// Our address book file is just one of these.
+</span><span style="color:#75715e"></span>message AddressBook {
+  repeated Person people = <span style="color:#ae81ff">1</span>;
+}
+<span style="color:#75715e">// [END messages]
+</span></code></pre></div><h3 id="2级-编译proto文件">2级-&gt;编译proto文件</h3>
+<p>将上面的文件用proto.exe编译</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#960050;background-color:#1e0010">格式：</span>proto -I=<span style="color:#960050;background-color:#1e0010">当前目录</span> -out_csharp=<span style="color:#960050;background-color:#1e0010">当前目录</span> <span style="color:#960050;background-color:#1e0010">目录</span>/<span style="color:#960050;background-color:#1e0010">文件名</span>.<span style="color:#960050;background-color:#1e0010">扩展名</span>
+<span style="color:#960050;background-color:#1e0010">例：</span>
+<span style="color:#960050;background-color:#1e0010">文件名为：</span>address.proto
+<span style="color:#960050;background-color:#1e0010">目录为：</span>D:/Work下
+proto -I=D:/Work -out_csharp=D:/Work D:/Wrok/address.proto
+</code></pre></div><p>编译完后会生成一个<code>.cs</code>文件，文件很长我就不展示了</p>
+<h3 id="3级-nuget下载dll">3级-&gt;nuget下载dll</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">nuget install Google.Protobuf -Version <span style="color:#ae81ff">3.8</span>.<span style="color:#ae81ff">0</span> <span style="color:#75715e">// 版本随意
+</span></code></pre></div><p>下载下来找到dll</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Google.Protobuf.<span style="color:#ae81ff">3.8</span>.<span style="color:#ae81ff">0</span>/bin/net45/Google.Protobuf.dll
+</code></pre></div><p>引用到客户端和服务器中，然后把生成的<code>.cs</code>文件也复制到项目中</p>
+<h3 id="4级-编写序列化和反序列化代码">4级-&gt;编写序列化和反序列化代码</h3>
+<p>在客户端和服务器的Program（上面的代码）中加入序列化和反序列化的函数，需要引用Google.Protobuf、Google.Protobuf.Examples.AddressBook和static Google.Protobuf.Examples.AddressBook.Person.Types(C#6 才支持)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">byte</span>[] Serialize&lt;T&gt;(T obj) <span style="color:#66d9ef">where</span> T : IMessage
+{
+    <span style="color:#66d9ef">return</span> obj.ToByteArray();
+}
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> T Deserialize&lt;T&gt;(<span style="color:#66d9ef">byte</span>[] data) <span style="color:#66d9ef">where</span> T : class, IMessage, <span style="color:#66d9ef">new</span>()
+{
+    T obj = <span style="color:#66d9ef">new</span> T();
+    IMessage message = obj.Descriptor.Parser.ParseFrom(data);
+    <span style="color:#66d9ef">return</span> message <span style="color:#66d9ef">as</span> T;
+}
+</code></pre></div><p>注释：</p>
+<ol>
+<li>可以看到由<code>.proto</code>转换成<code>.cs</code>的文件的父接口为IMessage</li>
+<li>ToByteArray()是protoBuf自带的类转二进制的函数（所谓的序列化）</li>
+<li>obj.Descriptor.Parser.ParseFrom是是protoBuf自带的二进制转类的函数（所谓的反序列化）</li>
+</ol>
+<p>知道这些之后就可以传输二进制数据啦，所以我们的客户端代码的发送数据部分改为</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// 建立数据
+</span><span style="color:#75715e"></span>Person john = <span style="color:#66d9ef">new</span> Person
+{
+    Id = <span style="color:#ae81ff">1234</span>,
+    Name = <span style="color:#e6db74">&#34;John Doe&#34;</span>,
+    Email = <span style="color:#e6db74">&#34;jdoe@example.com&#34;</span>,
+    Phones = { <span style="color:#66d9ef">new</span> PhoneNumber { Number = <span style="color:#e6db74">&#34;555-4321&#34;</span>, Type = PhoneType.Home } }
+};
+<span style="color:#66d9ef">var</span> message = Serialize(john); <span style="color:#75715e">// 得到byte[]的message
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+{
+    <span style="color:#66d9ef">string</span> s = Console.ReadLine();
+    socketClient.Send(message); <span style="color:#75715e">//  直接传输message
+</span><span style="color:#75715e"></span>    Console.WriteLine(<span style="color:#e6db74">&#34;Send Message&#34;</span>);
+}
+</code></pre></div><p>服务端的接受部分改一下，这部分注意反序列化素组的长度必须和序列化后的一致，所以这边新建了一个正确长度的b2数组把数据复制过去</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
+{
+    <span style="color:#66d9ef">var</span> send = o <span style="color:#66d9ef">as</span> Socket;
+    <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+    {
+        <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
+        <span style="color:#66d9ef">var</span> effective = send.Receive(buffer);
+        <span style="color:#66d9ef">byte</span>[] b2 = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[effective];
+        Array.Copy(buffer, <span style="color:#ae81ff">0</span>, b2, <span style="color:#ae81ff">0</span>, effective); <span style="color:#75715e">// 把数据拷贝给b2
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
+        {
+            <span style="color:#66d9ef">break</span>;
+        }
+        <span style="color:#66d9ef">var</span> message = Deserialize&lt;Person&gt;(b2); <span style="color:#75715e">// 解析时候必须为正确的长度
+</span><span style="color:#75715e"></span>        Console.WriteLine(<span style="color:#e6db74">&#34;ID = {0}&#34;</span>, message.Id);
+        Console.WriteLine(<span style="color:#e6db74">&#34;Name = {0}&#34;</span>, message.Name);
+        Console.WriteLine(<span style="color:#e6db74">&#34;Email = {0}&#34;</span>, message.Email);
+        Console.WriteLine(<span style="color:#e6db74">&#34;Phone Number = {0}&#34;</span>, message.Phones[<span style="color:#ae81ff">0</span>].Number);
+        Console.WriteLine(<span style="color:#e6db74">&#34;Phone Type = {0}&#34;</span>, message.Phones[<span style="color:#ae81ff">0</span>].Type);
+    }
+}
+</code></pre></div><p>完结撒花~</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://Yinl.fun/tags/socket">Socket</a></span><span class="tag"><a href="http://Yinl.fun/tags/protpbuf">ProtpBuf</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>763 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-06-04</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://Yinl.fun/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/">
+                                <span class="button__text">判断点在多边形内部</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://Yinl.fun/">Sooda</a></span>
+            
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://Yinl.fun/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

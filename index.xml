@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sooda</title>
+    <link>http://Yinl.fun/</link>
+    <description>Recent content on Sooda</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 04 Jun 2019 23:29:22 +0800</lastBuildDate>
+    
+	<atom:link href="http://Yinl.fun/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CSharpSocket和protpBuf新手村教程</title>
+      <link>http://Yinl.fun/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Tue, 04 Jun 2019 23:29:22 +0800</pubDate>
+      
+      <guid>http://Yinl.fun/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</guid>
+      <description>Boss-&amp;gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&amp;gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&amp;#34;127.0.0.1&amp;#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&amp;#34;127.0.0.1&amp;#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client.</description>
+    </item>
+    
+    <item>
+      <title>判断点在多边形内部</title>
+      <link>http://Yinl.fun/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</link>
+      <pubDate>Sun, 07 Apr 2019 22:48:28 +0800</pubDate>
+      
+      <guid>http://Yinl.fun/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</guid>
+      <description>点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。
+推荐Milo Yip大神的知乎上的回答
+射线法思想 射线法是由从点出发向一个方向发送射线，判断与边相交的次数，如果为奇数则为多边形的内部，如果为偶数则为外部。
+首先是数据类，存储多边形的点和最大最小的XY，用来做快速判断
+// 多边形点的数据存储class PolygonConfig{public float maxX;public float maxY;public float minX;public float minY;public List&amp;lt;Vector2&amp;gt; points = new List&amp;lt;Vector2&amp;gt;();public void SetMaxAndMinXY(){if (points.Count &amp;gt; 0){maxX = points[0].x;maxY = points[0].y;minX = points[0].x;minY = points[0].y;}for (int i = 1; i &amp;lt; points.Count; i++){maxX = Mathf.Max(maxX, points[i].x);maxY = Mathf.Max(maxY, points[i].y);}}}下面是判断的核心方法</description>
+    </item>
+    
+    <item>
+      <title>Unity Framework</title>
+      <link>http://Yinl.fun/posts/2018/11/unity-framework/</link>
+      <pubDate>Fri, 23 Nov 2018 22:35:04 +0800</pubDate>
+      
+      <guid>http://Yinl.fun/posts/2018/11/unity-framework/</guid>
+      <description>Unity 框架 本文UI框架借鉴游客学院
+本文章源码可在我的GitHub中找到
+UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
+框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
+ InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
+ onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
+public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&amp;#34;UI/Scene/&amp;#34; + SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&amp;#34;loginBackground/playerName&amp;#34;).GetComponent&amp;lt;InputField&amp;gt;();warnText = skin.transform.Find(&amp;#34;warnText&amp;#34;).GetComponent&amp;lt;Text&amp;gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&amp;#34;BtGameStart&amp;#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr.</description>
+    </item>
+    
+    <item>
+      <title>图形学Prelin噪声解析</title>
+      <link>http://Yinl.fun/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
+      <pubDate>Sat, 22 Sep 2018 23:34:11 +0800</pubDate>
+      
+      <guid>http://Yinl.fun/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</guid>
+      <description>Prelin噪声 Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声 本篇文章借鉴各路大神的文章总结而来：
+ 冯乐乐：【图形学】谈谈噪声 则卷大明：Unity3D教程：PerlinNoise原理及实现 Unity API：Mathf.PerlinNoise  此文章源码在我的个人GitHub上，本文章的仅仅实现了Prelin噪声中的最简单版本。上图先~
+利用Unity实现2D Prelin噪声 candycat的文章非常好，不过没有Unity的具体实现代码，而则卷大明的文章中只给出了一部分的代码。最后发现了Unity自带2D噪声，所以结合多方文章最终完成了最简单的Prelin噪声。
+如果你懂GLSL的pixel shaders，那你就可以直接去阅读由iq大神写的：Voronoise。而这里我只是用Unity代码还原冯乐乐博客中利用shaderToy编写的代码
+在开始正文之前，我们得知道几个数学小知识。图形学中涉及矩阵计算的东西有太多，在ShaderToy中都有封装，而Unity并没有，所以我们得实现几个图形学函数
+Floor：向下取整
+private static Vector2 Floor(Vector2 p){return new Vector2(Mathf.Floor(p.x), Mathf.Floor(p.y));}Fract：取小数部分
+private static Vector2 Fract(Vector2 p){return p - Floor(p);}Sin：正弦函数
+private static Vector2 Sin(Vector2 p){return new Vector2(Mathf.Sin(p.x), Mathf.Sin(p.y));}其实这些函数在Unity中也有实现，不过我这里要实现2D的噪声，所以得处理2D情况下的操作。接下来就是正片了~ 首先还原冯乐乐博客中的梯度函数
+private static Vector2 Hash22(Vector2 p){p = new Vector2(Vector2.Dot(p, new Vector2(127.1f, 311.7f)),Vector2.Dot(p, new Vector2(269.</description>
+    </item>
+    
+    <item>
+      <title>贝塞尔曲线</title>
+      <link>http://Yinl.fun/posts/2018/09/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</link>
+      <pubDate>Sat, 22 Sep 2018 23:32:36 +0800</pubDate>
+      
+      <guid>http://Yinl.fun/posts/2018/09/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</guid>
+      <description>贝塞尔曲线 本文章借鉴自Unity中的曲线绘制.
+贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线.
+原理 在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线
+
+下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:
+\[ B(t) = (1 - t)^2P_0 + 2t(1 - t)P_1 + t^2P_2 , t\epsilon[0,1] \]
+而一阶曲线自然就是一个直线,公式为:
+$ B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1] $
+从中我们可以发现规律从而推导到n阶的公式:
+$ B(t) = \sum_^nPi(1 -t){n-i}ti , t\epsilon[0,1] $
+而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.
+代码 首先我们需要一个数据类Curve,存储简单的Vector3数组
+// 贝塞尔曲线数据 public Vector3[] points;  然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
+public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayout.BeginVertical(); EditorGUILayout.PropertyField(points, new GUIContent(&amp;#34;坐标组&amp;#34;), true); EditorGUILayout.</description>
+    </item>
+    
+  </channel>
+</rss>
