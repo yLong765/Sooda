@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-		
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
 
 
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+ <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
 
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
         <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,9 +20,9 @@
 下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:
 \[ B(t) = (1 - t)^2P_0 &#43; 2t(1 - t)P_1 &#43; t^2P_2 , t\epsilon[0,1] \]
 而一阶曲线自然就是一个直线,公式为:
-$ B(t) = P_0 &#43; (P_1 - P_0)t = (1 - t)P_0 &#43; tP_1 , t\epsilon[0,1] $
+\[ B(t) = P_0 &#43; (P_1 - P_0)t = (1 - t)P_0 &#43; tP_1 , t\epsilon[0,1] \]
 从中我们可以发现规律从而推导到n阶的公式:
-$ B(t) = \sum_^nPi(1 -t){n-i}ti , t\epsilon[0,1] $
+\[ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] \]
 而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.
 代码 首先我们需要一个数据类Curve,存储简单的Vector3数组
 // 贝塞尔曲线数据 public Vector3[] points;  然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
@@ -66,9 +68,9 @@ public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayo
 下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:
 \[ B(t) = (1 - t)^2P_0 &#43; 2t(1 - t)P_1 &#43; t^2P_2 , t\epsilon[0,1] \]
 而一阶曲线自然就是一个直线,公式为:
-$ B(t) = P_0 &#43; (P_1 - P_0)t = (1 - t)P_0 &#43; tP_1 , t\epsilon[0,1] $
+\[ B(t) = P_0 &#43; (P_1 - P_0)t = (1 - t)P_0 &#43; tP_1 , t\epsilon[0,1] \]
 从中我们可以发现规律从而推导到n阶的公式:
-$ B(t) = \sum_^nPi(1 -t){n-i}ti , t\epsilon[0,1] $
+\[ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] \]
 而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.
 代码 首先我们需要一个数据类Curve,存储简单的Vector3数组
 // 贝塞尔曲线数据 public Vector3[] points;  然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
@@ -91,9 +93,9 @@ public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayo
 下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:
 \[ B(t) = (1 - t)^2P_0 &#43; 2t(1 - t)P_1 &#43; t^2P_2 , t\epsilon[0,1] \]
 而一阶曲线自然就是一个直线,公式为:
-$ B(t) = P_0 &#43; (P_1 - P_0)t = (1 - t)P_0 &#43; tP_1 , t\epsilon[0,1] $
+\[ B(t) = P_0 &#43; (P_1 - P_0)t = (1 - t)P_0 &#43; tP_1 , t\epsilon[0,1] \]
 从中我们可以发现规律从而推导到n阶的公式:
-$ B(t) = \sum_^nPi(1 -t){n-i}ti , t\epsilon[0,1] $
+\[ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] \]
 而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.
 代码 首先我们需要一个数据类Curve,存储简单的Vector3数组
 // 贝塞尔曲线数据 public Vector3[] points;  然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
@@ -197,15 +199,15 @@ public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayo
 
 <p>而一阶曲线自然就是一个直线,公式为:</p>
 
-<p>$ B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1] $</p>
+<p><span  class="math">\[ B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1] \]</span></p>
 
 <p>从中我们可以发现规律从而推导到n阶的公式:</p>
 
-<p>$ B(t) = \sum_^nPi(1 -t)<sup>{n-i}t</sup>i , t\epsilon[0,1] $</p>
+<p><span  class="math">\[ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] \]</span></p>
 
 <p>而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.</p>
 
-<h3 id="代码" i="0">代码</h3>
+<h3 id="代码">代码</h3>
 
 <p>首先我们需要一个数据类Curve,存储简单的Vector3数组</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// 贝塞尔曲线数据
@@ -309,7 +311,6 @@ public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayo
 </footer>
             
         </div>
-
         
 
 

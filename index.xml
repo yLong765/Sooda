@@ -87,9 +87,9 @@ private static Vector2 Hash22(Vector2 p){p = new Vector2(Vector2.Dot(p, new Ve
 下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:
 \[ B(t) = (1 - t)^2P_0 + 2t(1 - t)P_1 + t^2P_2 , t\epsilon[0,1] \]
 而一阶曲线自然就是一个直线,公式为:
-$ B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1] $
+\[ B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1] \]
 从中我们可以发现规律从而推导到n阶的公式:
-$ B(t) = \sum_^nPi(1 -t){n-i}ti , t\epsilon[0,1] $
+\[ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] \]
 而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.
 代码 首先我们需要一个数据类Curve,存储简单的Vector3数组
 // 贝塞尔曲线数据 public Vector3[] points;  然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
