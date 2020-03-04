@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Graphics on Sooda</title>
-    <link>https://ylong765.github.io/tags/graphics/</link>
+    <link>https://ylong765.github.io/Sooda/tags/graphics/</link>
     <description>Recent content in Graphics on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Sat, 22 Sep 2018 23:34:11 +0800</lastBuildDate>
     
-	<atom:link href="https://ylong765.github.io/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://ylong765.github.io/Sooda/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>图形学Prelin噪声解析</title>
-      <link>https://ylong765.github.io/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
+      <link>https://ylong765.github.io/Sooda/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 22 Sep 2018 23:34:11 +0800</pubDate>
       
-      <guid>https://ylong765.github.io/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://ylong765.github.io/Sooda/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</guid>
       <description>Prelin噪声 Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声 本篇文章借鉴各路大神的文章总结而来：
  冯乐乐：【图形学】谈谈噪声 则卷大明：Unity3D教程：PerlinNoise原理及实现 Unity API：Mathf.PerlinNoise  此文章源码在我的个人GitHub上，本文章的仅仅实现了Prelin噪声中的最简单版本。上图先~
 利用Unity实现2D Prelin噪声 candycat的文章非常好，不过没有Unity的具体实现代码，而则卷大明的文章中只给出了一部分的代码。最后发现了Unity自带2D噪声，所以结合多方文章最终完成了最简单的Prelin噪声。

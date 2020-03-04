@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Math on Sooda</title>
-    <link>https://ylong765.github.io/tags/math/</link>
+    <link>https://ylong765.github.io/Sooda/tags/math/</link>
     <description>Recent content in Math on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Sun, 07 Apr 2019 22:48:28 +0800</lastBuildDate>
     
-	<atom:link href="https://ylong765.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://ylong765.github.io/Sooda/tags/math/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>判断点在多边形内部</title>
-      <link>https://ylong765.github.io/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</link>
+      <link>https://ylong765.github.io/Sooda/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</link>
       <pubDate>Sun, 07 Apr 2019 22:48:28 +0800</pubDate>
       
-      <guid>https://ylong765.github.io/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</guid>
+      <guid>https://ylong765.github.io/Sooda/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</guid>
       <description>点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。
 推荐Milo Yip大神的知乎上的回答
 射线法思想 射线法是由从点出发向一个方向发送射线，判断与边相交的次数，如果为奇数则为多边形的内部，如果为偶数则为外部。
