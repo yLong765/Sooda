@@ -1,303 +1,0 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-		
-        <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="author" content="Sooda ">
-<meta name="description" content="Unity 框架 本文UI框架借鉴游客学院
-本文章源码可在我的GitHub中找到
-UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
-框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
- InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
- onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&amp;#34;UI/Scene/&amp;#34; &#43; SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&amp;#34;loginBackground/playerName&amp;#34;).GetComponent&amp;lt;InputField&amp;gt;();warnText = skin.transform.Find(&amp;#34;warnText&amp;#34;).GetComponent&amp;lt;Text&amp;gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&amp;#34;BtGameStart&amp;#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr." />
-<meta name="keywords" content=", Unity, Framework" />
-<meta name="robots" content="noodp" />
-<meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://ylong765.github.io/Sooda/posts/2018/11/unity-framework/" />
-
-
-    <title>
-        
-            Unity Framework :: Sooda  — Crossover Game Developer
-        
-    </title>
-
-
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
-    type="text/css">
-
-
-
-<link rel="stylesheet" href="https://ylong765.github.io/Sooda/main.min.7bfbbe12786fa0ded4b4c0d792cbb36a5bd0bdb0b856dde57aa7b1f6fe0f2b87.css">
-
-
-
-
-    <link rel="apple-touch-icon" sizes="180x180" href="https://ylong765.github.io/Sooda/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://ylong765.github.io/Sooda/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://ylong765.github.io/Sooda/favicon-16x16.png">
-    <link rel="manifest" href="https://ylong765.github.io/Sooda/site.webmanifest">
-    <link rel="mask-icon" href="https://ylong765.github.io/Sooda/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://ylong765.github.io/Sooda/favicon.ico">
-    <meta name="msapplication-TileColor" content="#252627">
-    <meta name="theme-color" content="#252627">
-
-<meta itemprop="name" content="Unity Framework">
-<meta itemprop="description" content="Unity 框架 本文UI框架借鉴游客学院
-本文章源码可在我的GitHub中找到
-UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
-框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
- InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
- onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;();warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&#34;BtGameStart&#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr.">
-<meta itemprop="datePublished" content="2018-11-23T22:35:04&#43;08:00" />
-<meta itemprop="dateModified" content="2018-11-23T22:35:04&#43;08:00" />
-<meta itemprop="wordCount" content="122">
-<meta itemprop="image" content="https://ylong765.github.io/Sooda"/>
-
-
-
-<meta itemprop="keywords" content="Unity,Framework," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://ylong765.github.io/Sooda"/>
-
-<meta name="twitter:title" content="Unity Framework"/>
-<meta name="twitter:description" content="Unity 框架 本文UI框架借鉴游客学院
-本文章源码可在我的GitHub中找到
-UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
-框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
- InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
- onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;();warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&#34;BtGameStart&#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr."/>
-
-
-
-
-
-    <meta property="article:published_time" content="2018-11-23 22:35:04 &#43;0800 CST" />
-
-
-
-
-
-
-
-
-    </head>
-
-    <body class="dark-theme">
-        <div class="container">
-            <header class="header">
-    <span class="header__inner">
-        <a href="https://ylong765.github.io/Sooda/" style="text-decoration: none;">
-    <div class="logo">
-        
-            <span class="logo__mark">></span>
-            <span class="logo__text">$ Sooda</span>
-            <span class="logo__cursor" style=
-                  "
-                   
-                   ">
-            </span>
-        
-    </div>
-</a>
-
-
-        <span class="header__right">
-            
-                <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://ylong765.github.io/Sooda/posts/">Posts</a></li><li><a href="https://ylong765.github.io/Sooda/tags/">Tags</a></li>
-    </ul>
-</nav>
-
-                <span class="menu-trigger">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-                    </svg>
-                </span>
-            
-
-            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
-</svg>
-</span>
-        </span>
-    </span>
-</header>
-
-
-            <div class="content">
-                
-    <main class="post">
-
-        <div class="post-info">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
-
-            
-
-            </p>
-        </div>
-
-        <article>
-            <h1 class="post-title">
-                <a href="https://ylong765.github.io/Sooda/posts/2018/11/unity-framework/">Unity Framework</a>
-            </h1>
-
-            
-
-            <div class="post-content">
-                <h2 id="unity-框架">Unity 框架</h2>
-<p>本文UI框架借鉴游客学院</p>
-<p>本文章源码可在我的<a href="https://github.com/yLong765/Unity-Framework">GitHub</a>中找到</p>
-<h3 id="ui框架">UI框架</h3>
-<p><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-11-24/67442822.jpg" alt="img"></p>
-<p><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-11-24/68633890.jpg" alt="img"></p>
-<h4 id="ui框架简介">UI框架简介</h4>
-<p>本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。</p>
-<h4 id="框架流程scene">框架流程Scene</h4>
-<p>打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行</p>
-<ul>
-<li>InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。</li>
-<li>InitSkin()：会自动执行，创建UI实例。</li>
-<li>InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。</li>
-</ul>
-<p>其他可重写函数</p>
-<ul>
-<li>onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。</li>
-</ul>
-<p>SceneLogin.cs代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SceneLogin</span> : SceneBase {
-
-    <span style="color:#66d9ef">private</span> InputField playerName;
-    <span style="color:#66d9ef">private</span> Text warnText;
-
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> InitDate()
-    {
-        <span style="color:#75715e">//初始化皮肤
-</span><span style="color:#75715e"></span>        setSkinPath(<span style="color:#e6db74">&#34;UI/Scene/&#34;</span> + SceneType.SceneLogin.ToString());
-    }
-
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> InitViewDate()
-    {
-        <span style="color:#75715e">//绑定界面UI
-</span><span style="color:#75715e"></span>        playerName = skin.transform.Find(<span style="color:#e6db74">&#34;loginBackground/playerName&#34;</span>).GetComponent&lt;InputField&gt;();
-        warnText = skin.transform.Find(<span style="color:#e6db74">&#34;warnText&#34;</span>).GetComponent&lt;Text&gt;();
-    }
-
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> onClick(GameObject BtObject)
-    {
-        <span style="color:#66d9ef">if</span> (BtObject.name.Equals(<span style="color:#e6db74">&#34;BtGameStart&#34;</span>))
-        {
-            <span style="color:#66d9ef">string</span> name = playerName.text;
-            <span style="color:#66d9ef">if</span> (NameChick(name))
-            {
-                SceneMgr.Instance.Sequencer(SceneType.SceneMain, name);
-            }
-            <span style="color:#66d9ef">else</span>
-            {
-                warnText.text += <span style="color:#e6db74">&#34;不符合规范&#34;</span>;
-                warnText.gameObject.SetActive(<span style="color:#66d9ef">true</span>);
-            }                
-        }
-    }
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> NameChick(<span style="color:#66d9ef">string</span> name)
-    {
-        <span style="color:#75715e">//正则表达式
-</span><span style="color:#75715e"></span>
-        <span style="color:#66d9ef">if</span> (name == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-        <span style="color:#66d9ef">if</span> (name.Equals(<span style="color:#e6db74">&#34;/0&#34;</span>)) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-        <span style="color:#66d9ef">if</span> (name.Length &lt; <span style="color:#ae81ff">0</span> || name.Length &gt; <span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
-    }
-
-}
-</code></pre></div><h3 id="更新---17年04月01日">更新 —- 17年04月01日</h3>
-<p>加入消息机制框架。</p>
-<h3 id="更新---17年12月23日">更新 —- 17年12月23日</h3>
-<p>加入对象池：使用固定的对象池重用对象，取代单独地分配和释放对象，以此来达到提升性能和优化内存使用的目的。</p>
-<p>加入单例管理：MonoSingletonMgr和SingletonMgr。</p>
-<h3 id="更新---18年8月28日">更新 —- 18年8月28日</h3>
-<p>重写MonoSingleton，修复Editor模式调用时产生多实例的问题，添加Create方法用于初始化。</p>
-
-            </div>
-        </article>
-
-        <hr />
-
-        <div class="post-info">
-                <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://ylong765.github.io/Sooda/tags/unity">Unity</a></span><span class="tag"><a href="https://ylong765.github.io/Sooda/tags/framework">Framework</a></span>
-                </p>
-
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>122 Words</p>
-
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-11-23</p>
-        </div>
-
-        
-            <div class="pagination">
-                <div class="pagination__title">
-                    <span class="pagination__title-h"></span>
-                    <hr />
-                </div>
-
-                <div class="pagination__buttons">
-                    
-                        <span class="button previous">
-                            <a href="https://ylong765.github.io/Sooda/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/">
-                                <span class="button__icon">←</span>
-                                <span class="button__text">判断点在多边形内部</span>
-                            </a>
-                        </span>
-                    
-
-                    
-                        <span class="button next">
-                            <a href="https://ylong765.github.io/Sooda/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/">
-                                <span class="button__text">图形学Prelin噪声解析</span>
-                                <span class="button__icon">→</span>
-                            </a>
-                        </span>
-                    
-                </div>
-            </div>
-        
-
-        
-    </main>
-
-            </div>
-
-            
-                <footer class="footer">
-    <div class="footer__inner">
-        <div class="footer__content">
-            <span>&copy; 2020</span>
-            
-                <span><a href="https://ylong765.github.io/Sooda">Sooda</a></span>
-            
-        </div>
-    </div>
-</footer>
-            
-        </div>
-        
-
-
-
-
-<script type="text/javascript" src="https://ylong765.github.io/Sooda/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
-
-
-
-    </body>
-</html>

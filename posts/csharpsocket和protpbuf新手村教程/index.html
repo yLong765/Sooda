@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="CSharpSocket和protpBuf新手村教程">
+<meta itemprop="description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client.">
+<meta itemprop="datePublished" content="2019-06-04T23:29:22&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-04T23:29:22&#43;08:00" />
+<meta itemprop="wordCount" content="763">
+
+
+
+<meta itemprop="keywords" content="Socket,ProtpBuf," /><meta property="og:title" content="CSharpSocket和protpBuf新手村教程" />
+<meta property="og:description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yLong765.github.io/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/" />
+<meta property="article:published_time" content="2019-06-04T23:29:22+08:00" />
+<meta property="article:modified_time" content="2019-06-04T23:29:22+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CSharpSocket和protpBuf新手村教程"/>
+<meta name="twitter:description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
+  创建Socket实例，别忘了引用System.Net和System.Net.Sockets
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
+client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>CSharpSocket和protpBuf新手村教程</title>
+	<link rel="stylesheet" href="https://yLong765.github.io/css/style.min.657bcb7af31123e4156b1a3d2ff60a636717e54ead74f882136b5114cf72b55e.css" integrity="sha256-ZXvLevMRI+QVaxo9L/YKY2cX5U6tdPiCE2tRFM9ytV4=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://yLong765.github.io">Sooda</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://yLong765.github.io/posts/">Posts</a>
+				<a href="https://yLong765.github.io/tags/">Tags</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="mailto:yangshbb@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="https://github.com/yLong765" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://yLong765.github.io/posts/">Posts</a></li>
+			<li><a href="https://yLong765.github.io/tags/">Tags</a></li>
+		</ul>
+	</div>
+
+
+	
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jun 4, 2019</span></div>
+				<h1>CSharpSocket和protpBuf新手村教程</h1>
+			</header>
+			<div class="content">
+				<h2 id="boss-socket">Boss-&gt;Socket<a href="#boss-socket" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）</p>
+<h3 id="1级-client创建">1级-&gt;Client创建<a href="#1级-client创建" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<ol>
+<li>
+<p>首先创建一个C#命令行工程（别告诉这个不会）</p>
+</li>
+<li>
+<p>创建Socket实例，别忘了引用System.Net和System.Net.Sockets</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Socket</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="p">(</span><span class="n">SocketType</span><span class="p">.</span><span class="n">Stream</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="n">Tcp</span><span class="p">);</span> <span class="c1">// TCP链接
+</span></code></pre></div><ul>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket?redirectedfrom=MSDN&amp;view=netframework-4.8">Socket</a></li>
+</ul>
+</li>
+<li>
+<p>设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span> <span class="c1">// 本地地址127.0.0.1（别说你不知道）
+</span></code></pre></div><ul>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.ipendpoint?redirectedfrom=MSDN&amp;view=netframework-4.8">IPAddress</a></li>
+</ul>
+</li>
+<li>
+<p>设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span> <span class="c1">// 端口为2333，ip为上一段代码的ip
+</span></code></pre></div></li>
+<li>
+<p>链接</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">client</span><span class="p">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+<span class="c1">// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4
+</span></code></pre></div></li>
+<li>
+<p>开启线程接收服务器消息，别忘了引用System.Threading</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+<span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span> <span class="c1">// 后台执行线程
+</span><span class="c1"></span><span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span> <span class="c1">// 传入客户端的Socket
+</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Recive函数
+</span><span class="c1"></span><span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+        <span class="kt">int</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span> <span class="c1">//二进制数据存储在buffer中，数据长度为effective
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">var</span> <span class="n">str</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span> <span class="c1">// 将二进制数据转换为UTF8格式的String
+</span><span class="c1"></span>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><ul>
+<li><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.net.sockets.socket.receive?redirectedfrom=MSDN&amp;view=netframework-4.8#overloads">Recieve函数</a></li>
+</ul>
+</li>
+<li>
+<p>发送自定义数据给服务器</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">string</span> <span class="n">s</span> <span class="p">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+    <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">ASCII</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="c1">// 将数据转换为ASCII编码的二进制数组形式
+</span><span class="c1"></span>    <span class="n">socketClient</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span> <span class="c1">// 发送消息
+</span><span class="c1"></span>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Send Message&#34;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li>
+<p>client完整代码</p>
+</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.IO</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net.Sockets</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">SocketTest</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Socket</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="p">(</span><span class="n">SocketType</span><span class="p">.</span><span class="n">Stream</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="n">Tcp</span><span class="p">);</span>
+            <span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span>
+            <span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
+            <span class="n">client</span><span class="p">.</span><span class="n">Connect</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
+
+            <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">string</span> <span class="n">s</span> <span class="p">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+                <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">ASCII</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+                <span class="n">client</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Send Message&#34;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+                <span class="kt">var</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="kt">var</span> <span class="n">str</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="2级-server创建">2级-&gt;Server创建<a href="#2级-server创建" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<ol>
+<li>
+<p>首先创建一个C#命令行工程（别告诉这个不会）</p>
+</li>
+<li>
+<p>创建Socket实例（同client）</p>
+</li>
+<li>
+<p>设置服务器的ip地址</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span>
+<span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
+<span class="n">server</span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+</code></pre></div></li>
+<li>
+<p>设置服务器的最大监听数</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">server</span><span class="p">.</span><span class="n">Listen</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
+</code></pre></div></li>
+<li>
+<p>开启线程接收客户端连接和数据（※注意是连接）</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Listen</span><span class="p">);</span>
+<span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+<span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">serverSocket</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Listen函数，等待客户端连接
+</span><span class="c1"></span><span class="k">static</span> <span class="k">void</span> <span class="n">Listen</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">serverSocket</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">client</span> <span class="p">=</span> <span class="n">serverSocket</span><span class="p">.</span><span class="n">Accept</span><span class="p">();</span> <span class="c1">// 等待客户端连接，返回客户端的Socket，之前的10限制就是在这里，最多有10个客户端可以建立连接
+</span><span class="c1"></span>        <span class="kt">var</span> <span class="n">sendIpoint</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">RemoteEndPoint</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span> <span class="c1">// 客户端的ip和端口
+</span><span class="c1"></span>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;{sendIpoint}Connection&#34;</span><span class="p">);</span>
+        <span class="c1">// 连接成功则开启一个接收线程接收客户端发来的消息
+</span><span class="c1"></span>        <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+        <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Recive函数，同客户端
+</span></code></pre></div></li>
+<li>
+<p>server完整代码</p>
+</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net.Sockets</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">SocketServer</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Socket</span> <span class="n">server</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="p">(</span><span class="n">SocketType</span><span class="p">.</span><span class="n">Stream</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="n">Tcp</span><span class="p">);</span>
+            <span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span>
+            <span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
+            <span class="n">server</span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+            <span class="n">server</span><span class="p">.</span><span class="n">Listen</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
+
+            <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Listen</span><span class="p">);</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">server</span><span class="p">);</span>
+
+            <span class="n">Console</span><span class="p">.</span><span class="n">Read</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Listen</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">server</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">client</span> <span class="p">=</span> <span class="n">server</span><span class="p">.</span><span class="n">Accept</span><span class="p">();</span>
+                <span class="kt">var</span> <span class="n">clientIpoint</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">RemoteEndPoint</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;{clientIpoint}Connection&#34;</span><span class="p">);</span>
+                <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+                <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+                <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+                <span class="kt">var</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="kt">var</span> <span class="n">str</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="boss-protobuf">Boss-&gt;ProtoBuf<a href="#boss-protobuf" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>如果我们要用ProtoBuf用在C#中就得集齐各种神器</p>
+<ol>
+<li><a href="https://github.com/protocolbuffers/protobuf/tree/v3.8.0">ProtoBuf源码</a>：其中有C#的示例代码</li>
+<li><a href="https://github.com/protocolbuffers/protobuf/releases/tag/v3.8.0">ProtoBuf编译器</a>：编译<code>.proto</code>文件</li>
+<li><a href="https://www.nuget.org/packages/Google.Protobuf/3.8.0">ProtoBuf的C#工具集</a>(你可能会需要下载nuget)：提供工程中的dll引用文件</li>
+<li><a href="https://developers.google.com/protocol-buffers/">ProtoBuf官方教程</a>(科学上网)</li>
+</ol>
+<h3 id="1级-编写proto文件">1级-&gt;编写proto文件<a href="#1级-编写proto文件" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>都说ProtoBuf不依赖于任何语言是一个跨语言的神器，然而他的语言格式是scheme(Lisp的方言)，并且编译器就是把<code>.proto</code>文件翻译成各个不同语言的编译器。</p>
+<p>proto文件示例(教程中示例的文件)</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// [START declaration]
+</span><span class="c1"></span><span class="n">syntax</span> <span class="p">=</span> <span class="s">&#34;proto3&#34;</span><span class="p">;</span>
+<span class="n">package</span> <span class="n">tutorial</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="s">&#34;google/protobuf/timestamp.proto&#34;</span><span class="p">;</span>
+<span class="c1">// [END declaration]
+</span><span class="c1"></span>
+<span class="c1">// [START java_declaration]
+</span><span class="c1"></span><span class="n">option</span> <span class="n">java_package</span> <span class="p">=</span> <span class="s">&#34;com.example.tutorial&#34;</span><span class="p">;</span>
+<span class="n">option</span> <span class="n">java_outer_classname</span> <span class="p">=</span> <span class="s">&#34;AddressBookProtos&#34;</span><span class="p">;</span>
+<span class="c1">// [END java_declaration]
+</span><span class="c1"></span>
+<span class="c1">// [START csharp_declaration]
+</span><span class="c1"></span><span class="n">option</span> <span class="n">csharp_namespace</span> <span class="p">=</span> <span class="s">&#34;Google.Protobuf.Examples.AddressBook&#34;</span><span class="p">;</span>
+<span class="c1">// [END csharp_declaration]
+</span><span class="c1"></span>
+<span class="c1">// [START messages]
+</span><span class="c1"></span><span class="n">message</span> <span class="n">Person</span> <span class="p">{</span>
+  <span class="kt">string</span> <span class="n">name</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+  <span class="n">int32</span> <span class="n">id</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>  <span class="c1">// Unique ID number for this person.
+</span><span class="c1"></span>  <span class="kt">string</span> <span class="n">email</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
+
+  <span class="k">enum</span> <span class="n">PhoneType</span> <span class="p">{</span>
+    <span class="n">MOBILE</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="n">HOME</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+    <span class="n">WORK</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">message</span> <span class="n">PhoneNumber</span> <span class="p">{</span>
+    <span class="kt">string</span> <span class="n">number</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+    <span class="n">PhoneType</span> <span class="n">type</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">repeated</span> <span class="n">PhoneNumber</span> <span class="n">phones</span> <span class="p">=</span> <span class="m">4</span><span class="p">;</span>
+
+  <span class="n">google</span><span class="p">.</span><span class="n">protobuf</span><span class="p">.</span><span class="n">Timestamp</span> <span class="n">last_updated</span> <span class="p">=</span> <span class="m">5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Our address book file is just one of these.
+</span><span class="c1"></span><span class="n">message</span> <span class="n">AddressBook</span> <span class="p">{</span>
+  <span class="n">repeated</span> <span class="n">Person</span> <span class="n">people</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// [END messages]
+</span></code></pre></div><h3 id="2级-编译proto文件">2级-&gt;编译proto文件<a href="#2级-编译proto文件" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>将上面的文件用proto.exe编译</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="err">格式：</span><span class="n">proto</span> <span class="p">-</span><span class="n">I</span><span class="p">=</span><span class="err">当前目录</span> <span class="p">-</span><span class="n">out_csharp</span><span class="p">=</span><span class="err">当前目录</span> <span class="err">目录</span><span class="p">/</span><span class="err">文件名</span><span class="p">.</span><span class="err">扩展名</span>
+<span class="err">例：</span>
+<span class="err">文件名为：</span><span class="n">address</span><span class="p">.</span><span class="n">proto</span>
+<span class="err">目录为：</span><span class="n">D</span><span class="p">:/</span><span class="n">Work下</span>
+<span class="n">proto</span> <span class="p">-</span><span class="n">I</span><span class="p">=</span><span class="n">D</span><span class="p">:/</span><span class="n">Work</span> <span class="p">-</span><span class="n">out_csharp</span><span class="p">=</span><span class="n">D</span><span class="p">:/</span><span class="n">Work</span> <span class="n">D</span><span class="p">:/</span><span class="n">Wrok</span><span class="p">/</span><span class="n">address</span><span class="p">.</span><span class="n">proto</span>
+</code></pre></div><p>编译完后会生成一个<code>.cs</code>文件，文件很长我就不展示了</p>
+<h3 id="3级-nuget下载dll">3级-&gt;nuget下载dll<a href="#3级-nuget下载dll" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">nuget</span> <span class="n">install</span> <span class="n">Google</span><span class="p">.</span><span class="n">Protobuf</span> <span class="p">-</span><span class="n">Version</span> <span class="m">3.8</span><span class="p">.</span><span class="m">0</span> <span class="c1">// 版本随意
+</span></code></pre></div><p>下载下来找到dll</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Google</span><span class="p">.</span><span class="n">Protobuf</span><span class="p">.</span><span class="m">3.8</span><span class="p">.</span><span class="m">0</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">net45</span><span class="p">/</span><span class="n">Google</span><span class="p">.</span><span class="n">Protobuf</span><span class="p">.</span><span class="n">dll</span>
+</code></pre></div><p>引用到客户端和服务器中，然后把生成的<code>.cs</code>文件也复制到项目中</p>
+<h3 id="4级-编写序列化和反序列化代码">4级-&gt;编写序列化和反序列化代码<a href="#4级-编写序列化和反序列化代码" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>在客户端和服务器的Program（上面的代码）中加入序列化和反序列化的函数，需要引用Google.Protobuf、Google.Protobuf.Examples.AddressBook和static Google.Protobuf.Examples.AddressBook.Person.Types(C#6 才支持)</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">static</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">Serialize</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="n">T</span> <span class="n">obj</span><span class="p">)</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">IMessage</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="p">.</span><span class="n">ToByteArray</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Deserialize</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kt">byte</span><span class="p">[]</span> <span class="n">data</span><span class="p">)</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="n">IMessage</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">T</span> <span class="n">obj</span> <span class="p">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">();</span>
+    <span class="n">IMessage</span> <span class="n">message</span> <span class="p">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">Descriptor</span><span class="p">.</span><span class="n">Parser</span><span class="p">.</span><span class="n">ParseFrom</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">message</span> <span class="k">as</span> <span class="n">T</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>注释：</p>
+<ol>
+<li>可以看到由<code>.proto</code>转换成<code>.cs</code>的文件的父接口为IMessage</li>
+<li>ToByteArray()是protoBuf自带的类转二进制的函数（所谓的序列化）</li>
+<li>obj.Descriptor.Parser.ParseFrom是是protoBuf自带的二进制转类的函数（所谓的反序列化）</li>
+</ol>
+<p>知道这些之后就可以传输二进制数据啦，所以我们的客户端代码的发送数据部分改为</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// 建立数据
+</span><span class="c1"></span><span class="n">Person</span> <span class="n">john</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span>
+<span class="p">{</span>
+    <span class="n">Id</span> <span class="p">=</span> <span class="m">1234</span><span class="p">,</span>
+    <span class="n">Name</span> <span class="p">=</span> <span class="s">&#34;John Doe&#34;</span><span class="p">,</span>
+    <span class="n">Email</span> <span class="p">=</span> <span class="s">&#34;jdoe@example.com&#34;</span><span class="p">,</span>
+    <span class="n">Phones</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">PhoneNumber</span> <span class="p">{</span> <span class="n">Number</span> <span class="p">=</span> <span class="s">&#34;555-4321&#34;</span><span class="p">,</span> <span class="n">Type</span> <span class="p">=</span> <span class="n">PhoneType</span><span class="p">.</span><span class="n">Home</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">};</span>
+<span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="n">Serialize</span><span class="p">(</span><span class="n">john</span><span class="p">);</span> <span class="c1">// 得到byte[]的message
+</span><span class="c1"></span>
+<span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">string</span> <span class="n">s</span> <span class="p">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+    <span class="n">socketClient</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="n">message</span><span class="p">);</span> <span class="c1">//  直接传输message
+</span><span class="c1"></span>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Send Message&#34;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>服务端的接受部分改一下，这部分注意反序列化素组的长度必须和序列化后的一致，所以这边新建了一个正确长度的b2数组把数据复制过去</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">send</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+        <span class="kt">var</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">send</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+        <span class="kt">byte</span><span class="p">[]</span> <span class="n">b2</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="n">effective</span><span class="p">];</span>
+        <span class="n">Array</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span> <span class="c1">// 把数据拷贝给b2
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="n">Deserialize</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;(</span><span class="n">b2</span><span class="p">);</span> <span class="c1">// 解析时候必须为正确的长度
+</span><span class="c1"></span>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;ID = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Name = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Email = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Email</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Phone Number = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Phones</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Number</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Phone Type = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Phones</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Type</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>完结撒花~</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://yLong765.github.io/tags/socket">Socket</a></span><span class="tag"><a href="https://yLong765.github.io/tags/protpbuf">ProtpBuf</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>763 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-06-04 23:29</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://yLong765.github.io/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>判断点在多边形内部</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2020 <a href="https://yLong765.github.io">Sooda</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://yLong765.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://yLong765.github.io/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>

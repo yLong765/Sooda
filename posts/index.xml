@@ -1,21 +1,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Posts on Sooda</title>
-        <link>https://ylong765.github.io/Sooda/posts/</link>
-        <description>Recent content in Posts on Sooda</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Tue, 04 Jun 2019 23:29:22 +0800</lastBuildDate>
-        <atom:link href="https://ylong765.github.io/Sooda/posts/index.xml" rel="self" type="application/rss+xml" />
-        
-        <item>
-            <title>CSharpSocket和protpBuf新手村教程</title>
-            <link>https://ylong765.github.io/Sooda/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</link>
-            <pubDate>Tue, 04 Jun 2019 23:29:22 +0800</pubDate>
-            
-            <guid>https://ylong765.github.io/Sooda/posts/2019/06/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</guid>
-            <description>Boss-&amp;gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
+	<channel>
+		<title>Posts on Sooda</title>
+		<link>https://yLong765.github.io/posts/</link>
+		<description>Recent content in Posts on Sooda</description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+		<lastBuildDate>Tue, 04 Jun 2019 23:29:22 +0800</lastBuildDate>
+		<atom:link href="https://yLong765.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>CSharpSocket和protpBuf新手村教程</title>
+			<link>https://yLong765.github.io/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</link>
+			<pubDate>Tue, 04 Jun 2019 23:29:22 +0800</pubDate>
+			
+			<guid>https://yLong765.github.io/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</guid>
+			<description>Boss-&amp;gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
 1级-&amp;gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
   创建Socket实例，别忘了引用System.Net和System.Net.Sockets
 Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
@@ -23,7 +23,7 @@ IPAddress ip = IPAddress.Parse(&amp;#34;127.0.0.1&amp;#34;); // 本地地址127.
 IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
 client.Connect(point);// client.Connect(&amp;#34;127.0.0.1&amp;#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
 Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client.</description>
-            <content type="html"><![CDATA[<h2 id="boss-socket">Boss-&gt;Socket</h2>
+			<content type="html"><![CDATA[<h2 id="boss-socket">Boss-&gt;Socket</h2>
 <p>此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）</p>
 <h3 id="1级-client创建">1级-&gt;Client创建</h3>
 <ol>
@@ -32,114 +32,114 @@ Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行�
 </li>
 <li>
 <p>创建Socket实例，别忘了引用System.Net和System.Net.Sockets</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Socket client = <span style="color:#66d9ef">new</span> Socket(SocketType.Stream, ProtocolType.Tcp); <span style="color:#75715e">// TCP链接
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Socket</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="p">(</span><span class="n">SocketType</span><span class="p">.</span><span class="n">Stream</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="n">Tcp</span><span class="p">);</span> <span class="c1">// TCP链接
 </span></code></pre></div><ul>
 <li><a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket?redirectedfrom=MSDN&amp;view=netframework-4.8">Socket</a></li>
 </ul>
 </li>
 <li>
 <p>设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>); <span style="color:#75715e">// 本地地址127.0.0.1（别说你不知道）
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span> <span class="c1">// 本地地址127.0.0.1（别说你不知道）
 </span></code></pre></div><ul>
 <li><a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.ipendpoint?redirectedfrom=MSDN&amp;view=netframework-4.8">IPAddress</a></li>
 </ul>
 </li>
 <li>
 <p>设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>); <span style="color:#75715e">// 端口为2333，ip为上一段代码的ip
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span> <span class="c1">// 端口为2333，ip为上一段代码的ip
 </span></code></pre></div></li>
 <li>
 <p>链接</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">client.Connect(point);
-<span style="color:#75715e">// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">client</span><span class="p">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+<span class="c1">// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4
 </span></code></pre></div></li>
 <li>
 <p>开启线程接收服务器消息，别忘了引用System.Threading</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
-thread.IsBackground = <span style="color:#66d9ef">true</span>; <span style="color:#75715e">// 后台执行线程
-</span><span style="color:#75715e"></span>thread.Start(client); <span style="color:#75715e">// 传入客户端的Socket
-</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// Recive函数
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
-{
-    <span style="color:#66d9ef">var</span> client = o <span style="color:#66d9ef">as</span> Socket;
-    <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-    {
-        <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
-        <span style="color:#66d9ef">int</span> effective = client.Receive(buffer); <span style="color:#75715e">//二进制数据存储在buffer中，数据长度为effective
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
-        {
-            <span style="color:#66d9ef">break</span>;
-        }
-        <span style="color:#66d9ef">var</span> str = Encoding.UTF8.GetString(buffer, <span style="color:#ae81ff">0</span>, effective); <span style="color:#75715e">// 将二进制数据转换为UTF8格式的String
-</span><span style="color:#75715e"></span>        Console.WriteLine(str);
-    }
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+<span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span> <span class="c1">// 后台执行线程
+</span><span class="c1"></span><span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span> <span class="c1">// 传入客户端的Socket
+</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Recive函数
+</span><span class="c1"></span><span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+        <span class="kt">int</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span> <span class="c1">//二进制数据存储在buffer中，数据长度为effective
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">var</span> <span class="n">str</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span> <span class="c1">// 将二进制数据转换为UTF8格式的String
+</span><span class="c1"></span>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><ul>
 <li><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.net.sockets.socket.receive?redirectedfrom=MSDN&amp;view=netframework-4.8#overloads">Recieve函数</a></li>
 </ul>
 </li>
 <li>
 <p>发送自定义数据给服务器</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-{
-    <span style="color:#66d9ef">string</span> s = Console.ReadLine();
-    <span style="color:#66d9ef">byte</span>[] buffer = Encoding.ASCII.GetBytes(s); <span style="color:#75715e">// 将数据转换为ASCII编码的二进制数组形式
-</span><span style="color:#75715e"></span>    socketClient.Send(buffer); <span style="color:#75715e">// 发送消息
-</span><span style="color:#75715e"></span>    Console.WriteLine(<span style="color:#e6db74">&#34;Send Message&#34;</span>);
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">string</span> <span class="n">s</span> <span class="p">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+    <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">ASCII</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="c1">// 将数据转换为ASCII编码的二进制数组形式
+</span><span class="c1"></span>    <span class="n">socketClient</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span> <span class="c1">// 发送消息
+</span><span class="c1"></span>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Send Message&#34;</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div></li>
 <li>
 <p>client完整代码</p>
 </li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">using</span> System;
-<span style="color:#66d9ef">using</span> System.IO;
-<span style="color:#66d9ef">using</span> System.Net;
-<span style="color:#66d9ef">using</span> System.Net.Sockets;
-<span style="color:#66d9ef">using</span> System.Text;
-<span style="color:#66d9ef">using</span> System.Threading;
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.IO</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net.Sockets</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
 
-<span style="color:#66d9ef">namespace</span> SocketTest
-{
-    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Program</span>
-    {
-        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main(<span style="color:#66d9ef">string</span>[] args)
-        {
-            Socket client = <span style="color:#66d9ef">new</span> Socket(SocketType.Stream, ProtocolType.Tcp);
-            IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>);
-            IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>);
-            client.Connect(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>, <span style="color:#ae81ff">2333</span>);
+<span class="k">namespace</span> <span class="nn">SocketTest</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Socket</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="p">(</span><span class="n">SocketType</span><span class="p">.</span><span class="n">Stream</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="n">Tcp</span><span class="p">);</span>
+            <span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span>
+            <span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
+            <span class="n">client</span><span class="p">.</span><span class="n">Connect</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
 
-            Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
-            thread.IsBackground = <span style="color:#66d9ef">true</span>;
-            thread.Start(client);
+            <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
 
-            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-            {
-                <span style="color:#66d9ef">string</span> s = Console.ReadLine();
-                <span style="color:#66d9ef">byte</span>[] buffer = Encoding.ASCII.GetBytes(s);
-                client.Send(buffer);
-                Console.WriteLine(<span style="color:#e6db74">&#34;Send Message&#34;</span>);
-            }
-        }
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">string</span> <span class="n">s</span> <span class="p">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+                <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">ASCII</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+                <span class="n">client</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Send Message&#34;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
-        {
-            <span style="color:#66d9ef">var</span> client = o <span style="color:#66d9ef">as</span> Socket;
-            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-            {
-                <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
-                <span style="color:#66d9ef">var</span> effective = client.Receive(buffer);
-                <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
-                {
-                    <span style="color:#66d9ef">break</span>;
-                }
-                <span style="color:#66d9ef">var</span> str = Encoding.UTF8.GetString(buffer, <span style="color:#ae81ff">0</span>, effective);
-                Console.WriteLine(str);
-            }
-        }
-    }
-}
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+                <span class="kt">var</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="kt">var</span> <span class="n">str</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><h3 id="2级-server创建">2级-&gt;Server创建</h3>
 <ol>
 <li>
@@ -150,96 +150,96 @@ thread.IsBackground = <span style="color:#66d9ef">true</span>; <span style="colo
 </li>
 <li>
 <p>设置服务器的ip地址</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>);
-IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>);
-server.Bind(point);
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span>
+<span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
+<span class="n">server</span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
 </code></pre></div></li>
 <li>
 <p>设置服务器的最大监听数</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">server.Listen(<span style="color:#ae81ff">10</span>);
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">server</span><span class="p">.</span><span class="n">Listen</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
 </code></pre></div></li>
 <li>
 <p>开启线程接收客户端连接和数据（※注意是连接）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Thread thread = <span style="color:#66d9ef">new</span> Thread(Listen);
-thread.IsBackground = <span style="color:#66d9ef">true</span>;
-thread.Start(serverSocket);
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// Listen函数，等待客户端连接
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Listen(<span style="color:#66d9ef">object</span> o)
-{
-    <span style="color:#66d9ef">var</span> serverSocket = o <span style="color:#66d9ef">as</span> Socket;
-    <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-    {
-        client = serverSocket.Accept(); <span style="color:#75715e">// 等待客户端连接，返回客户端的Socket，之前的10限制就是在这里，最多有10个客户端可以建立连接
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> sendIpoint = client.RemoteEndPoint.ToString(); <span style="color:#75715e">// 客户端的ip和端口
-</span><span style="color:#75715e"></span>        Console.WriteLine(<span style="color:#e6db74">$&#34;{sendIpoint}Connection&#34;</span>);
-        <span style="color:#75715e">// 连接成功则开启一个接收线程接收客户端发来的消息
-</span><span style="color:#75715e"></span>        Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
-        thread.IsBackground = <span style="color:#66d9ef">true</span>;
-        thread.Start(client);
-    }
-}
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// Recive函数，同客户端
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Listen</span><span class="p">);</span>
+<span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+<span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">serverSocket</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Listen函数，等待客户端连接
+</span><span class="c1"></span><span class="k">static</span> <span class="k">void</span> <span class="n">Listen</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">serverSocket</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">client</span> <span class="p">=</span> <span class="n">serverSocket</span><span class="p">.</span><span class="n">Accept</span><span class="p">();</span> <span class="c1">// 等待客户端连接，返回客户端的Socket，之前的10限制就是在这里，最多有10个客户端可以建立连接
+</span><span class="c1"></span>        <span class="kt">var</span> <span class="n">sendIpoint</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">RemoteEndPoint</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span> <span class="c1">// 客户端的ip和端口
+</span><span class="c1"></span>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;{sendIpoint}Connection&#34;</span><span class="p">);</span>
+        <span class="c1">// 连接成功则开启一个接收线程接收客户端发来的消息
+</span><span class="c1"></span>        <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+        <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Recive函数，同客户端
 </span></code></pre></div></li>
 <li>
 <p>server完整代码</p>
 </li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">using</span> System;
-<span style="color:#66d9ef">using</span> System.Net;
-<span style="color:#66d9ef">using</span> System.Net.Sockets;
-<span style="color:#66d9ef">using</span> System.Text;
-<span style="color:#66d9ef">using</span> System.Threading;
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Net.Sockets</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
 
-<span style="color:#66d9ef">namespace</span> SocketServer
-{
-    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Program</span>
-    {
-        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main(<span style="color:#66d9ef">string</span>[] args)
-        {
-            Socket server = <span style="color:#66d9ef">new</span> Socket(SocketType.Stream, ProtocolType.Tcp);
-            IPAddress ip = IPAddress.Parse(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>);
-            IPEndPoint point = <span style="color:#66d9ef">new</span> IPEndPoint(ip, <span style="color:#ae81ff">2333</span>);
-            server.Bind(point);
-            server.Listen(<span style="color:#ae81ff">10</span>);
+<span class="k">namespace</span> <span class="nn">SocketServer</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Socket</span> <span class="n">server</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="p">(</span><span class="n">SocketType</span><span class="p">.</span><span class="n">Stream</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="n">Tcp</span><span class="p">);</span>
+            <span class="n">IPAddress</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">IPAddress</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">);</span>
+            <span class="n">IPEndPoint</span> <span class="n">point</span> <span class="p">=</span> <span class="k">new</span> <span class="n">IPEndPoint</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="m">2333</span><span class="p">);</span>
+            <span class="n">server</span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+            <span class="n">server</span><span class="p">.</span><span class="n">Listen</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
 
-            Thread thread = <span style="color:#66d9ef">new</span> Thread(Listen);
-            thread.IsBackground = <span style="color:#66d9ef">true</span>;
-            thread.Start(server);
+            <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Listen</span><span class="p">);</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">server</span><span class="p">);</span>
 
-            Console.Read();
-        }
+            <span class="n">Console</span><span class="p">.</span><span class="n">Read</span><span class="p">();</span>
+        <span class="p">}</span>
 
-        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Listen(<span style="color:#66d9ef">object</span> o)
-        {
-            <span style="color:#66d9ef">var</span> server = o <span style="color:#66d9ef">as</span> Socket;
-            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-            {
-                client = server.Accept();
-                <span style="color:#66d9ef">var</span> clientIpoint = client.RemoteEndPoint.ToString();
-                Console.WriteLine(<span style="color:#e6db74">$&#34;{clientIpoint}Connection&#34;</span>);
-                Thread thread = <span style="color:#66d9ef">new</span> Thread(Recive);
-                thread.IsBackground = <span style="color:#66d9ef">true</span>;
-                thread.Start(client);
-            }
-        }
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Listen</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">server</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">client</span> <span class="p">=</span> <span class="n">server</span><span class="p">.</span><span class="n">Accept</span><span class="p">();</span>
+                <span class="kt">var</span> <span class="n">clientIpoint</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">RemoteEndPoint</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;{clientIpoint}Connection&#34;</span><span class="p">);</span>
+                <span class="n">Thread</span> <span class="n">thread</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="p">(</span><span class="n">Recive</span><span class="p">);</span>
+                <span class="n">thread</span><span class="p">.</span><span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+                <span class="n">thread</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
-        {
-            <span style="color:#66d9ef">var</span> client = o <span style="color:#66d9ef">as</span> Socket;
-            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-            {
-                <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
-                <span style="color:#66d9ef">var</span> effective = client.Receive(buffer);
-                <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
-                {
-                    <span style="color:#66d9ef">break</span>;
-                }
-                <span style="color:#66d9ef">var</span> str = Encoding.UTF8.GetString(buffer, <span style="color:#ae81ff">0</span>, effective);
-                Console.WriteLine(str);
-            }
-        }
-    }
-}
+        <span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+                <span class="kt">var</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="kt">var</span> <span class="n">str</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><h2 id="boss-protobuf">Boss-&gt;ProtoBuf</h2>
 <p>如果我们要用ProtoBuf用在C#中就得集齐各种神器</p>
 <ol>
@@ -251,75 +251,75 @@ thread.Start(serverSocket);
 <h3 id="1级-编写proto文件">1级-&gt;编写proto文件</h3>
 <p>都说ProtoBuf不依赖于任何语言是一个跨语言的神器，然而他的语言格式是scheme(Lisp的方言)，并且编译器就是把<code>.proto</code>文件翻译成各个不同语言的编译器。</p>
 <p>proto文件示例(教程中示例的文件)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// [START declaration]
-</span><span style="color:#75715e"></span>syntax = <span style="color:#e6db74">&#34;proto3&#34;</span>;
-package tutorial;
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// [START declaration]
+</span><span class="c1"></span><span class="n">syntax</span> <span class="p">=</span> <span class="s">&#34;proto3&#34;</span><span class="p">;</span>
+<span class="n">package</span> <span class="n">tutorial</span><span class="p">;</span>
 
-import <span style="color:#e6db74">&#34;google/protobuf/timestamp.proto&#34;</span>;
-<span style="color:#75715e">// [END declaration]
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// [START java_declaration]
-</span><span style="color:#75715e"></span>option java_package = <span style="color:#e6db74">&#34;com.example.tutorial&#34;</span>;
-option java_outer_classname = <span style="color:#e6db74">&#34;AddressBookProtos&#34;</span>;
-<span style="color:#75715e">// [END java_declaration]
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// [START csharp_declaration]
-</span><span style="color:#75715e"></span>option csharp_namespace = <span style="color:#e6db74">&#34;Google.Protobuf.Examples.AddressBook&#34;</span>;
-<span style="color:#75715e">// [END csharp_declaration]
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// [START messages]
-</span><span style="color:#75715e"></span>message Person {
-  <span style="color:#66d9ef">string</span> name = <span style="color:#ae81ff">1</span>;
-  int32 id = <span style="color:#ae81ff">2</span>;  <span style="color:#75715e">// Unique ID number for this person.
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">string</span> email = <span style="color:#ae81ff">3</span>;
+<span class="n">import</span> <span class="s">&#34;google/protobuf/timestamp.proto&#34;</span><span class="p">;</span>
+<span class="c1">// [END declaration]
+</span><span class="c1"></span>
+<span class="c1">// [START java_declaration]
+</span><span class="c1"></span><span class="n">option</span> <span class="n">java_package</span> <span class="p">=</span> <span class="s">&#34;com.example.tutorial&#34;</span><span class="p">;</span>
+<span class="n">option</span> <span class="n">java_outer_classname</span> <span class="p">=</span> <span class="s">&#34;AddressBookProtos&#34;</span><span class="p">;</span>
+<span class="c1">// [END java_declaration]
+</span><span class="c1"></span>
+<span class="c1">// [START csharp_declaration]
+</span><span class="c1"></span><span class="n">option</span> <span class="n">csharp_namespace</span> <span class="p">=</span> <span class="s">&#34;Google.Protobuf.Examples.AddressBook&#34;</span><span class="p">;</span>
+<span class="c1">// [END csharp_declaration]
+</span><span class="c1"></span>
+<span class="c1">// [START messages]
+</span><span class="c1"></span><span class="n">message</span> <span class="n">Person</span> <span class="p">{</span>
+  <span class="kt">string</span> <span class="n">name</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+  <span class="n">int32</span> <span class="n">id</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>  <span class="c1">// Unique ID number for this person.
+</span><span class="c1"></span>  <span class="kt">string</span> <span class="n">email</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
 
-  <span style="color:#66d9ef">enum</span> PhoneType {
-    MOBILE = <span style="color:#ae81ff">0</span>;
-    HOME = <span style="color:#ae81ff">1</span>;
-    WORK = <span style="color:#ae81ff">2</span>;
-  }
+  <span class="k">enum</span> <span class="n">PhoneType</span> <span class="p">{</span>
+    <span class="n">MOBILE</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="n">HOME</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+    <span class="n">WORK</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  message PhoneNumber {
-    <span style="color:#66d9ef">string</span> number = <span style="color:#ae81ff">1</span>;
-    PhoneType type = <span style="color:#ae81ff">2</span>;
-  }
+  <span class="n">message</span> <span class="n">PhoneNumber</span> <span class="p">{</span>
+    <span class="kt">string</span> <span class="n">number</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+    <span class="n">PhoneType</span> <span class="n">type</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  repeated PhoneNumber phones = <span style="color:#ae81ff">4</span>;
+  <span class="n">repeated</span> <span class="n">PhoneNumber</span> <span class="n">phones</span> <span class="p">=</span> <span class="m">4</span><span class="p">;</span>
 
-  google.protobuf.Timestamp last_updated = <span style="color:#ae81ff">5</span>;
-}
+  <span class="n">google</span><span class="p">.</span><span class="n">protobuf</span><span class="p">.</span><span class="n">Timestamp</span> <span class="n">last_updated</span> <span class="p">=</span> <span class="m">5</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Our address book file is just one of these.
-</span><span style="color:#75715e"></span>message AddressBook {
-  repeated Person people = <span style="color:#ae81ff">1</span>;
-}
-<span style="color:#75715e">// [END messages]
+<span class="c1">// Our address book file is just one of these.
+</span><span class="c1"></span><span class="n">message</span> <span class="n">AddressBook</span> <span class="p">{</span>
+  <span class="n">repeated</span> <span class="n">Person</span> <span class="n">people</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// [END messages]
 </span></code></pre></div><h3 id="2级-编译proto文件">2级-&gt;编译proto文件</h3>
 <p>将上面的文件用proto.exe编译</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#960050;background-color:#1e0010">格式：</span>proto -I=<span style="color:#960050;background-color:#1e0010">当前目录</span> -out_csharp=<span style="color:#960050;background-color:#1e0010">当前目录</span> <span style="color:#960050;background-color:#1e0010">目录</span>/<span style="color:#960050;background-color:#1e0010">文件名</span>.<span style="color:#960050;background-color:#1e0010">扩展名</span>
-<span style="color:#960050;background-color:#1e0010">例：</span>
-<span style="color:#960050;background-color:#1e0010">文件名为：</span>address.proto
-<span style="color:#960050;background-color:#1e0010">目录为：</span>D:/Work下
-proto -I=D:/Work -out_csharp=D:/Work D:/Wrok/address.proto
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="err">格式：</span><span class="n">proto</span> <span class="p">-</span><span class="n">I</span><span class="p">=</span><span class="err">当前目录</span> <span class="p">-</span><span class="n">out_csharp</span><span class="p">=</span><span class="err">当前目录</span> <span class="err">目录</span><span class="p">/</span><span class="err">文件名</span><span class="p">.</span><span class="err">扩展名</span>
+<span class="err">例：</span>
+<span class="err">文件名为：</span><span class="n">address</span><span class="p">.</span><span class="n">proto</span>
+<span class="err">目录为：</span><span class="n">D</span><span class="p">:/</span><span class="n">Work下</span>
+<span class="n">proto</span> <span class="p">-</span><span class="n">I</span><span class="p">=</span><span class="n">D</span><span class="p">:/</span><span class="n">Work</span> <span class="p">-</span><span class="n">out_csharp</span><span class="p">=</span><span class="n">D</span><span class="p">:/</span><span class="n">Work</span> <span class="n">D</span><span class="p">:/</span><span class="n">Wrok</span><span class="p">/</span><span class="n">address</span><span class="p">.</span><span class="n">proto</span>
 </code></pre></div><p>编译完后会生成一个<code>.cs</code>文件，文件很长我就不展示了</p>
 <h3 id="3级-nuget下载dll">3级-&gt;nuget下载dll</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">nuget install Google.Protobuf -Version <span style="color:#ae81ff">3.8</span>.<span style="color:#ae81ff">0</span> <span style="color:#75715e">// 版本随意
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">nuget</span> <span class="n">install</span> <span class="n">Google</span><span class="p">.</span><span class="n">Protobuf</span> <span class="p">-</span><span class="n">Version</span> <span class="m">3.8</span><span class="p">.</span><span class="m">0</span> <span class="c1">// 版本随意
 </span></code></pre></div><p>下载下来找到dll</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Google.Protobuf.<span style="color:#ae81ff">3.8</span>.<span style="color:#ae81ff">0</span>/bin/net45/Google.Protobuf.dll
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Google</span><span class="p">.</span><span class="n">Protobuf</span><span class="p">.</span><span class="m">3.8</span><span class="p">.</span><span class="m">0</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">net45</span><span class="p">/</span><span class="n">Google</span><span class="p">.</span><span class="n">Protobuf</span><span class="p">.</span><span class="n">dll</span>
 </code></pre></div><p>引用到客户端和服务器中，然后把生成的<code>.cs</code>文件也复制到项目中</p>
 <h3 id="4级-编写序列化和反序列化代码">4级-&gt;编写序列化和反序列化代码</h3>
 <p>在客户端和服务器的Program（上面的代码）中加入序列化和反序列化的函数，需要引用Google.Protobuf、Google.Protobuf.Examples.AddressBook和static Google.Protobuf.Examples.AddressBook.Person.Types(C#6 才支持)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">byte</span>[] Serialize&lt;T&gt;(T obj) <span style="color:#66d9ef">where</span> T : IMessage
-{
-    <span style="color:#66d9ef">return</span> obj.ToByteArray();
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">static</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">Serialize</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="n">T</span> <span class="n">obj</span><span class="p">)</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">IMessage</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="p">.</span><span class="n">ToByteArray</span><span class="p">();</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> T Deserialize&lt;T&gt;(<span style="color:#66d9ef">byte</span>[] data) <span style="color:#66d9ef">where</span> T : class, IMessage, <span style="color:#66d9ef">new</span>()
-{
-    T obj = <span style="color:#66d9ef">new</span> T();
-    IMessage message = obj.Descriptor.Parser.ParseFrom(data);
-    <span style="color:#66d9ef">return</span> message <span style="color:#66d9ef">as</span> T;
-}
+<span class="k">public</span> <span class="k">static</span> <span class="n">T</span> <span class="n">Deserialize</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kt">byte</span><span class="p">[]</span> <span class="n">data</span><span class="p">)</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">class</span><span class="p">,</span> <span class="n">IMessage</span><span class="p">,</span> <span class="k">new</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">T</span> <span class="n">obj</span> <span class="p">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">();</span>
+    <span class="n">IMessage</span> <span class="n">message</span> <span class="p">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">Descriptor</span><span class="p">.</span><span class="n">Parser</span><span class="p">.</span><span class="n">ParseFrom</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">message</span> <span class="k">as</span> <span class="n">T</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>注释：</p>
 <ol>
 <li>可以看到由<code>.proto</code>转换成<code>.cs</code>的文件的父接口为IMessage</li>
@@ -327,90 +327,90 @@ proto -I=D:/Work -out_csharp=D:/Work D:/Wrok/address.proto
 <li>obj.Descriptor.Parser.ParseFrom是是protoBuf自带的二进制转类的函数（所谓的反序列化）</li>
 </ol>
 <p>知道这些之后就可以传输二进制数据啦，所以我们的客户端代码的发送数据部分改为</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// 建立数据
-</span><span style="color:#75715e"></span>Person john = <span style="color:#66d9ef">new</span> Person
-{
-    Id = <span style="color:#ae81ff">1234</span>,
-    Name = <span style="color:#e6db74">&#34;John Doe&#34;</span>,
-    Email = <span style="color:#e6db74">&#34;jdoe@example.com&#34;</span>,
-    Phones = { <span style="color:#66d9ef">new</span> PhoneNumber { Number = <span style="color:#e6db74">&#34;555-4321&#34;</span>, Type = PhoneType.Home } }
-};
-<span style="color:#66d9ef">var</span> message = Serialize(john); <span style="color:#75715e">// 得到byte[]的message
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-{
-    <span style="color:#66d9ef">string</span> s = Console.ReadLine();
-    socketClient.Send(message); <span style="color:#75715e">//  直接传输message
-</span><span style="color:#75715e"></span>    Console.WriteLine(<span style="color:#e6db74">&#34;Send Message&#34;</span>);
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// 建立数据
+</span><span class="c1"></span><span class="n">Person</span> <span class="n">john</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Person</span>
+<span class="p">{</span>
+    <span class="n">Id</span> <span class="p">=</span> <span class="m">1234</span><span class="p">,</span>
+    <span class="n">Name</span> <span class="p">=</span> <span class="s">&#34;John Doe&#34;</span><span class="p">,</span>
+    <span class="n">Email</span> <span class="p">=</span> <span class="s">&#34;jdoe@example.com&#34;</span><span class="p">,</span>
+    <span class="n">Phones</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">PhoneNumber</span> <span class="p">{</span> <span class="n">Number</span> <span class="p">=</span> <span class="s">&#34;555-4321&#34;</span><span class="p">,</span> <span class="n">Type</span> <span class="p">=</span> <span class="n">PhoneType</span><span class="p">.</span><span class="n">Home</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">};</span>
+<span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="n">Serialize</span><span class="p">(</span><span class="n">john</span><span class="p">);</span> <span class="c1">// 得到byte[]的message
+</span><span class="c1"></span>
+<span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">string</span> <span class="n">s</span> <span class="p">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+    <span class="n">socketClient</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="n">message</span><span class="p">);</span> <span class="c1">//  直接传输message
+</span><span class="c1"></span>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Send Message&#34;</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div><p>服务端的接受部分改一下，这部分注意反序列化素组的长度必须和序列化后的一致，所以这边新建了一个正确长度的b2数组把数据复制过去</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Recive(<span style="color:#66d9ef">object</span> o)
-{
-    <span style="color:#66d9ef">var</span> send = o <span style="color:#66d9ef">as</span> Socket;
-    <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-    {
-        <span style="color:#66d9ef">byte</span>[] buffer = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">1024</span> * <span style="color:#ae81ff">2</span>];
-        <span style="color:#66d9ef">var</span> effective = send.Receive(buffer);
-        <span style="color:#66d9ef">byte</span>[] b2 = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[effective];
-        Array.Copy(buffer, <span style="color:#ae81ff">0</span>, b2, <span style="color:#ae81ff">0</span>, effective); <span style="color:#75715e">// 把数据拷贝给b2
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (effective == <span style="color:#ae81ff">0</span>)
-        {
-            <span style="color:#66d9ef">break</span>;
-        }
-        <span style="color:#66d9ef">var</span> message = Deserialize&lt;Person&gt;(b2); <span style="color:#75715e">// 解析时候必须为正确的长度
-</span><span style="color:#75715e"></span>        Console.WriteLine(<span style="color:#e6db74">&#34;ID = {0}&#34;</span>, message.Id);
-        Console.WriteLine(<span style="color:#e6db74">&#34;Name = {0}&#34;</span>, message.Name);
-        Console.WriteLine(<span style="color:#e6db74">&#34;Email = {0}&#34;</span>, message.Email);
-        Console.WriteLine(<span style="color:#e6db74">&#34;Phone Number = {0}&#34;</span>, message.Phones[<span style="color:#ae81ff">0</span>].Number);
-        Console.WriteLine(<span style="color:#e6db74">&#34;Phone Type = {0}&#34;</span>, message.Phones[<span style="color:#ae81ff">0</span>].Type);
-    }
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="k">void</span> <span class="n">Recive</span><span class="p">(</span><span class="kt">object</span> <span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">send</span> <span class="p">=</span> <span class="n">o</span> <span class="k">as</span> <span class="n">Socket</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1024</span> <span class="p">*</span> <span class="m">1024</span> <span class="p">*</span> <span class="m">2</span><span class="p">];</span>
+        <span class="kt">var</span> <span class="n">effective</span> <span class="p">=</span> <span class="n">send</span><span class="p">.</span><span class="n">Receive</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+        <span class="kt">byte</span><span class="p">[]</span> <span class="n">b2</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="n">effective</span><span class="p">];</span>
+        <span class="n">Array</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">effective</span><span class="p">);</span> <span class="c1">// 把数据拷贝给b2
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">effective</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">var</span> <span class="n">message</span> <span class="p">=</span> <span class="n">Deserialize</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;(</span><span class="n">b2</span><span class="p">);</span> <span class="c1">// 解析时候必须为正确的长度
+</span><span class="c1"></span>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;ID = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Name = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Email = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Email</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Phone Number = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Phones</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Number</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Phone Type = {0}&#34;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">Phones</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Type</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>完结撒花~</p>
 ]]></content>
-        </item>
-        
-        <item>
-            <title>判断点在多边形内部</title>
-            <link>https://ylong765.github.io/Sooda/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</link>
-            <pubDate>Sun, 07 Apr 2019 22:48:28 +0800</pubDate>
-            
-            <guid>https://ylong765.github.io/Sooda/posts/2019/04/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</guid>
-            <description>点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。
+		</item>
+		
+		<item>
+			<title>判断点在多边形内部</title>
+			<link>https://yLong765.github.io/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</link>
+			<pubDate>Sun, 07 Apr 2019 22:48:28 +0800</pubDate>
+			
+			<guid>https://yLong765.github.io/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</guid>
+			<description>点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。
 推荐Milo Yip大神的知乎上的回答
 射线法思想 射线法是由从点出发向一个方向发送射线，判断与边相交的次数，如果为奇数则为多边形的内部，如果为偶数则为外部。
 首先是数据类，存储多边形的点和最大最小的XY，用来做快速判断
 // 多边形点的数据存储class PolygonConfig{public float maxX;public float maxY;public float minX;public float minY;public List&amp;lt;Vector2&amp;gt; points = new List&amp;lt;Vector2&amp;gt;();public void SetMaxAndMinXY(){if (points.Count &amp;gt; 0){maxX = points[0].x;maxY = points[0].y;minX = points[0].x;minY = points[0].y;}for (int i = 1; i &amp;lt; points.Count; i++){maxX = Mathf.Max(maxX, points[i].x);maxY = Mathf.Max(maxY, points[i].y);}}}下面是判断的核心方法</description>
-            <content type="html"><![CDATA[<p>点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。</p>
+			<content type="html"><![CDATA[<p>点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。</p>
 <p>推荐<a href="https://www.zhihu.com/question/26551754/answer/33185339">Milo Yip大神的知乎上的回答</a></p>
 <h2 id="射线法思想">射线法思想</h2>
 <p>射线法是由从点出发向一个方向发送射线，判断与边相交的次数，如果为奇数则为多边形的内部，如果为偶数则为外部。</p>
 <p>首先是数据类，存储多边形的点和最大最小的XY，用来做快速判断</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// 多边形点的数据存储
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PolygonConfig</span>
-{
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> maxX;
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> maxY;
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> minX;
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">float</span> minY;
-    <span style="color:#66d9ef">public</span> List&lt;Vector2&gt; points = <span style="color:#66d9ef">new</span> List&lt;Vector2&gt;();
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// 多边形点的数据存储
+</span><span class="c1"></span><span class="k">class</span> <span class="nc">PolygonConfig</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">maxX</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">maxY</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">minX</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">float</span> <span class="n">minY</span><span class="p">;</span>
+    <span class="k">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Vector2</span><span class="p">&gt;</span> <span class="n">points</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Vector2</span><span class="p">&gt;();</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SetMaxAndMinXY()
-    {
-        <span style="color:#66d9ef">if</span> (points.Count &gt; <span style="color:#ae81ff">0</span>)
-        {
-            maxX = points[<span style="color:#ae81ff">0</span>].x;
-            maxY = points[<span style="color:#ae81ff">0</span>].y;
-            minX = points[<span style="color:#ae81ff">0</span>].x;
-            minY = points[<span style="color:#ae81ff">0</span>].y;
-        }
+    <span class="k">public</span> <span class="k">void</span> <span class="n">SetMaxAndMinXY</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">points</span><span class="p">.</span><span class="n">Count</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">maxX</span> <span class="p">=</span> <span class="n">points</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">x</span><span class="p">;</span>
+            <span class="n">maxY</span> <span class="p">=</span> <span class="n">points</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">y</span><span class="p">;</span>
+            <span class="n">minX</span> <span class="p">=</span> <span class="n">points</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">x</span><span class="p">;</span>
+            <span class="n">minY</span> <span class="p">=</span> <span class="n">points</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">y</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">1</span>; i &lt; points.Count; i++)
-        {
-            maxX = Mathf.Max(maxX, points[i].x);
-            maxY = Mathf.Max(maxY, points[i].y);
-        }
-    }
-}
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">points</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+        <span class="p">{</span>
+            <span class="n">maxX</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Max</span><span class="p">(</span><span class="n">maxX</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">);</span>
+            <span class="n">maxY</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Max</span><span class="p">(</span><span class="n">maxY</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>下面是判断的核心方法</p>
 <ul>
 <li>
@@ -426,45 +426,45 @@ proto -I=D:/Work -out_csharp=D:/Work D:/Wrok/address.proto
 </li>
 <li>
 <p>进过所有边的判断完成后，奇数为在中心，所以小技巧就是inPolygon的取反。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> IsPointInPolygon(PolygonConfig polygon, Vector2 point)
-{
-    <span style="color:#75715e">// 构建矩形，进行快速筛选
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (point.x &gt; polygon.maxX || point.x &lt; polygon.minX || point.y &gt; polygon.maxY || point.y &lt; polygon.minY)
-    {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-    }
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="kt">bool</span> <span class="n">IsPointInPolygon</span><span class="p">(</span><span class="n">PolygonConfig</span> <span class="n">polygon</span><span class="p">,</span> <span class="n">Vector2</span> <span class="n">point</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// 构建矩形，进行快速筛选
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="p">&gt;</span> <span class="n">polygon</span><span class="p">.</span><span class="n">maxX</span> <span class="p">||</span> <span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="p">&lt;</span> <span class="n">polygon</span><span class="p">.</span><span class="n">minX</span> <span class="p">||</span> <span class="n">point</span><span class="p">.</span><span class="n">y</span> <span class="p">&gt;</span> <span class="n">polygon</span><span class="p">.</span><span class="n">maxY</span> <span class="p">||</span> <span class="n">point</span><span class="p">.</span><span class="n">y</span> <span class="p">&lt;</span> <span class="n">polygon</span><span class="p">.</span><span class="n">minY</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
   
-    <span style="color:#66d9ef">bool</span> inPolygon = <span style="color:#66d9ef">false</span>;
-    <span style="color:#66d9ef">var</span> points = polygon.points;
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>, j = points.Count - <span style="color:#ae81ff">1</span>; i &lt; points.Count; j = i++)
-    {
-        <span style="color:#66d9ef">if</span> (((points[i].x &lt;= point.x &amp;&amp; points[j].x &gt; point.x) || (points[j].x &lt;= point.x &amp;&amp; points[i].x &gt; point.x))
-            &amp;&amp; ((points[j].y - points[i].y) / (points[j].x - points[i].x) * (point.x - points[i].x) + points[i].y &gt; point.y))
-        {
-            inPolygon = !inPolygon;
-        }
-    }
-    <span style="color:#66d9ef">return</span> inPolygon;
-}
+    <span class="kt">bool</span> <span class="n">inPolygon</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+    <span class="kt">var</span> <span class="n">points</span> <span class="p">=</span> <span class="n">polygon</span><span class="p">.</span><span class="n">points</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">j</span> <span class="p">=</span> <span class="n">points</span><span class="p">.</span><span class="n">Count</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">points</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">j</span> <span class="p">=</span> <span class="n">i</span><span class="p">++)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(((</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="p">&lt;=</span> <span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="p">&amp;&amp;</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">x</span> <span class="p">&gt;</span> <span class="n">point</span><span class="p">.</span><span class="n">x</span><span class="p">)</span> <span class="p">||</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">x</span> <span class="p">&lt;=</span> <span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="p">&amp;&amp;</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="p">&gt;</span> <span class="n">point</span><span class="p">.</span><span class="n">x</span><span class="p">))</span>
+            <span class="p">&amp;&amp;</span> <span class="p">((</span><span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">y</span> <span class="p">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span><span class="p">)</span> <span class="p">/</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">x</span> <span class="p">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">)</span> <span class="p">*</span> <span class="p">(</span><span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="p">-</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">)</span> <span class="p">+</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="p">&gt;</span> <span class="n">point</span><span class="p">.</span><span class="n">y</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">inPolygon</span> <span class="p">=</span> <span class="p">!</span><span class="n">inPolygon</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">inPolygon</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></li>
 </ul>
 ]]></content>
-        </item>
-        
-        <item>
-            <title>Unity Framework</title>
-            <link>https://ylong765.github.io/Sooda/posts/2018/11/unity-framework/</link>
-            <pubDate>Fri, 23 Nov 2018 22:35:04 +0800</pubDate>
-            
-            <guid>https://ylong765.github.io/Sooda/posts/2018/11/unity-framework/</guid>
-            <description>Unity 框架 本文UI框架借鉴游客学院
+		</item>
+		
+		<item>
+			<title>Unity Framework</title>
+			<link>https://yLong765.github.io/posts/unity-framework/</link>
+			<pubDate>Fri, 23 Nov 2018 22:35:04 +0800</pubDate>
+			
+			<guid>https://yLong765.github.io/posts/unity-framework/</guid>
+			<description>Unity 框架 本文UI框架借鉴游客学院
 本文章源码可在我的GitHub中找到
 UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
 框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
  InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
  onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
 public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&amp;#34;UI/Scene/&amp;#34; + SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&amp;#34;loginBackground/playerName&amp;#34;).GetComponent&amp;lt;InputField&amp;gt;();warnText = skin.transform.Find(&amp;#34;warnText&amp;#34;).GetComponent&amp;lt;Text&amp;gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&amp;#34;BtGameStart&amp;#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr.</description>
-            <content type="html"><![CDATA[<h2 id="unity-框架">Unity 框架</h2>
+			<content type="html"><![CDATA[<h2 id="unity-框架">Unity 框架</h2>
 <p>本文UI框架借鉴游客学院</p>
 <p>本文章源码可在我的<a href="https://github.com/yLong765/Unity-Framework">GitHub</a>中找到</p>
 <h3 id="ui框架">UI框架</h3>
@@ -484,53 +484,53 @@ public class SceneLogin : SceneBase {private InputField playerName;private Tex
 <li>onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。</li>
 </ul>
 <p>SceneLogin.cs代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SceneLogin</span> : SceneBase {
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">SceneLogin</span> <span class="p">:</span> <span class="n">SceneBase</span> <span class="p">{</span>
 
-    <span style="color:#66d9ef">private</span> InputField playerName;
-    <span style="color:#66d9ef">private</span> Text warnText;
+    <span class="k">private</span> <span class="n">InputField</span> <span class="n">playerName</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">Text</span> <span class="n">warnText</span><span class="p">;</span>
 
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> InitDate()
-    {
-        <span style="color:#75715e">//初始化皮肤
-</span><span style="color:#75715e"></span>        setSkinPath(<span style="color:#e6db74">&#34;UI/Scene/&#34;</span> + SceneType.SceneLogin.ToString());
-    }
+    <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="n">InitDate</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">//初始化皮肤
+</span><span class="c1"></span>        <span class="n">setSkinPath</span><span class="p">(</span><span class="s">&#34;UI/Scene/&#34;</span> <span class="p">+</span> <span class="n">SceneType</span><span class="p">.</span><span class="n">SceneLogin</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+    <span class="p">}</span>
 
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> InitViewDate()
-    {
-        <span style="color:#75715e">//绑定界面UI
-</span><span style="color:#75715e"></span>        playerName = skin.transform.Find(<span style="color:#e6db74">&#34;loginBackground/playerName&#34;</span>).GetComponent&lt;InputField&gt;();
-        warnText = skin.transform.Find(<span style="color:#e6db74">&#34;warnText&#34;</span>).GetComponent&lt;Text&gt;();
-    }
+    <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="n">InitViewDate</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">//绑定界面UI
+</span><span class="c1"></span>        <span class="n">playerName</span> <span class="p">=</span> <span class="n">skin</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="s">&#34;loginBackground/playerName&#34;</span><span class="p">).</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">InputField</span><span class="p">&gt;();</span>
+        <span class="n">warnText</span> <span class="p">=</span> <span class="n">skin</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="s">&#34;warnText&#34;</span><span class="p">).</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">Text</span><span class="p">&gt;();</span>
+    <span class="p">}</span>
 
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> onClick(GameObject BtObject)
-    {
-        <span style="color:#66d9ef">if</span> (BtObject.name.Equals(<span style="color:#e6db74">&#34;BtGameStart&#34;</span>))
-        {
-            <span style="color:#66d9ef">string</span> name = playerName.text;
-            <span style="color:#66d9ef">if</span> (NameChick(name))
-            {
-                SceneMgr.Instance.Sequencer(SceneType.SceneMain, name);
-            }
-            <span style="color:#66d9ef">else</span>
-            {
-                warnText.text += <span style="color:#e6db74">&#34;不符合规范&#34;</span>;
-                warnText.gameObject.SetActive(<span style="color:#66d9ef">true</span>);
-            }                
-        }
-    }
+    <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="n">onClick</span><span class="p">(</span><span class="n">GameObject</span> <span class="n">BtObject</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">BtObject</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">Equals</span><span class="p">(</span><span class="s">&#34;BtGameStart&#34;</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="kt">string</span> <span class="n">name</span> <span class="p">=</span> <span class="n">playerName</span><span class="p">.</span><span class="n">text</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">NameChick</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">SceneMgr</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">Sequencer</span><span class="p">(</span><span class="n">SceneType</span><span class="p">.</span><span class="n">SceneMain</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">warnText</span><span class="p">.</span><span class="n">text</span> <span class="p">+=</span> <span class="s">&#34;不符合规范&#34;</span><span class="p">;</span>
+                <span class="n">warnText</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+            <span class="p">}</span>                
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> NameChick(<span style="color:#66d9ef">string</span> name)
-    {
-        <span style="color:#75715e">//正则表达式
-</span><span style="color:#75715e"></span>
-        <span style="color:#66d9ef">if</span> (name == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-        <span style="color:#66d9ef">if</span> (name.Equals(<span style="color:#e6db74">&#34;/0&#34;</span>)) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-        <span style="color:#66d9ef">if</span> (name.Length &lt; <span style="color:#ae81ff">0</span> || name.Length &gt; <span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+    <span class="k">private</span> <span class="kt">bool</span> <span class="n">NameChick</span><span class="p">(</span><span class="kt">string</span> <span class="n">name</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//正则表达式
+</span><span class="c1"></span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span> <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">Equals</span><span class="p">(</span><span class="s">&#34;/0&#34;</span><span class="p">))</span> <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">Length</span> <span class="p">&lt;</span> <span class="m">0</span> <span class="p">||</span> <span class="n">name</span><span class="p">.</span><span class="n">Length</span> <span class="p">&gt;</span> <span class="m">10</span><span class="p">)</span> <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
 
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
-    }
+        <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+    <span class="p">}</span>
 
-}
+<span class="p">}</span>
 </code></pre></div><h3 id="更新---17年04月01日">更新 —- 17年04月01日</h3>
 <p>加入消息机制框架。</p>
 <h3 id="更新---17年12月23日">更新 —- 17年12月23日</h3>
@@ -539,15 +539,15 @@ public class SceneLogin : SceneBase {private InputField playerName;private Tex
 <h3 id="更新---18年8月28日">更新 —- 18年8月28日</h3>
 <p>重写MonoSingleton，修复Editor模式调用时产生多实例的问题，添加Create方法用于初始化。</p>
 ]]></content>
-        </item>
-        
-        <item>
-            <title>图形学Prelin噪声解析</title>
-            <link>https://ylong765.github.io/Sooda/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
-            <pubDate>Sat, 22 Sep 2018 23:34:11 +0800</pubDate>
-            
-            <guid>https://ylong765.github.io/Sooda/posts/2018/09/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</guid>
-            <description>Prelin噪声 Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声 本篇文章借鉴各路大神的文章总结而来：
+		</item>
+		
+		<item>
+			<title>图形学Prelin噪声解析</title>
+			<link>https://yLong765.github.io/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
+			<pubDate>Sat, 22 Sep 2018 23:34:11 +0800</pubDate>
+			
+			<guid>https://yLong765.github.io/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</guid>
+			<description>Prelin噪声 Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声 本篇文章借鉴各路大神的文章总结而来：
  冯乐乐：【图形学】谈谈噪声 则卷大明：Unity3D教程：PerlinNoise原理及实现 Unity API：Mathf.PerlinNoise  此文章源码在我的个人GitHub上，本文章的仅仅实现了Prelin噪声中的最简单版本。上图先~
 利用Unity实现2D Prelin噪声 candycat的文章非常好，不过没有Unity的具体实现代码，而则卷大明的文章中只给出了一部分的代码。最后发现了Unity自带2D噪声，所以结合多方文章最终完成了最简单的Prelin噪声。
 如果你懂GLSL的pixel shaders，那你就可以直接去阅读由iq大神写的：Voronoise。而这里我只是用Unity代码还原冯乐乐博客中利用shaderToy编写的代码
@@ -557,7 +557,7 @@ private static Vector2 Floor(Vector2 p){return new Vector2(Mathf.Floor(p.x), M
 private static Vector2 Fract(Vector2 p){return p - Floor(p);}Sin：正弦函数
 private static Vector2 Sin(Vector2 p){return new Vector2(Mathf.Sin(p.x), Mathf.Sin(p.y));}其实这些函数在Unity中也有实现，不过我这里要实现2D的噪声，所以得处理2D情况下的操作。接下来就是正片了~ 首先还原冯乐乐博客中的梯度函数
 private static Vector2 Hash22(Vector2 p){p = new Vector2(Vector2.Dot(p, new Vector2(127.1f, 311.7f)),Vector2.Dot(p, new Vector2(269.</description>
-            <content type="html"><![CDATA[<h2 id="prelin噪声">Prelin噪声</h2>
+			<content type="html"><![CDATA[<h2 id="prelin噪声">Prelin噪声</h2>
 <p>Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声
 本篇文章借鉴各路大神的文章总结而来：</p>
 <ul>
@@ -572,134 +572,134 @@ private static Vector2 Hash22(Vector2 p){p = new Vector2(Vector2.Dot(p, new Ve
 <p>如果你懂GLSL的pixel shaders，那你就可以直接去阅读由iq大神写的：<a href="https://www.shadertoy.com/view/Xd23Dh">Voronoise</a>。而这里我只是用Unity代码还原冯乐乐博客中利用shaderToy编写的代码</p>
 <p>在开始正文之前，我们得知道几个数学小知识。图形学中涉及矩阵计算的东西有太多，在ShaderToy中都有封装，而Unity并没有，所以我们得实现几个图形学函数</p>
 <p>Floor：向下取整</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Vector2 Floor(Vector2 p)
-{
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Vector2(Mathf.Floor(p.x), Mathf.Floor(p.y));
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">static</span> <span class="n">Vector2</span> <span class="n">Floor</span><span class="p">(</span><span class="n">Vector2</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Floor</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">),</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Floor</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">));</span>
+<span class="p">}</span>
 </code></pre></div><p>Fract：取小数部分</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Vector2 Fract(Vector2 p)
-{
-    <span style="color:#66d9ef">return</span> p - Floor(p);
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">static</span> <span class="n">Vector2</span> <span class="n">Fract</span><span class="p">(</span><span class="n">Vector2</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">p</span> <span class="p">-</span> <span class="n">Floor</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div><p>Sin：正弦函数</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Vector2 Sin(Vector2 p)
-{
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Vector2(Mathf.Sin(p.x), Mathf.Sin(p.y));
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">static</span> <span class="n">Vector2</span> <span class="n">Sin</span><span class="p">(</span><span class="n">Vector2</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">),</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">));</span>
+<span class="p">}</span>
 </code></pre></div><p>其实这些函数在Unity中也有实现，不过我这里要实现2D的噪声，所以得处理2D情况下的操作。接下来就是正片了~
 首先还原冯乐乐博客中的梯度函数</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Vector2 Hash22(Vector2 p)
-{
-    p = <span style="color:#66d9ef">new</span> Vector2(Vector2.Dot(p, <span style="color:#66d9ef">new</span> Vector2(<span style="color:#ae81ff">127.1f</span>, <span style="color:#ae81ff">311.7f</span>)),
-                    Vector2.Dot(p, <span style="color:#66d9ef">new</span> Vector2(<span style="color:#ae81ff">269.5f</span>, <span style="color:#ae81ff">183.3f</span>)));
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">static</span> <span class="n">Vector2</span> <span class="n">Hash22</span><span class="p">(</span><span class="n">Vector2</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">p</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">Vector2</span><span class="p">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="m">127.1f</span><span class="p">,</span> <span class="m">311.7f</span><span class="p">)),</span>
+                    <span class="n">Vector2</span><span class="p">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="m">269.5f</span><span class="p">,</span> <span class="m">183.3f</span><span class="p">)));</span>
 
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Vector2(-<span style="color:#ae81ff">1</span>, -<span style="color:#ae81ff">1</span>) + <span style="color:#ae81ff">2.0f</span> * Fract(Sin(p) * <span style="color:#ae81ff">43758.5453123f</span>);
-}
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(-</span><span class="m">1</span><span class="p">,</span> <span class="p">-</span><span class="m">1</span><span class="p">)</span> <span class="p">+</span> <span class="m">2.0f</span> <span class="p">*</span> <span class="n">Fract</span><span class="p">(</span><span class="n">Sin</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">*</span> <span class="m">43758.5453123f</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div><p>然后还原缓和曲线，这里利用新提出的缓和曲线，使其在二阶的情况下也能满足连续性，公式如下：</p>
 <p>s(t)=6∗t5−15∗t4+10∗t3s(t)=6∗t5−15∗t4+10∗t3</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// 一阶
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">float</span> GetEaseCurves(<span style="color:#66d9ef">float</span> t)
-{
-    <span style="color:#66d9ef">return</span> t * t * t * (t * (t * <span style="color:#ae81ff">6</span> - <span style="color:#ae81ff">15</span>) + <span style="color:#ae81ff">10</span>);
-}
-<span style="color:#75715e">// 二阶
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Vector2 GetEaseCurves(Vector2 p)
-{
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Vector2(GetEaseCurves(p.x), GetEaseCurves(p.y));
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// 一阶
+</span><span class="c1"></span><span class="k">private</span> <span class="k">static</span> <span class="kt">float</span> <span class="n">GetEaseCurves</span><span class="p">(</span><span class="kt">float</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">t</span> <span class="p">*</span> <span class="n">t</span> <span class="p">*</span> <span class="n">t</span> <span class="p">*</span> <span class="p">(</span><span class="n">t</span> <span class="p">*</span> <span class="p">(</span><span class="n">t</span> <span class="p">*</span> <span class="m">6</span> <span class="p">-</span> <span class="m">15</span><span class="p">)</span> <span class="p">+</span> <span class="m">10</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 二阶
+</span><span class="c1"></span><span class="k">private</span> <span class="k">static</span> <span class="n">Vector2</span> <span class="n">GetEaseCurves</span><span class="p">(</span><span class="n">Vector2</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">GetEaseCurves</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">),</span> <span class="n">GetEaseCurves</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">));</span>
+<span class="p">}</span>
 </code></pre></div><p>这里将冯乐乐中的-1.0f改为Unity中可计算的Vector(-1, -1)
 接下来是生成prelin噪声的主函数了</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">float</span> prelin_noise(Vector2 p)
-{
-    Vector2 pi = Floor(p);
-    Vector2 pf = p - pi;
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">static</span> <span class="kt">float</span> <span class="n">prelin_noise</span><span class="p">(</span><span class="n">Vector2</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Vector2</span> <span class="n">pi</span> <span class="p">=</span> <span class="n">Floor</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+    <span class="n">Vector2</span> <span class="n">pf</span> <span class="p">=</span> <span class="n">p</span> <span class="p">-</span> <span class="n">pi</span><span class="p">;</span>
 
-    Vector2 w = GetEaseCurves(pf);
+    <span class="n">Vector2</span> <span class="n">w</span> <span class="p">=</span> <span class="n">GetEaseCurves</span><span class="p">(</span><span class="n">pf</span><span class="p">);</span>
 
-    <span style="color:#66d9ef">float</span> corner1 = Vector2.Dot(Hash22(pi + Vector2.zero), pf - Vector2.zero);
-    <span style="color:#66d9ef">float</span> corner2 = Vector2.Dot(Hash22(pi + Vector2.right), pf - Vector2.right);
-    <span style="color:#66d9ef">float</span> corner3 = Vector2.Dot(Hash22(pi + Vector2.up), pf - Vector2.up);
-    <span style="color:#66d9ef">float</span> corner4 = Vector2.Dot(Hash22(pi + Vector2.one), pf - Vector2.one);
+    <span class="kt">float</span> <span class="n">corner1</span> <span class="p">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">Hash22</span><span class="p">(</span><span class="n">pi</span> <span class="p">+</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">zero</span><span class="p">),</span> <span class="n">pf</span> <span class="p">-</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">zero</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">corner2</span> <span class="p">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">Hash22</span><span class="p">(</span><span class="n">pi</span> <span class="p">+</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">right</span><span class="p">),</span> <span class="n">pf</span> <span class="p">-</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">right</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">corner3</span> <span class="p">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">Hash22</span><span class="p">(</span><span class="n">pi</span> <span class="p">+</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">up</span><span class="p">),</span> <span class="n">pf</span> <span class="p">-</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">up</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">corner4</span> <span class="p">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">Hash22</span><span class="p">(</span><span class="n">pi</span> <span class="p">+</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">one</span><span class="p">),</span> <span class="n">pf</span> <span class="p">-</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">one</span><span class="p">);</span>
 
-    <span style="color:#66d9ef">return</span> Mathf.Lerp(Mathf.Lerp(corner1, corner2, w.x),
-                      Mathf.Lerp(corner3, corner4, w.x),
-                      w.y);
-}
+    <span class="k">return</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">corner1</span><span class="p">,</span> <span class="n">corner2</span><span class="p">,</span> <span class="n">w</span><span class="p">.</span><span class="n">x</span><span class="p">),</span>
+                      <span class="n">Mathf</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">corner3</span><span class="p">,</span> <span class="n">corner4</span><span class="p">,</span> <span class="n">w</span><span class="p">.</span><span class="n">x</span><span class="p">),</span>
+                      <span class="n">w</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div><p>到这里我们完成了2D Prelin噪声的构建，加下来就是怎么利用噪声生成贴图并转成PNG存储起来~
 下面的代码生成了一个噪声的贴图并且返回</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> width = <span style="color:#ae81ff">512</span>;  <span style="color:#75715e">// 贴图宽度
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> height = <span style="color:#ae81ff">512</span>; <span style="color:#75715e">// 贴图高度
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">float</span> xOrg = <span style="color:#ae81ff">0f</span>;  <span style="color:#75715e">// 宽度偏移起点
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">float</span> yOrg = <span style="color:#ae81ff">0f</span>;  <span style="color:#75715e">// 高度偏移起点
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">float</span> scale = <span style="color:#ae81ff">15f</span>; <span style="color:#75715e">// 周期
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">private</span> Texture2D CreateTexture()
-{
-      Texture2D tex = <span style="color:#66d9ef">new</span> Texture2D(width, height);
-      Color[] pix = <span style="color:#66d9ef">new</span> Color[width * height];
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="kt">int</span> <span class="n">width</span> <span class="p">=</span> <span class="m">512</span><span class="p">;</span>  <span class="c1">// 贴图宽度
+</span><span class="c1"></span><span class="k">private</span> <span class="kt">int</span> <span class="n">height</span> <span class="p">=</span> <span class="m">512</span><span class="p">;</span> <span class="c1">// 贴图高度
+</span><span class="c1"></span><span class="k">private</span> <span class="kt">float</span> <span class="n">xOrg</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>  <span class="c1">// 宽度偏移起点
+</span><span class="c1"></span><span class="k">private</span> <span class="kt">float</span> <span class="n">yOrg</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>  <span class="c1">// 高度偏移起点
+</span><span class="c1"></span><span class="k">private</span> <span class="kt">float</span> <span class="n">scale</span> <span class="p">=</span> <span class="m">15f</span><span class="p">;</span> <span class="c1">// 周期
+</span><span class="c1"></span>
+<span class="k">private</span> <span class="n">Texture2D</span> <span class="n">CreateTexture</span><span class="p">()</span>
+<span class="p">{</span>
+      <span class="n">Texture2D</span> <span class="n">tex</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Texture2D</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">);</span>
+      <span class="n">Color</span><span class="p">[]</span> <span class="n">pix</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Color</span><span class="p">[</span><span class="n">width</span> <span class="p">*</span> <span class="n">height</span><span class="p">];</span>
 
-      <span style="color:#66d9ef">float</span> y = <span style="color:#ae81ff">0f</span>;
-      <span style="color:#66d9ef">while</span> (y &lt; height)
-      {
-          <span style="color:#66d9ef">float</span> x = <span style="color:#ae81ff">0f</span>;
-          <span style="color:#66d9ef">while</span> (x &lt; width)
-          {
-              <span style="color:#66d9ef">float</span> xCoord = xOrg + x / width * scale;
-              <span style="color:#66d9ef">float</span> yCoord = yOrg + y / height * scale;
-              <span style="color:#66d9ef">float</span> sample = PrelinNoise.prelin_noise(<span style="color:#66d9ef">new</span> Vector2(xCoord, yCoord));
-              pix[(<span style="color:#66d9ef">int</span>)y * width + (<span style="color:#66d9ef">int</span>)x] = <span style="color:#66d9ef">new</span> Color(sample, sample, sample);
-              x++;
-          }
-          y++;
-      }
+      <span class="kt">float</span> <span class="n">y</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">y</span> <span class="p">&lt;</span> <span class="n">height</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="kt">float</span> <span class="n">x</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
+          <span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="p">&lt;</span> <span class="n">width</span><span class="p">)</span>
+          <span class="p">{</span>
+              <span class="kt">float</span> <span class="n">xCoord</span> <span class="p">=</span> <span class="n">xOrg</span> <span class="p">+</span> <span class="n">x</span> <span class="p">/</span> <span class="n">width</span> <span class="p">*</span> <span class="n">scale</span><span class="p">;</span>
+              <span class="kt">float</span> <span class="n">yCoord</span> <span class="p">=</span> <span class="n">yOrg</span> <span class="p">+</span> <span class="n">y</span> <span class="p">/</span> <span class="n">height</span> <span class="p">*</span> <span class="n">scale</span><span class="p">;</span>
+              <span class="kt">float</span> <span class="n">sample</span> <span class="p">=</span> <span class="n">PrelinNoise</span><span class="p">.</span><span class="n">prelin_noise</span><span class="p">(</span><span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">xCoord</span><span class="p">,</span> <span class="n">yCoord</span><span class="p">));</span>
+              <span class="n">pix</span><span class="p">[(</span><span class="kt">int</span><span class="p">)</span><span class="n">y</span> <span class="p">*</span> <span class="n">width</span> <span class="p">+</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">x</span><span class="p">]</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Color</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">sample</span><span class="p">);</span>
+              <span class="n">x</span><span class="p">++;</span>
+          <span class="p">}</span>
+          <span class="n">y</span><span class="p">++;</span>
+      <span class="p">}</span>
 
-      tex.SetPixels(pix);
-      tex.Apply();
+      <span class="n">tex</span><span class="p">.</span><span class="n">SetPixels</span><span class="p">(</span><span class="n">pix</span><span class="p">);</span>
+      <span class="n">tex</span><span class="p">.</span><span class="n">Apply</span><span class="p">();</span>
 
-      <span style="color:#66d9ef">return</span> tex;
-}
+      <span class="k">return</span> <span class="n">tex</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>下面的函数将贴图转换成PNG图片存储到特定位置</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> SaveTexture(Texture2D tex, <span style="color:#66d9ef">string</span> path)
-{
-      <span style="color:#66d9ef">if</span> (File.Exists(path))
-      {
-          Debug.LogWarning(<span style="color:#e6db74">&#34;已有文件&#34;</span>);
-          <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-      }
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="kt">bool</span> <span class="n">SaveTexture</span><span class="p">(</span><span class="n">Texture2D</span> <span class="n">tex</span><span class="p">,</span> <span class="kt">string</span> <span class="n">path</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">File</span><span class="p">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+      <span class="p">{</span>
+          <span class="n">Debug</span><span class="p">.</span><span class="n">LogWarning</span><span class="p">(</span><span class="s">&#34;已有文件&#34;</span><span class="p">);</span>
+          <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+      <span class="p">}</span>
 
-      <span style="color:#66d9ef">if</span> (tex == <span style="color:#66d9ef">null</span>)
-      {
-          Debug.LogWarning(<span style="color:#e6db74">&#34;贴图为空&#34;</span>);
-          <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
-      }
+      <span class="k">if</span> <span class="p">(</span><span class="n">tex</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">Debug</span><span class="p">.</span><span class="n">LogWarning</span><span class="p">(</span><span class="s">&#34;贴图为空&#34;</span><span class="p">);</span>
+          <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+      <span class="p">}</span>
 
-      <span style="color:#75715e">// 贴图转换为PNG图片
-</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">byte</span>[] texData = tex.EncodeToPNG();
+      <span class="c1">// 贴图转换为PNG图片
+</span><span class="c1"></span>      <span class="kt">byte</span><span class="p">[]</span> <span class="n">texData</span> <span class="p">=</span> <span class="n">tex</span><span class="p">.</span><span class="n">EncodeToPNG</span><span class="p">();</span>
 
-      <span style="color:#75715e">// 如果没有目录则创建目录
-</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">int</span> index = path.LastIndexOf(<span style="color:#e6db74">&#39;/&#39;</span>);
-      <span style="color:#66d9ef">string</span> dir = path.Remove(index);
-      <span style="color:#66d9ef">if</span> (!Directory.Exists(dir))
-      {
-          Directory.CreateDirectory(dir);
-      }
+      <span class="c1">// 如果没有目录则创建目录
+</span><span class="c1"></span>      <span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="n">path</span><span class="p">.</span><span class="n">LastIndexOf</span><span class="p">(</span><span class="sc">&#39;/&#39;</span><span class="p">);</span>
+      <span class="kt">string</span> <span class="n">dir</span> <span class="p">=</span> <span class="n">path</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(!</span><span class="n">Directory</span><span class="p">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span>
+      <span class="p">{</span>
+          <span class="n">Directory</span><span class="p">.</span><span class="n">CreateDirectory</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span>
+      <span class="p">}</span>
 
-      <span style="color:#75715e">// 贴图存储
-</span><span style="color:#75715e"></span>      File.WriteAllBytes(path, texData);
+      <span class="c1">// 贴图存储
+</span><span class="c1"></span>      <span class="n">File</span><span class="p">.</span><span class="n">WriteAllBytes</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">texData</span><span class="p">);</span>
 
-      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
-  }
+      <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+  <span class="p">}</span>
 </code></pre></div><p>后续还会陆续更新Sample噪声，分型噪声等利用Unity实现的方式</p>
 ]]></content>
-        </item>
-        
-        <item>
-            <title>贝塞尔曲线</title>
-            <link>https://ylong765.github.io/Sooda/posts/2018/09/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</link>
-            <pubDate>Sat, 22 Sep 2018 23:32:36 +0800</pubDate>
-            
-            <guid>https://ylong765.github.io/Sooda/posts/2018/09/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</guid>
-            <description>贝塞尔曲线 本文章借鉴自Unity中的曲线绘制.
+		</item>
+		
+		<item>
+			<title>贝塞尔曲线</title>
+			<link>https://yLong765.github.io/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</link>
+			<pubDate>Sat, 22 Sep 2018 23:32:36 +0800</pubDate>
+			
+			<guid>https://yLong765.github.io/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</guid>
+			<description>贝塞尔曲线 本文章借鉴自Unity中的曲线绘制.
 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线.
 原理 在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线
 
@@ -713,7 +713,7 @@ private static Vector2 Hash22(Vector2 p){p = new Vector2(Vector2.Dot(p, new Ve
 代码 首先我们需要一个数据类Curve,存储简单的Vector3数组
 // 贝塞尔曲线数据 public Vector3[] points;  然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
 public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayout.BeginVertical(); EditorGUILayout.PropertyField(points, new GUIContent(&amp;#34;坐标组&amp;#34;), true); EditorGUILayout.</description>
-            <content type="html"><![CDATA[<h2 id="贝塞尔曲线">贝塞尔曲线</h2>
+			<content type="html"><![CDATA[<h2 id="贝塞尔曲线">贝塞尔曲线</h2>
 
 <p>本文章借鉴自<a href="http://gad.qq.com/article/detail/23531">Unity中的曲线绘制</a>.</p>
 
@@ -742,53 +742,53 @@ public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayo
 <h3 id="代码">代码</h3>
 
 <p>首先我们需要一个数据类Curve,存储简单的Vector3数组</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// 贝塞尔曲线数据
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> Vector3[] points;
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// 贝塞尔曲线数据
+</span><span class="c1"></span><span class="k">public</span> <span class="n">Vector3</span><span class="p">[]</span> <span class="n">points</span><span class="p">;</span>
 </code></pre></div>
 <p>然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: <a href="https://ylong765.github.io/Yinl-Blog/2018/07/24/Unity编译器/">Unity编辑器</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">void</span> OnInspectorGUI()
-{
-    serializedObject.Update();
-    EditorGUILayout.BeginVertical();
-    EditorGUILayout.PropertyField(points, <span style="color:#66d9ef">new</span> GUIContent(<span style="color:#e6db74">&#34;坐标组&#34;</span>), <span style="color:#66d9ef">true</span>);
-    EditorGUILayout.EndVertical();
-    serializedObject.ApplyModifiedProperties();
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="n">OnInspectorGUI</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">serializedObject</span><span class="p">.</span><span class="n">Update</span><span class="p">();</span>
+    <span class="n">EditorGUILayout</span><span class="p">.</span><span class="n">BeginVertical</span><span class="p">();</span>
+    <span class="n">EditorGUILayout</span><span class="p">.</span><span class="n">PropertyField</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="k">new</span> <span class="n">GUIContent</span><span class="p">(</span><span class="s">&#34;坐标组&#34;</span><span class="p">),</span> <span class="k">true</span><span class="p">);</span>
+    <span class="n">EditorGUILayout</span><span class="p">.</span><span class="n">EndVertical</span><span class="p">();</span>
+    <span class="n">serializedObject</span><span class="p">.</span><span class="n">ApplyModifiedProperties</span><span class="p">();</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>然后接下来时重写OnSceneGUI函数了,不过在之前我们要看看具体怎么用代码来实现刚才的N阶曲线.
 因为我们要利用直线来绘制,所以需要一个for循环来执行绘制,利用GetPoint函数来获取具体每个精度点的位置然后绘制直线就好了.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Vector3 lineStart = GetPoint(<span style="color:#ae81ff">0f</span>); <span style="color:#75715e">// GetPoint函数为获取当前点的位置
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">1</span>; i &lt;= curve.lineSteps; i++) <span style="color:#75715e">// lineSteps为绘制精度
-</span><span style="color:#75715e"></span>{
-    Vector3 lineEnd = GetPoint(i / (<span style="color:#66d9ef">float</span>)curve.lineSteps);
-    Handles.DrawLine(lineStart, lineEnd);
-    lineStart = lineEnd;
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Vector3</span> <span class="n">lineStart</span> <span class="p">=</span> <span class="n">GetPoint</span><span class="p">(</span><span class="m">0f</span><span class="p">);</span> <span class="c1">// GetPoint函数为获取当前点的位置
+</span><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="n">curve</span><span class="p">.</span><span class="n">lineSteps</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span> <span class="c1">// lineSteps为绘制精度
+</span><span class="c1"></span><span class="p">{</span>
+    <span class="n">Vector3</span> <span class="n">lineEnd</span> <span class="p">=</span> <span class="n">GetPoint</span><span class="p">(</span><span class="n">i</span> <span class="p">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">curve</span><span class="p">.</span><span class="n">lineSteps</span><span class="p">);</span>
+    <span class="n">Handles</span><span class="p">.</span><span class="n">DrawLine</span><span class="p">(</span><span class="n">lineStart</span><span class="p">,</span> <span class="n">lineEnd</span><span class="p">);</span>
+    <span class="n">lineStart</span> <span class="p">=</span> <span class="n">lineEnd</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>每次取差值就能减少一阶,所以利用递归从n阶到最后的一阶然后的返回值就是最终点的位置.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> Vector3 GetPoint(<span style="color:#66d9ef">float</span> t)
-{
-    Vector3[] pos = <span style="color:#66d9ef">new</span> Vector3[curve.points.Length];
-    pos = (Vector3[])curve.points.Clone();
-    <span style="color:#66d9ef">return</span> curve.transform.TransformPoint(GetLerpPoint(pos, t));
-}
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">Vector3</span> <span class="n">GetPoint</span><span class="p">(</span><span class="kt">float</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Vector3</span><span class="p">[]</span> <span class="n">pos</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">[</span><span class="n">curve</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">Length</span><span class="p">];</span>
+    <span class="n">pos</span> <span class="p">=</span> <span class="p">(</span><span class="n">Vector3</span><span class="p">[])</span><span class="n">curve</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">Clone</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">curve</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">TransformPoint</span><span class="p">(</span><span class="n">GetLerpPoint</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">t</span><span class="p">));</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">public</span> Vector3 GetLerpPoint(Vector3[] pos, <span style="color:#66d9ef">float</span> t)
-{
-    <span style="color:#66d9ef">if</span> (pos.Length == <span style="color:#ae81ff">2</span>)
-    {
-        <span style="color:#66d9ef">return</span> Vector3.Lerp(pos[<span style="color:#ae81ff">0</span>], pos[<span style="color:#ae81ff">1</span>], t);
-    }
-    Vector3[] newPos = <span style="color:#66d9ef">new</span> Vector3[pos.Length - <span style="color:#ae81ff">1</span>];
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; pos.Length - <span style="color:#ae81ff">1</span>; i++)
-    {
-        newPos[i] = Vector3.Lerp(pos[i], pos[i + <span style="color:#ae81ff">1</span>], t);
-    }
+<span class="k">public</span> <span class="n">Vector3</span> <span class="n">GetLerpPoint</span><span class="p">(</span><span class="n">Vector3</span><span class="p">[]</span> <span class="n">pos</span><span class="p">,</span> <span class="kt">float</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pos</span><span class="p">.</span><span class="n">Length</span> <span class="p">==</span> <span class="m">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="m">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="n">t</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">Vector3</span><span class="p">[]</span> <span class="n">newPos</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">[</span><span class="n">pos</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">pos</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+    <span class="p">{</span>
+        <span class="n">newPos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span> <span class="p">+</span> <span class="m">1</span><span class="p">],</span> <span class="n">t</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    <span style="color:#66d9ef">return</span> GetLerpPoint(newPos, t);
-}
+    <span class="k">return</span> <span class="n">GetLerpPoint</span><span class="p">(</span><span class="n">newPos</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>]]></content>
-        </item>
-        
-    </channel>
+		</item>
+		
+	</channel>
 </rss>
