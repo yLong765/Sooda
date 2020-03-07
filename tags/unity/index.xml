@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Unity on Sooda</title>
-    <link>https://yLong765.github.io/Sooda/tags/unity/</link>
+    <link>https://yinl.fun/tags/unity/</link>
     <description>Recent content in Unity on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Fri, 23 Nov 2018 22:35:04 +0800</lastBuildDate>
     
-	<atom:link href="https://yLong765.github.io/Sooda/tags/unity/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://yinl.fun/tags/unity/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Unity Framework</title>
-      <link>https://yLong765.github.io/Sooda/posts/unity-framework/</link>
+      <link>https://yinl.fun/posts/unity-framework/</link>
       <pubDate>Fri, 23 Nov 2018 22:35:04 +0800</pubDate>
       
-      <guid>https://yLong765.github.io/Sooda/posts/unity-framework/</guid>
+      <guid>https://yinl.fun/posts/unity-framework/</guid>
       <description>Unity 框架 本文UI框架借鉴游客学院
 本文章源码可在我的GitHub中找到
 UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
