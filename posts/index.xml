@@ -1,20 +1,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Posts on Sooda</title>
-		<link>https://yinl.fun/posts/</link>
+		<link>https://sooda.net.cn/posts/</link>
 		<description>Recent content in Posts on Sooda</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
 		<lastBuildDate>Tue, 04 Jun 2019 23:29:22 +0800</lastBuildDate>
-		<atom:link href="https://yinl.fun/posts/index.xml" rel="self" type="application/rss+xml" />
+		<atom:link href="https://sooda.net.cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
 			<title>CSharpSocket和protpBuf新手村教程</title>
-			<link>https://yinl.fun/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</link>
+			<link>https://sooda.net.cn/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</link>
 			<pubDate>Tue, 04 Jun 2019 23:29:22 +0800</pubDate>
 			
-			<guid>https://yinl.fun/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</guid>
+			<guid>https://sooda.net.cn/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/</guid>
 			<description>Boss-&amp;gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
 1级-&amp;gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
   创建Socket实例，别忘了引用System.Net和System.Net.Sockets
@@ -371,10 +371,10 @@ Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行�
 		
 		<item>
 			<title>判断点在多边形内部</title>
-			<link>https://yinl.fun/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</link>
+			<link>https://sooda.net.cn/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</link>
 			<pubDate>Sun, 07 Apr 2019 22:48:28 +0800</pubDate>
 			
-			<guid>https://yinl.fun/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</guid>
+			<guid>https://sooda.net.cn/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/</guid>
 			<description>点在多边形内部的判断有很多种方法，性能最好也准确的算法应属射线法。
 推荐Milo Yip大神的知乎上的回答
 射线法思想 射线法是由从点出发向一个方向发送射线，判断与边相交的次数，如果为奇数则为多边形的内部，如果为偶数则为外部。
@@ -453,10 +453,10 @@ Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行�
 		
 		<item>
 			<title>Unity Framework</title>
-			<link>https://yinl.fun/posts/unity-framework/</link>
+			<link>https://sooda.net.cn/posts/unity-framework/</link>
 			<pubDate>Fri, 23 Nov 2018 22:35:04 +0800</pubDate>
 			
-			<guid>https://yinl.fun/posts/unity-framework/</guid>
+			<guid>https://sooda.net.cn/posts/unity-framework/</guid>
 			<description>Unity 框架 本文UI框架借鉴游客学院
 本文章源码可在我的GitHub中找到
 UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
@@ -543,10 +543,10 @@ public class SceneLogin : SceneBase {private InputField playerName;private Tex
 		
 		<item>
 			<title>图形学Prelin噪声解析</title>
-			<link>https://yinl.fun/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
+			<link>https://sooda.net.cn/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
 			<pubDate>Sat, 22 Sep 2018 23:34:11 +0800</pubDate>
 			
-			<guid>https://yinl.fun/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</guid>
+			<guid>https://sooda.net.cn/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</guid>
 			<description>Prelin噪声 Prelin噪声由Ken Perlin在1983年提出，因参与制作迪士尼的动画电影《电子世界争霸战》，但不满于当时那种非常不自然的纹理效果，而提出了Perlin噪声 本篇文章借鉴各路大神的文章总结而来：
  冯乐乐：【图形学】谈谈噪声 则卷大明：Unity3D教程：PerlinNoise原理及实现 Unity API：Mathf.PerlinNoise  此文章源码在我的个人GitHub上，本文章的仅仅实现了Prelin噪声中的最简单版本。上图先~
 利用Unity实现2D Prelin噪声 candycat的文章非常好，不过没有Unity的具体实现代码，而则卷大明的文章中只给出了一部分的代码。最后发现了Unity自带2D噪声，所以结合多方文章最终完成了最简单的Prelin噪声。
@@ -695,10 +695,10 @@ private static Vector2 Hash22(Vector2 p){p = new Vector2(Vector2.Dot(p, new Ve
 		
 		<item>
 			<title>贝塞尔曲线</title>
-			<link>https://yinl.fun/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</link>
+			<link>https://sooda.net.cn/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</link>
 			<pubDate>Sat, 22 Sep 2018 23:32:36 +0800</pubDate>
 			
-			<guid>https://yinl.fun/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</guid>
+			<guid>https://sooda.net.cn/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</guid>
 			<description>贝塞尔曲线 本文章借鉴自Unity中的曲线绘制.
 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线.
 原理 在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线

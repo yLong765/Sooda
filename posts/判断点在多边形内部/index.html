@@ -26,7 +26,7 @@
 首先是数据类，存储多边形的点和最大最小的XY，用来做快速判断
 // 多边形点的数据存储class PolygonConfig{public float maxX;public float maxY;public float minX;public float minY;public List&lt;Vector2&gt; points = new List&lt;Vector2&gt;();public void SetMaxAndMinXY(){if (points.Count &gt; 0){maxX = points[0].x;maxY = points[0].y;minX = points[0].x;minY = points[0].y;}for (int i = 1; i &lt; points.Count; i&#43;&#43;){maxX = Mathf.Max(maxX, points[i].x);maxY = Mathf.Max(maxY, points[i].y);}}}下面是判断的核心方法" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yinl.fun/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/" />
+<meta property="og:url" content="https://sooda.net.cn/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/" />
 <meta property="article:published_time" content="2019-04-07T22:48:28+08:00" />
 <meta property="article:modified_time" content="2019-04-07T22:48:28+08:00" />
 <meta name="twitter:card" content="summary"/>
@@ -45,7 +45,7 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>判断点在多边形内部</title>
-	<link rel="stylesheet" href="https://yinl.fun/css/style.min.657bcb7af31123e4156b1a3d2ff60a636717e54ead74f882136b5114cf72b55e.css" integrity="sha256-ZXvLevMRI+QVaxo9L/YKY2cX5U6tdPiCE2tRFM9ytV4=" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://sooda.net.cn/css/style.min.657bcb7af31123e4156b1a3d2ff60a636717e54ead74f882136b5114cf72b55e.css" integrity="sha256-ZXvLevMRI+QVaxo9L/YKY2cX5U6tdPiCE2tRFM9ytV4=" crossorigin="anonymous">
 	
 </head>
 
@@ -55,12 +55,12 @@
 		<div class="hdr-wrapper section-inner">
 			<div class="hdr-left">
 				<div class="site-branding">
-					<a href="https://yinl.fun">Sooda</a>
+					<a href="https://sooda.net.cn">Sooda</a>
 				</div>
 				<nav class="site-nav hide-in-mobile">
 					
-				<a href="https://yinl.fun/posts/">Posts</a>
-				<a href="https://yinl.fun/tags/">Tags</a>
+				<a href="https://sooda.net.cn/posts/">Posts</a>
+				<a href="https://sooda.net.cn/tags/">Tags</a>
 
 				</nav>
 			</div>
@@ -71,8 +71,8 @@
 	</header>
 	<div id="mobile-menu" class="animated fast">
 		<ul>
-			<li><a href="https://yinl.fun/posts/">Posts</a></li>
-			<li><a href="https://yinl.fun/tags/">Tags</a></li>
+			<li><a href="https://sooda.net.cn/posts/">Posts</a></li>
+			<li><a href="https://sooda.net.cn/tags/">Tags</a></li>
 		</ul>
 	</div>
 
@@ -158,17 +158,17 @@
 			<hr class="post-end">
 			<footer class="post-info">
 				<p>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://yinl.fun/tags/math">Math</a></span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://sooda.net.cn/tags/math">Math</a></span>
 				</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>217 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-07 22:48</p>
 			</footer>
 		</article>
 		<div class="post-nav thin">
-			<a class="next-post" href="https://yinl.fun/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/">
+			<a class="next-post" href="https://sooda.net.cn/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>CSharpSocket和protpBuf新手村教程</span>
 			</a>
-			<a class="prev-post" href="https://yinl.fun/posts/unity-framework/">
+			<a class="prev-post" href="https://sooda.net.cn/posts/unity-framework/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Unity Framework</span>
 			</a>
 		</div>
@@ -177,7 +177,7 @@
 	</main>
 
 
-	<script src="https://yinl.fun/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	<script src="https://sooda.net.cn/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
 	
 
 </body>
