@@ -14,13 +14,9 @@ UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面�
 框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
  InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
  onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;();warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&#34;BtGameStart&#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr.">
-<meta itemprop="datePublished" content="2018-11-23T22:35:04&#43;08:00" />
+public class SceneLogin : SceneBase { private InputField playerName; private Text warnText; protected override void InitDate() { //初始化皮肤  setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString()); } protected override void InitViewDate() { //绑定界面UI  playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;(); warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;(); } protected override void onClick(GameObject BtObject) { if (BtObject.name.Equals(&#34;BtGameStart&#34;)) { string name = playerName.text; if (NameChick(name)) { SceneMgr."><meta itemprop="datePublished" content="2018-11-23T22:35:04&#43;08:00" />
 <meta itemprop="dateModified" content="2018-11-23T22:35:04&#43;08:00" />
 <meta itemprop="wordCount" content="122">
-
-
-
 <meta itemprop="keywords" content="Unity,Framework," /><meta property="og:title" content="Unity Framework" />
 <meta property="og:description" content="Unity 框架 本文UI框架借鉴游客学院
 本文章源码可在我的GitHub中找到
@@ -28,11 +24,12 @@ UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面�
 框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
  InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
  onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;();warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&#34;BtGameStart&#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr." />
+public class SceneLogin : SceneBase { private InputField playerName; private Text warnText; protected override void InitDate() { //初始化皮肤  setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString()); } protected override void InitViewDate() { //绑定界面UI  playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;(); warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;(); } protected override void onClick(GameObject BtObject) { if (BtObject.name.Equals(&#34;BtGameStart&#34;)) { string name = playerName.text; if (NameChick(name)) { SceneMgr." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://sooda.net.cn/posts/unity-framework/" />
-<meta property="article:published_time" content="2018-11-23T22:35:04+08:00" />
-<meta property="article:modified_time" content="2018-11-23T22:35:04+08:00" />
+<meta property="og:url" content="https://sooda.net.cn/posts/unity-framework/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2018-11-23T22:35:04&#43;08:00" />
+<meta property="article:modified_time" content="2018-11-23T22:35:04&#43;08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Unity Framework"/>
 <meta name="twitter:description" content="Unity 框架 本文UI框架借鉴游客学院
@@ -41,7 +38,7 @@ UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面�
 框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
  InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
  onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;();warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&#34;BtGameStart&#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr."/>
+public class SceneLogin : SceneBase { private InputField playerName; private Text warnText; protected override void InitDate() { //初始化皮肤  setSkinPath(&#34;UI/Scene/&#34; &#43; SceneType.SceneLogin.ToString()); } protected override void InitViewDate() { //绑定界面UI  playerName = skin.transform.Find(&#34;loginBackground/playerName&#34;).GetComponent&lt;InputField&gt;(); warnText = skin.transform.Find(&#34;warnText&#34;).GetComponent&lt;Text&gt;(); } protected override void onClick(GameObject BtObject) { if (BtObject.name.Equals(&#34;BtGameStart&#34;)) { string name = playerName.text; if (NameChick(name)) { SceneMgr."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -189,7 +186,7 @@ public class SceneLogin : SceneBase {private InputField playerName;private Tex
 	</main>
 
 
-	<script src="https://sooda.net.cn/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	<script src="https://sooda.net.cn/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
 	
 
 </body>

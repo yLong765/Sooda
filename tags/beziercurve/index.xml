@@ -7,18 +7,14 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 22 Sep 2018 23:32:36 +0800</lastBuildDate>
-    
-	<atom:link href="https://sooda.net.cn/tags/beziercurve/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 22 Sep 2018 23:32:36 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/beziercurve/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>贝塞尔曲线</title>
       <link>https://sooda.net.cn/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</link>
       <pubDate>Sat, 22 Sep 2018 23:32:36 +0800</pubDate>
       
       <guid>https://sooda.net.cn/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</guid>
-      <description>贝塞尔曲线 本文章借鉴自Unity中的曲线绘制.
+      <description>本文章借鉴自Unity中的曲线绘制.
 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线.
 原理 在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线
 
@@ -30,7 +26,7 @@
 \[ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] \]
 而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.
 代码 首先我们需要一个数据类Curve,存储简单的Vector3数组
-// 贝塞尔曲线数据 public Vector3[] points;  然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
+// 贝塞尔曲线数据 public Vector3[] points; 然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: Unity编辑器
 public override void OnInspectorGUI() { serializedObject.Update(); EditorGUILayout.BeginVertical(); EditorGUILayout.PropertyField(points, new GUIContent(&amp;#34;坐标组&amp;#34;), true); EditorGUILayout.</description>
     </item>
     

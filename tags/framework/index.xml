@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Fri, 23 Nov 2018 22:35:04 +0800</lastBuildDate>
-    
-	<atom:link href="https://sooda.net.cn/tags/framework/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 23 Nov 2018 22:35:04 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/framework/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Unity Framework</title>
       <link>https://sooda.net.cn/posts/unity-framework/</link>
@@ -24,7 +20,7 @@ UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面�
 框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
  InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
  onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase {private InputField playerName;private Text warnText;protected override void InitDate(){//初始化皮肤 setSkinPath(&amp;#34;UI/Scene/&amp;#34; + SceneType.SceneLogin.ToString());}protected override void InitViewDate(){//绑定界面UI playerName = skin.transform.Find(&amp;#34;loginBackground/playerName&amp;#34;).GetComponent&amp;lt;InputField&amp;gt;();warnText = skin.transform.Find(&amp;#34;warnText&amp;#34;).GetComponent&amp;lt;Text&amp;gt;();}protected override void onClick(GameObject BtObject){if (BtObject.name.Equals(&amp;#34;BtGameStart&amp;#34;)){string name = playerName.text;if (NameChick(name)){SceneMgr.</description>
+public class SceneLogin : SceneBase { private InputField playerName; private Text warnText; protected override void InitDate() { //初始化皮肤  setSkinPath(&amp;#34;UI/Scene/&amp;#34; + SceneType.SceneLogin.ToString()); } protected override void InitViewDate() { //绑定界面UI  playerName = skin.transform.Find(&amp;#34;loginBackground/playerName&amp;#34;).GetComponent&amp;lt;InputField&amp;gt;(); warnText = skin.transform.Find(&amp;#34;warnText&amp;#34;).GetComponent&amp;lt;Text&amp;gt;(); } protected override void onClick(GameObject BtObject) { if (BtObject.name.Equals(&amp;#34;BtGameStart&amp;#34;)) { string name = playerName.text; if (NameChick(name)) { SceneMgr.</description>
     </item>
     
   </channel>

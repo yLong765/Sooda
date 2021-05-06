@@ -11,40 +11,37 @@
 <meta itemprop="description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
 1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
   创建Socket实例，别忘了引用System.Net和System.Net.Sockets
-Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
-IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
-IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
-client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
-Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client.">
-<meta itemprop="datePublished" content="2019-06-04T23:29:22&#43;08:00" />
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接  Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道）  IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip   链接
+client.Connect(point); // client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4   开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive); thread.IsBackground = true; // 后台执行线程 thread.Start(client); // 传入客户端的Socket // Recive函数 static void Recive(object o) { var client = o as Socket; while (true) { byte[] buffer = new byte[1024 * 1024 * 2]; int effective = client."><meta itemprop="datePublished" content="2019-06-04T23:29:22&#43;08:00" />
 <meta itemprop="dateModified" content="2019-06-04T23:29:22&#43;08:00" />
 <meta itemprop="wordCount" content="763">
-
-
-
 <meta itemprop="keywords" content="Socket,ProtpBuf," /><meta property="og:title" content="CSharpSocket和protpBuf新手村教程" />
 <meta property="og:description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
 1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
   创建Socket实例，别忘了引用System.Net和System.Net.Sockets
-Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
-IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
-IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
-client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
-Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client." />
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接  Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道）  IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip   链接
+client.Connect(point); // client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4   开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive); thread.IsBackground = true; // 后台执行线程 thread.Start(client); // 传入客户端的Socket // Recive函数 static void Recive(object o) { var client = o as Socket; while (true) { byte[] buffer = new byte[1024 * 1024 * 2]; int effective = client." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://sooda.net.cn/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/" />
-<meta property="article:published_time" content="2019-06-04T23:29:22+08:00" />
-<meta property="article:modified_time" content="2019-06-04T23:29:22+08:00" />
+<meta property="og:url" content="https://sooda.net.cn/posts/csharpsocket%E5%92%8Cprotpbuf%E6%96%B0%E6%89%8B%E6%9D%91%E6%95%99%E7%A8%8B/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-06-04T23:29:22&#43;08:00" />
+<meta property="article:modified_time" content="2019-06-04T23:29:22&#43;08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CSharpSocket和protpBuf新手村教程"/>
 <meta name="twitter:description" content="Boss-&gt;Socket 此教程纯属Socket初级应用篇，因为网上全是理论篇（实践才是王道）
 1级-&gt;Client创建   首先创建一个C#命令行工程（别告诉这个不会）
   创建Socket实例，别忘了引用System.Net和System.Net.Sockets
-Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接 Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
-IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道） IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
-IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip  链接
-client.Connect(point);// client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4  开启线程接收服务器消息，别忘了引用System.Threading
-Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行线程thread.Start(client); // 传入客户端的Socket// Recive函数static void Recive(object o){var client = o as Socket;while (true){byte[] buffer = new byte[1024 * 1024 * 2];int effective = client."/>
+Socket client = new Socket(SocketType.Stream, ProtocolType.Tcp); // TCP链接  Socket    设置要链接的服务器ip地址，IPAddress是C#提供的ip封装类
+IPAddress ip = IPAddress.Parse(&#34;127.0.0.1&#34;); // 本地地址127.0.0.1（别说你不知道）  IPAddress    设置要链接的服务器ip和端口，IPEndPoint是C#提供的ip和端口的封装类
+IPEndPoint point = new IPEndPoint(ip, 2333); // 端口为2333，ip为上一段代码的ip   链接
+client.Connect(point); // client.Connect(&#34;127.0.0.1&#34;, 2333); // 等同于3,4   开启线程接收服务器消息，别忘了引用System.Threading
+Thread thread = new Thread(Recive); thread.IsBackground = true; // 后台执行线程 thread.Start(client); // 传入客户端的Socket // Recive函数 static void Recive(object o) { var client = o as Socket; while (true) { byte[] buffer = new byte[1024 * 1024 * 2]; int effective = client."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -449,6 +446,9 @@ Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行�
 			</footer>
 		</article>
 		<div class="post-nav thin">
+			<a class="next-post" href="https://sooda.net.cn/posts/csharp%E6%89%98%E7%AE%A1%E5%A0%86%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>CSharp托管堆和垃圾回收</span>
+			</a>
 			<a class="prev-post" href="https://sooda.net.cn/posts/%E5%88%A4%E6%96%AD%E7%82%B9%E5%9C%A8%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E9%83%A8/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>判断点在多边形内部</span>
 			</a>
@@ -458,7 +458,7 @@ Thread thread = new Thread(Recive);thread.IsBackground = true; // 后台执行�
 	</main>
 
 
-	<script src="https://sooda.net.cn/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	<script src="https://sooda.net.cn/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
 	
 
 </body>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CSharp on Sooda</title>
+    <link>https://sooda.net.cn/tags/csharp/</link>
+    <description>Recent content in CSharp on Sooda</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 06 May 2021 21:43:19 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CSharp托管堆和垃圾回收</title>
+      <link>https://sooda.net.cn/posts/csharp%E6%89%98%E7%AE%A1%E5%A0%86%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</link>
+      <pubDate>Thu, 06 May 2021 21:43:19 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/posts/csharp%E6%89%98%E7%AE%A1%E5%A0%86%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</guid>
+      <description>CLR访问一个资源所需要的步骤  调用IL指令newobj，为代表资源的类型分配内存（C#的new操作符） 初始化内存，设置初始状态并使资源可用。类型的实例构造器负责设置初始状态 访问类型的成员来使用资源（有必要可以重复） 摧毁资源的状态以进行清理 释放内存。垃圾回收器独自负责这一步  从托管堆分配资源  CLR要求所有对象都从托管堆分配。进程初始化时，CLR规划出一个地址空间区域作为托管堆。CLR还要维护一个指针。该指针指向下一个对象在堆中的分配位置。刚开始的时候，指针位置设为地址空间区域的基地址 一个区域被非垃圾对象填满后，CLR会分配更多的区域。这个过程一直重复，直至整个进程地址空间都被填满。所以，你的应用程序的内存受进程的虚拟地址空间的限制。32位最多分配1.5GB，64位最多分配8TB new操作符导致CLR执行以下步骤： 计算类型的字段（以及从基类型继承的字段）所需的字节数 加上对象的开销所需要的字节数。每个对象都有两个开销字段：类型对象指针和同步快索引。32位为8字节，64位为16字节 CLR检查区域中是否有分配对象所需的字节数。如果托管堆有足够的可用空间，就在指针指向的地址处放入对象，为对象分配的字节会被清零。接着调用类型的构造器（为this参数传递指针），new操作符返回对象引用。就在返回这个引用之前，指针的值会加上对象占用的字节数来得到一个新值，既下一个对象放入托管堆时的地址。 对于托管堆，分配对象只需要在指针上加一个值——速度相当快。 由于托管堆在内存中连续分配对象，所以会因为引用的“局部化”（locality）而获得性能上的提升（注：缓存命中）。具体的说，这意味着进程的工作集会非常小，应用程序只需要很少的内存，从而提高了速度。还意味着代码使用的对象可以全部驻留在CPU缓存中。结果就是应用程序能以惊人的速度访问这些对象，因为CPU在执行大多数操作时，不会因为“缓存未命中”（cache miss）而被迫访问较慢的RAM  垃圾回收算法  引用计数算法 微软的“组件对象模型”（Component Object Model，COM）就是引用计数。堆上的每个对象都维护这一个内存字段来统计程序中多少“部分”正在使用对象。随着每一个“部分”到达代码中某个不在需要对象的地方，就递减对象的计数字段。计数字段变成0，对象就可以从内存中删除了。许多引用计数系统最大的问题就是处理不好循环利用 引用跟踪算法 CLR使用一种引用跟踪算法。引用跟踪算法只关心引用类型的变量，只有变量能引用堆上的对象。将所有引用类型变量都称为根 开始GC：暂停进程中的所有线程。防止线程在CLR检查期间访问对象并更改其状态 GC标记阶段： CLR遍历堆中所有对象，将同步索引字段中的一位设为0。表明所有对象都应该删除 CLR检查所有活动根，查看他们引用了哪些对象。任何根引用了堆上的对象，CLR都会标记那个对象，将同步索引中的一位设为1 一个对象被标记后，CLR会检查那个对象中的根，标记他们引用的对象。 如果发现对象已经标记，就不重新检查对象的字段。避免循环引用产生的死循 检查完毕后，堆中对象要么已标记，要么未标记。已标记不能回收，这种对象为可达（reachable）的。未标记回收，这种对象为不可达（unreachable）的 GC压缩（compact，注：碎片整理）阶段。CLR对堆中已标记的对象进行地址位移，使他们占用连续的内存空间（注：大对象堆中的对象不会压缩，所以还是会发生碎片化） 计算对象地址偏移位置。引用对象的根压缩后引用的还是最初内存中的位置，而非移动之后的位置。CLR要从每一个根减去所引用对象在内存中偏移的字节数。保证根还是引用和之前一样的对象；只是对象在内存中变换了位置 托管堆的指针指向最有一个幸存对象之后的位置 （注：静态字段引用的对象一直存在，直到用于加载类型的AppDomain卸载为止） 垃圾回收和调试 堆中存在一个Timer对象会造成一个线程池线程定期调用一个方法，导致垃圾回收会回收掉之后未调用的Timer对象。 C#编辑器的/debug模式编译程序集的时候，编辑器会应用System.Diagnostics.DebuggableAttribulte，并为结果程序集设置DebuggingMods的DisableOptimizations标志。运行时编译方法时，JIT编译器会看到这个标志，把根的生命周期延长至方法结束（Release模式无效）  public static void Main() { // 2000毫秒就调用一次TimerCallback方法的Timer对象 Timer t = new Timer(TimerCallback, null, 0, 2000); // 等待用户按Enter键 Console.ReadLine(); // 在ReadLine之后引用t(会被优化掉) // t = null; // 正确方式 t.Dispose(); } private static void TimerCallback(Object o) { Console.</description>
+    </item>
+    
+  </channel>
+</rss>

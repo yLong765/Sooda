@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Unity on Sooda</title>
-    <link>https://sooda.net.cn/tags/unity/</link>
-    <description>Recent content in Unity on Sooda</description>
+    <title>RAM on Sooda</title>
+    <link>https://sooda.net.cn/tags/ram/</link>
+    <description>Recent content in RAM on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 06 May 2021 22:09:58 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/unity/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 06 May 2021 22:09:58 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/ram/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Unity内存详解</title>
       <link>https://sooda.net.cn/posts/unity%E5%86%85%E5%AD%98%E8%AF%A6%E8%A7%A3/</link>
@@ -15,21 +15,6 @@
       
       <guid>https://sooda.net.cn/posts/unity%E5%86%85%E5%AD%98%E8%AF%A6%E8%A7%A3/</guid>
       <description>什么是内存  物理内存 移动设备没有独立显存，显存与内存公用 CPU访问数据，先从cache中找，如果cache miss则从内存中拿一段连续的指令到cache中。所以减少cache miss的方式就是尽量让数据连续 虚拟内存 移动设备没有内存交换（I/O速度慢，存储卡可擦写次数少） IOS中用内存压缩技术，压缩不活跃的内存，给活跃的App来使用 Android 内存管理 基本管理单位 - Page 4K per page：基本已4k为一个单位分配（不一定4k对齐） 用户态和内核态：完全隔离 内存管理工具（内存杀手）- low memory killer(AKA lmk) 安卓系统优先级：Native(系统内核) &amp;gt; System(系统级服务) &amp;gt; Persistent(用户级服务) &amp;gt; Foreground(前台应用，当前正在使用的) &amp;gt; Perceptible(辅助应用) &amp;gt; Service(后台服务) &amp;gt; Home(桌面) &amp;gt; Pervious(前一个使用过的应用) &amp;gt; Cache(缓存应用，后台) 内存不够时，killer调用，从底层到上层一层一层杀进程。直到有空余内存，或者杀到System让手机重启 内存指标 - *SS Resident Set Size(RSS)：当前使用APP所应用的所有内存(包括调用公共库分配给当前APP的内存) Proportional Set Size(PSS)：当前APP使用的内存和公共库分配的平摊内存 Unique Set Size(USS)：当前APP使用的内存  Unity的内存  Unity是一个C++引擎 底层完全是由C++写成 用户代码可以用il2cpp转成cpp代码 VM来进行跨平台 Unity内存按照分配方式分为 Native Memory：本机内存 Managed Memory：托管内存 Editor与Runtime的逻辑不通 Editor会在打开编辑器时就加载所有的资源，为了方便编辑 Runtime会在用到loadAsset时才会加载资源 Unity内存按照管理者分为 引擎管理内存 用户管理内存 Unity检测不到的内存：用户分配的native内存 Unity Native Memory管理 memory label：当前这一块内存要分配到哪一块类型池里 Allocator：Unity底层封装的分配内存函数，根据memory label分配到不同的池里边 NewAsRoot：生成Allocator，比如一个ShaderRoot 导致Native内存增长的因素 Scene里有过多的GameObject Audio DSP buffer：声音缓冲，填满buffer才会向CPU发送播放声音请求。为了避免频繁调用导致I/O耗时问题。buffer过大会导致声音延迟，因为很久才能填满buffer。buffer过小会导致CPU负担上升 Force to mono：强制单声道，减少一半内存 Format Compression Format：声音在内存的形态，压缩，解压，流式等 Code Size：滥用泛型代码，编译时展开速度过慢并且还占内存 AssetBundle TypeTree：处理不同版本间的序列化差异问题，如果用同样版本的编辑器生成的Runtime和AssetBundle，可以关闭TyepTree。有三个优点： 省内存。 减少AssetBundle包体大小 build和runtime会变快，(反)序列化变快。不关闭则会序列化两次，一次TypeTree一次实际内容 压缩方式 Lz4：快10倍，但是比Lzma包体大30% 大小和数量：玄学问题，按照自身项目实际情况决定 Resoures(官方建议不要再使用)： 会有一个头部进行索引(AssetBundle也有)。用的R-B Tree(红黑树)算法。资源很多树就很大，在游戏开始时就会加载到内存中并不能卸载，造成持续内存压力，并拖慢启动时间 Texture upload buffer：缓存，同DSP buffer。填满就向CPU push一次 r/w：用不到就不需要开启，因会在内存和显存中有两份 Mip Maps：UI就不需要开启了 Mesh r/w：同上 compression：有些版本开会比不开占用内存大 Managed Memory VM内存池 VM会返还内存给OS(操作系统)：当一块内存Block连续六次没有被GC访问的则会返回给OS GC机制 Boehm回收机制 Non-generational（非分代式） ：速度快 Non-compacting（非压缩式）：不进行碎片整理，速度快 下一代GC Incremental GC（渐进式GC）：分帧暂停主线程进行GC SGen：分代GC IL2CPP：升级版本的Boehm Memory fragmentation（内存碎片化） Zombie Memory（僵尸内存）：无用内存、没有释放的内存。通过代码管理和性能工具分析 建议： 用Destory显示释放，用NULL可能不会回收内存 对于高频调用的部分写池 少用闭包和匿名函数 少用协成，如果不释放会把所有内容全部常驻内存 减少配置表大小 单例 避免SetActive的消耗：把物体位置移到屏幕外  参考视频 浅谈Unity内存管理</description>
-    </item>
-    
-    <item>
-      <title>Unity Framework</title>
-      <link>https://sooda.net.cn/posts/unity-framework/</link>
-      <pubDate>Fri, 23 Nov 2018 22:35:04 +0800</pubDate>
-      
-      <guid>https://sooda.net.cn/posts/unity-framework/</guid>
-      <description>Unity 框架 本文UI框架借鉴游客学院
-本文章源码可在我的GitHub中找到
-UI框架 UI框架简介 本框架用的UGUI，比较难做出3D效果的界面，3D特效界面还是用NGUI好一些。SceneLogin、SceneMain、SceneTest是演示的三个界面。
-框架流程Scene 打开界面通过SceneMgr。SceneMgr会调用SceneBase中的OnInit。数据会传输到sceneDates不定长数组里。界面初始化会如下依次执行
- InitDate()：必须设置UI皮肤（UI的prefab），界面没有生成前的初始化数据。 InitSkin()：会自动执行，创建UI实例。 InitViewDate()：界面生成完后，绑定界面UI的初始化。（如我想知道玩家输入的名字叫什么，可以绑定Text获取，注：Button已经被绑定完成不需要重写绑定）。  其他可重写函数
- onClick(GameObject BtObject)：相应Button事件，通过传入的BtObject分辨每个Button。  SceneLogin.cs代码
-public class SceneLogin : SceneBase { private InputField playerName; private Text warnText; protected override void InitDate() { //初始化皮肤  setSkinPath(&amp;#34;UI/Scene/&amp;#34; + SceneType.SceneLogin.ToString()); } protected override void InitViewDate() { //绑定界面UI  playerName = skin.transform.Find(&amp;#34;loginBackground/playerName&amp;#34;).GetComponent&amp;lt;InputField&amp;gt;(); warnText = skin.transform.Find(&amp;#34;warnText&amp;#34;).GetComponent&amp;lt;Text&amp;gt;(); } protected override void onClick(GameObject BtObject) { if (BtObject.name.Equals(&amp;#34;BtGameStart&amp;#34;)) { string name = playerName.text; if (NameChick(name)) { SceneMgr.</description>
     </item>
     
   </channel>

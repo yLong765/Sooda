@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lua on Sooda</title>
+    <link>https://sooda.net.cn/tags/lua/</link>
+    <description>Recent content in Lua on Sooda</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 06 May 2021 22:09:58 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/lua/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lua GC 原理</title>
+      <link>https://sooda.net.cn/posts/luagc%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Thu, 06 May 2021 22:09:58 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/posts/luagc%E5%8E%9F%E7%90%86/</guid>
+      <description>梳理概念(作者: Cloud)  垃圾回收(garbage collection) 内存分配(allocation) free-list bump-pointer 垃圾识别(identification) 引用计数(reference counting) 追踪(tracing，或追踪式回收，即tracing collection) 内存回收(reclamation) sweep-to-free-list(适用于free-list) compaction(适用于bump-pointer) evacuation(适用于bump-pointer) GC算法 朴素引用计数(native RC)：free-list + RC + sweep-to-free-list 标记清楚(mark-sweep)：free-list + tracing + sweep-to-free-list 标记压缩(mark-compact)：bump-pointer + tracing + compaction 半空间(semi-space)：bump-pointer + tracing + evacuation 分代垃圾回收(generational collection)：的年轻代可以用一个专用的空间存放然后evacuate，也可以不用单独的空间，而是用一个标志位（sticky bit）来表示。还有一些内存分配、释放的方法是基于区块（region）的，在区块内bump pointer，区块本身用free-list管理，兼有两者的优点。新的一些算法，比如C4、G1、Immix、Shenandoah、ZGC还有Android Oreo的JVM里的GC，都是基于区块的算法。  正文  Lua的运行时对象都在注册表间接引用的table中，要么在执行栈上（注册表引用主线程，执行栈在线程内） Lua虚拟机工作时产生的对象都被串在一个链表上组成根集合(root set)，而被根集合间接引用的对象都会保留，剩下的对象会在恰当的时机回收。虚拟机的根集合包含注册表以及原生类型的metatable  标记并清扫(mark-and-sweep)-&amp;gt;Lua 5.0  Lua5.0以前用&amp;quot;标记并清扫(mark-and-sweep)&amp;ldquo;垃圾回收器。这个收集器会为了完整的垃圾收集周期而暂停与主程序交互。由4个阶段组成 标记(mark)：将&amp;quot;根集合(root set)&amp;ldquo;中对象标记为&amp;quot;活跃(alive)&amp;quot;。根集合为lua可直接访问的对象(注册表和主线程对象)。然后将根集合对象可访问到的对象都标记为&amp;quot;活跃&amp;rdquo;。所有可达对象都为&amp;quot;活跃&amp;rdquo; 整理(cleaning)：lua遍历所有userdata，把所有未标记且具有__gc元方法的userdata标记为&amp;quot;活跃&amp;quot;，并放入单独的列表。遍历所有的弱引用table，并根据弱引用设置删除其中未被标记的key和value 清扫(sweep)：lua遍历所有对象，未被标记的对象就回收。否则就清除标记，为下一周期做准备 收尾(finalization)：根据整理阶段生成的列表调用它们的终结函数。最后才进行调用是为了简化错误处理。因为，有问题的终结函数可能会抛出错误。而垃圾回收期不能在收集阶段停下。如果在这个阶段停止，则不会有问题。因为下一个周期还会调用留在列表中的userdata的终结函数。userdata有一个单向标记，如果__gc方法调用过，就标记执行，即使在__gc中复活（重新被根集引用），在下次回收时也不会再调用__gc  增量式(分步式)GC-&amp;gt;Lua 5.1  在虚拟机的正常指令逻辑间分步运行，尽量把每步的执行时间减到合理的范围 解决分步式GC的对象引用改变问题：Lua采用三色标记算法来解决，每一个对象都有三个状态： 白色：无法被访问到的对象。之后要被回收的部分 灰色：可访问到，但没有递归扫描完的对象。黑色和白色的边界 黑色：完全扫描过的对象。需要保留的部分 始终成立的条件： 所有根集引用的对象要么是黑色，要么是灰色（因白色一定是未引用的） 黑色对象不可能指向白色（在同一时刻，白色肯定不会被黑色引用，但有可能被灰色引用） 理想的收集过程：遍历灰色部分对象，将他们转变为黑色对象。所有灰色对象消失，收集过程就完成了 打破理想的收集过程：因为垃圾收集是分步式的，所以可能在两次收集之间会有黑色对象引用白色对象的操作。在所有赋值的地方插入一个write barrier来检查，保证状态正确 Lua用两种方式维持状态： 白色对象变为灰色(forward)。对应API：luaC_barrier 黑色对象变为灰色(backward)。对应API：luaC_barrierback 采用哪个方法维持状态是凭经验决定的 扫描后期会留下反复的灰色对象（黑色对象因barrier检查变回灰色），这些对象放到原子步骤(一次性)递归遍历，最后再遍历所有堆栈。包括清理弱表（弱表中至少一个白色对象引用）、分离出带__gc的对象。尽量减少__gc对象，和弱表的使用，从而减少原子步骤的时间，从而减少GC停顿  工作方式  GC的步进与虚拟机新分配内存有关。虚拟机不分配内存，GC是不会自动运行的。 GC的发生时机：默认是2倍上次GC后的内存使用量。可由LUA_GCSETPAUSE设置 GC的推进速度：默认是2倍于新增内存的速度。可由LUA_GCSETSTEPMUL设置 Lua用扫描内存的字节数和清理内存的字节数作为工作进度的标准 优点：减少每次GC工作时的停顿时间，但无法减少GC带来的额外开销 缺点：增加了GC的时间成本（会有额外的Barrier开销）和空间成本（未能及时回收不再使用的内存）  分代式GC-&amp;gt;5.</description>
+    </item>
+    
+  </channel>
+</rss>

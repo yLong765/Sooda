@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 22 Sep 2018 23:34:11 +0800</lastBuildDate>
-    
-	<atom:link href="https://sooda.net.cn/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 22 Sep 2018 23:34:11 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>图形学Prelin噪声解析</title>
       <link>https://sooda.net.cn/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/</link>
@@ -24,10 +20,10 @@
 如果你懂GLSL的pixel shaders，那你就可以直接去阅读由iq大神写的：Voronoise。而这里我只是用Unity代码还原冯乐乐博客中利用shaderToy编写的代码
 在开始正文之前，我们得知道几个数学小知识。图形学中涉及矩阵计算的东西有太多，在ShaderToy中都有封装，而Unity并没有，所以我们得实现几个图形学函数
 Floor：向下取整
-private static Vector2 Floor(Vector2 p){return new Vector2(Mathf.Floor(p.x), Mathf.Floor(p.y));}Fract：取小数部分
-private static Vector2 Fract(Vector2 p){return p - Floor(p);}Sin：正弦函数
-private static Vector2 Sin(Vector2 p){return new Vector2(Mathf.Sin(p.x), Mathf.Sin(p.y));}其实这些函数在Unity中也有实现，不过我这里要实现2D的噪声，所以得处理2D情况下的操作。接下来就是正片了~ 首先还原冯乐乐博客中的梯度函数
-private static Vector2 Hash22(Vector2 p){p = new Vector2(Vector2.Dot(p, new Vector2(127.1f, 311.7f)),Vector2.Dot(p, new Vector2(269.</description>
+private static Vector2 Floor(Vector2 p) { return new Vector2(Mathf.Floor(p.x), Mathf.Floor(p.y)); } Fract：取小数部分
+private static Vector2 Fract(Vector2 p) { return p - Floor(p); } Sin：正弦函数
+private static Vector2 Sin(Vector2 p) { return new Vector2(Mathf.Sin(p.x), Mathf.Sin(p.y)); } 其实这些函数在Unity中也有实现，不过我这里要实现2D的噪声，所以得处理2D情况下的操作。接下来就是正片了~ 首先还原冯乐乐博客中的梯度函数
+private static Vector2 Hash22(Vector2 p) { p = new Vector2(Vector2.Dot(p, new Vector2(127.1f, 311.7f)), Vector2.Dot(p, new Vector2(269.</description>
     </item>
     
   </channel>
