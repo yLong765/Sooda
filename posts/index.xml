@@ -1004,17 +1004,6 @@ private static Vector2 Hash22(Vector2 p) { p = new Vector2(Vector2.Dot(p, new Ve
 		</item>
 		
 		<item>
-			<title>测试</title>
-			<link>https://sooda.net.cn/posts/%E6%B5%8B%E8%AF%95/</link>
-			<pubDate>Sat, 22 Sep 2018 23:34:11 +0800</pubDate>
-			
-			<guid>https://sooda.net.cn/posts/%E6%B5%8B%E8%AF%95/</guid>
-			<description>测试2 </description>
-			<content type="html"><![CDATA[<h1 id="测试2">测试2</h1>
-]]></content>
-		</item>
-		
-		<item>
 			<title>贝塞尔曲线</title>
 			<link>https://sooda.net.cn/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/</link>
 			<pubDate>Sat, 22 Sep 2018 23:32:36 +0800</pubDate>
