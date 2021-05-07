@@ -32,7 +32,7 @@ private static Vector2 Hash22(Vector2 p) { p = new Vector2(Vector2.Dot(p, new Ve
       <pubDate>Sat, 22 Sep 2018 23:34:11 +0800</pubDate>
       
       <guid>https://sooda.net.cn/posts/%E6%B5%8B%E8%AF%95/</guid>
-      <description>测试 </description>
+      <description>测试2 </description>
     </item>
     
   </channel>
