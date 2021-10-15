@@ -1,237 +1,251 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <title>贝塞尔曲线 | Sooda</title>
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content='text/html; charset=utf-8' http-equiv='content-type' />
 
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
-<meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="贝塞尔曲线 本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Pho">
+  <title>贝塞尔曲线 - Sooda</title>
+  <meta content='贝塞尔曲线 - Sooda' property='title' />
+  <meta content='贝塞尔曲线 - Sooda' property='og:title' />
+
+
+<meta property="og:description" content="贝塞尔曲线 本文章借鉴自Unity中的曲线绘制. 贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Pho" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/" />
+
+
+<meta property="article:published_time" content="2018-09-22T23:32:36&#43;08:00"/>
+
+<meta property="article:modified_time" content="2018-09-22T23:32:36&#43;08:00"/>
+
+
+
+
+
+
+
+
 <meta name="generator" content="Hugo 0.83.1" />
 
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+<style type="text/css">/*https://coolors.co/afd5aa-f0f2ef-a69f98-3d3d3d-8c6057*/
+:root {
+  --main-color: #8C6056; 
+  --secondary-color: #AFD5AA;
+  --logo-text-color: #fff;
+  --body-text-color: #3d3d3d;
+  --heading-text-color: #383838;
+  --background-color: #fff;
+}</style>
+<link href='/css/tachyons.min.css' rel="stylesheet">
+<link href='/css/styles.css' rel="stylesheet">
 
-  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-
-<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-
+<link rel="icon" 
  
+  href='/favicon.ico'
+
+type="image/x-icon"/>
+
+<link href='/feed.xml' rel="alternate" type="application/atom+xml" title="Sooda" />
+</head>
+<body class="global-font">
+  <nav class=" flex-ns justify-between border-box pa3 pl3-l pr2-l mt1 mt0-ns" id="navbar">
+  <div class="flex">
+    <a class="f4 fw6 ttu no-underline dim bg-main-color pv1 ph2 br2" id="site-title" href='/' title="Home">Sooda</a>
+  </div>
+  
+  <div class=" flex-ns mt2 mt0-ns pv1">
     
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'G-J46JH0CDDK', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-
-
-
-
-
-  </head>
-
-  <body>
-    <nav class="navigation">
-	
-		<a href="/"> <span class="arrow">←</span>首页</a>
-	
-	<a href="/posts">归档</a>
-	<a href="/tags">标签</a>
-	<a href="/about">关于</a>
-
-	
-
-	
+      <a class="link dim dark-gray f6 dib mr2 mr3-l ttu tracked" href='/' title="首页">首页</a>
+    
+      <a class="link dim dark-gray f6 dib mr2 mr3-l ttu tracked" href='/posts/' title="归档">归档</a>
+    
+      <a class="link dim dark-gray f6 dib mr2 mr3-l ttu tracked" href='/tags/' title="标签">标签</a>
+    
+  </div>
+  
 </nav>
-
-
-    <main class="main">
-      
-
-<section id="single">
-    <h1 class="title">贝塞尔曲线</h1>
-
-    <div class="tip">
-        <time datetime="2018-09-22 23:32:36 &#43;0800 CST">2018年09月22日</time>
-        <span class="split">
-          ·
-        </span>
-        <span>
-          854字
-        </span>
-        <span class="split">
-          ·
-        </span>
-        <span>
-          2分钟
-        </span>
-    </div>
-
+  
+<main class="center mv4 content-width ph3">
+  <div class="f3 fw6 heading-color heading-font post-title">贝塞尔曲线</div>
+  <p class="silver f6 mt1 mb4 post-meta">
+    <time>22 Sep 2018</time> 
+     | 
     
     
-
-
-    <div class="content">
-      <h2 id="贝塞尔曲线">贝塞尔曲线</h2>
-
+    tags: [ <a href='/tags/beziercurve' class="link silver">BezierCurve</a>  ]
+    
+  </p>
+  <div class="lh-copy post-content"><h2 id="贝塞尔曲线">贝塞尔曲线</h2>
 <p>本文章借鉴自<a href="http://gad.qq.com/article/detail/23531">Unity中的曲线绘制</a>.</p>
-
 <p>贝塞尔曲线(Bézier curve)是由法国数学家Pierre Bézier所提出,类似于Photoshop软件中的钢笔工具,不过钢笔工具仅仅只是用了二阶贝塞尔曲线.</p>
-
 <h3 id="原理">原理</h3>
-
 <p>在我们写代码之前还是了解一下原理为好,所以贝塞尔曲线的原理就是利用经过所有直线上的点的差值来进行绘制,如图为二阶曲线</p>
-
-<p><figure><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg" alt="Img"></figure></p>
-
+<p><img src="http://yinlmarkdown.oss-cn-beijing.aliyuncs.com/18-8-18/19850760.jpg" alt="Img"></p>
 <p>下面给出二阶曲线的公式,P0,P1,P2为示例图上三点,t为差值数据:</p>
-
-<p><span  class="math">\[ B(t) = (1 - t)^2P_0 + 2t(1 - t)P_1 + t^2P_2 , t\epsilon[0,1] \]</span></p>
-
+<p>$$ B(t) = (1 - t)^2P_0 + 2t(1 - t)P_1 + t^2P_2 , t\epsilon[0,1] $$</p>
 <p>而一阶曲线自然就是一个直线,公式为:</p>
-
-<p><span  class="math">\[ B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1] \]</span></p>
-
+<p>$$ B(t) = P_0 + (P_1 - P_0)t = (1 - t)P_0 + tP_1 , t\epsilon[0,1] $$</p>
 <p>从中我们可以发现规律从而推导到n阶的公式:</p>
-
-<p><span  class="math">\[ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] \]</span></p>
-
+<p>$$ B(t) = \sum_{i=0}^nPi(1 -t)^{n-i}t^i , t\epsilon[0,1] $$</p>
 <p>而我们要在Scene窗口绘制出贝塞尔曲线,所以这里用到Editor类下的OnInspectorGUI函数绘制Inspector窗口中的贝塞尔曲线配置,OnSceneGUI函数中绘制真正的贝塞尔曲线,绘制方式我们利用Handles函数进行直线模拟曲线方式的绘制.</p>
-
 <h3 id="代码">代码</h3>
-
 <p>首先我们需要一个数据类Curve,存储简单的Vector3数组</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#080;font-style:italic">// 贝塞尔曲线数据
-</span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">public</span> Vector3[] points;</code></pre></div>
-<p>然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: <a href="https://ylong765.github.io/Yinl-Blog/2018/07/24/Unity编译器/">Unity编辑器</a></p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">override</span> <span style="color:#a2f;font-weight:bold">void</span> OnInspectorGUI()
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#228b22">// 贝塞尔曲线数据
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">public</span> Vector3[] points;
+</code></pre></div><p>然后我们需要一个Editor类这里我们起名为CurveTool,继承自Editor并重写刚才说的两个函数,此处代码不懂可以看我之前写过的文章: <a href="https://ylong765.github.io/Yinl-Blog/2018/07/24/Unity%E7%BC%96%E8%AF%91%E5%99%A8/">Unity编辑器</a></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#8b008b;font-weight:bold">public</span> <span style="color:#8b008b;font-weight:bold">override</span> <span style="color:#8b008b;font-weight:bold">void</span> OnInspectorGUI()
 {
     serializedObject.Update();
     EditorGUILayout.BeginVertical();
-    EditorGUILayout.PropertyField(points, <span style="color:#a2f;font-weight:bold">new</span> GUIContent(<span style="color:#b44">&#34;坐标组&#34;</span>), <span style="color:#a2f;font-weight:bold">true</span>);
+    EditorGUILayout.PropertyField(points, <span style="color:#8b008b;font-weight:bold">new</span> GUIContent(<span style="color:#cd5555">&#34;坐标组&#34;</span>), <span style="color:#8b008b;font-weight:bold">true</span>);
     EditorGUILayout.EndVertical();
     serializedObject.ApplyModifiedProperties();
-}</code></pre></div>
-<p>然后接下来时重写OnSceneGUI函数了,不过在之前我们要看看具体怎么用代码来实现刚才的N阶曲线.
+}
+</code></pre></div><p>然后接下来时重写OnSceneGUI函数了,不过在之前我们要看看具体怎么用代码来实现刚才的N阶曲线.
 因为我们要利用直线来绘制,所以需要一个for循环来执行绘制,利用GetPoint函数来获取具体每个精度点的位置然后绘制直线就好了.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Vector3 lineStart = GetPoint(<span style="color:#666">0f</span>); <span style="color:#080;font-style:italic">// GetPoint函数为获取当前点的位置
-</span><span style="color:#080;font-style:italic"></span><span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">1</span>; i &lt;= curve.lineSteps; i++) <span style="color:#080;font-style:italic">// lineSteps为绘制精度
-</span><span style="color:#080;font-style:italic"></span>{
-    Vector3 lineEnd = GetPoint(i / (<span style="color:#0b0;font-weight:bold">float</span>)curve.lineSteps);
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Vector3 lineStart = GetPoint(<span style="color:#b452cd">0f</span>); <span style="color:#228b22">// GetPoint函数为获取当前点的位置
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">for</span> (<span style="color:#00688b;font-weight:bold">int</span> i = <span style="color:#b452cd">1</span>; i &lt;= curve.lineSteps; i++) <span style="color:#228b22">// lineSteps为绘制精度
+</span><span style="color:#228b22"></span>{
+    Vector3 lineEnd = GetPoint(i / (<span style="color:#00688b;font-weight:bold">float</span>)curve.lineSteps);
     Handles.DrawLine(lineStart, lineEnd);
     lineStart = lineEnd;
-}</code></pre></div>
-<p>每次取差值就能减少一阶,所以利用递归从n阶到最后的一阶然后的返回值就是最终点的位置.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">public</span> Vector3 GetPoint(<span style="color:#0b0;font-weight:bold">float</span> t)
+}
+</code></pre></div><p>每次取差值就能减少一阶,所以利用递归从n阶到最后的一阶然后的返回值就是最终点的位置.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#8b008b;font-weight:bold">public</span> Vector3 GetPoint(<span style="color:#00688b;font-weight:bold">float</span> t)
 {
-    Vector3[] pos = <span style="color:#a2f;font-weight:bold">new</span> Vector3[curve.points.Length];
+    Vector3[] pos = <span style="color:#8b008b;font-weight:bold">new</span> Vector3[curve.points.Length];
     pos = (Vector3[])curve.points.Clone();
-    <span style="color:#a2f;font-weight:bold">return</span> curve.transform.TransformPoint(GetLerpPoint(pos, t));
+    <span style="color:#8b008b;font-weight:bold">return</span> curve.transform.TransformPoint(GetLerpPoint(pos, t));
 }
 
-<span style="color:#a2f;font-weight:bold">public</span> Vector3 GetLerpPoint(Vector3[] pos, <span style="color:#0b0;font-weight:bold">float</span> t)
+<span style="color:#8b008b;font-weight:bold">public</span> Vector3 GetLerpPoint(Vector3[] pos, <span style="color:#00688b;font-weight:bold">float</span> t)
 {
-    <span style="color:#a2f;font-weight:bold">if</span> (pos.Length == <span style="color:#666">2</span>)
+    <span style="color:#8b008b;font-weight:bold">if</span> (pos.Length == <span style="color:#b452cd">2</span>)
     {
-        <span style="color:#a2f;font-weight:bold">return</span> Vector3.Lerp(pos[<span style="color:#666">0</span>], pos[<span style="color:#666">1</span>], t);
+        <span style="color:#8b008b;font-weight:bold">return</span> Vector3.Lerp(pos[<span style="color:#b452cd">0</span>], pos[<span style="color:#b452cd">1</span>], t);
     }
-    Vector3[] newPos = <span style="color:#a2f;font-weight:bold">new</span> Vector3[pos.Length - <span style="color:#666">1</span>];
-    <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i &lt; pos.Length - <span style="color:#666">1</span>; i++)
+    Vector3[] newPos = <span style="color:#8b008b;font-weight:bold">new</span> Vector3[pos.Length - <span style="color:#b452cd">1</span>];
+    <span style="color:#8b008b;font-weight:bold">for</span> (<span style="color:#00688b;font-weight:bold">int</span> i = <span style="color:#b452cd">0</span>; i &lt; pos.Length - <span style="color:#b452cd">1</span>; i++)
     {
-        newPos[i] = Vector3.Lerp(pos[i], pos[i + <span style="color:#666">1</span>], t);
+        newPos[i] = Vector3.Lerp(pos[i], pos[i + <span style="color:#b452cd">1</span>], t);
     }
 
-    <span style="color:#a2f;font-weight:bold">return</span> GetLerpPoint(newPos, t);
-}</code></pre></div>
-    </div>
-
-    
-        <div class="tags">
-            
-                <a href="https://sooda.net.cn/tags/beziercurve">BezierCurve</a>
-            
-        </div>
-    
-    
-    
-  <div id="comment">
-    
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "Sooda" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-  </div>
+    <span style="color:#8b008b;font-weight:bold">return</span> GetLerpPoint(newPos, t);
+}
+</code></pre></div></div>
+</main>
+ 
 
 
-</section>
 
 
-    </main>
-    
-    <footer id="footer">
-    
-        <div id="social">
 
 
-    <a class="symbol" href="https://github.com/yLong765" rel="me" target="_blank">
-        
-        <svg fill="#bbbbbb" width="28" height="28"  viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    
-    <title>Github</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Social-Icons---Rounded-Black" transform="translate(-264.000000, -939.000000)">
-            <g id="Github" transform="translate(264.000000, 939.000000)">
-                <path d="M8,72 L64,72 C68.418278,72 72,68.418278 72,64 L72,8 C72,3.581722 68.418278,-8.11624501e-16 64,0 L8,0 C3.581722,8.11624501e-16 -5.41083001e-16,3.581722 0,8 L0,64 C5.41083001e-16,68.418278 3.581722,72 8,72 Z" id="Rounded" fill="#bbbbbb"></path>
-                <path d="M35.9985,13 C22.746,13 12,23.7870921 12,37.096644 C12,47.7406712 18.876,56.7718301 28.4145,59.9584121 C29.6145,60.1797862 30.0525,59.4358488 30.0525,58.7973276 C30.0525,58.2250681 30.0315,56.7100863 30.0195,54.6996482 C23.343,56.1558981 21.9345,51.4693938 21.9345,51.4693938 C20.844,48.6864054 19.2705,47.9454799 19.2705,47.9454799 C17.091,46.4500754 19.4355,46.4801943 19.4355,46.4801943 C21.843,46.6503662 23.1105,48.9634994 23.1105,48.9634994 C25.2525,52.6455377 28.728,51.5823398 30.096,50.9649018 C30.3135,49.4077535 30.9345,48.3460615 31.62,47.7436831 C26.2905,47.1352808 20.688,45.0691228 20.688,35.8361671 C20.688,33.2052792 21.6225,31.0547881 23.1585,29.3696344 C22.911,28.7597262 22.0875,26.3110578 23.3925,22.9934585 C23.3925,22.9934585 25.4085,22.3459017 29.9925,25.4632101 C31.908,24.9285993 33.96,24.6620468 36.0015,24.6515052 C38.04,24.6620468 40.0935,24.9285993 42.0105,25.4632101 C46.5915,22.3459017 48.603,22.9934585 48.603,22.9934585 C49.9125,26.3110578 49.089,28.7597262 48.8415,29.3696344 C50.3805,31.0547881 51.309,33.2052792 51.309,35.8361671 C51.309,45.0917119 45.6975,47.1292571 40.3515,47.7256117 C41.2125,48.4695491 41.9805,49.9393525 41.9805,52.1877301 C41.9805,55.4089489 41.9505,58.0067059 41.9505,58.7973276 C41.9505,59.4418726 42.3825,60.1918338 43.6005,59.9554002 C53.13,56.7627944 60,47.7376593 60,37.096644 C60,23.7870921 49.254,13 35.9985,13" fill="#FFFFFF"></path>
-            </g>
-        </g>
-    </g>
-</svg>
-    </a>
 
 
+<div class="pagination tc tr-l db fixed-l bottom-2-l right-2-l mb3 mb0-l">
+  
+<a id="scroll-to-top" class="f6 o-0 link br2 ph2 pv1 mb1 bg-main-color pointer" onclick="topFunction()" style="color: #fff; visibility: hidden; display: none; transition: opacity .5s, visibility .5s;" title="back to top">back to top</a>
+<br>
+  <p class="mb0 mt2">
+  
+  <a href="http://localhost:1313/posts/%E5%9B%BE%E5%BD%A2%E5%AD%A6prelin%E5%99%AA%E5%A3%B0%E8%A7%A3%E6%9E%90/">next post</a>
+  </p>
 </div>
 
-    
-
-    <div class="copyright">
-    
-        © 2021 Sooda
-    
-    </div>
-
-    
+  <footer class="content-width mt0 mt5-l mb4 f6 center ph3 gray tc tl-l">
+  <hr class="dn db-l ml0-l gray w3"><br>
+  Powered by <a href="https://gohugo.io/" target="_blank" class="link gray dim">Hugo</a>, based on the <a href="https://github.com/lingxz/er" target="_blank" class="link gray dim">Er</a> theme. <br>
+  
 </footer>
+  
 
 
 
-  </body>
+
+
+
+<script type="text/javascript">
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+
+  
+  if (document.getElementById("tag-cloud") !== null) { 
+    if (prevScrollpos > currentScrollPos) { 
+      document.getElementById("tag-cloud").style.visibility = "visible";
+      document.getElementById("tag-cloud").style.opacity = "1";
+    } else {
+      document.getElementById("tag-cloud").style.visibility = "hidden";
+      document.getElementById("tag-cloud").style.opacity = "0";
+    }
+  }
+  
+
+  
+  if (document.body.scrollTop > 1000 || document.documentElement.scrollTop > 1000) {
+      document.getElementById("scroll-to-top").style.display = "inline";
+      document.getElementById("scroll-to-top").style.visibility = "visible";
+      document.getElementById("scroll-to-top").style.opacity = "1";
+  } else {
+      document.getElementById("scroll-to-top").style.visibility = "hidden";
+      document.getElementById("scroll-to-top").style.opacity = "0";
+  }
+  
+  prevScrollpos = currentScrollPos;
+}
+
+
+function topFunction() {
+  document.body.scrollTop = 0; 
+  document.documentElement.scrollTop = 0; 
+}
+
+
+
+
+
+
+
+</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+<script>
+  renderMathInElement(document.body,
+    {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+        ]
+    }
+  );
+
+  var inlineMathArray = document.querySelectorAll("script[type='math/tex']");
+  for (var i = 0; i < inlineMathArray.length; i++) {
+    var inlineMath = inlineMathArray[i];
+    var tex = inlineMath.innerText || inlineMath.textContent;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex, {displayMode: false});
+    inlineMath.parentNode.replaceChild(replaced, inlineMath);
+  }
+
+  var displayMathArray = document.querySelectorAll("script[type='math/tex; mode=display']");
+  for (var i = 0; i < displayMathArray.length; i++) {
+    var displayMath = displayMathArray[i];
+    var tex = displayMath.innerHTML;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+    displayMath.parentNode.replaceChild(replaced, displayMath);
+  }
+</script>
+
+
+</body>
 </html>
