@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Sooda</title>
-    <link>http://www.sooda.net.cn/tags/</link>
-    <description>Recent content in Tags on Sooda</description>
+    <title>Tags on Hugo Hermit</title>
+    <link>https://example.com/tags/</link>
+    <description>Recent content in Tags on Hugo Hermit</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>Copyright by Sooda</copyright>
-    <lastBuildDate>Fri, 15 Oct 2021 22:38:01 +0800</lastBuildDate><atom:link href="http://www.sooda.net.cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 15 Oct 2021 22:38:01 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>test</title>
-      <link>http://www.sooda.net.cn/tags/test/</link>
+      <link>https://example.com/tags/test/</link>
       <pubDate>Fri, 15 Oct 2021 22:38:01 +0800</pubDate>
       
-      <guid>http://www.sooda.net.cn/tags/test/</guid>
+      <guid>https://example.com/tags/test/</guid>
       <description></description>
     </item>
     
