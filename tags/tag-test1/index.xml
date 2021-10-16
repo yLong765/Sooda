@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Sooda</title>
-    <link>https://sooda.net.cn/posts/</link>
-    <description>Recent content in Posts on Sooda</description>
+    <title>tag test1 on Sooda</title>
+    <link>https://sooda.net.cn/tags/tag-test1/</link>
+    <description>Recent content in tag test1 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright by Sooda</copyright>
-    <lastBuildDate>Fri, 15 Oct 2021 22:38:01 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Oct 2021 22:38:01 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/tag-test1/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test</title>
       <link>https://sooda.net.cn/posts/test/</link>
