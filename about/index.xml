@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>About on Sooda</title>
-    <link>https://ylong765.github.io/Sooda/about/</link>
+    <link>https://sooda.net.cn/about/</link>
     <description>Recent content in About on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright by Sooda</copyright>
-    <lastBuildDate>Thu, 28 Feb 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://ylong765.github.io/Sooda/about/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Feb 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://sooda.net.cn/about/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
