@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content='text/html; charset=utf-8' http-equiv='content-type' />
+
+  <title>《游戏引擎架构》动画的基本构成 - Sooda</title>
+  <meta content='《游戏引擎架构》动画的基本构成 - Sooda' property='title' />
+  <meta content='《游戏引擎架构》动画的基本构成 - Sooda' property='og:title' />
+
+
+<meta property="og:description" content="闲话 近日读完了《游戏引擎架构》这本书，以前感觉读不完，但是每天慢慢的磨完了。闲下来时间提炼一下其中自我觉得比较关键的部分。因本人是做Unit" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/" />
+
+
+<meta property="article:published_time" content="2021-11-07T17:14:24&#43;08:00"/>
+
+<meta property="article:modified_time" content="2021-11-07T17:14:24&#43;08:00"/>
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+<style type="text/css">/*https://coolors.co/afd5aa-f0f2ef-a69f98-3d3d3d-8c6057*/
+:root {
+  --main-color: #8C6056; 
+  --secondary-color: #AFD5AA;
+  --logo-text-color: #fff;
+  --body-text-color: #3d3d3d;
+  --heading-text-color: #383838;
+  --background-color: #fff;
+}</style>
+<link href='/css/tachyons.min.css' rel="stylesheet">
+<link href='/css/styles.css' rel="stylesheet">
+
+
+<link rel="icon" 
+ 
+  href='/favicon.ico'
+
+type="image/x-icon"/>
+
+<link href='/feed.xml' rel="alternate" type="application/atom+xml" title="Sooda" />
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-210261771-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+</head>
+<body class="global-font">
+  <nav class=" flex-ns justify-between border-box pa3 pl3-l pr2-l mt1 mt0-ns" id="navbar">
+  <div class="flex">
+    <a class="f4 fw6 ttu no-underline dim bg-main-color pv1 ph2 br2" id="site-title" href='/' title="Home">Sooda</a>
+  </div>
+  
+  <div class=" flex-ns mt2 mt0-ns pv1">
+    
+      <a class="link dim dark-gray f6 dib mr2 mr3-l ttu tracked" href='/posts/' title="Posts">Posts</a>
+    
+      <a class="link dim dark-gray f6 dib mr2 mr3-l ttu tracked" href='/tags/' title="Tags">Tags</a>
+    
+      <a class="link dim dark-gray f6 dib mr2 mr3-l ttu tracked" href='/categories/' title="Categories">Categories</a>
+    
+  </div>
+  
+</nav>
+  
+<main class="center mv4 content-width ph3">
+  <div class="f3 fw6 heading-color heading-font post-title">《游戏引擎架构》动画的基本构成</div>
+  <p class="silver f6 mt1 mb4 post-meta">
+    <time>07 Nov 2021</time> 
+     | 
+    
+    categories: [ <a href='/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC' class="link silver">阅读提炼</a>  ]
+    
+    
+    tags: [ <a href='/tags/%E9%98%85%E8%AF%BB' class="link silver">阅读</a> <a href='/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6' class="link silver">《游戏引擎框架》</a> <a href='/tags/%E5%8A%A8%E7%94%BB' class="link silver">动画</a>  ]
+    
+  </p>
+  <div class="lh-copy post-content"><h2 id="闲话">闲话</h2>
+<p>近日读完了《游戏引擎架构》这本书，以前感觉读不完，但是每天慢慢的磨完了。闲下来时间提炼一下其中自我觉得比较关键的部分。因本人是做Unity开发的，所以会把书中所讲部分结合Unity引擎来总结。闲话不多说开始吧</p>
+<h2 id="动画的基本构成">动画的基本构成</h2>
+<p>Unity的动画系统封装的已经非常好了，所以我们对其中的细节了解的少之又少。本文章着重在单个动画，骨骼，姿势，蒙皮的内存存储结构和应用方式</p>
+<h3 id="角色动画的类型">角色动画的类型</h3>
+<p>在Unity中比较常用的动画为蒙皮/骨骼动画（三维）和精灵动画（二维）</p>
+<ul>
+<li>赛璐璐动画（精灵动画）：用一张细小的位图，叠在全屏的背景影响之上而不会扰乱背景。常用于二维游戏动画（Unity中的Sprite贴图）</li>
+<li>动画纹理：面向摄像机的四边形，并用一连串的位图连续播放。现今用于远景活低分辨率的物体</li>
+<li>刚性阶层动画：将角色通过部位进行拆分建模并以层级进行约束。但问题是在关节处会出现裂缝</li>
+<li>每顶点动画：移动每个顶点以产生更自然的动作（蛮力技术，数据量非常大。通常用于老式的离线渲染）</li>
+<li>变形目标动画：每顶点动画的变种，也是制作每个顶点的位置。但制作少量的固定极端姿势在运行时将其混合（线性插值混合）。通常用于面部动画</li>
+<li>蒙皮/骨骼动画：
+<ul>
+<li>骨骼：隐藏的刚性关节层阶结构（树结构）所构成</li>
+<li>皮肤：绑定于骨骼上的圆滑三角形网格，顶点会按权重绑定至多个关节。当关节移动时，蒙皮可以自然的拉伸</li>
+</ul>
+</li>
+</ul>
+<p>为什么选择蒙皮/骨骼动画？
+以更少的数据量来达到更好的效果。通过加入约束：相对大量的顶点只能跟随相对少量的骨骼关节移动。来压缩顶点动画</p>
+<h3 id="骨骼在内存中的表示">骨骼在内存中的表示</h3>
+<p>通常使用关节索引引用关节，子关节索引引用父关节。蒙皮三角形网格中，每个顶点索引引用其绑定关节</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#228b22">// 关节数据的信息
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">Joint</span> {
+    Matrix4x3 inv_bind_pose;    <span style="color:#228b22">// 绑定姿势（蒙皮网格顶点绑定至骨骼时，关节的位置，定向及缩放）的逆变换
+</span><span style="color:#228b22"></span>    <span style="color:#8b008b;font-weight:bold">const</span> <span style="color:#00688b;font-weight:bold">char</span>* name;           <span style="color:#228b22">// 关节名字（字符串或32位字符串散列表标识符）
+</span><span style="color:#228b22"></span>    U8 parent;                  <span style="color:#228b22">// 父索引(0xFF代表根关节)
+</span><span style="color:#228b22"></span>};
+
+<span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">Skeletion</span> {
+    U32 joint_count;    <span style="color:#228b22">// 关节数目
+</span><span style="color:#228b22"></span>    Joint* joint;       <span style="color:#228b22">// 关节数组
+</span><span style="color:#228b22"></span>};
+</code></pre></div><h3 id="姿势">姿势</h3>
+<p>把角色摆出一连串离散，静止的姿势，并以通常30或60个姿势每秒的速率显示，已产生动感。实际游戏会以相邻姿势进行插值</p>
+<p>绑定姿势：又称为T姿势。因此姿势四肢远离身体，较容易把顶点绑定至关节</p>
+<h4 id="局部姿势">局部姿势</h4>
+<p>相对于父关节指定的，其仿射变换相对于父节点空间</p>
+<p>关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成
+$$
+p_j =
+\begin{bmatrix}
+S_jR_j &amp; 0 \\ T_j &amp; 1
+\end{bmatrix}
+$$</p>
+<p>整个骨骼的姿势：
+$$
+P^{skel} = { P_j } |_{j=0}^{N-1}
+$$</p>
+<p>有些引擎不允许关节$S_j$缩放，有些引擎则必须为同一缩放。此优化能节省内存。并简化每个关节计算平截头体剔除及碰撞测试</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#228b22">// 局部关节的内存表示
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">JointPose</span> {
+  Quaternion rot; <span style="color:#228b22">// Q
+</span><span style="color:#228b22"></span>  Vector3 trans;  <span style="color:#228b22">// T
+</span><span style="color:#228b22"></span>  F32 scale;      <span style="color:#228b22">// S(仅为统一缩放)
+</span><span style="color:#228b22"></span>};
+
+<span style="color:#228b22">// 骨骼姿势：其所有关节姿势的集合
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">SkeletonPose</span> {
+  Skeleton* pSkeleton;    <span style="color:#228b22">// 骨骼 + 关节数量
+</span><span style="color:#228b22"></span>  JointPose* aLocalPose;  <span style="color:#228b22">// 多个局部关节姿势
+</span><span style="color:#228b22"></span>}
+</code></pre></div><h4 id="全局姿势">全局姿势</h4>
+<p>关节姿势表示为相对于模型空间或世界空间。关节j的空间姿势(全局姿势)，可通过从该关节遍历至根节点并乘上其局部姿势</p>
+<p>任何关节$j$的全局姿势（关节至模型空间的变换）可写成：</p>
+<p>$$
+P_{j \rightarrow M} = \prod_{i=j}^0 P_{i \rightarrow p(i)}
+$$</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#228b22">// 全局关节的内存表示
+</span><span style="color:#228b22"></span><span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">SkeletonPose</span> {
+  Skeleton* pSkeleton;    <span style="color:#228b22">// 骨骼 + 关节数量
+</span><span style="color:#228b22"></span>  JointPose* aLocalPose;  <span style="color:#228b22">// 多个局部关节姿势
+</span><span style="color:#228b22"></span>  Matrix44* aGlobalPose;  <span style="color:#228b22">// 多个全局关节姿势
+</span><span style="color:#228b22"></span>};
+</code></pre></div><h3 id="动画片段">动画片段</h3>
+<ul>
+<li>每个动画片段是为特定骨骼设计的，通常不会用于其他骨骼</li>
+<li>动画重定目标：把为一个骨骼设计的动画，重订目标至不同骨骼</li>
+</ul>
+<h4 id="局部时间线">局部时间线</h4>
+<p>每个动画各自的时间线(AnimationClip)。时间索引$t$从$0$到$T$，$T$​为片段的持续时间</p>
+<p>动画师在指定的时间点上设定一些关键姿势或关键帧，然后对应不同的时间索引$t$会用线性差值计算采样</p>
+<p>帧：指一段时间，如1/30s或1/60s</p>
+<p>采样：代指某时间点</p>
+<p>相位：归一化表示时间单位，无论$T$多长，0代表动画开始，1代表结束</p>
+<h4 id="全局时间线">全局时间线</h4>
+<p>每个角色都有一个全局时间线（类似于Unity的Timeline）</p>
+<p>播放动画可以简单的理解为把片段的局部时间映射到角色的全局时间</p>
+<p>调整播放速率：把片段置于全局时间线之时缩放其比例，加快2倍播放=缩放1/2的局部时间片段</p>
+<p>倒转播放：时间比例设置为-1</p>
+<p>动画片段映射到全局时间线需要的信息：</p>
+<ul>
+<li>全局起始时间</li>
+<li>播放速率R</li>
+<li>持续时间T</li>
+<li>循环次数N</li>
+</ul>
+<h4 id="同步动画">同步动画</h4>
+<ul>
+<li>局部时间线同步动画：必须在完全相同的游戏帧数播放（实现比较麻烦）</li>
+<li>全局时间线同步动画：只要开始时间相同就可以完全同步</li>
+</ul>
+<h4 id="内存中的表示方法">内存中的表示方法</h4>
+<p>采样由骨骼中的每个关节的完整姿势所组成。存储为SQT格式</p>
+<p>如果缩放为标量。则一个未压缩的动画至多10个通道</p>
+<ul>
+<li>平移：三维矢量$V=\begin{bmatrix} V_x &amp; V_y &amp; V_z \end{bmatrix}$</li>
+<li>旋转：四元数$Q=\begin{bmatrix}Q_x &amp; Q_y &amp; Q_z &amp; Q_w \end{bmatrix}$</li>
+<li>缩放：标量$S$</li>
+</ul>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">AnimationSample</span> {
+  JointPose *aJointPose;  <span style="color:#228b22">// 关节姿势数组
+</span><span style="color:#228b22"></span>};
+
+<span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">AnimationClip</span> {
+  Skeleton *pSkeleton;      <span style="color:#228b22">// 骨骼关节（真实引擎中可能用骨骼标识符，而不是指针）
+</span><span style="color:#228b22"></span>  F32 framesPerSecond;      <span style="color:#228b22">// 帧每秒
+</span><span style="color:#228b22"></span>  <span style="color:#228b22">// 注释：非循环动画为frameCount + 1，循环动画最后一采样等于第一个采样会略去
+</span><span style="color:#228b22"></span>  U32 frameCount;           <span style="color:#228b22">// 采样数目
+</span><span style="color:#228b22"></span>  AnimationSample *aSample; <span style="color:#228b22">// 采样数组
+</span><span style="color:#228b22"></span>  <span style="color:#00688b;font-weight:bold">bool</span> isLooping;           <span style="color:#228b22">// 是否循环
+</span><span style="color:#228b22"></span>}
+</code></pre></div><h3 id="通道函数unity的animation编辑面板">通道函数（Unity的Animation编辑面板）</h3>
+<p>函数通道在整个动画片段的时间线上是圆滑连续的（除非故意编辑成不连续的，例如镜头切换）。而游戏引擎中基本只会在采样间进行线性插值，实际上用到的是连续函数的分段线性逼近</p>
+<p>可以加入额外的元通道数据。把游戏专用的信息编码，能和动画同步触发。如事件触发器（Unity的Animation面板中可触发事件）在动画脚步落地的时候播放声音</p>
+<p>定位器：利用Maya中的定位器（类似于Unity中模型中的一个子节点，如手中武器的父节点）用于记录物体的位置及定向</p>
+<h3 id="蒙皮">蒙皮</h3>
+<p>把三维网格顶点联系至骨骼的过程</p>
+<p>蒙皮信息：每个顶点可绑定至一个或多个关节，绑定至一个关节则完全跟随此关节移动。若绑定多个关节则等于多个关节位置的加权平均</p>
+<ul>
+<li>顶点绑定到（一个或多个）关节的索引</li>
+<li>对于每个绑定的关节，提供一个权重因子（权重之和为1），表示该关节对最终顶点位置的影响力</li>
+</ul>
+<p>对于绑定的关节数目通常限制为每顶点4关节，首先4个8位索引可包装位32位字。其次超过4个质量差别就没有明显提升了</p>
+<p>内存数据结构：</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#8b008b;font-weight:bold">struct</span> <span style="color:#008b45;font-weight:bold">SkinnedVertex</span> {
+    <span style="color:#00688b;font-weight:bold">float</span> position[<span style="color:#b452cd">3</span>];		<span style="color:#228b22">// (Px,Py,Pz)
+</span><span style="color:#228b22"></span>    <span style="color:#00688b;font-weight:bold">float</span> normal[<span style="color:#b452cd">3</span>];		<span style="color:#228b22">// (Nx,Ny,Nz)
+</span><span style="color:#228b22"></span>    <span style="color:#00688b;font-weight:bold">float</span> u,v;				<span style="color:#228b22">// 纹理坐标uv
+</span><span style="color:#228b22"></span>    U8 jointIndex[<span style="color:#b452cd">4</span>];		<span style="color:#228b22">// 关节索引
+</span><span style="color:#228b22"></span>    <span style="color:#00688b;font-weight:bold">float</span> jointWeight[<span style="color:#b452cd">3</span>];	<span style="color:#228b22">// 关节权重，略去一个可用1-其他求得
+</span><span style="color:#228b22"></span>}
+</code></pre></div><h4 id="蒙皮矩阵">蒙皮矩阵</h4>
+<p>将网格顶点从模型空间的原来位置（绑定姿势）变换至骨骼模型空间的当前姿势。非基变更变换</p>
+<p>顶点绑定至关节的位置时，在该关节空间中的位置时不变的。所以可把顶点于模型空间的绑定姿势位置转换至关节空间，再把关节空间移至当前姿势，最后把该顶点转回模型空间。这个转换过程结合的转换矩阵就是蒙皮矩阵</p>
+<h5 id="单个关节的蒙皮矩阵">单个关节的蒙皮矩阵</h5>
+<p>绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：
+$$
+V_j = V_M^B B_{M \rightarrow j} = V_M^B(B_{j \rightarrow M}^{-1})
+$$
+矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：
+$$
+V_M^C = V_jC_{j \rightarrow M}
+$$
+则联合后的蒙皮矩阵$K_j$为：
+$$
+V_M^C = V_jC_{j \rightarrow M} = V_M^B(B{j \rightarrow M})^{-1}C_{j \rightarrow M} = V_M^BK_j
+$$</p>
+<p>$$
+K_j =(B_{j \rightarrow M})^{-1}C_{j \rightarrow M}
+$$</p>
+<h5 id="多个关节的蒙皮矩阵">多个关节的蒙皮矩阵</h5>
+<p>将单关节蒙皮矩阵扩展至多关节须计算矩阵调色板，就是一组蒙皮矩阵$K_j$，当中每个矩阵对应第j个关节。当渲染一个蒙皮网络时，矩阵调色板便要传送至渲染引擎。渲染器会为每个顶点查找调色板中合适的关节蒙皮矩阵，并用该矩阵把顶点从绑定姿势转换至当前姿势</p>
+<ul>
+<li>当前姿势矩阵$C_{j \rightarrow M}$需要每帧更新</li>
+<li>绑定姿势的逆矩阵是常量，计算后缓存在骨骼信息中</li>
+<li>动画引擎计算每个关节的局部姿势$C_{j \rightarrow p(j)}$，然后转换至全局姿势$C_{j \rightarrow M}$，最后把全局姿势乘以对应的绑定姿势逆矩阵$(B_{j \rightarrow M})^{-1}$，以生成每个关节的蒙皮矩阵$K_j$</li>
+</ul>
+<p>运算效率优化：将蒙皮矩阵调色板预先乘于物体的模型至世界变换。因为最终都要转换到世界空间，所以可以预处理。但在多角色同时播放单个动画的情况时不能这么做。此技术为动画实例</p>
+</div>
+</main>
+ 
+
+
+
+
+
+
+
+
+<div class="pagination tc tr-l db fixed-l bottom-2-l right-2-l mb3 mb0-l">
+  
+<a id="scroll-to-top" class="f6 o-0 link br2 ph2 pv1 mb1 bg-main-color pointer" onclick="topFunction()" style="color: #fff; visibility: hidden; display: none; transition: opacity .5s, visibility .5s;" title="back to top">back to top</a>
+<br>
+  <p class="mb0 mt2">
+  
+  
+  </p>
+</div>
+
+  <footer class="content-width mt0 mt5-l mb4 f6 center ph3 gray tc tl-l">
+  <hr class="dn db-l ml0-l gray w3">
+  Copyright by Sooda
+</footer>
+  
+
+
+
+
+
+
+<script type="text/javascript">
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+
+  
+  if (document.getElementById("tag-cloud") !== null) { 
+    if (prevScrollpos > currentScrollPos) { 
+      document.getElementById("tag-cloud").style.visibility = "visible";
+      document.getElementById("tag-cloud").style.opacity = "1";
+    } else {
+      document.getElementById("tag-cloud").style.visibility = "hidden";
+      document.getElementById("tag-cloud").style.opacity = "0";
+    }
+  }
+  
+
+  
+  if (document.body.scrollTop > 1000 || document.documentElement.scrollTop > 1000) {
+      document.getElementById("scroll-to-top").style.display = "inline";
+      document.getElementById("scroll-to-top").style.visibility = "visible";
+      document.getElementById("scroll-to-top").style.opacity = "1";
+  } else {
+      document.getElementById("scroll-to-top").style.visibility = "hidden";
+      document.getElementById("scroll-to-top").style.opacity = "0";
+  }
+  
+  prevScrollpos = currentScrollPos;
+}
+
+
+function topFunction() {
+  document.body.scrollTop = 0; 
+  document.documentElement.scrollTop = 0; 
+}
+
+
+
+
+
+
+
+</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+<script>
+  renderMathInElement(document.body,
+    {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+        ]
+    }
+  );
+
+  var inlineMathArray = document.querySelectorAll("script[type='math/tex']");
+  for (var i = 0; i < inlineMathArray.length; i++) {
+    var inlineMath = inlineMathArray[i];
+    var tex = inlineMath.innerText || inlineMath.textContent;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex, {displayMode: false});
+    inlineMath.parentNode.replaceChild(replaced, inlineMath);
+  }
+
+  var displayMathArray = document.querySelectorAll("script[type='math/tex; mode=display']");
+  for (var i = 0; i < displayMathArray.length; i++) {
+    var displayMath = displayMathArray[i];
+    var tex = displayMath.innerHTML;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+    displayMath.parentNode.replaceChild(replaced, displayMath);
+  }
+</script>
+
+
+</body>
+</html>

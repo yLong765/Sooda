@@ -2,32 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://sooda.net.cn/categories/categirues-test/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
-  </url><url>
-    <loc>https://sooda.net.cn/categories/categirues-test1/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
-  </url><url>
     <loc>https://sooda.net.cn/categories/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
   </url><url>
     <loc>https://sooda.net.cn/posts/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
   </url><url>
     <loc>https://sooda.net.cn/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
-  </url><url>
-    <loc>https://sooda.net.cn/tags/tag-test/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
-  </url><url>
-    <loc>https://sooda.net.cn/tags/tag-test1/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
   </url><url>
     <loc>https://sooda.net.cn/tags/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
   </url><url>
-    <loc>https://sooda.net.cn/posts/test/</loc>
-    <lastmod>2021-10-15T22:38:01+08:00</lastmod>
+    <loc>https://sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</loc>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
+  </url><url>
+    <loc>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6/</loc>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
+  </url><url>
+    <loc>https://sooda.net.cn/tags/%E5%8A%A8%E7%94%BB/</loc>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
+  </url><url>
+    <loc>https://sooda.net.cn/tags/%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
+  </url><url>
+    <loc>https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/</loc>
+    <lastmod>2021-11-07T17:14:24+08:00</lastmod>
   </url><url>
     <loc>https://sooda.net.cn/about/</loc>
     <lastmod>2019-02-28T00:00:00+00:00</lastmod>
