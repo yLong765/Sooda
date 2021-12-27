@@ -2,19 +2,201 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>渲染 on Sooda</title>
-    <link>https://sooda.net.cn/tags/%E6%B8%B2%E6%9F%93/</link>
+    <link>https://example.com/tags/%E6%B8%B2%E6%9F%93/</link>
     <description>Recent content in 渲染 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>Copyright by Sooda</copyright>
-    <lastBuildDate>Wed, 22 Dec 2021 15:57:24 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E6%B8%B2%E6%9F%93/index.xml" rel="self" type="application/rss+xml" />
+    <language>cn</language>
+    <copyright>Copyright ©Sooda</copyright>
+    <lastBuildDate>Wed, 22 Dec 2021 15:57:24 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/tags/%E6%B8%B2%E6%9F%93/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>《游戏编程算法与技巧》渲染篇</title>
-      <link>https://sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</link>
+      <link>https://example.com/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</link>
       <pubDate>Wed, 22 Dec 2021 15:57:24 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
-      <description>闲话 近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏</description>
+      <guid>https://example.com/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
+      <description>&lt;h1 id=&#34;闲话&#34;&gt;闲话&lt;/h1&gt;
+&lt;p&gt;近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读&lt;/p&gt;
+&lt;p&gt;此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。&lt;/p&gt;
+&lt;h1 id=&#34;渲染基础&#34;&gt;渲染基础&lt;/h1&gt;
+&lt;p&gt;此部分只做简单的总结，网上已经有很多的好文章了。而此书作者也没有很详细的写这部分。毕竟这块要是讲细了够学一辈子了&lt;/p&gt;
+&lt;p&gt;推荐一些好文（有兴趣可以看看我写的&lt;a href=&#34;https://gitee.com/GeekL/sheep-render&#34;&gt;软渲染&lt;/a&gt;）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1X7411F744&#34;&gt;闫令琪老师的GAMES101课程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/skywind3000/mini3d&#34;&gt;韦易笑老师的mini3d项目&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/skywind3000/RenderHelp&#34;&gt;韦易笑老师的RenderHelp项目&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ssloy/tinyrenderer&#34;&gt;Dmitry V. Sokolov老师的tinyrender项目&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;双缓冲技术解决渲染撕裂&#34;&gt;双缓冲技术解决渲染撕裂&lt;/h2&gt;
+&lt;p&gt;CRT显示器时代，所谓场消隐期（VBLANK）：喷枪从右下角移动到左上角所花费的时间&lt;/p&gt;
+&lt;p&gt;渲染撕裂：显示器在绘制像素缓冲区中的内容时，游戏输出了新的渲染结果到像素缓冲区，导致渲染撕裂&lt;/p&gt;
+&lt;p&gt;双缓冲技术：解决屏幕撕裂，用两块像素缓冲区，游戏交替的在这两块缓冲区中绘制&lt;/p&gt;
+&lt;p&gt;垂直同步：让交换缓冲区的时机在场消隐期进行&lt;/p&gt;
+&lt;p&gt;三缓冲技术：利用3个缓冲区，让画面更加平滑，但增加输入延迟&lt;/p&gt;
+&lt;h2 id=&#34;画家算法&#34;&gt;画家算法&lt;/h2&gt;
+&lt;p&gt;所有物体按照从后往前的顺序绘制。优点：绘制绝对正确（包括透明物体），缺点：overdraw高，效率慢&lt;/p&gt;
+&lt;h2 id=&#34;3d渲染&#34;&gt;3D渲染&lt;/h2&gt;
+&lt;p&gt;为什么用三角形表示面片？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;仅用3顶点表示的最简单的多边形&lt;/li&gt;
+&lt;li&gt;三角形总在一个面上&lt;/li&gt;
+&lt;li&gt;任何3D对象都可以简单地用细分三角面表示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;网格：多个三角面组成&lt;/p&gt;
+&lt;h3 id=&#34;软件光栅化&#34;&gt;软件光栅化&lt;/h3&gt;
+&lt;p&gt;将3D模型正确渲染到2D颜色缓冲的算法&lt;/p&gt;
+&lt;p&gt;3D模型经过4个主要坐标系空间转到最终的2D颜色缓冲中&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型（局部）坐标系：相对于模型自身的坐标系（角色模型一般为两脚中间）&lt;/li&gt;
+&lt;li&gt;世界坐标系：所有对象都相对于世界原点偏移&lt;/li&gt;
+&lt;li&gt;视角（摄像机）坐标系：将世界坐标系的模型变换到相对于摄像机的位置上&lt;/li&gt;
+&lt;li&gt;投影坐标系：将3D场景平铺到2D平面上得到的坐标系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;除了上面的坐标系外，还有一个特殊的坐标系，就是齐次坐标系&lt;/p&gt;
+&lt;p&gt;将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点&lt;/p&gt;
+&lt;h4 id=&#34;矩阵变换&#34;&gt;矩阵变换&lt;/h4&gt;
+&lt;p&gt;将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。&lt;/p&gt;
+&lt;font style=background:yellow&gt;
+此处和之后所用的都为行向量。（OpenGL为列向量）
+&lt;/font&gt;
+&lt;h4 id=&#34;模型转世界坐标系&#34;&gt;模型转世界坐标系&lt;/h4&gt;
+&lt;h5 id=&#34;平移&#34;&gt;平移&lt;/h5&gt;
+&lt;p&gt;将顶点移动一段距离，只作用在点上&lt;/p&gt;
+&lt;p&gt;$$
+T(t_x,t_y,t_z) = \begin{bmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\ t_x &amp;amp; t_y &amp;amp; t_z &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h5 id=&#34;旋转&#34;&gt;旋转&lt;/h5&gt;
+&lt;p&gt;将顶点或向量相对于某个轴旋转（欧拉角旋转）&lt;/p&gt;
+&lt;font style=background:yellow&gt;
+旋转矩阵是正交的，就是说转置矩阵就是逆矩阵
+&lt;/font&gt;
+&lt;p&gt;$$
+RotateX(\theta) = \begin{bmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; \cos \theta &amp;amp; - \sin \theta &amp;amp; 0 \\ 0 &amp;amp; \sin \theta &amp;amp; \cos \theta &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+RotateY(\theta) = \begin{bmatrix}
+\cos \theta &amp;amp; 0 &amp;amp; \sin \theta &amp;amp; 0 \\0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\ - \sin \theta &amp;amp; 0 &amp;amp; \cos \theta &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+RotateZ(\theta) = \begin{bmatrix}
+\cos \theta &amp;amp; - \sin \theta &amp;amp; 0 &amp;amp; 0 \\ \sin \theta &amp;amp; \cos \theta &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h5 id=&#34;缩放&#34;&gt;缩放&lt;/h5&gt;
+&lt;p&gt;$$
+S(s_x,s_y,s_z) = \begin{bmatrix}
+s_x &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; s_y &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; s_z &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;按行矩阵应用矩阵变换，乘积的顺序应为：$modeltoworld = scale * rotation * translation$&lt;/p&gt;
+&lt;font style=background:yellow&gt;
+应先旋转在平移，因为旋转是相对于原点的，先旋转对象可自转。而后旋转则对象就是相对于世界坐标系原点旋转了。
+&lt;/font&gt;
+&lt;h4 id=&#34;观察矩阵look-at&#34;&gt;观察矩阵(Look-At)&lt;/h4&gt;
+&lt;p&gt;$L$表示左边或x轴，$U$表示上方或y轴，$F$表示前方或z轴，$T$则是摄像机的平移&lt;/p&gt;
+&lt;p&gt;$$
+LookAt = \begin{bmatrix}
+L_x &amp;amp; U_x &amp;amp; F_x &amp;amp; 0 \\ L_y &amp;amp; U_y &amp;amp; F_y &amp;amp; 0 \\ L_z &amp;amp; U_z &amp;amp; F_z &amp;amp; 0 \\ T_x &amp;amp; T_y &amp;amp; T_z &amp;amp; 1 \\
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#111&#34;&gt;Matrix4x4&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;LookAt&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;cross&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;U&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;cross&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;U&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;z&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;//创建并返回观察矩阵
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//...
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;投影坐标系&#34;&gt;投影坐标系&lt;/h4&gt;
+&lt;h5 id=&#34;正交投影&#34;&gt;正交投影&lt;/h5&gt;
+&lt;p&gt;$$
+Orthographic = \begin{bmatrix}
+\frac{2}{width} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; \frac{2}{height} &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; \frac{1}{far - near} &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; \frac{near}{far - near} &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h5 id=&#34;透视投影&#34;&gt;透视投影&lt;/h5&gt;
+&lt;p&gt;$$
+Perspective=\begin{bmatrix}
+\cot \frac{fov}{2} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; \frac{height}{width} &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; \frac{far}{far - near} &amp;amp; 1 \\ 0 &amp;amp; 0 &amp;amp; \frac{-near * far}{far - near} &amp;amp; 0
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h4 id=&#34;光照与着色&#34;&gt;光照与着色&lt;/h4&gt;
+&lt;h5 id=&#34;颜色&#34;&gt;颜色&lt;/h5&gt;
+&lt;p&gt;RGB颜色空间：将颜色分为红色，绿色和蓝色分量。&lt;/p&gt;
+&lt;p&gt;色深：每个像素用多少位来存储（大部分每分量都为8位来存储，就是说每位有256种可能，共大约1600万种不同颜色）&lt;/p&gt;
+&lt;p&gt;不透明度（用A表示，从而组成RGBA，一共32位）&lt;/p&gt;
+&lt;h5 id=&#34;顶点属性&#34;&gt;顶点属性&lt;/h5&gt;
+&lt;p&gt;模型顶点上存储的额外信息&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;纹理映射：将2D图片映射到3D的三角形中
+&lt;ul&gt;
+&lt;li&gt;UV坐标：纹理的x坐标为u，y坐标为v&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;顶点法线：产生凹凸感
+&lt;ul&gt;
+&lt;li&gt;将拥有该顶点的三角形的法线取平均值，用于平滑模型（如圆形）&lt;/li&gt;
+&lt;li&gt;每个顶点存储自己的法线方向，用于棱角清晰的模型（如四边形）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;顶点序：顶点的顺序，用于决定叉乘的值向量的朝向，保持全程一致就可。还可用于背面剔除&lt;/p&gt;
+&lt;h5 id=&#34;光照&#34;&gt;光照&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;环境光：添加到场景中每一个物体上固定的光&lt;/li&gt;
+&lt;li&gt;方向光：没有位置，只指定光照方向的光&lt;/li&gt;
+&lt;li&gt;点光源：从某个点向四面八方射出的光照&lt;/li&gt;
+&lt;li&gt;聚光灯：将点光源限制在锥体内有光&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Phong光照模型公式：
+$$
+Phong光照 = 环境光 + 漫反射 + 高光
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;漫反射：光源作用于物体表面的主要反射。被所有方向光，点光源和聚光灯影响。&lt;/li&gt;
+&lt;li&gt;高光：物体表面的闪光点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// N = 物体表面法线
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// eye = 摄像机位置
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// pos = 物体表面位置
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// a = 高光量
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;V&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;AmbientColor&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 环境光
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;foreach&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Light&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;light&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;scene&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 循环场景中所有的灯光
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;light&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 从物体表面到光源
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;DiffuseColor&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;N&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 漫反射光照强度
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;R&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;reflect&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;N&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;));&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 计算-L关于N的反射
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;SpecularColor&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pow&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;R&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;),&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 高光强度
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h6 id=&#34;着色方式&#34;&gt;着色方式&lt;/h6&gt;
+&lt;ul&gt;
+&lt;li&gt;平面着色：每个三角面只用一种颜色&lt;/li&gt;
+&lt;li&gt;Gouraud着色：通过顶点颜色插值填充（多边形数量越多越好）&lt;/li&gt;
+&lt;li&gt;Phong着色：逐像素光照，针对每个像素单独计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;深度缓冲区&#34;&gt;深度缓冲区&lt;/h4&gt;
+&lt;p&gt;为场景的每个像素存储数据，与颜色缓冲一样，不过存储的是像素到摄像机的距离（深度）&lt;/p&gt;
+&lt;p&gt;在每一帧渲染前会清空深度缓冲区（让所有像素无限远）。渲染过程中，深度会在像素着色器渲染前计算出来。如果比当前深度小，则绘制并写入新的深度&lt;/p&gt;
+&lt;h5 id=&#34;透明对象的绘制&#34;&gt;透明对象的绘制&lt;/h5&gt;
+&lt;p&gt;透明对象不适用于深度缓冲，如果透明物体比不透明物体深度浅，如果先画透明物体，则不透明物体就不会被绘制了&lt;/p&gt;
+&lt;p&gt;为了解决此问题，应用深度测试先画所有的不透明物体，然后关闭深度测试，渲染所有透明物体。确保不透明物体背后的对象不进行渲染仍需进行深度检查&lt;/p&gt;
+&lt;p&gt;大多数会采用24位或32位的深度缓冲区&lt;/p&gt;
+&lt;p&gt;怎么解决像素重绘问题？
+先绘制深度pass，然后按照所得的深度缓冲结果计算光照pass&lt;/p&gt;
+&lt;p&gt;利用剔除或者遮挡算法可消除在某些帧完全看不到的对象。类似的算法有二叉树分区算法（BSP），人口算法和遮挡体积等。&lt;/p&gt;
+&lt;p&gt;（完）&lt;/p&gt;
+</description>
     </item>
     
   </channel>

@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Sooda</title>
+    <link>https://example.com/post/</link>
+    <description>Recent content in Posts on Sooda</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language>
+    <copyright>Copyright ©Sooda</copyright>
+    <lastBuildDate>Wed, 22 Dec 2021 15:57:24 +0800</lastBuildDate>
+    
+	<atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>《游戏编程算法与技巧》渲染篇</title>
+      <link>https://example.com/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</link>
+      <pubDate>Wed, 22 Dec 2021 15:57:24 +0800</pubDate>
+      
+      <guid>https://example.com/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
+      <description>&lt;h1 id=&#34;闲话&#34;&gt;闲话&lt;/h1&gt;
+&lt;p&gt;近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读&lt;/p&gt;
+&lt;p&gt;此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。&lt;/p&gt;
+&lt;h1 id=&#34;渲染基础&#34;&gt;渲染基础&lt;/h1&gt;
+&lt;p&gt;此部分只做简单的总结，网上已经有很多的好文章了。而此书作者也没有很详细的写这部分。毕竟这块要是讲细了够学一辈子了&lt;/p&gt;
+&lt;p&gt;推荐一些好文（有兴趣可以看看我写的&lt;a href=&#34;https://gitee.com/GeekL/sheep-render&#34;&gt;软渲染&lt;/a&gt;）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1X7411F744&#34;&gt;闫令琪老师的GAMES101课程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/skywind3000/mini3d&#34;&gt;韦易笑老师的mini3d项目&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/skywind3000/RenderHelp&#34;&gt;韦易笑老师的RenderHelp项目&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ssloy/tinyrenderer&#34;&gt;Dmitry V. Sokolov老师的tinyrender项目&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;双缓冲技术解决渲染撕裂&#34;&gt;双缓冲技术解决渲染撕裂&lt;/h2&gt;
+&lt;p&gt;CRT显示器时代，所谓场消隐期（VBLANK）：喷枪从右下角移动到左上角所花费的时间&lt;/p&gt;
+&lt;p&gt;渲染撕裂：显示器在绘制像素缓冲区中的内容时，游戏输出了新的渲染结果到像素缓冲区，导致渲染撕裂&lt;/p&gt;
+&lt;p&gt;双缓冲技术：解决屏幕撕裂，用两块像素缓冲区，游戏交替的在这两块缓冲区中绘制&lt;/p&gt;
+&lt;p&gt;垂直同步：让交换缓冲区的时机在场消隐期进行&lt;/p&gt;
+&lt;p&gt;三缓冲技术：利用3个缓冲区，让画面更加平滑，但增加输入延迟&lt;/p&gt;
+&lt;h2 id=&#34;画家算法&#34;&gt;画家算法&lt;/h2&gt;
+&lt;p&gt;所有物体按照从后往前的顺序绘制。优点：绘制绝对正确（包括透明物体），缺点：overdraw高，效率慢&lt;/p&gt;
+&lt;h2 id=&#34;3d渲染&#34;&gt;3D渲染&lt;/h2&gt;
+&lt;p&gt;为什么用三角形表示面片？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;仅用3顶点表示的最简单的多边形&lt;/li&gt;
+&lt;li&gt;三角形总在一个面上&lt;/li&gt;
+&lt;li&gt;任何3D对象都可以简单地用细分三角面表示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;网格：多个三角面组成&lt;/p&gt;
+&lt;h3 id=&#34;软件光栅化&#34;&gt;软件光栅化&lt;/h3&gt;
+&lt;p&gt;将3D模型正确渲染到2D颜色缓冲的算法&lt;/p&gt;
+&lt;p&gt;3D模型经过4个主要坐标系空间转到最终的2D颜色缓冲中&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型（局部）坐标系：相对于模型自身的坐标系（角色模型一般为两脚中间）&lt;/li&gt;
+&lt;li&gt;世界坐标系：所有对象都相对于世界原点偏移&lt;/li&gt;
+&lt;li&gt;视角（摄像机）坐标系：将世界坐标系的模型变换到相对于摄像机的位置上&lt;/li&gt;
+&lt;li&gt;投影坐标系：将3D场景平铺到2D平面上得到的坐标系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;除了上面的坐标系外，还有一个特殊的坐标系，就是齐次坐标系&lt;/p&gt;
+&lt;p&gt;将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点&lt;/p&gt;
+&lt;h4 id=&#34;矩阵变换&#34;&gt;矩阵变换&lt;/h4&gt;
+&lt;p&gt;将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。&lt;/p&gt;
+&lt;font style=background:yellow&gt;
+此处和之后所用的都为行向量。（OpenGL为列向量）
+&lt;/font&gt;
+&lt;h4 id=&#34;模型转世界坐标系&#34;&gt;模型转世界坐标系&lt;/h4&gt;
+&lt;h5 id=&#34;平移&#34;&gt;平移&lt;/h5&gt;
+&lt;p&gt;将顶点移动一段距离，只作用在点上&lt;/p&gt;
+&lt;p&gt;$$
+T(t_x,t_y,t_z) = \begin{bmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\ t_x &amp;amp; t_y &amp;amp; t_z &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h5 id=&#34;旋转&#34;&gt;旋转&lt;/h5&gt;
+&lt;p&gt;将顶点或向量相对于某个轴旋转（欧拉角旋转）&lt;/p&gt;
+&lt;font style=background:yellow&gt;
+旋转矩阵是正交的，就是说转置矩阵就是逆矩阵
+&lt;/font&gt;
+&lt;p&gt;$$
+RotateX(\theta) = \begin{bmatrix}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; \cos \theta &amp;amp; - \sin \theta &amp;amp; 0 \\ 0 &amp;amp; \sin \theta &amp;amp; \cos \theta &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+RotateY(\theta) = \begin{bmatrix}
+\cos \theta &amp;amp; 0 &amp;amp; \sin \theta &amp;amp; 0 \\0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\ - \sin \theta &amp;amp; 0 &amp;amp; \cos \theta &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+RotateZ(\theta) = \begin{bmatrix}
+\cos \theta &amp;amp; - \sin \theta &amp;amp; 0 &amp;amp; 0 \\ \sin \theta &amp;amp; \cos \theta &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h5 id=&#34;缩放&#34;&gt;缩放&lt;/h5&gt;
+&lt;p&gt;$$
+S(s_x,s_y,s_z) = \begin{bmatrix}
+s_x &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; s_y &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; s_z &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;按行矩阵应用矩阵变换，乘积的顺序应为：$modeltoworld = scale * rotation * translation$&lt;/p&gt;
+&lt;font style=background:yellow&gt;
+应先旋转在平移，因为旋转是相对于原点的，先旋转对象可自转。而后旋转则对象就是相对于世界坐标系原点旋转了。
+&lt;/font&gt;
+&lt;h4 id=&#34;观察矩阵look-at&#34;&gt;观察矩阵(Look-At)&lt;/h4&gt;
+&lt;p&gt;$L$表示左边或x轴，$U$表示上方或y轴，$F$表示前方或z轴，$T$则是摄像机的平移&lt;/p&gt;
+&lt;p&gt;$$
+LookAt = \begin{bmatrix}
+L_x &amp;amp; U_x &amp;amp; F_x &amp;amp; 0 \\ L_y &amp;amp; U_y &amp;amp; F_y &amp;amp; 0 \\ L_z &amp;amp; U_z &amp;amp; F_z &amp;amp; 0 \\ T_x &amp;amp; T_y &amp;amp; T_z &amp;amp; 1 \\
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#111&#34;&gt;Matrix4x4&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;LookAt&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;cross&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;U&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;cross&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;U&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;z&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;//创建并返回观察矩阵
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//...
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;投影坐标系&#34;&gt;投影坐标系&lt;/h4&gt;
+&lt;h5 id=&#34;正交投影&#34;&gt;正交投影&lt;/h5&gt;
+&lt;p&gt;$$
+Orthographic = \begin{bmatrix}
+\frac{2}{width} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; \frac{2}{height} &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; \frac{1}{far - near} &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; \frac{near}{far - near} &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h5 id=&#34;透视投影&#34;&gt;透视投影&lt;/h5&gt;
+&lt;p&gt;$$
+Perspective=\begin{bmatrix}
+\cot \frac{fov}{2} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; \frac{height}{width} &amp;amp; 0 &amp;amp; 0 \\ 0 &amp;amp; 0 &amp;amp; \frac{far}{far - near} &amp;amp; 1 \\ 0 &amp;amp; 0 &amp;amp; \frac{-near * far}{far - near} &amp;amp; 0
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;h4 id=&#34;光照与着色&#34;&gt;光照与着色&lt;/h4&gt;
+&lt;h5 id=&#34;颜色&#34;&gt;颜色&lt;/h5&gt;
+&lt;p&gt;RGB颜色空间：将颜色分为红色，绿色和蓝色分量。&lt;/p&gt;
+&lt;p&gt;色深：每个像素用多少位来存储（大部分每分量都为8位来存储，就是说每位有256种可能，共大约1600万种不同颜色）&lt;/p&gt;
+&lt;p&gt;不透明度（用A表示，从而组成RGBA，一共32位）&lt;/p&gt;
+&lt;h5 id=&#34;顶点属性&#34;&gt;顶点属性&lt;/h5&gt;
+&lt;p&gt;模型顶点上存储的额外信息&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;纹理映射：将2D图片映射到3D的三角形中
+&lt;ul&gt;
+&lt;li&gt;UV坐标：纹理的x坐标为u，y坐标为v&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;顶点法线：产生凹凸感
+&lt;ul&gt;
+&lt;li&gt;将拥有该顶点的三角形的法线取平均值，用于平滑模型（如圆形）&lt;/li&gt;
+&lt;li&gt;每个顶点存储自己的法线方向，用于棱角清晰的模型（如四边形）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;顶点序：顶点的顺序，用于决定叉乘的值向量的朝向，保持全程一致就可。还可用于背面剔除&lt;/p&gt;
+&lt;h5 id=&#34;光照&#34;&gt;光照&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;环境光：添加到场景中每一个物体上固定的光&lt;/li&gt;
+&lt;li&gt;方向光：没有位置，只指定光照方向的光&lt;/li&gt;
+&lt;li&gt;点光源：从某个点向四面八方射出的光照&lt;/li&gt;
+&lt;li&gt;聚光灯：将点光源限制在锥体内有光&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Phong光照模型公式：
+$$
+Phong光照 = 环境光 + 漫反射 + 高光
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;漫反射：光源作用于物体表面的主要反射。被所有方向光，点光源和聚光灯影响。&lt;/li&gt;
+&lt;li&gt;高光：物体表面的闪光点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// N = 物体表面法线
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// eye = 摄像机位置
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// pos = 物体表面位置
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// a = 高光量
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;V&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;AmbientColor&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 环境光
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;foreach&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Light&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;light&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;scene&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 循环场景中所有的灯光
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;light&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 从物体表面到光源
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;DiffuseColor&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;N&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 漫反射光照强度
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;R&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;reflect&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;N&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;));&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 计算-L关于N的反射
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;SpecularColor&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pow&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;R&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;),&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 高光强度
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h6 id=&#34;着色方式&#34;&gt;着色方式&lt;/h6&gt;
+&lt;ul&gt;
+&lt;li&gt;平面着色：每个三角面只用一种颜色&lt;/li&gt;
+&lt;li&gt;Gouraud着色：通过顶点颜色插值填充（多边形数量越多越好）&lt;/li&gt;
+&lt;li&gt;Phong着色：逐像素光照，针对每个像素单独计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;深度缓冲区&#34;&gt;深度缓冲区&lt;/h4&gt;
+&lt;p&gt;为场景的每个像素存储数据，与颜色缓冲一样，不过存储的是像素到摄像机的距离（深度）&lt;/p&gt;
+&lt;p&gt;在每一帧渲染前会清空深度缓冲区（让所有像素无限远）。渲染过程中，深度会在像素着色器渲染前计算出来。如果比当前深度小，则绘制并写入新的深度&lt;/p&gt;
+&lt;h5 id=&#34;透明对象的绘制&#34;&gt;透明对象的绘制&lt;/h5&gt;
+&lt;p&gt;透明对象不适用于深度缓冲，如果透明物体比不透明物体深度浅，如果先画透明物体，则不透明物体就不会被绘制了&lt;/p&gt;
+&lt;p&gt;为了解决此问题，应用深度测试先画所有的不透明物体，然后关闭深度测试，渲染所有透明物体。确保不透明物体背后的对象不进行渲染仍需进行深度检查&lt;/p&gt;
+&lt;p&gt;大多数会采用24位或32位的深度缓冲区&lt;/p&gt;
+&lt;p&gt;怎么解决像素重绘问题？
+先绘制深度pass，然后按照所得的深度缓冲结果计算光照pass&lt;/p&gt;
+&lt;p&gt;利用剔除或者遮挡算法可消除在某些帧完全看不到的对象。类似的算法有二叉树分区算法（BSP），人口算法和遮挡体积等。&lt;/p&gt;
+&lt;p&gt;（完）&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>《游戏引擎架构》动画的基本构成</title>
+      <link>https://example.com/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</link>
+      <pubDate>Sun, 07 Nov 2021 17:14:24 +0800</pubDate>
+      
+      <guid>https://example.com/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</guid>
+      <description>&lt;h2 id=&#34;闲话&#34;&gt;闲话&lt;/h2&gt;
+&lt;p&gt;近日读完了《游戏引擎架构》这本书，以前感觉读不完，但是每天慢慢的磨完了。闲下来时间提炼一下其中自我觉得比较关键的部分。因本人是做Unity开发的，所以会把书中所讲部分结合Unity引擎来总结。闲话不多说开始吧&lt;/p&gt;
+&lt;h2 id=&#34;动画的基本构成&#34;&gt;动画的基本构成&lt;/h2&gt;
+&lt;p&gt;Unity的动画系统封装的已经非常好了，所以我们对其中的细节了解的少之又少。本文章着重在单个动画，骨骼，姿势，蒙皮的内存存储结构和应用方式&lt;/p&gt;
+&lt;h3 id=&#34;角色动画的类型&#34;&gt;角色动画的类型&lt;/h3&gt;
+&lt;p&gt;在Unity中比较常用的动画为蒙皮/骨骼动画（三维）和精灵动画（二维）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;赛璐璐动画（精灵动画）：用一张细小的位图，叠在全屏的背景影响之上而不会扰乱背景。常用于二维游戏动画（Unity中的Sprite贴图）&lt;/li&gt;
+&lt;li&gt;动画纹理：面向摄像机的四边形，并用一连串的位图连续播放。现今用于远景活低分辨率的物体&lt;/li&gt;
+&lt;li&gt;刚性阶层动画：将角色通过部位进行拆分建模并以层级进行约束。但问题是在关节处会出现裂缝&lt;/li&gt;
+&lt;li&gt;每顶点动画：移动每个顶点以产生更自然的动作（蛮力技术，数据量非常大。通常用于老式的离线渲染）&lt;/li&gt;
+&lt;li&gt;变形目标动画：每顶点动画的变种，也是制作每个顶点的位置。但制作少量的固定极端姿势在运行时将其混合（线性插值混合）。通常用于面部动画&lt;/li&gt;
+&lt;li&gt;蒙皮/骨骼动画：
+&lt;ul&gt;
+&lt;li&gt;骨骼：隐藏的刚性关节层阶结构（树结构）所构成&lt;/li&gt;
+&lt;li&gt;皮肤：绑定于骨骼上的圆滑三角形网格，顶点会按权重绑定至多个关节。当关节移动时，蒙皮可以自然的拉伸&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为什么选择蒙皮/骨骼动画？
+以更少的数据量来达到更好的效果。通过加入约束：相对大量的顶点只能跟随相对少量的骨骼关节移动。来压缩顶点动画&lt;/p&gt;
+&lt;h3 id=&#34;骨骼在内存中的表示&#34;&gt;骨骼在内存中的表示&lt;/h3&gt;
+&lt;p&gt;通常使用关节索引引用关节，子关节索引引用父关节。蒙皮三角形网格中，每个顶点索引引用其绑定关节&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 关节数据的信息
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Joint&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Matrix4x3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;inv_bind_pose&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 绑定姿势（蒙皮网格顶点绑定至骨骼时，关节的位置，定向及缩放）的逆变换
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;char&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;           &lt;span style=&#34;color:#75715e&#34;&gt;// 关节名字（字符串或32位字符串散列表标识符）
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;U8&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;parent&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;                  &lt;span style=&#34;color:#75715e&#34;&gt;// 父索引(0xFF代表根关节)
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;};&lt;/span&gt;
+
+&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Skeletion&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;U32&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joint_count&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 关节数目
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Joint&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joint&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;       &lt;span style=&#34;color:#75715e&#34;&gt;// 关节数组
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;姿势&#34;&gt;姿势&lt;/h3&gt;
+&lt;p&gt;把角色摆出一连串离散，静止的姿势，并以通常30或60个姿势每秒的速率显示，已产生动感。实际游戏会以相邻姿势进行插值&lt;/p&gt;
+&lt;p&gt;绑定姿势：又称为T姿势。因此姿势四肢远离身体，较容易把顶点绑定至关节&lt;/p&gt;
+&lt;h4 id=&#34;局部姿势&#34;&gt;局部姿势&lt;/h4&gt;
+&lt;p&gt;相对于父关节指定的，其仿射变换相对于父节点空间&lt;/p&gt;
+&lt;p&gt;关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成
+$$
+p_j =
+\begin{bmatrix}
+S_jR_j &amp;amp; 0 \\ T_j &amp;amp; 1
+\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;整个骨骼的姿势：
+$$
+P^{skel} = { P_j } |_{j=0}^{N-1}
+$$&lt;/p&gt;
+&lt;p&gt;有些引擎不允许关节$S_j$缩放，有些引擎则必须为同一缩放。此优化能节省内存。并简化每个关节计算平截头体剔除及碰撞测试&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 局部关节的内存表示
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;JointPose&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color:#111&#34;&gt;Quaternion&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;rot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// Q
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;trans&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// T
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;F32&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;scale&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// S(仅为统一缩放)
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;};&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// 骨骼姿势：其所有关节姿势的集合
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;SkeletonPose&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color:#111&#34;&gt;Skeleton&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pSkeleton&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 骨骼 + 关节数量
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;JointPose&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;aLocalPose&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 多个局部关节姿势
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;全局姿势&#34;&gt;全局姿势&lt;/h4&gt;
+&lt;p&gt;关节姿势表示为相对于模型空间或世界空间。关节j的空间姿势(全局姿势)，可通过从该关节遍历至根节点并乘上其局部姿势&lt;/p&gt;
+&lt;p&gt;任何关节$j$的全局姿势（关节至模型空间的变换）可写成：&lt;/p&gt;
+&lt;p&gt;$$
+P_{j \rightarrow M} = \prod_{i=j}^0 P_{i \rightarrow p(i)}
+$$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 全局关节的内存表示
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;SkeletonPose&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color:#111&#34;&gt;Skeleton&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pSkeleton&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 骨骼 + 关节数量
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;JointPose&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;aLocalPose&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 多个局部关节姿势
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;Matrix44&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;aGlobalPose&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 多个全局关节姿势
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;动画片段&#34;&gt;动画片段&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;每个动画片段是为特定骨骼设计的，通常不会用于其他骨骼&lt;/li&gt;
+&lt;li&gt;动画重定目标：把为一个骨骼设计的动画，重订目标至不同骨骼&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;局部时间线&#34;&gt;局部时间线&lt;/h4&gt;
+&lt;p&gt;每个动画各自的时间线(AnimationClip)。时间索引$t$从$0$到$T$，$T$​为片段的持续时间&lt;/p&gt;
+&lt;p&gt;动画师在指定的时间点上设定一些关键姿势或关键帧，然后对应不同的时间索引$t$会用线性差值计算采样&lt;/p&gt;
+&lt;p&gt;帧：指一段时间，如1/30s或1/60s&lt;/p&gt;
+&lt;p&gt;采样：代指某时间点&lt;/p&gt;
+&lt;p&gt;相位：归一化表示时间单位，无论$T$多长，0代表动画开始，1代表结束&lt;/p&gt;
+&lt;h4 id=&#34;全局时间线&#34;&gt;全局时间线&lt;/h4&gt;
+&lt;p&gt;每个角色都有一个全局时间线（类似于Unity的Timeline）&lt;/p&gt;
+&lt;p&gt;播放动画可以简单的理解为把片段的局部时间映射到角色的全局时间&lt;/p&gt;
+&lt;p&gt;调整播放速率：把片段置于全局时间线之时缩放其比例，加快2倍播放=缩放1/2的局部时间片段&lt;/p&gt;
+&lt;p&gt;倒转播放：时间比例设置为-1&lt;/p&gt;
+&lt;p&gt;动画片段映射到全局时间线需要的信息：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全局起始时间&lt;/li&gt;
+&lt;li&gt;播放速率R&lt;/li&gt;
+&lt;li&gt;持续时间T&lt;/li&gt;
+&lt;li&gt;循环次数N&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;同步动画&#34;&gt;同步动画&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;局部时间线同步动画：必须在完全相同的游戏帧数播放（实现比较麻烦）&lt;/li&gt;
+&lt;li&gt;全局时间线同步动画：只要开始时间相同就可以完全同步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;内存中的表示方法&#34;&gt;内存中的表示方法&lt;/h4&gt;
+&lt;p&gt;采样由骨骼中的每个关节的完整姿势所组成。存储为SQT格式&lt;/p&gt;
+&lt;p&gt;如果缩放为标量。则一个未压缩的动画至多10个通道&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;平移：三维矢量$V=\begin{bmatrix} V_x &amp;amp; V_y &amp;amp; V_z \end{bmatrix}$&lt;/li&gt;
+&lt;li&gt;旋转：四元数$Q=\begin{bmatrix}Q_x &amp;amp; Q_y &amp;amp; Q_z &amp;amp; Q_w \end{bmatrix}$&lt;/li&gt;
+&lt;li&gt;缩放：标量$S$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;AnimationSample&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color:#111&#34;&gt;JointPose&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;aJointPose&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 关节姿势数组
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;};&lt;/span&gt;
+
+&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;AnimationClip&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color:#111&#34;&gt;Skeleton&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;pSkeleton&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// 骨骼关节（真实引擎中可能用骨骼标识符，而不是指针）
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;F32&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;framesPerSecond&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// 帧每秒
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 注释：非循环动画为frameCount + 1，循环动画最后一采样等于第一个采样会略去
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;U32&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;frameCount&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;           &lt;span style=&#34;color:#75715e&#34;&gt;// 采样数目
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#111&#34;&gt;AnimationSample&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;aSample&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 采样数组
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#00a8c8&#34;&gt;bool&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;isLooping&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;           &lt;span style=&#34;color:#75715e&#34;&gt;// 是否循环
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;通道函数unity的animation编辑面板&#34;&gt;通道函数（Unity的Animation编辑面板）&lt;/h3&gt;
+&lt;p&gt;函数通道在整个动画片段的时间线上是圆滑连续的（除非故意编辑成不连续的，例如镜头切换）。而游戏引擎中基本只会在采样间进行线性插值，实际上用到的是连续函数的分段线性逼近&lt;/p&gt;
+&lt;p&gt;可以加入额外的元通道数据。把游戏专用的信息编码，能和动画同步触发。如事件触发器（Unity的Animation面板中可触发事件）在动画脚步落地的时候播放声音&lt;/p&gt;
+&lt;p&gt;定位器：利用Maya中的定位器（类似于Unity中模型中的一个子节点，如手中武器的父节点）用于记录物体的位置及定向&lt;/p&gt;
+&lt;h3 id=&#34;蒙皮&#34;&gt;蒙皮&lt;/h3&gt;
+&lt;p&gt;把三维网格顶点联系至骨骼的过程&lt;/p&gt;
+&lt;p&gt;蒙皮信息：每个顶点可绑定至一个或多个关节，绑定至一个关节则完全跟随此关节移动。若绑定多个关节则等于多个关节位置的加权平均&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;顶点绑定到（一个或多个）关节的索引&lt;/li&gt;
+&lt;li&gt;对于每个绑定的关节，提供一个权重因子（权重之和为1），表示该关节对最终顶点位置的影响力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于绑定的关节数目通常限制为每顶点4关节，首先4个8位索引可包装位32位字。其次超过4个质量差别就没有明显提升了&lt;/p&gt;
+&lt;p&gt;内存数据结构：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;SkinnedVertex&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;position&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;		&lt;span style=&#34;color:#75715e&#34;&gt;// (Px,Py,Pz)
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;		&lt;span style=&#34;color:#75715e&#34;&gt;// (Nx,Ny,Nz)
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;u&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;v&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;				&lt;span style=&#34;color:#75715e&#34;&gt;// 纹理坐标uv
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;U8&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;jointIndex&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;		&lt;span style=&#34;color:#75715e&#34;&gt;// 关节索引
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;jointWeight&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// 关节权重，略去一个可用1-其他求得
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;蒙皮矩阵&#34;&gt;蒙皮矩阵&lt;/h4&gt;
+&lt;p&gt;将网格顶点从模型空间的原来位置（绑定姿势）变换至骨骼模型空间的当前姿势。非基变更变换&lt;/p&gt;
+&lt;p&gt;顶点绑定至关节的位置时，在该关节空间中的位置时不变的。所以可把顶点于模型空间的绑定姿势位置转换至关节空间，再把关节空间移至当前姿势，最后把该顶点转回模型空间。这个转换过程结合的转换矩阵就是蒙皮矩阵&lt;/p&gt;
+&lt;h5 id=&#34;单个关节的蒙皮矩阵&#34;&gt;单个关节的蒙皮矩阵&lt;/h5&gt;
+&lt;p&gt;绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：
+$$
+V_j = V_M^B B_{M \rightarrow j} = V_M^B(B_{j \rightarrow M}^{-1})
+$$
+矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：
+$$
+V_M^C = V_jC_{j \rightarrow M}
+$$
+则联合后的蒙皮矩阵$K_j$为：
+$$
+V_M^C = V_jC_{j \rightarrow M} = V_M^B(B{j \rightarrow M})^{-1}C_{j \rightarrow M} = V_M^BK_j
+$$&lt;/p&gt;
+&lt;p&gt;$$
+K_j =(B_{j \rightarrow M})^{-1}C_{j \rightarrow M}
+$$&lt;/p&gt;
+&lt;h5 id=&#34;多个关节的蒙皮矩阵&#34;&gt;多个关节的蒙皮矩阵&lt;/h5&gt;
+&lt;p&gt;将单关节蒙皮矩阵扩展至多关节须计算矩阵调色板，就是一组蒙皮矩阵$K_j$，当中每个矩阵对应第j个关节。当渲染一个蒙皮网络时，矩阵调色板便要传送至渲染引擎。渲染器会为每个顶点查找调色板中合适的关节蒙皮矩阵，并用该矩阵把顶点从绑定姿势转换至当前姿势&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当前姿势矩阵$C_{j \rightarrow M}$需要每帧更新&lt;/li&gt;
+&lt;li&gt;绑定姿势的逆矩阵是常量，计算后缓存在骨骼信息中&lt;/li&gt;
+&lt;li&gt;动画引擎计算每个关节的局部姿势$C_{j \rightarrow p(j)}$，然后转换至全局姿势$C_{j \rightarrow M}$，最后把全局姿势乘以对应的绑定姿势逆矩阵$(B_{j \rightarrow M})^{-1}$，以生成每个关节的蒙皮矩阵$K_j$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;运算效率优化：将蒙皮矩阵调色板预先乘于物体的模型至世界变换。因为最终都要转换到世界空间，所以可以预处理。但在多角色同时播放单个动画的情况时不能这么做。此技术为动画实例&lt;/p&gt;
+&lt;p&gt;（完）&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
