@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>《游戏引擎框架》 on Sooda</title>
-    <link>https://example.com/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6/</link>
+    <link>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6/</link>
     <description>Recent content in 《游戏引擎框架》 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright ©Sooda</copyright>
     <lastBuildDate>Sun, 07 Nov 2021 17:14:24 +0800</lastBuildDate>
     
-	<atom:link href="https://example.com/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>《游戏引擎架构》动画的基本构成</title>
-      <link>https://example.com/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</link>
+      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</link>
       <pubDate>Sun, 07 Nov 2021 17:14:24 +0800</pubDate>
       
-      <guid>https://example.com/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</guid>
+      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</guid>
       <description>&lt;h2 id=&#34;闲话&#34;&gt;闲话&lt;/h2&gt;
 &lt;p&gt;近日读完了《游戏引擎架构》这本书，以前感觉读不完，但是每天慢慢的磨完了。闲下来时间提炼一下其中自我觉得比较关键的部分。因本人是做Unity开发的，所以会把书中所讲部分结合Unity引擎来总结。闲话不多说开始吧&lt;/p&gt;
 &lt;h2 id=&#34;动画的基本构成&#34;&gt;动画的基本构成&lt;/h2&gt;

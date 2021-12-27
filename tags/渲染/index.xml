@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>渲染 on Sooda</title>
-    <link>https://example.com/tags/%E6%B8%B2%E6%9F%93/</link>
+    <link>https://sooda.net.cn/tags/%E6%B8%B2%E6%9F%93/</link>
     <description>Recent content in 渲染 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright ©Sooda</copyright>
     <lastBuildDate>Wed, 22 Dec 2021 15:57:24 +0800</lastBuildDate>
     
-	<atom:link href="https://example.com/tags/%E6%B8%B2%E6%9F%93/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sooda.net.cn/tags/%E6%B8%B2%E6%9F%93/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>《游戏编程算法与技巧》渲染篇</title>
-      <link>https://example.com/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</link>
+      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</link>
       <pubDate>Wed, 22 Dec 2021 15:57:24 +0800</pubDate>
       
-      <guid>https://example.com/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
+      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
       <description>&lt;h1 id=&#34;闲话&#34;&gt;闲话&lt;/h1&gt;
 &lt;p&gt;近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读&lt;/p&gt;
 &lt;p&gt;此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。&lt;/p&gt;
