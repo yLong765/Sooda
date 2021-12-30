@@ -57,18 +57,22 @@
 &lt;p&gt;绑定姿势：又称为T姿势。因此姿势四肢远离身体，较容易把顶点绑定至关节&lt;/p&gt;
 &lt;h4 id=&#34;局部姿势&#34;&gt;局部姿势&lt;/h4&gt;
 &lt;p&gt;相对于父关节指定的，其仿射变换相对于父节点空间&lt;/p&gt;
-&lt;p&gt;关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成
+&lt;p&gt;关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成&lt;/p&gt;
+&lt;div&gt;
 $$
 p_j =
 \begin{bmatrix}
-S_jR_j &amp;amp; 0 \
-T_j &amp;amp; 1
+S_jR_j &amp; 0 \\
+T_j &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
-&lt;p&gt;整个骨骼的姿势：
 $$
-P^{skel} = { P_j } |_{j=0}^{N-1}
-$$&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;整个骨骼的姿势：&lt;/p&gt;
+&lt;div&gt;
+$$
+P^{skel} = \{ P_j \} |_{j=0}^{N-1}
+$$
+&lt;/div&gt;
 &lt;p&gt;有些引擎不允许关节$S_j$缩放，有些引擎则必须为同一缩放。此优化能节省内存。并简化每个关节计算平截头体剔除及碰撞测试&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 局部关节的内存表示
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;JointPose&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
@@ -85,9 +89,11 @@ $$&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;全局姿势&#34;&gt;全局姿势&lt;/h4&gt;
 &lt;p&gt;关节姿势表示为相对于模型空间或世界空间。关节j的空间姿势(全局姿势)，可通过从该关节遍历至根节点并乘上其局部姿势&lt;/p&gt;
 &lt;p&gt;任何关节$j$的全局姿势（关节至模型空间的变换）可写成：&lt;/p&gt;
-&lt;p&gt;$$
+&lt;div&gt;
+$$
 P_{j \rightarrow M} = \prod_{i=j}^0 P_{i \rightarrow p(i)}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 全局关节的内存表示
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;SkeletonPose&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
   &lt;span style=&#34;color:#111&#34;&gt;Skeleton&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pSkeleton&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 骨骼 + 关节数量
@@ -166,21 +172,29 @@ $$&lt;/p&gt;
 &lt;p&gt;将网格顶点从模型空间的原来位置（绑定姿势）变换至骨骼模型空间的当前姿势。非基变更变换&lt;/p&gt;
 &lt;p&gt;顶点绑定至关节的位置时，在该关节空间中的位置时不变的。所以可把顶点于模型空间的绑定姿势位置转换至关节空间，再把关节空间移至当前姿势，最后把该顶点转回模型空间。这个转换过程结合的转换矩阵就是蒙皮矩阵&lt;/p&gt;
 &lt;h5 id=&#34;单个关节的蒙皮矩阵&#34;&gt;单个关节的蒙皮矩阵&lt;/h5&gt;
-&lt;p&gt;绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：
+&lt;p&gt;绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：&lt;/p&gt;
+&lt;div&gt;
 $$
 V_j = V_M^B B_{M \rightarrow j} = V_M^B(B_{j \rightarrow M}^{-1})
 $$
-矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：
+&lt;/div&gt;
+&lt;p&gt;矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：&lt;/p&gt;
+&lt;div&gt;
 $$
 V_M^C = V_jC_{j \rightarrow M}
 $$
-则联合后的蒙皮矩阵$K_j$为：
+&lt;/div&gt;
+&lt;p&gt;则联合后的蒙皮矩阵$K_j$为：&lt;/p&gt;
+&lt;div&gt;
 $$
 V_M^C = V_jC_{j \rightarrow M} = V_M^B(B{j \rightarrow M})^{-1}C_{j \rightarrow M} = V_M^BK_j
-$$&lt;/p&gt;
-&lt;p&gt;$$
+$$
+&lt;/div&gt;
+&lt;div&gt;
+$$
 K_j =(B_{j \rightarrow M})^{-1}C_{j \rightarrow M}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;h5 id=&#34;多个关节的蒙皮矩阵&#34;&gt;多个关节的蒙皮矩阵&lt;/h5&gt;
 &lt;p&gt;将单关节蒙皮矩阵扩展至多关节须计算矩阵调色板，就是一组蒙皮矩阵$K_j$，当中每个矩阵对应第j个关节。当渲染一个蒙皮网络时，矩阵调色板便要传送至渲染引擎。渲染器会为每个顶点查找调色板中合适的关节蒙皮矩阵，并用该矩阵把顶点从绑定姿势转换至当前姿势&lt;/p&gt;
 &lt;ul&gt;

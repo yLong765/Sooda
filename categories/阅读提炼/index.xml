@@ -59,68 +59,84 @@
 &lt;p&gt;将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点&lt;/p&gt;
 &lt;h4 id=&#34;矩阵变换&#34;&gt;矩阵变换&lt;/h4&gt;
 &lt;p&gt;将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。&lt;/p&gt;
-&lt;p&gt;==此处和之后所用的都为行向量。（OpenGL为列向量）==&lt;/p&gt;
+&lt;font style=background:yellow&gt;
+此处和之后所用的都为行向量。（OpenGL为列向量）
+&lt;/font&gt;
 &lt;h4 id=&#34;模型转世界坐标系&#34;&gt;模型转世界坐标系&lt;/h4&gt;
 &lt;h5 id=&#34;平移&#34;&gt;平移&lt;/h5&gt;
 &lt;p&gt;将顶点移动一段距离，只作用在点上&lt;/p&gt;
-&lt;p&gt;$$
+&lt;div&gt;
+$$
 T(t_x,t_y,t_z) = \begin{bmatrix}
-1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \
-t_x &amp;amp; t_y &amp;amp; t_z &amp;amp; 1
+    1 &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; 1 &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; 1 &amp; 0 \\
+    t_x &amp; t_y &amp; t_z &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;h5 id=&#34;旋转&#34;&gt;旋转&lt;/h5&gt;
 &lt;p&gt;将顶点或向量相对于某个轴旋转（欧拉角旋转）&lt;/p&gt;
-&lt;p&gt;==旋转矩阵是正交的，就是说转置矩阵就是逆矩阵==&lt;/p&gt;
-&lt;p&gt;$$
+&lt;font style=background:yellow&gt;
+旋转矩阵是正交的，就是说转置矩阵就是逆矩阵
+&lt;/font&gt;
+&lt;div&gt;
+$$
 RotateX(\theta) = \begin{bmatrix}
-1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; \cos \theta &amp;amp; - \sin \theta &amp;amp; 0 \
-0 &amp;amp; \sin \theta &amp;amp; \cos \theta &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+    1 &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; \cos \theta &amp; - \sin \theta &amp; 0 \\
+    0 &amp; \sin \theta &amp; \cos \theta &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
-&lt;p&gt;$$
+$$
+&lt;/div&gt;
+&lt;div&gt;
+$$
 RotateY(\theta) = \begin{bmatrix}
-\cos \theta &amp;amp; 0 &amp;amp; \sin \theta &amp;amp; 0 \
-0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \
-- \sin \theta &amp;amp; 0 &amp;amp; \cos \theta &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+    \cos \theta &amp; 0 &amp; \sin \theta &amp; 0 \\
+    0 &amp; 1 &amp; 0 &amp; 0 \\
+    - \sin \theta &amp; 0 &amp; \cos \theta &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
-&lt;p&gt;$$
+$$
+&lt;/div&gt;
+&lt;div&gt;
+$$
 RotateZ(\theta) = \begin{bmatrix}
-\cos \theta &amp;amp; - \sin \theta &amp;amp; 0 &amp;amp; 0 \
-\sin \theta &amp;amp; \cos \theta &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+    \cos \theta &amp; - \sin \theta &amp; 0 &amp; 0 \\
+    \sin \theta &amp; \cos \theta &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;h5 id=&#34;缩放&#34;&gt;缩放&lt;/h5&gt;
-&lt;p&gt;$$
+&lt;div&gt;
+$$
 S(s_x,s_y,s_z) = \begin{bmatrix}
-s_x &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; s_y &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; s_z &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+    s_x &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; s_y &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; s_z &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;p&gt;按行矩阵应用矩阵变换，乘积的顺序应为：$ model2world = scale * rotation * translation $&lt;/p&gt;
 &lt;font style=background:yellow&gt;
 应先旋转在平移，因为旋转是相对于原点的，先旋转对象可自转。而后旋转则对象就是相对于世界坐标系原点旋转了。
 &lt;/font&gt;
 &lt;h4 id=&#34;观察矩阵look-at&#34;&gt;观察矩阵(Look-At)&lt;/h4&gt;
 &lt;p&gt;$L$表示左边或x轴，$U$表示上方或y轴，$F$表示前方或z轴，$T$则是摄像机的平移&lt;/p&gt;
-&lt;p&gt;$$
+&lt;div&gt;
+$$
 LookAt = \begin{bmatrix}
-L_x &amp;amp; U_x &amp;amp; F_x &amp;amp; 0 \
-L_y &amp;amp; U_y &amp;amp; F_y &amp;amp; 0 \
-L_z &amp;amp; U_z &amp;amp; F_z &amp;amp; 0 \
-T_x &amp;amp; T_y &amp;amp; T_z &amp;amp; 1
+    L_x &amp; U_x &amp; F_x &amp; 0 \\
+    L_y &amp; U_y &amp; F_y &amp; 0 \\
+    L_z &amp; U_z &amp; F_z &amp; 0 \\
+    T_x &amp; T_y &amp; T_z &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#111&#34;&gt;Matrix4x4&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;LookAt&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
     &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
     &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;cross&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;));&lt;/span&gt;
@@ -135,23 +151,27 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;投影坐标系&#34;&gt;投影坐标系&lt;/h4&gt;
 &lt;h5 id=&#34;正交投影&#34;&gt;正交投影&lt;/h5&gt;
-&lt;p&gt;$$
+&lt;div&gt;
+$$
 Orthographic = \begin{bmatrix}
-\frac{2}{width} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; \frac{2}{height} &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; \frac{1}{far - near} &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; \frac{near}{far - near} &amp;amp; 1
+    \frac{2}{width} &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; \frac{2}{height} &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; \frac{1}{far - near} &amp; 0 \\
+    0 &amp; 0 &amp; \frac{near}{far - near} &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;h5 id=&#34;透视投影&#34;&gt;透视投影&lt;/h5&gt;
-&lt;p&gt;$$
+&lt;div&gt;
+$$
 Perspective=\begin{bmatrix}
-\cot \frac{fov}{2} &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; \frac{height}{width} &amp;amp; 0 &amp;amp; 0 \
-0 &amp;amp; 0 &amp;amp; \frac{far}{far - near} &amp;amp; 1 \
-0 &amp;amp; 0 &amp;amp; \frac{-near * far}{far - near} &amp;amp; 0
+    \cot \frac{fov}{2} &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; \frac{height}{width} &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; \frac{far}{far - near} &amp; 1 \\
+    0 &amp; 0 &amp; \frac{-near * far}{far - near} &amp; 0
 \end{bmatrix}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;h4 id=&#34;光照与着色&#34;&gt;光照与着色&lt;/h4&gt;
 &lt;h5 id=&#34;颜色&#34;&gt;颜色&lt;/h5&gt;
 &lt;p&gt;RGB颜色空间：将颜色分为红色，绿色和蓝色分量。&lt;/p&gt;
@@ -180,10 +200,12 @@ $$&lt;/p&gt;
 &lt;li&gt;点光源：从某个点向四面八方射出的光照&lt;/li&gt;
 &lt;li&gt;聚光灯：将点光源限制在锥体内有光&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Phong光照模型公式：
+&lt;p&gt;Phong光照模型公式：&lt;/p&gt;
+&lt;div&gt;
 $$
 Phong 光照 = 环境光 + 漫反射 + 高光
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;ul&gt;
 &lt;li&gt;漫反射：光源作用于物体表面的主要反射。被所有方向光，点光源和聚光灯影响。&lt;/li&gt;
 &lt;li&gt;高光：物体表面的闪光点&lt;/li&gt;
@@ -264,18 +286,22 @@ $$&lt;/p&gt;
 &lt;p&gt;绑定姿势：又称为T姿势。因此姿势四肢远离身体，较容易把顶点绑定至关节&lt;/p&gt;
 &lt;h4 id=&#34;局部姿势&#34;&gt;局部姿势&lt;/h4&gt;
 &lt;p&gt;相对于父关节指定的，其仿射变换相对于父节点空间&lt;/p&gt;
-&lt;p&gt;关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成
+&lt;p&gt;关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成&lt;/p&gt;
+&lt;div&gt;
 $$
 p_j =
 \begin{bmatrix}
-S_jR_j &amp;amp; 0 \
-T_j &amp;amp; 1
+S_jR_j &amp; 0 \\
+T_j &amp; 1
 \end{bmatrix}
-$$&lt;/p&gt;
-&lt;p&gt;整个骨骼的姿势：
 $$
-P^{skel} = { P_j } |_{j=0}^{N-1}
-$$&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;整个骨骼的姿势：&lt;/p&gt;
+&lt;div&gt;
+$$
+P^{skel} = \{ P_j \} |_{j=0}^{N-1}
+$$
+&lt;/div&gt;
 &lt;p&gt;有些引擎不允许关节$S_j$缩放，有些引擎则必须为同一缩放。此优化能节省内存。并简化每个关节计算平截头体剔除及碰撞测试&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 局部关节的内存表示
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;JointPose&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
@@ -292,9 +318,11 @@ $$&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;全局姿势&#34;&gt;全局姿势&lt;/h4&gt;
 &lt;p&gt;关节姿势表示为相对于模型空间或世界空间。关节j的空间姿势(全局姿势)，可通过从该关节遍历至根节点并乘上其局部姿势&lt;/p&gt;
 &lt;p&gt;任何关节$j$的全局姿势（关节至模型空间的变换）可写成：&lt;/p&gt;
-&lt;p&gt;$$
+&lt;div&gt;
+$$
 P_{j \rightarrow M} = \prod_{i=j}^0 P_{i \rightarrow p(i)}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 全局关节的内存表示
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;SkeletonPose&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
   &lt;span style=&#34;color:#111&#34;&gt;Skeleton&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pSkeleton&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 骨骼 + 关节数量
@@ -373,21 +401,29 @@ $$&lt;/p&gt;
 &lt;p&gt;将网格顶点从模型空间的原来位置（绑定姿势）变换至骨骼模型空间的当前姿势。非基变更变换&lt;/p&gt;
 &lt;p&gt;顶点绑定至关节的位置时，在该关节空间中的位置时不变的。所以可把顶点于模型空间的绑定姿势位置转换至关节空间，再把关节空间移至当前姿势，最后把该顶点转回模型空间。这个转换过程结合的转换矩阵就是蒙皮矩阵&lt;/p&gt;
 &lt;h5 id=&#34;单个关节的蒙皮矩阵&#34;&gt;单个关节的蒙皮矩阵&lt;/h5&gt;
-&lt;p&gt;绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：
+&lt;p&gt;绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：&lt;/p&gt;
+&lt;div&gt;
 $$
 V_j = V_M^B B_{M \rightarrow j} = V_M^B(B_{j \rightarrow M}^{-1})
 $$
-矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：
+&lt;/div&gt;
+&lt;p&gt;矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：&lt;/p&gt;
+&lt;div&gt;
 $$
 V_M^C = V_jC_{j \rightarrow M}
 $$
-则联合后的蒙皮矩阵$K_j$为：
+&lt;/div&gt;
+&lt;p&gt;则联合后的蒙皮矩阵$K_j$为：&lt;/p&gt;
+&lt;div&gt;
 $$
 V_M^C = V_jC_{j \rightarrow M} = V_M^B(B{j \rightarrow M})^{-1}C_{j \rightarrow M} = V_M^BK_j
-$$&lt;/p&gt;
-&lt;p&gt;$$
+$$
+&lt;/div&gt;
+&lt;div&gt;
+$$
 K_j =(B_{j \rightarrow M})^{-1}C_{j \rightarrow M}
-$$&lt;/p&gt;
+$$
+&lt;/div&gt;
 &lt;h5 id=&#34;多个关节的蒙皮矩阵&#34;&gt;多个关节的蒙皮矩阵&lt;/h5&gt;
 &lt;p&gt;将单关节蒙皮矩阵扩展至多关节须计算矩阵调色板，就是一组蒙皮矩阵$K_j$，当中每个矩阵对应第j个关节。当渲染一个蒙皮网络时，矩阵调色板便要传送至渲染引擎。渲染器会为每个顶点查找调色板中合适的关节蒙皮矩阵，并用该矩阵把顶点从绑定姿势转换至当前姿势&lt;/p&gt;
 &lt;ul&gt;
