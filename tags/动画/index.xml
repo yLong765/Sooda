@@ -61,7 +61,8 @@
 $$
 p_j =
 \begin{bmatrix}
-S_jR_j &amp;amp; 0 \\ T_j &amp;amp; 1
+S_jR_j &amp;amp; 0 \
+T_j &amp;amp; 1
 \end{bmatrix}
 $$&lt;/p&gt;
 &lt;p&gt;整个骨骼的姿势：
