@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
-	<title>Sooda </title>
+	<title>Sooda  | 《Unity实战》总结</title>
 	<meta name="viewport" content="width=device-width,minimum-scale=1">
 	<meta name="generator" content="Hugo 0.91.2" />
 	
@@ -26,9 +26,6 @@
 
 	
 
-	
-	<link rel="alternate" href="/tags/index.xml" type="application/rss+xml" title="Sooda">
-	<link rel="feed" href="/tags/index.xml" type="application/rss+xml" title="Sooda">
 	
 	
 	
@@ -154,16 +151,155 @@ onload='renderMathInElement(document.body);'></script>
 		<header class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-1 md:order-1 max-w-2xl">
 			<div
 				class="z-50 bg-gray-100 bg-opacity-75 bg-opacity-custom lg:min-w-0.7 max-w-xl md:float-right md:text-right leading-loose tracking-tight md:sticky md:top-0 pt-2">
-					<div class="pb-4">
-		<h1 >
-			<a href="https://sooda.net.cn/" title="Sooda" class="heading font-cursive icon">Sooda</a>
-		</h1>
-	</div>
+				
+<div>
+	<h2>
+		<a href="https://sooda.net.cn/" title="Sooda" class="heading font-cursive icon">Sooda</a>
+	</h2>
+</div>
+<h1 class="pt-2">《Unity实战》总结</h1>
+
+<div class="flex flex-wrap justify-end pt-2 "><div class="md:flex-grow-0 font-light">
+	
+	
+	
+	
+	<a class="post-taxonomy-category text-medium-red-violet-600 hover:text-medium-red-violet-400"
+		href='/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC'>阅读提炼</a>
+	
+	
+	
+
+	
+	&nbsp;&nbsp;
+	
+
+	
+	
+	
+	
+	<a class="post-taxonomy-tag text-eucalyptus-500"
+		href='/tags/unity%E5%AE%9E%E6%88%98'>《Unity实战》</a>
+	
+	
+	
+</div><time class="text-eucalyptus-500 md:text-right md:flex-grow font-light pl-4"
+		datetime="2021-11-07T22:05:19&#43;08:00">2021-11-7</time>
+</div>
+
+<hr />
+
+
+			</div>
+		</header>
+		<main role="main" class="w-full md:w-3/5 xl:w-1/2 max-w-3xl order-2 md:order-2 min-h-70vh pt-2 pb-4">
+			
+
+<article>
+	<section class="mx-auto content">
+		<div class="c-rich-text"><h1 id="闲话">闲话</h1>
+<p>本文意加强对Unity的一些知识点的补充，所以基本以记录为主。</p>
+<h1 id="零散知识">零散知识</h1>
+<ul>
+<li>Unity使用左手坐标系</li>
+<li>所有场景对象都是类GameObject的实例。GameObject只是组件的容器</li>
+<li>变量赋值数字后的f让计算机把这个变量作为浮点值处理，否则C#会把小数当成双精度值（C++也是一样）</li>
+<li>本地坐标：对象有自己的原点，有三个轴，且坐标系跟着对象移动</li>
+<li>全局（世界）坐标：与本地坐标的区别就是不移动</li>
+<li>Cursor.lookState = CursorLockMode.Locked; // 光标锁定屏幕中心</li>
+<li>Cursor.visible = false; // 隐藏光标</li>
+<li>Unity的场景拥有所有此场景所有GameObject的引用，用Destroy来告诉引擎，将这个对象从Scene中移除</li>
+<li>Shader中的Albedo是基础颜色的意思</li>
+</ul>
+<h1 id="美术资源">美术资源</h1>
+<ul>
+<li>网格对象：指的是3D对象（连线和形状）的几何结构</li>
+<li>模型：通常包括对象的其他属性</li>
+<li>材质：一组信息，定义了附加材质对象的表面属性（颜色，发光等—）。多个对象可共享一个材质。每个材质都有一个控制它的着色器（可认为每种材质都是着色器的一个实例）</li>
+<li>动画：定义关联对象的运动信息。运动能独立于对象自身定义，所以可以混合-匹配的方式用于多个对象（必须为同一种骨骼）</li>
+<li>粒子系统：用于生成和控制大量运动对象的规则机制。运动对象通常较小所以被称为粒子系统。但并不一定要小
+<ul>
+<li>粒子：粒子系统控制的独立对象。可以是任何网络对象，但对于大多数效果，粒子显示图片的方块</li>
+</ul>
+</li>
+<li>贴图：用于提高3D图形效果的2D图像
+<ul>
+<li>用于显示在3D模型的表面</li>
+<li>法线贴图使表面产生凹凸
+<table>
+<thead>
+<tr>
+<th>贴图文件格式类型</th>
+<th>优缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PNG</td>
+<td>通常用于万维网。无损压缩，带透明</td>
+</tr>
+<tr>
+<td>JPG</td>
+<td>通常用于万维网。有损压缩，无透明</td>
+</tr>
+<tr>
+<td>GIF</td>
+<td>通常用于万维网。有损压缩，无透明（损耗并不是压缩造成的，是图片转为八位时导致数据丢失）</td>
+</tr>
+<tr>
+<td>BMP</td>
+<td>windows上默认模式。无压缩，无透明</td>
+</tr>
+<tr>
+<td>TGA</td>
+<td>通常用于3D图形（不常用）。无损压缩或不压缩，带透明</td>
+</tr>
+<tr>
+<td>TIFF</td>
+<td>通常用于数字相片和出版。无损压缩或不压缩，无透明</td>
+</tr>
+<tr>
+<td>PICT</td>
+<td>旧Macs系统默认格式。有损压缩，无透明</td>
+</tr>
+<tr>
+<td>PSD</td>
+<td>Photoshop原生文件。无压缩，有透明</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>图像的压缩方式和是否有透明通道这两个是比较重要的因素
+<ul>
+<li>有透明通道会更好</li>
+<li>不压缩和无损压缩保证质量，有损压缩降低了品质，但减小了文件大小（具体取舍有</li>
+</ul>
+</li>
+<li>贴图的大小应为2的次幂（从4~2048字节）</li>
+</ul>
+</li>
+<li>天空盒：是一个包围摄像机的立方体。每个面都是天空图片的贴图</li>
+<li>着色器：一种简短的程序，列出了绘制表面的指令</li>
+</ul>
+</div>
+	</section>
+
+
+</article>
+
+		</main>
+		<div class="w-full h-0 flex-none order-3"></div>
+		<aside role="contentinfo"
+			class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-4 md:order-3 md:sticky md:bottom-0 self-end max-w-2xl">
+			<div class="md:float-right md:text-right leading-loose tracking-tight md:mb-2">
+				
+	<div class="md:max-w-xs  flex flex-col md:items-end">
 	<ul class="font-serif flex-grow-0 flex justify-between flex-wrap md:flex-col">
 	
 	
 	<li class="px-1 md:px-0">
-		<a href="/post/" title="Posts page" >
+		<a href="/post/" title="Posts page" 
+			class="font-medium text-medium-red-violet-600 hover:text-medium-red-violet-400" >
 			Posts
 		</a>
 	</li>
@@ -175,14 +311,11 @@ onload='renderMathInElement(document.body);'></script>
 	</li>
 	
 	<li class="px-1 md:px-0">
-		<a href="/tags/" title="Tags page" 
-			class="font-medium text-medium-red-violet-600 hover:text-medium-red-violet-400" >
+		<a href="/tags/" title="Tags page" >
 			Tags
 		</a>
 	</li>
 	
-	
-
 	
 	
 	
@@ -196,167 +329,6 @@ onload='renderMathInElement(document.body);'></script>
 	</div>
 	
 </ul>
-			</div>
-		</header>
-		<main role="main" class="w-full md:w-3/5 xl:w-1/2 max-w-3xl order-2 md:order-2 min-h-70vh pt-2 pb-4">
-			
-
-
-<article>
-	<div>
-		
-	</div>
-</article>
-<div>
-	<section class="waterfall">
-		
-		<section class="pin">
-		<hr class="p-0 my-4" />
-			<div class="clearfix">
-				<span class="float-left text-3xl pr-6 font-serif pt-1">
-					<a href="/tags/unity%E5%AE%9E%E6%88%98">
-						unity实战
-					</a>
-				</span>
-				
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/">
-					《Unity实战》总结
-				</a>
-				<span class="text-gray-600"></span>
-				
-				
-			</div>
-		</section>
-		
-		<section class="pin">
-		<hr class="p-0 my-4" />
-			<div class="clearfix">
-				<span class="float-left text-3xl pr-6 font-serif pt-1">
-					<a href="/tags/%E5%8A%A8%E7%94%BB">
-						动画
-					</a>
-				</span>
-				
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/">
-					《游戏引擎架构》动画的基本构成
-				</a>
-				<span class="text-gray-600"></span>
-				
-				
-			</div>
-		</section>
-		
-		<section class="pin">
-		<hr class="p-0 my-4" />
-			<div class="clearfix">
-				<span class="float-left text-3xl pr-6 font-serif pt-1">
-					<a href="/tags/%E6%B8%B2%E6%9F%93">
-						渲染
-					</a>
-				</span>
-				
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/">
-					《游戏编程算法与技巧》渲染篇
-				</a>
-				<span class="text-gray-600"></span>
-				
-				
-			</div>
-		</section>
-		
-		<section class="pin">
-		<hr class="p-0 my-4" />
-			<div class="clearfix">
-				<span class="float-left text-3xl pr-6 font-serif pt-1">
-					<a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6">
-						游戏引擎框架
-					</a>
-				</span>
-				
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/">
-					《游戏引擎架构》动画的基本构成
-				</a>
-				<span class="text-gray-600"></span>
-				
-				
-			</div>
-		</section>
-		
-		<section class="pin">
-		<hr class="p-0 my-4" />
-			<div class="clearfix">
-				<span class="float-left text-3xl pr-6 font-serif pt-1">
-					<a href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7">
-						游戏编程算法与技巧
-					</a>
-				</span>
-				
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/">
-					《游戏编程算法与技巧》输入和声音篇
-				</a>
-				<span class="text-gray-600">&nbsp;&#47;&nbsp;</span>
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/">
-					《游戏编程算法与技巧》渲染篇
-				</a>
-				<span class="text-gray-600"></span>
-				
-				
-			</div>
-		</section>
-		
-	</section>
-</div>
-
-		</main>
-		<div class="w-full h-0 flex-none order-3"></div>
-		<aside role="contentinfo"
-			class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-4 md:order-3 md:sticky md:bottom-0 self-end max-w-2xl">
-			<div class="md:float-right md:text-right leading-loose tracking-tight md:mb-2">
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="md:max-w-xs  flex flex-col md:items-end pt-2">
 	
 
 <div class="flex flex-wrap-reverse md:justify-end content-end md:content-start justify-start items-start   max-h-16">
@@ -389,20 +361,67 @@ onload='renderMathInElement(document.body);'></script>
 	</a>
 	
 </div>
-	<div class="a-gray text-sm text-gray-500 leading-tight">
+	<div class="text-sm text-gray-500 leading-tight a-gray">
 		Copyright ©Sooda
 		<br />
-		Built with Hugo and theme <a 
-			href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>.
-			<br />
-			15 pages, 8245 words in total.
+		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 948 words in this page.
 	</div>
 </div>
+
 			</div>
 		</aside>
 		<footer class="w-full md:w-3/5 xl:w-1/2 order-3 max-w-3xl md:order-4 pt-2">
 			
-			
+<hr class="double-line" />
+<div class="flex flex-wrap justify-between pb-2 leading-loose font-serif">
+    
+    <a class="flex-grow-0" href="/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/">
+        <svg class="fill-current inline-block h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+            height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" /></svg>
+        《游戏引擎架构》动画的基本构成
+    </a>
+    
+    
+    <a class="flex-grow-0" href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/">
+        《游戏编程算法与技巧》渲染篇
+        <svg class="fill-current inline-block h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+            height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" /></svg></a>
+    
+</div>
+<div >
+
+
+
+</div>
+<hr />
+<div class="pb-2">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Sooda" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<hr />
+
 		</footer>
 		
 

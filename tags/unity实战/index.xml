@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>《Unity实战》 on Sooda</title>
+    <link>https://sooda.net.cn/tags/unity%E5%AE%9E%E6%88%98/</link>
+    <description>Recent content in 《Unity实战》 on Sooda</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>cn</language>
+    <copyright>Copyright ©Sooda</copyright>
+    <lastBuildDate>Sun, 07 Nov 2021 22:05:19 +0800</lastBuildDate>
+    
+	<atom:link href="https://sooda.net.cn/tags/unity%E5%AE%9E%E6%88%98/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>《Unity实战》总结</title>
+      <link>https://sooda.net.cn/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Sun, 07 Nov 2021 22:05:19 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/</guid>
+      <description>&lt;h1 id=&#34;闲话&#34;&gt;闲话&lt;/h1&gt;
+&lt;p&gt;本文意加强对Unity的一些知识点的补充，所以基本以记录为主。&lt;/p&gt;
+&lt;h1 id=&#34;零散知识&#34;&gt;零散知识&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Unity使用左手坐标系&lt;/li&gt;
+&lt;li&gt;所有场景对象都是类GameObject的实例。GameObject只是组件的容器&lt;/li&gt;
+&lt;li&gt;变量赋值数字后的f让计算机把这个变量作为浮点值处理，否则C#会把小数当成双精度值（C++也是一样）&lt;/li&gt;
+&lt;li&gt;本地坐标：对象有自己的原点，有三个轴，且坐标系跟着对象移动&lt;/li&gt;
+&lt;li&gt;全局（世界）坐标：与本地坐标的区别就是不移动&lt;/li&gt;
+&lt;li&gt;Cursor.lookState = CursorLockMode.Locked; // 光标锁定屏幕中心&lt;/li&gt;
+&lt;li&gt;Cursor.visible = false; // 隐藏光标&lt;/li&gt;
+&lt;li&gt;Unity的场景拥有所有此场景所有GameObject的引用，用Destroy来告诉引擎，将这个对象从Scene中移除&lt;/li&gt;
+&lt;li&gt;Shader中的Albedo是基础颜色的意思&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;美术资源&#34;&gt;美术资源&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;网格对象：指的是3D对象（连线和形状）的几何结构&lt;/li&gt;
+&lt;li&gt;模型：通常包括对象的其他属性&lt;/li&gt;
+&lt;li&gt;材质：一组信息，定义了附加材质对象的表面属性（颜色，发光等—）。多个对象可共享一个材质。每个材质都有一个控制它的着色器（可认为每种材质都是着色器的一个实例）&lt;/li&gt;
+&lt;li&gt;动画：定义关联对象的运动信息。运动能独立于对象自身定义，所以可以混合-匹配的方式用于多个对象（必须为同一种骨骼）&lt;/li&gt;
+&lt;li&gt;粒子系统：用于生成和控制大量运动对象的规则机制。运动对象通常较小所以被称为粒子系统。但并不一定要小
+&lt;ul&gt;
+&lt;li&gt;粒子：粒子系统控制的独立对象。可以是任何网络对象，但对于大多数效果，粒子显示图片的方块&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贴图：用于提高3D图形效果的2D图像
+&lt;ul&gt;
+&lt;li&gt;用于显示在3D模型的表面&lt;/li&gt;
+&lt;li&gt;法线贴图使表面产生凹凸
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;贴图文件格式类型&lt;/th&gt;
+&lt;th&gt;优缺点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;PNG&lt;/td&gt;
+&lt;td&gt;通常用于万维网。无损压缩，带透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;JPG&lt;/td&gt;
+&lt;td&gt;通常用于万维网。有损压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GIF&lt;/td&gt;
+&lt;td&gt;通常用于万维网。有损压缩，无透明（损耗并不是压缩造成的，是图片转为八位时导致数据丢失）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;BMP&lt;/td&gt;
+&lt;td&gt;windows上默认模式。无压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TGA&lt;/td&gt;
+&lt;td&gt;通常用于3D图形（不常用）。无损压缩或不压缩，带透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TIFF&lt;/td&gt;
+&lt;td&gt;通常用于数字相片和出版。无损压缩或不压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PICT&lt;/td&gt;
+&lt;td&gt;旧Macs系统默认格式。有损压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PSD&lt;/td&gt;
+&lt;td&gt;Photoshop原生文件。无压缩，有透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/li&gt;
+&lt;li&gt;图像的压缩方式和是否有透明通道这两个是比较重要的因素
+&lt;ul&gt;
+&lt;li&gt;有透明通道会更好&lt;/li&gt;
+&lt;li&gt;不压缩和无损压缩保证质量，有损压缩降低了品质，但减小了文件大小（具体取舍有&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贴图的大小应为2的次幂（从4~2048字节）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;天空盒：是一个包围摄像机的立方体。每个面都是天空图片的贴图&lt;/li&gt;
+&lt;li&gt;着色器：一种简短的程序，列出了绘制表面的指令&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

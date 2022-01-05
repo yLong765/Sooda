@@ -7,10 +7,161 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright ©Sooda</copyright>
-    <lastBuildDate>Wed, 22 Dec 2021 15:57:24 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 24 Dec 2021 08:55:57 +0800</lastBuildDate>
     
 	<atom:link href="https://sooda.net.cn/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>《游戏编程算法与技巧》输入和声音篇</title>
+      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</link>
+      <pubDate>Fri, 24 Dec 2021 08:55:57 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</guid>
+      <description>&lt;h1 id=&#34;游戏输入&#34;&gt;游戏输入&lt;/h1&gt;
+&lt;p&gt;可分为两种：&lt;strong&gt;数字&lt;/strong&gt;与&lt;strong&gt;模拟&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;数字输入&#34;&gt;数字输入&lt;/h2&gt;
+&lt;p&gt;只用两种状态：“按下”和“没有按”（例如键盘）&lt;/p&gt;
+&lt;p&gt;如何实现一直按着的判断？
+同时跟踪上一帧和这一帧的状态，根据这两个状态来判断&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;上一帧状态&lt;/th&gt;
+&lt;th&gt;本帧状态&lt;/th&gt;
+&lt;th&gt;结论&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;释放&lt;/td&gt;
+&lt;td&gt;释放&lt;/td&gt;
+&lt;td&gt;一直释放&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;释放&lt;/td&gt;
+&lt;td&gt;按下&lt;/td&gt;
+&lt;td&gt;刚刚按下&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;按下&lt;/td&gt;
+&lt;td&gt;释放&lt;/td&gt;
+&lt;td&gt;刚刚释放&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;按下&lt;/td&gt;
+&lt;td&gt;按下&lt;/td&gt;
+&lt;td&gt;一直按下&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;伪代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;KeyState&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;StillReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;JustPressed&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;JustReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;StillPressed&lt;/span&gt;
+&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#111&#34;&gt;lastState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// 上一帧状态
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 当前帧状态
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;// 每帧更新状态
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;UpdateKeyboard&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;lastState&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GetKeyboardState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;();&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 获取当前状态
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// 通过keyCode获取KeyState
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;KeyState&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;GetKeyState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;lastState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;])&lt;/span&gt;
+        &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;])&lt;/span&gt;
+            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;StillReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt;
+            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;JustReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt;
+        &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;])&lt;/span&gt;
+            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;JustPressed&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt;
+            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;StillReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;模拟输入&#34;&gt;模拟输入&lt;/h2&gt;
+&lt;p&gt;可返回某个数字的范围（如遥感）。但遥感的数值基本不会归零所以需要输入过滤，来消除偏差值。一般取遥感总值的10%为无效值。&lt;/p&gt;
+&lt;p&gt;遥感的范围为-32768 ~ 32768。最终遥感映射到0 ~ 1的伪代码为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3000&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 无效值
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;maxValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;32677&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 最大值
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GetJoy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GetJoystickInput&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 获取遥感的输入
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 当前值长度
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;// 小于无效区域则没有输入
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;// 计算无效区到最大值之间的百分比
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pct&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;maxValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;// 正规化向量
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;maxValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pct&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;
+&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;移动设备输入&#34;&gt;移动设备输入&lt;/h2&gt;
+&lt;h3 id=&#34;触摸和手势&#34;&gt;触摸和手势&lt;/h3&gt;
+&lt;p&gt;大多数移动游戏都是通过多点触摸来实现虚拟手柄。还有一些游戏利用手势操作。自定义手势会比较难实现。Rubine算法就是一种流行的实现自定义手势检测的算法&lt;/p&gt;
+&lt;h3 id=&#34;加速器&#34;&gt;加速器&lt;/h3&gt;
+&lt;p&gt;检测设备坐标系轴向上的加速度。总有一个常量添加到设备上：重力。意味着如果设备为空闲状态，加速器可以粗略地通过重力方向检测设备的朝向&lt;/p&gt;
+&lt;h3 id=&#34;陀螺仪&#34;&gt;陀螺仪&lt;/h3&gt;
+&lt;p&gt;检测设备关于设备轴向的旋转&lt;/p&gt;
+&lt;h1 id=&#34;声音&#34;&gt;声音&lt;/h1&gt;
+&lt;p&gt;声音同时播放的频道数量是有限的。所以声音应该有优先级数据&lt;/p&gt;
+&lt;h2 id=&#34;原始数据&#34;&gt;原始数据&lt;/h2&gt;
+&lt;p&gt;又类似Audacity等工具创建的原始音频文件&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;短音效一般存储为WAV格式或者其他无压缩文件格式&lt;/li&gt;
+&lt;li&gt;长音效一般会采用压缩文件格式比如MP3或者OGG&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这两种音效一般会分别用两种方式播放&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;短音效（或常用音效）一般会直接加载到内存中缓存，需要时直接播放&lt;/li&gt;
+&lt;li&gt;长音效一般会以流方式加载。就是播放的同时加载&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;播放场景&#34;&gt;播放场景&lt;/h2&gt;
+&lt;p&gt;声音的播放场景其实有很多，不同游戏有不同的情况。一般来说分为几种&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;短音效的事件触发播放（Unity的Animation中的事件元通道触发），比如脚步声&lt;/li&gt;
+&lt;li&gt;过长动画播放（Unity中的Timeline制作）&lt;/li&gt;
+&lt;li&gt;对话中的音频播放（一般会在对话树中抛出事件播放）&lt;/li&gt;
+&lt;li&gt;背景持续音&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3d声音&#34;&gt;3D声音&lt;/h2&gt;
+&lt;p&gt;2D音效是指没有位置相关的音效。而3D音效是由随着监听者和发射者距离增大而衰减的方式。&lt;/p&gt;
+&lt;h3 id=&#34;对于3d声音监听者的摆放位置&#34;&gt;对于3D声音监听者的摆放位置&lt;/h3&gt;
+&lt;p&gt;第一人称游戏则很自然的跟随摄像机就能提供最好的效果。但是对于第三人称游戏放在摄像机位置会感觉很怪。放在人物位置如果一个声音在人物和摄像机直接则也会有问题。所以一个解决方式是放在摄像机和玩家之间，朝向跟随摄像机。具体还是得根据游戏类型来测试最优结果&lt;/p&gt;
+&lt;h2 id=&#34;数字信号处理&#34;&gt;数字信号处理&lt;/h2&gt;
+&lt;p&gt;广义上讲，数字信号处理（DSP）是计算机中表示的信号。在音频领域中，其表示加载音频后再修改之后得到的不同效果。&lt;/p&gt;
+&lt;center&gt;&lt;font color = red&gt;
+为什么不把所有的效果离线处理，而要在运行时处理？
+&lt;p&gt;可以节省内存
+&lt;/font&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;h3 id=&#34;数字信号处理效果&#34;&gt;数字信号处理效果&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;高音偏移（多普勒偏移）&lt;/strong&gt;：通过调整牝鹿增加或减小音效的音高&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;压缩机&lt;/strong&gt;：缩小音量范围，导致很小的声音得到了加强，同时很大的声音得到了减小。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;低通滤波器&lt;/strong&gt;：通过删减频率减小音量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;多普勒效应&#34;&gt;多普勒效应&lt;/h3&gt;
+&lt;p&gt;由于声波在空气中传播需要时间，所以发声者靠近时，意味着声波都比前一个要早到。导致了频率的增加，就会有更高音高。所有与波相关的情况都会有多普勒效应&lt;/p&gt;
+&lt;h3 id=&#34;声音遮挡&#34;&gt;声音遮挡&lt;/h3&gt;
+&lt;p&gt;声音遮挡在声音不是直接由发射者传递到监听者的时候发生。声音遮挡主要就是低通滤波的结果，意味着高频率的声音的音量被移除了。这是因为低频率的音波比高频率的音波更容易传播。但是，声音遮挡的另一个输出就是整体音量的降低&lt;/p&gt;
+&lt;p&gt;相似但是不同的想法就是声音衍射。通过声音衍射，声音可能不再是直线传播的了，但是还是有可能穿透障碍物&lt;/p&gt;
+&lt;p&gt;检测遮挡和衍射的方法就是为发射者构造一系列指向监听者附近的弧形。如果没有一个能量到达，则就是遮挡。如果有一些能到达就是衍射。如果全部能到达就都不是。这个方法称之为&lt;strong&gt;Fresenl声学衍射&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>《游戏编程算法与技巧》渲染篇</title>
@@ -238,6 +389,99 @@ $$
 先绘制深度pass，然后按照所得的深度缓冲结果计算光照pass&lt;/p&gt;
 &lt;p&gt;利用剔除或者遮挡算法可消除在某些帧完全看不到的对象。类似的算法有二叉树分区算法（BSP），人口算法和遮挡体积等。&lt;/p&gt;
 &lt;p&gt;（完）&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>《Unity实战》总结</title>
+      <link>https://sooda.net.cn/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Sun, 07 Nov 2021 22:05:19 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/</guid>
+      <description>&lt;h1 id=&#34;闲话&#34;&gt;闲话&lt;/h1&gt;
+&lt;p&gt;本文意加强对Unity的一些知识点的补充，所以基本以记录为主。&lt;/p&gt;
+&lt;h1 id=&#34;零散知识&#34;&gt;零散知识&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Unity使用左手坐标系&lt;/li&gt;
+&lt;li&gt;所有场景对象都是类GameObject的实例。GameObject只是组件的容器&lt;/li&gt;
+&lt;li&gt;变量赋值数字后的f让计算机把这个变量作为浮点值处理，否则C#会把小数当成双精度值（C++也是一样）&lt;/li&gt;
+&lt;li&gt;本地坐标：对象有自己的原点，有三个轴，且坐标系跟着对象移动&lt;/li&gt;
+&lt;li&gt;全局（世界）坐标：与本地坐标的区别就是不移动&lt;/li&gt;
+&lt;li&gt;Cursor.lookState = CursorLockMode.Locked; // 光标锁定屏幕中心&lt;/li&gt;
+&lt;li&gt;Cursor.visible = false; // 隐藏光标&lt;/li&gt;
+&lt;li&gt;Unity的场景拥有所有此场景所有GameObject的引用，用Destroy来告诉引擎，将这个对象从Scene中移除&lt;/li&gt;
+&lt;li&gt;Shader中的Albedo是基础颜色的意思&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;美术资源&#34;&gt;美术资源&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;网格对象：指的是3D对象（连线和形状）的几何结构&lt;/li&gt;
+&lt;li&gt;模型：通常包括对象的其他属性&lt;/li&gt;
+&lt;li&gt;材质：一组信息，定义了附加材质对象的表面属性（颜色，发光等—）。多个对象可共享一个材质。每个材质都有一个控制它的着色器（可认为每种材质都是着色器的一个实例）&lt;/li&gt;
+&lt;li&gt;动画：定义关联对象的运动信息。运动能独立于对象自身定义，所以可以混合-匹配的方式用于多个对象（必须为同一种骨骼）&lt;/li&gt;
+&lt;li&gt;粒子系统：用于生成和控制大量运动对象的规则机制。运动对象通常较小所以被称为粒子系统。但并不一定要小
+&lt;ul&gt;
+&lt;li&gt;粒子：粒子系统控制的独立对象。可以是任何网络对象，但对于大多数效果，粒子显示图片的方块&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贴图：用于提高3D图形效果的2D图像
+&lt;ul&gt;
+&lt;li&gt;用于显示在3D模型的表面&lt;/li&gt;
+&lt;li&gt;法线贴图使表面产生凹凸
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;贴图文件格式类型&lt;/th&gt;
+&lt;th&gt;优缺点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;PNG&lt;/td&gt;
+&lt;td&gt;通常用于万维网。无损压缩，带透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;JPG&lt;/td&gt;
+&lt;td&gt;通常用于万维网。有损压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GIF&lt;/td&gt;
+&lt;td&gt;通常用于万维网。有损压缩，无透明（损耗并不是压缩造成的，是图片转为八位时导致数据丢失）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;BMP&lt;/td&gt;
+&lt;td&gt;windows上默认模式。无压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TGA&lt;/td&gt;
+&lt;td&gt;通常用于3D图形（不常用）。无损压缩或不压缩，带透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TIFF&lt;/td&gt;
+&lt;td&gt;通常用于数字相片和出版。无损压缩或不压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PICT&lt;/td&gt;
+&lt;td&gt;旧Macs系统默认格式。有损压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PSD&lt;/td&gt;
+&lt;td&gt;Photoshop原生文件。无压缩，有透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/li&gt;
+&lt;li&gt;图像的压缩方式和是否有透明通道这两个是比较重要的因素
+&lt;ul&gt;
+&lt;li&gt;有透明通道会更好&lt;/li&gt;
+&lt;li&gt;不压缩和无损压缩保证质量，有损压缩降低了品质，但减小了文件大小（具体取舍有&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贴图的大小应为2的次幂（从4~2048字节）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;天空盒：是一个包围摄像机的立方体。每个面都是天空图片的贴图&lt;/li&gt;
+&lt;li&gt;着色器：一种简短的程序，列出了绘制表面的指令&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
