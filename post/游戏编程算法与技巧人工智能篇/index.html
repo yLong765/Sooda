@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
-	<title>Sooda </title>
+	<title>Sooda  | 《游戏编程算法与技巧》人工智能篇</title>
 	<meta name="viewport" content="width=device-width,minimum-scale=1">
 	<meta name="generator" content="Hugo 0.91.2" />
 	
@@ -26,9 +26,6 @@
 
 	
 
-	
-	<link rel="alternate" href="/categories/index.xml" type="application/rss+xml" title="Sooda">
-	<link rel="feed" href="/categories/index.xml" type="application/rss+xml" title="Sooda">
 	
 	
 	
@@ -154,23 +151,100 @@ onload='renderMathInElement(document.body);'></script>
 		<header class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-1 md:order-1 max-w-2xl">
 			<div
 				class="z-50 bg-gray-100 bg-opacity-75 bg-opacity-custom lg:min-w-0.7 max-w-xl md:float-right md:text-right leading-loose tracking-tight md:sticky md:top-0 pt-2">
-					<div class="pb-4">
-		<h1 >
-			<a href="https://sooda.net.cn/" title="Sooda" class="heading font-cursive icon">Sooda</a>
-		</h1>
-	</div>
+				
+<div>
+	<h2>
+		<a href="https://sooda.net.cn/" title="Sooda" class="heading font-cursive icon">Sooda</a>
+	</h2>
+</div>
+<h1 class="pt-2">《游戏编程算法与技巧》人工智能篇</h1>
+
+<h3 class="text-java-700 font-normal leading-relaxed pt-2">此篇主要介绍简单的游戏AI寻路和其基本原理</h3>
+
+<div class="flex flex-wrap justify-end pt-2 "><div class="md:flex-grow-0 font-light">
+	
+	
+	
+	
+	<a class="post-taxonomy-category text-medium-red-violet-600 hover:text-medium-red-violet-400"
+		href='/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC'>阅读提炼</a>
+	
+	
+	
+
+	
+	&nbsp;&nbsp;
+	
+
+	
+	
+	
+	
+	<a class="post-taxonomy-tag text-eucalyptus-500"
+		href='/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7'>《游戏编程算法与技巧》</a>&nbsp;&#47;
+	
+	<a class="post-taxonomy-tag text-eucalyptus-500"
+		href='/tags/ai'>AI</a>
+	
+	
+	
+</div><time class="text-eucalyptus-500 md:text-right md:flex-grow font-light pl-4"
+		datetime="2022-01-19T21:58:45&#43;08:00">2022-1-19</time>
+</div>
+
+<hr />
+
+
+			</div>
+		</header>
+		<main role="main" class="w-full md:w-3/5 xl:w-1/2 max-w-3xl order-2 md:order-2 min-h-70vh pt-2 pb-4">
+			
+
+<article>
+	<section class="mx-auto content">
+		<div class="c-rich-text"><h1 id="搜索空间的表示">搜索空间的表示</h1>
+<p>最简单的寻路设计就是将<strong>图</strong>作为数据结构。图中包含多个<strong>节点</strong>，连接相邻的点组成<strong>边</strong>。图有多种表示方式，最简单的是邻接表</p>
+<h2 id="游戏世界用图表示的方式">游戏世界用图表示的方式</h2>
+<p>游戏世界用图来表示，有多种方法，一种简单的方法就是将世界区分为一个个正方形的格子（或者六边形）。如在《文明》策略游戏中的沙盘地图。而在不规则的地图中要么使用路点要么使用导航网格。</p>
+<h3 id="寻路节点">寻路节点</h3>
+<p>光卡设计师在游戏世界中拜访AI可以到达的位置。这些点被解释为图中的节点（可手动和自动生成）</p>
+<p>缺点：AI只能在节点和边缘的位置移动。会有很多不可移动的位置，AI显得比较生硬</p>
+<h3 id="导航网格">导航网格</h3>
+<p>图上的节点实际上就是<strong>凸多边形</strong>。邻近节点就是简单的任意邻近凸多边形。意味着游戏世界区域可以通过少量的凸多边形表示。</p>
+<p>凸多边形内部任意位置都是可走的。意味着AI有了大量的空间可以行动。可返回更自然的路径</p>
+<h1 id="启发式算法">启发式算法</h1>
+<p>游戏寻路的启发式算法有很多，启发式用公式$h(x)$表示，理想情况下启发式结果越接近真实越好。如果它的估算总是保证小于等于真实开销，那么这个启发式是可接受的。目前比较流行的启发式算法就是<strong>A*算法</strong>。不过还有<strong>贪婪最佳优先算法</strong>，<strong>Dijkstra算法</strong>等。这里只介绍A*算法</p>
+<h2 id="a算法">A*算法</h2>
+<p>除了启发式 $h(x)$ 需要考虑，A<em>又考虑了路径开销$g(x)$，所以A</em>的节点开销等式为：
+$$
+f(x) = g(x) + h(x)
+$$</p>
+<p>在当前节点搜索可到达的节点加入开放集合中，并从中选出开销最小的点放入关闭集合，如此往复。而$g(x)$的开销取决于父节点的$g(x)$的开销。这意味着父节点是可选的，$g(x)$的开销是可变得</p>
+</div>
+	</section>
+
+
+</article>
+
+		</main>
+		<div class="w-full h-0 flex-none order-3"></div>
+		<aside role="contentinfo"
+			class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-4 md:order-3 md:sticky md:bottom-0 self-end max-w-2xl">
+			<div class="md:float-right md:text-right leading-loose tracking-tight md:mb-2">
+				
+	<div class="md:max-w-xs  flex flex-col md:items-end">
 	<ul class="font-serif flex-grow-0 flex justify-between flex-wrap md:flex-col">
 	
 	
 	<li class="px-1 md:px-0">
-		<a href="/post/" title="Posts page" >
+		<a href="/post/" title="Posts page" 
+			class="font-medium text-medium-red-violet-600 hover:text-medium-red-violet-400" >
 			Posts
 		</a>
 	</li>
 	
 	<li class="px-1 md:px-0">
-		<a href="/categories/" title="Categories page" 
-			class="font-medium text-medium-red-violet-600 hover:text-medium-red-violet-400" >
+		<a href="/categories/" title="Categories page" >
 			Categories
 		</a>
 	</li>
@@ -181,8 +255,6 @@ onload='renderMathInElement(document.body);'></script>
 		</a>
 	</li>
 	
-	
-
 	
 	
 	
@@ -196,119 +268,6 @@ onload='renderMathInElement(document.body);'></script>
 	</div>
 	
 </ul>
-			</div>
-		</header>
-		<main role="main" class="w-full md:w-3/5 xl:w-1/2 max-w-3xl order-2 md:order-2 min-h-70vh pt-2 pb-4">
-			
-
-
-<article>
-	<div>
-		
-	</div>
-</article>
-<div>
-	<section>
-		
-		<section>
-		<hr class="p-0 my-4" />
-			<div class="clearfix">
-				<span class="float-left text-3xl pr-6 font-serif pt-1">
-					<a href="/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC">
-						阅读提炼
-					</a>
-				</span>
-				
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/">
-					《游戏编程算法与技巧》人工智能篇
-				</a>
-				<span class="text-gray-600">&nbsp;&#47;&nbsp;</span>
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/">
-					《游戏编程算法与技巧》摄像机篇
-				</a>
-				<span class="text-gray-600">&nbsp;&#47;&nbsp;</span>
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/">
-					《游戏编程算法与技巧》物理篇
-				</a>
-				<span class="text-gray-600">&nbsp;&#47;&nbsp;</span>
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/">
-					《游戏编程算法与技巧》输入和声音篇
-				</a>
-				<span class="text-gray-600">&nbsp;&#47;&nbsp;</span>
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/">
-					《游戏编程算法与技巧》渲染篇
-				</a>
-				<span class="text-gray-600">&nbsp;&#47;&nbsp;</span>
-				
-				<a class="font-serif leading-relaxed text-gray-600 hover:text-gray-700 focus:text-gray-700 font-light "
-					href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/">
-					《游戏引擎架构》动画的基本构成
-				</a>
-				<span class="text-gray-600"></span>
-				
-				
-			</div>
-		</section>
-		
-	</section>
-</div>
-
-		</main>
-		<div class="w-full h-0 flex-none order-3"></div>
-		<aside role="contentinfo"
-			class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-4 md:order-3 md:sticky md:bottom-0 self-end max-w-2xl">
-			<div class="md:float-right md:text-right leading-loose tracking-tight md:mb-2">
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="md:max-w-xs  flex flex-col md:items-end pt-2">
 	
 
 <div class="flex flex-wrap-reverse md:justify-end content-end md:content-start justify-start items-start   max-h-16">
@@ -341,20 +300,75 @@ onload='renderMathInElement(document.body);'></script>
 	</a>
 	
 </div>
-	<div class="a-gray text-sm text-gray-500 leading-tight">
+	<div class="text-sm text-gray-500 leading-tight a-gray">
 		Copyright ©Sooda
 		<br />
-		Built with Hugo and theme <a 
-			href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>.
-			<br />
-			19 pages, 11054 words in total.
+		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 635 words in this page.
 	</div>
 </div>
+
 			</div>
 		</aside>
 		<footer class="w-full md:w-3/5 xl:w-1/2 order-3 max-w-3xl md:order-4 pt-2">
 			
-			
+<hr class="double-line" />
+<div class="flex flex-wrap justify-between pb-2 leading-loose font-serif">
+    
+    <a class="flex-grow-0" href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/">
+        <svg class="fill-current inline-block h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+            height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" /></svg>
+        《游戏编程算法与技巧》摄像机篇
+    </a>
+    
+    
+</div>
+<div >
+
+
+
+<div class="font-serif pb-2 flex align-start leading-loose">
+	<span class="heading pr-6 leading-loose">Related</span>
+	<span >
+		
+			<a href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/">《游戏编程算法与技巧》摄像机篇</a>&nbsp;&nbsp;&#47;&nbsp;
+		
+			<a href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/">《游戏编程算法与技巧》物理篇</a>&nbsp;&nbsp;&#47;&nbsp;
+		
+			<a href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/">《游戏编程算法与技巧》输入和声音篇</a>&nbsp;&nbsp;&#47;&nbsp;
+		
+			<a href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/">《游戏编程算法与技巧》渲染篇</a>
+		
+</span>
+</div>
+
+</div>
+<hr />
+<div class="pb-2">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Sooda" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<hr />
+
 		</footer>
 		
 
