@@ -159,6 +159,8 @@ onload='renderMathInElement(document.body);'></script>
 </div>
 <h1 class="pt-2">《Unity实战》总结</h1>
 
+<h3 class="text-java-700 font-normal leading-relaxed pt-2">对《Unity实战》书籍的知识点总结</h3>
+
 <div class="flex flex-wrap justify-end pt-2 "><div class="md:flex-grow-0 font-light">
 	
 	
@@ -210,6 +212,47 @@ onload='renderMathInElement(document.body);'></script>
 <li>Cursor.visible = false; // 隐藏光标</li>
 <li>Unity的场景拥有所有此场景所有GameObject的引用，用Destroy来告诉引擎，将这个对象从Scene中移除</li>
 <li>Shader中的Albedo是基础颜色的意思</li>
+<li>用2D开启的新项目，Unity主要调整了2D Editor模式（将导入的图片设置为Sprite）和2D Scene视图</li>
+<li>Unity中的导入设置Pixels-To-Units是像素与Unity原默认3D的一个单位的比例，默认是100:1（建议使用默认值，在1:1的状态下物理引擎不能正常工作）</li>
+<li>像素完美（Pixel-perfect）：屏幕上的每一个像素对应图像中的一个像素（否则会让图像在缩放到屏幕大小时变的模糊）</li>
+<li>LoadScene：加载不同关卡时，当前关卡的所有内容（场景中所有对象和所有附件的脚本）都会从内存中清除，接着从新场景中加载所有需要的对象</li>
+<li>修改Transform.position将会忽略碰撞检测（Unity的碰撞用的第三方整合的，所以理论来说Transform系统和物理系统是两个单独的系统，所以移动操作应只利用其中一种）</li>
+<li>Mathf.Approximately(float, float)：用于浮点数比较</li>
+<li>Order in Layer设置：控制绘制前后顺序（同层Z轴控制前后）</li>
+<li>平视显示（HUD，heads-up display）：使图形叠加在世界视图上</li>
+<li>OnGUI：立即模式的GUI系统，每帧显式发送绘制指令。会在每帧渲染完3D场景后执行</li>
+<li>保留模式（retained mode）：一次定义所有的视觉效果，系统知道会绘制什么，不需要重新声明</li>
+<li>Canvas组件
+<ul>
+<li>创建Canvas组件时随带的EventSystem是用于UI交互的</li>
+<li>Canvas中屏幕的一个像素对应的就是场景中的一个单位</li>
+<li>Render Moad
+<ul>
+<li>Screen Space-Overlay：将UI渲染为摄像机视图顶部的2D图形</li>
+<li>Screen Space-Camera：将UI渲染在摄像机视图顶部，但UI元素可以旋转，得到透视效果</li>
+<li>World Space：将画布对象放在场景中，就好像UI是3D场景的一部分</li>
+</ul>
+</li>
+<li>UI对象的锚点（anchor）：对象依附到画布或屏幕的点，决定计算对象位置所依赖的点</li>
+</ul>
+</li>
+<li>切割图像（sliced image，九宫格）：把图像切割成九份，各部分相互独立，分别缩放。从中间缩放图像边缘，可确保图像缩放为任何期望的尺寸，且边缘清晰</li>
+<li>模型导入Model中Normals选项控制光线和阴影在模型上的显示
+<ul>
+<li>Import：使用定义在导入网格几何体中的法线</li>
+<li>Calculate：让Unity自己计算每个多边形的法线</li>
+</ul>
+</li>
+<li>光照贴图（lightmapping）：将几何体的阴影烘焙到贴图图像中</li>
+<li>Mesh Renderer中可控制是否投射阴影和是否接受阴影</li>
+<li>位置向量乘于四元数，结果是基于旋转的偏移位置</li>
+<li>Vector3.ClampMagnitude：限制对角线，使其延轴移动的速度一样（从原点画圆）</li>
+<li>Animator中的动画过度
+<ul>
+<li>Has Exit Time：迫使动画一直播放，而不是在变换发生时马上暂停</li>
+<li>Interruption Source改为Current State说明变换自身能被打断</li>
+</ul>
+</li>
 </ul>
 <h1 id="美术资源">美术资源</h1>
 <ul>
@@ -279,8 +322,130 @@ onload='renderMathInElement(document.body);'></script>
 </ul>
 </li>
 <li>天空盒：是一个包围摄像机的立方体。每个面都是天空图片的贴图</li>
-<li>着色器：一种简短的程序，列出了绘制表面的指令</li>
+<li>着色器：一种简短的程序，列出了绘制表面的指令
+<ul>
+<li>一些Unity自带的着色器：
+<ul>
+<li>Additive着色器：将粒子颜色叠加到它背后的颜色上的着色器，使颜色更加明亮，而粒子的黑色部分不可见。</li>
+<li>Multiply着色器：与Additive相反，使对象颜色更暗</li>
 </ul>
+</li>
+</ul>
+</li>
+<li>3D模型：美术资源可直接拖入引擎，unity会将文件导出为FBX然后重新加载到Unity中。尽量避免直接拖入美术资源，应将模型先导出为FBX后再直接导入到Unity为好。避免后续的资源修复问题和共享资源复杂等问题
+<ul>
+<li>可导入模型自带材质</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>3D模型文件类型</th>
+<th>优缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FBX</td>
+<td>网格和动画</td>
+</tr>
+<tr>
+<td>Collada(DAE)</td>
+<td>网格和动画</td>
+</tr>
+<tr>
+<td>OBJ</td>
+<td>只有网格；文本格式</td>
+</tr>
+<tr>
+<td>3DS</td>
+<td>只有网格</td>
+</tr>
+<tr>
+<td>DXF</td>
+<td>只有网格</td>
+</tr>
+</tbody>
+</table>
+<h2 id="使用粒子系统创建效果">使用粒子系统创建效果</h2>
+<p>粒子系统时创建和控制大量移动对象的规则机制</p>
+<ul>
+<li>粒子系统总设置：
+<ul>
+<li>Looping：是否一直循环播放</li>
+<li>Lifetime：粒子存在时间</li>
+<li>Speed：粒子移动速度</li>
+<li>Size：粒子大小</li>
+<li>Rotation：粒子的方向</li>
+<li>Color：给粒子染色</li>
+<li>Simulation Space：粒子的移动参考坐标系，一般来说静止的粒子用Local，移动的用World</li>
+</ul>
+</li>
+<li>Emission：粒子发射的速度设置</li>
+<li>Shape：发射区域形状</li>
+<li>Size over Lifetime：粒子运动时的变大的缩小</li>
+<li>Rotation over Lifetime：粒子运动时的旋转</li>
+<li>Renderer：设置每个粒子的外观。甚至设置为网格</li>
+</ul>
+<h2 id="sprite-packer精灵图集">Sprite Packer（精灵图集）</h2>
+<p>将多个图片已网格的形式组合成一张大图片
+优点：</p>
+<ul>
+<li>紧凑的打包在一起避免空间浪费</li>
+<li>减少加载的次数，避免卡顿</li>
+</ul>
+<h1 id="音频">音频</h1>
+<h2 id="文件格式支持">文件格式支持</h2>
+<table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>优缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WAV</td>
+<td>Windows默认音频格式。未压缩</td>
+</tr>
+<tr>
+<td>AIF</td>
+<td>Mac默认音频格式。未压缩</td>
+</tr>
+<tr>
+<td>MP3</td>
+<td>压缩；文件小，损失一点质量</td>
+</tr>
+<tr>
+<td>OGG</td>
+<td>压缩；文件小，损失一点质量</td>
+</tr>
+<tr>
+<td>MOD</td>
+<td>音轨格式</td>
+</tr>
+<tr>
+<td>XM</td>
+<td>音轨格式</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数字音频工作原理">数字音频工作原理</h2>
+<p>音频文件保存声音播放时由扬声器创建的波形。音频文件记录这些波时，会反复在短暂的时间间隔进行采样，并保存每次采样波的状态。采样记录得越频繁，就越能精确的记录波形随时间变化的细节（两次直接的间隙也就越小，意味着更多的数据量）。压缩声音通过一些列技巧减小文件的大小，包括丢弃不会被人听到的频率。</p>
+<h2 id="音频的导入设置">音频的导入设置</h2>
+<ul>
+<li>Force To Mono：立体声转为单声道</li>
+<li>Load In Background：后台加载</li>
+<li>Default（默认平台设置）
+<ul>
+<li>Load Type：一次性加载所有数据还是流式加载</li>
+<li>Compression Format：保存音频的数据格式（可能会被压缩）</li>
+</ul>
+</li>
+</ul>
+<h3 id="立体声">立体声</h3>
+<p>立体声实际上在文件中记录了两个波形，一个用于左扬声器，一个用于右扬声器。为了减小尺寸，可将音频信息减半，把相同波形发送到两个扬声器，而不是分别发送到左右扬声器。</p>
 </div>
 	</section>
 
@@ -364,7 +529,7 @@ onload='renderMathInElement(document.body);'></script>
 	<div class="text-sm text-gray-500 leading-tight a-gray">
 		Copyright ©Sooda
 		<br />
-		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 948 words in this page.
+		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 3056 words in this page.
 	</div>
 </div>
 

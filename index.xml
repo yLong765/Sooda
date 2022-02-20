@@ -704,6 +704,262 @@ $$
     </item>
     
     <item>
+      <title>《Unity实战》总结</title>
+      <link>https://sooda.net.cn/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Sun, 07 Nov 2021 22:05:19 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/</guid>
+      <description>&lt;h1 id=&#34;闲话&#34;&gt;闲话&lt;/h1&gt;
+&lt;p&gt;本文意加强对Unity的一些知识点的补充，所以基本以记录为主。&lt;/p&gt;
+&lt;h1 id=&#34;零散知识&#34;&gt;零散知识&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Unity使用左手坐标系&lt;/li&gt;
+&lt;li&gt;所有场景对象都是类GameObject的实例。GameObject只是组件的容器&lt;/li&gt;
+&lt;li&gt;变量赋值数字后的f让计算机把这个变量作为浮点值处理，否则C#会把小数当成双精度值（C++也是一样）&lt;/li&gt;
+&lt;li&gt;本地坐标：对象有自己的原点，有三个轴，且坐标系跟着对象移动&lt;/li&gt;
+&lt;li&gt;全局（世界）坐标：与本地坐标的区别就是不移动&lt;/li&gt;
+&lt;li&gt;Cursor.lookState = CursorLockMode.Locked; // 光标锁定屏幕中心&lt;/li&gt;
+&lt;li&gt;Cursor.visible = false; // 隐藏光标&lt;/li&gt;
+&lt;li&gt;Unity的场景拥有所有此场景所有GameObject的引用，用Destroy来告诉引擎，将这个对象从Scene中移除&lt;/li&gt;
+&lt;li&gt;Shader中的Albedo是基础颜色的意思&lt;/li&gt;
+&lt;li&gt;用2D开启的新项目，Unity主要调整了2D Editor模式（将导入的图片设置为Sprite）和2D Scene视图&lt;/li&gt;
+&lt;li&gt;Unity中的导入设置Pixels-To-Units是像素与Unity原默认3D的一个单位的比例，默认是100:1（建议使用默认值，在1:1的状态下物理引擎不能正常工作）&lt;/li&gt;
+&lt;li&gt;像素完美（Pixel-perfect）：屏幕上的每一个像素对应图像中的一个像素（否则会让图像在缩放到屏幕大小时变的模糊）&lt;/li&gt;
+&lt;li&gt;LoadScene：加载不同关卡时，当前关卡的所有内容（场景中所有对象和所有附件的脚本）都会从内存中清除，接着从新场景中加载所有需要的对象&lt;/li&gt;
+&lt;li&gt;修改Transform.position将会忽略碰撞检测（Unity的碰撞用的第三方整合的，所以理论来说Transform系统和物理系统是两个单独的系统，所以移动操作应只利用其中一种）&lt;/li&gt;
+&lt;li&gt;Mathf.Approximately(float, float)：用于浮点数比较&lt;/li&gt;
+&lt;li&gt;Order in Layer设置：控制绘制前后顺序（同层Z轴控制前后）&lt;/li&gt;
+&lt;li&gt;平视显示（HUD，heads-up display）：使图形叠加在世界视图上&lt;/li&gt;
+&lt;li&gt;OnGUI：立即模式的GUI系统，每帧显式发送绘制指令。会在每帧渲染完3D场景后执行&lt;/li&gt;
+&lt;li&gt;保留模式（retained mode）：一次定义所有的视觉效果，系统知道会绘制什么，不需要重新声明&lt;/li&gt;
+&lt;li&gt;Canvas组件
+&lt;ul&gt;
+&lt;li&gt;创建Canvas组件时随带的EventSystem是用于UI交互的&lt;/li&gt;
+&lt;li&gt;Canvas中屏幕的一个像素对应的就是场景中的一个单位&lt;/li&gt;
+&lt;li&gt;Render Moad
+&lt;ul&gt;
+&lt;li&gt;Screen Space-Overlay：将UI渲染为摄像机视图顶部的2D图形&lt;/li&gt;
+&lt;li&gt;Screen Space-Camera：将UI渲染在摄像机视图顶部，但UI元素可以旋转，得到透视效果&lt;/li&gt;
+&lt;li&gt;World Space：将画布对象放在场景中，就好像UI是3D场景的一部分&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;UI对象的锚点（anchor）：对象依附到画布或屏幕的点，决定计算对象位置所依赖的点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;切割图像（sliced image，九宫格）：把图像切割成九份，各部分相互独立，分别缩放。从中间缩放图像边缘，可确保图像缩放为任何期望的尺寸，且边缘清晰&lt;/li&gt;
+&lt;li&gt;模型导入Model中Normals选项控制光线和阴影在模型上的显示
+&lt;ul&gt;
+&lt;li&gt;Import：使用定义在导入网格几何体中的法线&lt;/li&gt;
+&lt;li&gt;Calculate：让Unity自己计算每个多边形的法线&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;光照贴图（lightmapping）：将几何体的阴影烘焙到贴图图像中&lt;/li&gt;
+&lt;li&gt;Mesh Renderer中可控制是否投射阴影和是否接受阴影&lt;/li&gt;
+&lt;li&gt;位置向量乘于四元数，结果是基于旋转的偏移位置&lt;/li&gt;
+&lt;li&gt;Vector3.ClampMagnitude：限制对角线，使其延轴移动的速度一样（从原点画圆）&lt;/li&gt;
+&lt;li&gt;Animator中的动画过度
+&lt;ul&gt;
+&lt;li&gt;Has Exit Time：迫使动画一直播放，而不是在变换发生时马上暂停&lt;/li&gt;
+&lt;li&gt;Interruption Source改为Current State说明变换自身能被打断&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;美术资源&#34;&gt;美术资源&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;网格对象：指的是3D对象（连线和形状）的几何结构&lt;/li&gt;
+&lt;li&gt;模型：通常包括对象的其他属性&lt;/li&gt;
+&lt;li&gt;材质：一组信息，定义了附加材质对象的表面属性（颜色，发光等—）。多个对象可共享一个材质。每个材质都有一个控制它的着色器（可认为每种材质都是着色器的一个实例）&lt;/li&gt;
+&lt;li&gt;动画：定义关联对象的运动信息。运动能独立于对象自身定义，所以可以混合-匹配的方式用于多个对象（必须为同一种骨骼）&lt;/li&gt;
+&lt;li&gt;粒子系统：用于生成和控制大量运动对象的规则机制。运动对象通常较小所以被称为粒子系统。但并不一定要小
+&lt;ul&gt;
+&lt;li&gt;粒子：粒子系统控制的独立对象。可以是任何网络对象，但对于大多数效果，粒子显示图片的方块&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贴图：用于提高3D图形效果的2D图像
+&lt;ul&gt;
+&lt;li&gt;用于显示在3D模型的表面&lt;/li&gt;
+&lt;li&gt;法线贴图使表面产生凹凸
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;贴图文件格式类型&lt;/th&gt;
+&lt;th&gt;优缺点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;PNG&lt;/td&gt;
+&lt;td&gt;通常用于万维网。无损压缩，带透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;JPG&lt;/td&gt;
+&lt;td&gt;通常用于万维网。有损压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GIF&lt;/td&gt;
+&lt;td&gt;通常用于万维网。有损压缩，无透明（损耗并不是压缩造成的，是图片转为八位时导致数据丢失）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;BMP&lt;/td&gt;
+&lt;td&gt;windows上默认模式。无压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TGA&lt;/td&gt;
+&lt;td&gt;通常用于3D图形（不常用）。无损压缩或不压缩，带透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TIFF&lt;/td&gt;
+&lt;td&gt;通常用于数字相片和出版。无损压缩或不压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PICT&lt;/td&gt;
+&lt;td&gt;旧Macs系统默认格式。有损压缩，无透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PSD&lt;/td&gt;
+&lt;td&gt;Photoshop原生文件。无压缩，有透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/li&gt;
+&lt;li&gt;图像的压缩方式和是否有透明通道这两个是比较重要的因素
+&lt;ul&gt;
+&lt;li&gt;有透明通道会更好&lt;/li&gt;
+&lt;li&gt;不压缩和无损压缩保证质量，有损压缩降低了品质，但减小了文件大小（具体取舍有&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贴图的大小应为2的次幂（从4~2048字节）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;天空盒：是一个包围摄像机的立方体。每个面都是天空图片的贴图&lt;/li&gt;
+&lt;li&gt;着色器：一种简短的程序，列出了绘制表面的指令
+&lt;ul&gt;
+&lt;li&gt;一些Unity自带的着色器：
+&lt;ul&gt;
+&lt;li&gt;Additive着色器：将粒子颜色叠加到它背后的颜色上的着色器，使颜色更加明亮，而粒子的黑色部分不可见。&lt;/li&gt;
+&lt;li&gt;Multiply着色器：与Additive相反，使对象颜色更暗&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;3D模型：美术资源可直接拖入引擎，unity会将文件导出为FBX然后重新加载到Unity中。尽量避免直接拖入美术资源，应将模型先导出为FBX后再直接导入到Unity为好。避免后续的资源修复问题和共享资源复杂等问题
+&lt;ul&gt;
+&lt;li&gt;可导入模型自带材质&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;3D模型文件类型&lt;/th&gt;
+&lt;th&gt;优缺点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;FBX&lt;/td&gt;
+&lt;td&gt;网格和动画&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Collada(DAE)&lt;/td&gt;
+&lt;td&gt;网格和动画&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;OBJ&lt;/td&gt;
+&lt;td&gt;只有网格；文本格式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3DS&lt;/td&gt;
+&lt;td&gt;只有网格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DXF&lt;/td&gt;
+&lt;td&gt;只有网格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;使用粒子系统创建效果&#34;&gt;使用粒子系统创建效果&lt;/h2&gt;
+&lt;p&gt;粒子系统时创建和控制大量移动对象的规则机制&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;粒子系统总设置：
+&lt;ul&gt;
+&lt;li&gt;Looping：是否一直循环播放&lt;/li&gt;
+&lt;li&gt;Lifetime：粒子存在时间&lt;/li&gt;
+&lt;li&gt;Speed：粒子移动速度&lt;/li&gt;
+&lt;li&gt;Size：粒子大小&lt;/li&gt;
+&lt;li&gt;Rotation：粒子的方向&lt;/li&gt;
+&lt;li&gt;Color：给粒子染色&lt;/li&gt;
+&lt;li&gt;Simulation Space：粒子的移动参考坐标系，一般来说静止的粒子用Local，移动的用World&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Emission：粒子发射的速度设置&lt;/li&gt;
+&lt;li&gt;Shape：发射区域形状&lt;/li&gt;
+&lt;li&gt;Size over Lifetime：粒子运动时的变大的缩小&lt;/li&gt;
+&lt;li&gt;Rotation over Lifetime：粒子运动时的旋转&lt;/li&gt;
+&lt;li&gt;Renderer：设置每个粒子的外观。甚至设置为网格&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;sprite-packer精灵图集&#34;&gt;Sprite Packer（精灵图集）&lt;/h2&gt;
+&lt;p&gt;将多个图片已网格的形式组合成一张大图片
+优点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;紧凑的打包在一起避免空间浪费&lt;/li&gt;
+&lt;li&gt;减少加载的次数，避免卡顿&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;音频&#34;&gt;音频&lt;/h1&gt;
+&lt;h2 id=&#34;文件格式支持&#34;&gt;文件格式支持&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;文件类型&lt;/th&gt;
+&lt;th&gt;优缺点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WAV&lt;/td&gt;
+&lt;td&gt;Windows默认音频格式。未压缩&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AIF&lt;/td&gt;
+&lt;td&gt;Mac默认音频格式。未压缩&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;MP3&lt;/td&gt;
+&lt;td&gt;压缩；文件小，损失一点质量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;OGG&lt;/td&gt;
+&lt;td&gt;压缩；文件小，损失一点质量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;MOD&lt;/td&gt;
+&lt;td&gt;音轨格式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;XM&lt;/td&gt;
+&lt;td&gt;音轨格式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;数字音频工作原理&#34;&gt;数字音频工作原理&lt;/h2&gt;
+&lt;p&gt;音频文件保存声音播放时由扬声器创建的波形。音频文件记录这些波时，会反复在短暂的时间间隔进行采样，并保存每次采样波的状态。采样记录得越频繁，就越能精确的记录波形随时间变化的细节（两次直接的间隙也就越小，意味着更多的数据量）。压缩声音通过一些列技巧减小文件的大小，包括丢弃不会被人听到的频率。&lt;/p&gt;
+&lt;h2 id=&#34;音频的导入设置&#34;&gt;音频的导入设置&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Force To Mono：立体声转为单声道&lt;/li&gt;
+&lt;li&gt;Load In Background：后台加载&lt;/li&gt;
+&lt;li&gt;Default（默认平台设置）
+&lt;ul&gt;
+&lt;li&gt;Load Type：一次性加载所有数据还是流式加载&lt;/li&gt;
+&lt;li&gt;Compression Format：保存音频的数据格式（可能会被压缩）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;立体声&#34;&gt;立体声&lt;/h3&gt;
+&lt;p&gt;立体声实际上在文件中记录了两个波形，一个用于左扬声器，一个用于右扬声器。为了减小尺寸，可将音频信息减半，把相同波形发送到两个扬声器，而不是分别发送到左右扬声器。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>《游戏引擎架构》动画的基本构成</title>
       <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</link>
       <pubDate>Sun, 07 Nov 2021 17:14:24 +0800</pubDate>
