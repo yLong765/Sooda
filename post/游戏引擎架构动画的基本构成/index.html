@@ -1,208 +1,85 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html lang="zh-cn">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	
-	<title>Sooda  | 《游戏引擎架构》动画的基本构成</title>
-	<meta name="viewport" content="width=device-width,minimum-scale=1">
-	<meta name="generator" content="Hugo 0.91.2" />
-	
-	
-	<META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
-	
 
-	
-	
-	<link href="/dist/app.css" rel="stylesheet">
-	
 
-	
+<meta charset="utf-8" />
+<meta name="author" content="Alaya" />
+<meta name="description" content="简简单单生活，安安静静编程" />
+<meta name="keywords" content="" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.100.2" />
 
-	
-	
-<link rel="shortcut icon" href="/img/favicon-32x32.png" type="image/png" />
+<link rel="canonical" href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/">
+<meta property="og:title" content="《游戏引擎架构》动画的基本构成" />
+<meta property="og:description" content="游戏引擎动画组件的基本数据构成和关于动画的知识点和概念" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-07T17:14:24+08:00" />
+<meta property="article:modified_time" content="2021-11-07T17:14:24+08:00" />
 
-	
 
-	
-	
-	
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-210261771-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-	
-	
-	
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《游戏引擎架构》动画的基本构成"/>
+<meta name="twitter:description" content="游戏引擎动画组件的基本数据构成和关于动画的知识点和概念"/>
+
+
+<meta itemprop="name" content="《游戏引擎架构》动画的基本构成">
+<meta itemprop="description" content="游戏引擎动画组件的基本数据构成和关于动画的知识点和概念"><meta itemprop="datePublished" content="2021-11-07T17:14:24+08:00" />
+<meta itemprop="dateModified" content="2021-11-07T17:14:24+08:00" />
+<meta itemprop="wordCount" content="281">
+<meta itemprop="keywords" content="《游戏引擎框架》,动画," />
+
+<link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
+
+
+<link rel="stylesheet" href="https://sooda.net.cn/css/default-dark.css" />
 
 
 
-<link rel="stylesheet" href='https://sooda.net.cn/lib/katex.min.css' integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+<title>
 
 
-<script defer src='https://sooda.net.cn/lib/katex.min.js' integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+     《游戏引擎架构》动画的基本构成 
 
+</title>
 
-<script defer src='https://sooda.net.cn/lib/contrib/auto-render.min.js' integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
-crossorigin="anonymous"
-onload='renderMathInElement(document.body);'></script>
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, {
-            delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "$", right: "$", display: false},
-                {left: "\\[", right: "\\]", display: true},
-                {left: "\\(", right: "\\)", display: false}
-            ]
-        });
-    });
-</script>
-
-	
-	
-	
-	<script>
-		(function (u, c) {
-			var d = document,
-				t = 'script',
-				o = d.createElement(t),
-				s = d.getElementsByTagName(t)[0];
-			o.src = u;
-			if (c) {
-				o.addEventListener('load', function (e) {
-					c(e);
-				});
-			}
-			s.parentNode.insertBefore(o, s);
-		})('https:\/\/sooda.net.cn\/lib\/pangu.min.js', function () {
-			pangu.spacingPage();
-		});
-	</script>
-	
-	
-	
-	<style type="text/css" media="screen, print">
-		@font-face {
-			font-family: "FancyTitleFont";
-			font-style: normal;
-			font-display: swap;
-			src: url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-500.woff2') format('woff2'),
-				url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-500.woff') format('woff');
-		}
-		 
-		  
-		 
-		@font-face {
-			font-family: 'Noto Serif CJK SC';
-			font-style: normal;
-			font-weight: 300;
-			font-display: swap;
-			src: local('Noto Serif CJK SC Light'), local('NotoSerifCJK-Light'),
-				url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-300.woff2') format('woff2'),
-				 
-				url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-300.woff') format('woff');
-			 
-		}
-
-		 
-		@font-face {
-			font-family: 'Noto Serif CJK SC';
-			font-style: normal;
-			font-weight: 400;
-			font-display: swap;
-			src: local('Noto Serif CJK SC'), local('NotoSerifCJK-Regular'),
-				url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-regular.woff2') format('woff2'),
-				 
-				url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-regular.woff') format('woff');
-			 
-		}
-
-		 
-		@font-face {
-			font-family: 'Noto Serif CJK SC';
-			font-style: normal;
-			font-weight: 500;
-			font-display: swap;
-			src: local('Noto Serif CJK SC Medium'), local('NotoSerifCJK-Medium'),
-				url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-500.woff2') format('woff2'),
-				 
-				url('https://sooda.net.cn/fonts/noto-serif-sc-v7-latin_chinese-simplified-500.woff') format('woff');
-			 
-		}
-	</style>
-	
 </head>
 
-<body class="bg-gray-100 text-gray-700 font-sans">
-	<div class="p-6 sm:p-10 md:p-16 flex flex-wrap">
-		<header class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-1 md:order-1 max-w-2xl">
-			<div
-				class="z-50 bg-gray-100 bg-opacity-75 bg-opacity-custom lg:min-w-0.7 max-w-xl md:float-right md:text-right leading-loose tracking-tight md:sticky md:top-0 pt-2">
-				
-<div>
-	<h2>
-		<a href="https://sooda.net.cn/" title="Sooda" class="heading font-cursive icon">Sooda</a>
-	</h2>
-</div>
-<h1 class="pt-2">《游戏引擎架构》动画的基本构成</h1>
 
-<h3 class="text-java-700 font-normal leading-relaxed pt-2">游戏引擎动画组件的基本数据构成和关于动画的知识点和概念</h3>
+<body>
+<div class="main">
+<header>
 
-<div class="flex flex-wrap justify-end pt-2 "><div class="md:flex-grow-0 font-light">
-	
-	
-	
-	
-	<a class="post-taxonomy-category text-medium-red-violet-600 hover:text-medium-red-violet-400"
-		href='/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC'>阅读提炼</a>
-	
-	
-	
+<div class="header-bar">
 
-	
-	&nbsp;&nbsp;
-	
+  <nav>
+    <div class="siteTitle">
+      <a href="https://sooda.net.cn/">Sooda</a>
+    </div> 
 
-	
-	
-	
-	
-	<a class="post-taxonomy-tag text-eucalyptus-500"
-		href='/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6'>《游戏引擎框架》</a>&nbsp;&#47;
-	
-	<a class="post-taxonomy-tag text-eucalyptus-500"
-		href='/tags/%E5%8A%A8%E7%94%BB'>动画</a>
-	
-	
-	
-</div><time class="text-eucalyptus-500 md:text-right md:flex-grow font-light pl-4"
-		datetime="2021-11-07T17:14:24&#43;08:00">2021-11-7</time>
+    
+    
+    <a class="nav-item" href="https://sooda.net.cn/categories/"><div class="nav-item-title">Categories</div></a>
+    
+    <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
+    
+  </nav>
+  
+  简简单单生活，安安静静编程
+  
+
 </div>
 
-<hr />
+
+</header>
 
 
-			</div>
-		</header>
-		<main role="main" class="w-full md:w-3/5 xl:w-1/2 max-w-3xl order-2 md:order-2 min-h-70vh pt-2 pb-4">
-			
-
-<article>
-	<section class="mx-auto content">
-		<div class="c-rich-text"><h2 id="闲话">闲话</h2>
+<article class="post">
+    <h1 class="title"> 《游戏引擎架构》动画的基本构成 </h1>
+    <div class="content"> <h2 id="闲话">闲话</h2>
 <p>近日读完了《游戏引擎架构》这本书，以前感觉读不完，但是每天慢慢的磨完了。闲下来时间提炼一下其中自我觉得比较关键的部分。因本人是做Unity开发的，所以会把书中所讲部分结合Unity引擎来总结。闲话不多说开始吧</p>
 <h2 id="动画的基本构成">动画的基本构成</h2>
 <p>Unity的动画系统封装的已经非常好了，所以我们对其中的细节了解的少之又少。本文章着重在单个动画，骨骼，姿势，蒙皮的内存存储结构和应用方式</p>
@@ -225,66 +102,58 @@ onload='renderMathInElement(document.body);'></script>
 以更少的数据量来达到更好的效果。通过加入约束：相对大量的顶点只能跟随相对少量的骨骼关节移动。来压缩顶点动画</p>
 <h3 id="骨骼在内存中的表示">骨骼在内存中的表示</h3>
 <p>通常使用关节索引引用关节，子关节索引引用父关节。蒙皮三角形网格中，每个顶点索引引用其绑定关节</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// 关节数据的信息
-</span><span style="color:#75715e"></span><span style="color:#00a8c8">struct</span> <span style="color:#75af00">Joint</span> <span style="color:#111">{</span>
-    <span style="color:#111">Matrix4x3</span> <span style="color:#111">inv_bind_pose</span><span style="color:#111">;</span>    <span style="color:#75715e">// 绑定姿势（蒙皮网格顶点绑定至骨骼时，关节的位置，定向及缩放）的逆变换
-</span><span style="color:#75715e"></span>    <span style="color:#00a8c8">const</span> <span style="color:#00a8c8">char</span><span style="color:#f92672">*</span> <span style="color:#111">name</span><span style="color:#111">;</span>           <span style="color:#75715e">// 关节名字（字符串或32位字符串散列表标识符）
-</span><span style="color:#75715e"></span>    <span style="color:#111">U8</span> <span style="color:#111">parent</span><span style="color:#111">;</span>                  <span style="color:#75715e">// 父索引(0xFF代表根关节)
-</span><span style="color:#75715e"></span><span style="color:#111">};</span>
-
-<span style="color:#00a8c8">struct</span> <span style="color:#75af00">Skeletion</span> <span style="color:#111">{</span>
-    <span style="color:#111">U32</span> <span style="color:#111">joint_count</span><span style="color:#111">;</span>    <span style="color:#75715e">// 关节数目
-</span><span style="color:#75715e"></span>    <span style="color:#111">Joint</span><span style="color:#f92672">*</span> <span style="color:#111">joint</span><span style="color:#111">;</span>       <span style="color:#75715e">// 关节数组
-</span><span style="color:#75715e"></span><span style="color:#111">};</span>
-</code></pre></div><h3 id="姿势">姿势</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 关节数据的信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Joint</span> {
+</span></span><span style="display:flex;"><span>    Matrix4x3 inv_bind_pose;    <span style="color:#75715e">// 绑定姿势（蒙皮网格顶点绑定至骨骼时，关节的位置，定向及缩放）的逆变换
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> name;           <span style="color:#75715e">// 关节名字（字符串或32位字符串散列表标识符）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    U8 parent;                  <span style="color:#75715e">// 父索引(0xFF代表根关节)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Skeletion</span> {
+</span></span><span style="display:flex;"><span>    U32 joint_count;    <span style="color:#75715e">// 关节数目
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Joint<span style="color:#f92672">*</span> joint;       <span style="color:#75715e">// 关节数组
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><h3 id="姿势">姿势</h3>
 <p>把角色摆出一连串离散，静止的姿势，并以通常30或60个姿势每秒的速率显示，已产生动感。实际游戏会以相邻姿势进行插值</p>
 <p>绑定姿势：又称为T姿势。因此姿势四肢远离身体，较容易把顶点绑定至关节</p>
 <h4 id="局部姿势">局部姿势</h4>
 <p>相对于父关节指定的，其仿射变换相对于父节点空间</p>
 <p>关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成</p>
-<div>
-$$
+<p>$$
 p_j =
 \begin{bmatrix}
-S_jR_j & 0 \\
-T_j & 1
+S_jR_j &amp; 0 \newline
+T_j &amp; 1
 \end{bmatrix}
-$$
-</div>
+$$</p>
 <p>整个骨骼的姿势：</p>
-<div>
-$$
-P^{skel} = \{ P_j \} |_{j=0}^{N-1}
-$$
-</div>
+<p>$$
+P^{skel} = { P_j } |_{j=0}^{N-1}
+$$</p>
 <p>有些引擎不允许关节$S_j$缩放，有些引擎则必须为同一缩放。此优化能节省内存。并简化每个关节计算平截头体剔除及碰撞测试</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// 局部关节的内存表示
-</span><span style="color:#75715e"></span><span style="color:#00a8c8">struct</span> <span style="color:#75af00">JointPose</span> <span style="color:#111">{</span>
-  <span style="color:#111">Quaternion</span> <span style="color:#111">rot</span><span style="color:#111">;</span> <span style="color:#75715e">// Q
-</span><span style="color:#75715e"></span>  <span style="color:#111">Vector3</span> <span style="color:#111">trans</span><span style="color:#111">;</span>  <span style="color:#75715e">// T
-</span><span style="color:#75715e"></span>  <span style="color:#111">F32</span> <span style="color:#111">scale</span><span style="color:#111">;</span>      <span style="color:#75715e">// S(仅为统一缩放)
-</span><span style="color:#75715e"></span><span style="color:#111">};</span>
-
-<span style="color:#75715e">// 骨骼姿势：其所有关节姿势的集合
-</span><span style="color:#75715e"></span><span style="color:#00a8c8">struct</span> <span style="color:#75af00">SkeletonPose</span> <span style="color:#111">{</span>
-  <span style="color:#111">Skeleton</span><span style="color:#f92672">*</span> <span style="color:#111">pSkeleton</span><span style="color:#111">;</span>    <span style="color:#75715e">// 骨骼 + 关节数量
-</span><span style="color:#75715e"></span>  <span style="color:#111">JointPose</span><span style="color:#f92672">*</span> <span style="color:#111">aLocalPose</span><span style="color:#111">;</span>  <span style="color:#75715e">// 多个局部关节姿势
-</span><span style="color:#75715e"></span><span style="color:#111">}</span>
-</code></pre></div><h4 id="全局姿势">全局姿势</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 局部关节的内存表示
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">JointPose</span> {
+</span></span><span style="display:flex;"><span>  Quaternion rot; <span style="color:#75715e">// Q
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  Vector3 trans;  <span style="color:#75715e">// T
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  F32 scale;      <span style="color:#75715e">// S(仅为统一缩放)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 骨骼姿势：其所有关节姿势的集合
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">SkeletonPose</span> {
+</span></span><span style="display:flex;"><span>  Skeleton<span style="color:#f92672">*</span> pSkeleton;    <span style="color:#75715e">// 骨骼 + 关节数量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  JointPose<span style="color:#f92672">*</span> aLocalPose;  <span style="color:#75715e">// 多个局部关节姿势
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h4 id="全局姿势">全局姿势</h4>
 <p>关节姿势表示为相对于模型空间或世界空间。关节j的空间姿势(全局姿势)，可通过从该关节遍历至根节点并乘上其局部姿势</p>
 <p>任何关节$j$的全局姿势（关节至模型空间的变换）可写成：</p>
-<div>
-$$
-P_{j \rightarrow M} = \prod_{i=j}^0 P_{i \rightarrow p(i)}
-$$
-</div>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// 全局关节的内存表示
-</span><span style="color:#75715e"></span><span style="color:#00a8c8">struct</span> <span style="color:#75af00">SkeletonPose</span> <span style="color:#111">{</span>
-  <span style="color:#111">Skeleton</span><span style="color:#f92672">*</span> <span style="color:#111">pSkeleton</span><span style="color:#111">;</span>    <span style="color:#75715e">// 骨骼 + 关节数量
-</span><span style="color:#75715e"></span>  <span style="color:#111">JointPose</span><span style="color:#f92672">*</span> <span style="color:#111">aLocalPose</span><span style="color:#111">;</span>  <span style="color:#75715e">// 多个局部关节姿势
-</span><span style="color:#75715e"></span>  <span style="color:#111">Matrix44</span><span style="color:#f92672">*</span> <span style="color:#111">aGlobalPose</span><span style="color:#111">;</span>  <span style="color:#75715e">// 多个全局关节姿势
-</span><span style="color:#75715e"></span><span style="color:#111">};</span>
-</code></pre></div><h3 id="动画片段">动画片段</h3>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 全局关节的内存表示
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">SkeletonPose</span> {
+</span></span><span style="display:flex;"><span>  Skeleton<span style="color:#f92672">*</span> pSkeleton;    <span style="color:#75715e">// 骨骼 + 关节数量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  JointPose<span style="color:#f92672">*</span> aLocalPose;  <span style="color:#75715e">// 多个局部关节姿势
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  Matrix44<span style="color:#f92672">*</span> aGlobalPose;  <span style="color:#75715e">// 多个全局关节姿势
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><h3 id="动画片段">动画片段</h3>
 <ul>
 <li>每个动画片段是为特定骨骼设计的，通常不会用于其他骨骼</li>
 <li>动画重定目标：把为一个骨骼设计的动画，重订目标至不同骨骼</li>
@@ -320,19 +189,19 @@ $$
 <li>旋转：四元数$Q=\begin{bmatrix}Q_x &amp; Q_y &amp; Q_z &amp; Q_w \end{bmatrix}$</li>
 <li>缩放：标量$S$</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#00a8c8">struct</span> <span style="color:#75af00">AnimationSample</span> <span style="color:#111">{</span>
-  <span style="color:#111">JointPose</span> <span style="color:#f92672">*</span><span style="color:#111">aJointPose</span><span style="color:#111">;</span>  <span style="color:#75715e">// 关节姿势数组
-</span><span style="color:#75715e"></span><span style="color:#111">};</span>
-
-<span style="color:#00a8c8">struct</span> <span style="color:#75af00">AnimationClip</span> <span style="color:#111">{</span>
-  <span style="color:#111">Skeleton</span> <span style="color:#f92672">*</span><span style="color:#111">pSkeleton</span><span style="color:#111">;</span>      <span style="color:#75715e">// 骨骼关节（真实引擎中可能用骨骼标识符，而不是指针）
-</span><span style="color:#75715e"></span>  <span style="color:#111">F32</span> <span style="color:#111">framesPerSecond</span><span style="color:#111">;</span>      <span style="color:#75715e">// 帧每秒
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 注释：非循环动画为frameCount + 1，循环动画最后一采样等于第一个采样会略去
-</span><span style="color:#75715e"></span>  <span style="color:#111">U32</span> <span style="color:#111">frameCount</span><span style="color:#111">;</span>           <span style="color:#75715e">// 采样数目
-</span><span style="color:#75715e"></span>  <span style="color:#111">AnimationSample</span> <span style="color:#f92672">*</span><span style="color:#111">aSample</span><span style="color:#111">;</span> <span style="color:#75715e">// 采样数组
-</span><span style="color:#75715e"></span>  <span style="color:#00a8c8">bool</span> <span style="color:#111">isLooping</span><span style="color:#111">;</span>           <span style="color:#75715e">// 是否循环
-</span><span style="color:#75715e"></span><span style="color:#111">}</span>
-</code></pre></div><h3 id="通道函数unity的animation编辑面板">通道函数（Unity的Animation编辑面板）</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">AnimationSample</span> {
+</span></span><span style="display:flex;"><span>  JointPose <span style="color:#f92672">*</span>aJointPose;  <span style="color:#75715e">// 关节姿势数组
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">AnimationClip</span> {
+</span></span><span style="display:flex;"><span>  Skeleton <span style="color:#f92672">*</span>pSkeleton;      <span style="color:#75715e">// 骨骼关节（真实引擎中可能用骨骼标识符，而不是指针）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  F32 framesPerSecond;      <span style="color:#75715e">// 帧每秒
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 注释：非循环动画为frameCount + 1，循环动画最后一采样等于第一个采样会略去
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  U32 frameCount;           <span style="color:#75715e">// 采样数目
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  AnimationSample <span style="color:#f92672">*</span>aSample; <span style="color:#75715e">// 采样数组
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">bool</span> isLooping;           <span style="color:#75715e">// 是否循环
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h3 id="通道函数unity的animation编辑面板">通道函数（Unity的Animation编辑面板）</h3>
 <p>函数通道在整个动画片段的时间线上是圆滑连续的（除非故意编辑成不连续的，例如镜头切换）。而游戏引擎中基本只会在采样间进行线性插值，实际上用到的是连续函数的分段线性逼近</p>
 <p>可以加入额外的元通道数据。把游戏专用的信息编码，能和动画同步触发。如事件触发器（Unity的Animation面板中可触发事件）在动画脚步落地的时候播放声音</p>
 <p>定位器：利用Maya中的定位器（类似于Unity中模型中的一个子节点，如手中武器的父节点）用于记录物体的位置及定向</p>
@@ -345,40 +214,24 @@ $$
 </ul>
 <p>对于绑定的关节数目通常限制为每顶点4关节，首先4个8位索引可包装位32位字。其次超过4个质量差别就没有明显提升了</p>
 <p>内存数据结构：</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#00a8c8">struct</span> <span style="color:#75af00">SkinnedVertex</span> <span style="color:#111">{</span>
-    <span style="color:#00a8c8">float</span> <span style="color:#111">position</span><span style="color:#111">[</span><span style="color:#ae81ff">3</span><span style="color:#111">];</span>		<span style="color:#75715e">// (Px,Py,Pz)
-</span><span style="color:#75715e"></span>    <span style="color:#00a8c8">float</span> <span style="color:#111">normal</span><span style="color:#111">[</span><span style="color:#ae81ff">3</span><span style="color:#111">];</span>		<span style="color:#75715e">// (Nx,Ny,Nz)
-</span><span style="color:#75715e"></span>    <span style="color:#00a8c8">float</span> <span style="color:#111">u</span><span style="color:#111">,</span><span style="color:#111">v</span><span style="color:#111">;</span>				<span style="color:#75715e">// 纹理坐标uv
-</span><span style="color:#75715e"></span>    <span style="color:#111">U8</span> <span style="color:#111">jointIndex</span><span style="color:#111">[</span><span style="color:#ae81ff">4</span><span style="color:#111">];</span>		<span style="color:#75715e">// 关节索引
-</span><span style="color:#75715e"></span>    <span style="color:#00a8c8">float</span> <span style="color:#111">jointWeight</span><span style="color:#111">[</span><span style="color:#ae81ff">3</span><span style="color:#111">];</span>	<span style="color:#75715e">// 关节权重，略去一个可用1-其他求得
-</span><span style="color:#75715e"></span><span style="color:#111">}</span>
-</code></pre></div><h4 id="蒙皮矩阵">蒙皮矩阵</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">SkinnedVertex</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> position[<span style="color:#ae81ff">3</span>];		<span style="color:#75715e">// (Px,Py,Pz)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span> normal[<span style="color:#ae81ff">3</span>];		<span style="color:#75715e">// (Nx,Ny,Nz)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span> u,v;				<span style="color:#75715e">// 纹理坐标uv
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    U8 jointIndex[<span style="color:#ae81ff">4</span>];		<span style="color:#75715e">// 关节索引
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span> jointWeight[<span style="color:#ae81ff">3</span>];	<span style="color:#75715e">// 关节权重，略去一个可用1-其他求得
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h4 id="蒙皮矩阵">蒙皮矩阵</h4>
 <p>将网格顶点从模型空间的原来位置（绑定姿势）变换至骨骼模型空间的当前姿势。非基变更变换</p>
 <p>顶点绑定至关节的位置时，在该关节空间中的位置时不变的。所以可把顶点于模型空间的绑定姿势位置转换至关节空间，再把关节空间移至当前姿势，最后把该顶点转回模型空间。这个转换过程结合的转换矩阵就是蒙皮矩阵</p>
 <h5 id="单个关节的蒙皮矩阵">单个关节的蒙皮矩阵</h5>
 <p>绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：</p>
-<div>
-$$
-V_j = V_M^B B_{M \rightarrow j} = V_M^B(B_{j \rightarrow M}^{-1})
-$$
-</div>
+<!-- raw HTML omitted -->
 <p>矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：</p>
-<div>
-$$
-V_M^C = V_jC_{j \rightarrow M}
-$$
-</div>
+<!-- raw HTML omitted -->
 <p>则联合后的蒙皮矩阵$K_j$为：</p>
-<div>
-$$
-V_M^C = V_jC_{j \rightarrow M} = V_M^B(B{j \rightarrow M})^{-1}C_{j \rightarrow M} = V_M^BK_j
-$$
-</div>
-<div>
-$$
-K_j =(B_{j \rightarrow M})^{-1}C_{j \rightarrow M}
-$$
-</div>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <h5 id="多个关节的蒙皮矩阵">多个关节的蒙皮矩阵</h5>
 <p>将单关节蒙皮矩阵扩展至多关节须计算矩阵调色板，就是一组蒙皮矩阵$K_j$，当中每个矩阵对应第j个关节。当渲染一个蒙皮网络时，矩阵调色板便要传送至渲染引擎。渲染器会为每个顶点查找调色板中合适的关节蒙皮矩阵，并用该矩阵把顶点从绑定姿势转换至当前姿势</p>
 <ul>
@@ -388,149 +241,86 @@ $$
 </ul>
 <p>运算效率优化：将蒙皮矩阵调色板预先乘于物体的模型至世界变换。因为最终都要转换到世界空间，所以可以预处理。但在多角色同时播放单个动画的情况时不能这么做。此技术为动画实例</p>
 <p>（完）</p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+            
+<div class="tags">
+  
+    
+      <div class="tag">
+        <a href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%A1%86%E6%9E%B6">#《游戏引擎框架》</a>
+      </div>
+    
+      <div class="tag">
+        <a href="https://sooda.net.cn/tags/%E5%8A%A8%E7%94%BB">#动画</a>
+      </div>
+    
+  
 </div>
-	</section>
+
+    <div class="date"> 2021-11-07 </div>
+    
+    <hr>
+            
+<div class="categories">
+  
+  Published in:
+    
+      <div class="category">
+        <a href="https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC">阅读提炼</a>
+      </div>
+    
+  
+</div>
+
+            
+<div class="series">
+  
+</div>
+
+    
+  </div>
+</footer>
+
+
+  
+  
+
 
 
 </article>
 
-		</main>
-		<div class="w-full h-0 flex-none order-3"></div>
-		<aside role="contentinfo"
-			class="w-full md:w-2/5 xl:w-1/2 md:pr-12 lg:pr-20 xl:pr-24 order-4 md:order-3 md:sticky md:bottom-0 self-end max-w-2xl">
-			<div class="md:float-right md:text-right leading-loose tracking-tight md:mb-2">
-				
-	<div class="md:max-w-xs  flex flex-col md:items-end">
-	<ul class="font-serif flex-grow-0 flex justify-between flex-wrap md:flex-col">
-	
-	
-	<li class="px-1 md:px-0">
-		<a href="/post/" title="Posts page" 
-			class="font-medium text-medium-red-violet-600 hover:text-medium-red-violet-400" >
-			Posts
-		</a>
-	</li>
-	
-	<li class="px-1 md:px-0">
-		<a href="/categories/" title="Categories page" >
-			Categories
-		</a>
-	</li>
-	
-	<li class="px-1 md:px-0">
-		<a href="/tags/" title="Tags page" >
-			Tags
-		</a>
-	</li>
-	
-	
-	
-	
-	<div id="fastSearch" class="m-0">
-		<input id="searchInput" type="text" size=10 
-			class="bg-gray-100 focus:outline-none border-b border-gray-100 focus:border-eucalyptus-300 md:text-right
-			placeholder-java-500 min-w-0 max-w-xxxs"
-			placeholder="search" />
-		<ul id="searchResults" class="bg-gray-200 px-2 divide-y divide-gray-400">
-		</ul>
-	</div>
-	
-</ul>
-	
+  <footer>
 
-<div class="flex flex-wrap-reverse md:justify-end content-end md:content-start justify-start items-start   max-h-16">
-	
-	<a href='http://github.com/' target="_blank" class="github icon pl-1 text-eucalyptus-400 hover:text-java-400" title="github link" rel="noopener"
-		aria-label="follow on github——Opens in a new window">
-		
-		<div class="fill-current h-8 w-8">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <g>
-        <path fill="none" d="M0 0h24v24H0z"/>
-        <path fill-rule="nonzero" d="M5.883 18.653c-.3-.2-.558-.455-.86-.816a50.32 50.32 0 0 1-.466-.579c-.463-.575-.755-.84-1.057-.949a1 1 0 0 1 .676-1.883c.752.27 1.261.735 1.947 1.588-.094-.117.34.427.433.539.19.227.33.365.44.438.204.137.587.196 1.15.14.023-.382.094-.753.202-1.095C5.38 15.31 3.7 13.396 3.7 9.64c0-1.24.37-2.356 1.058-3.292-.218-.894-.185-1.975.302-3.192a1 1 0 0 1 .63-.582c.081-.024.127-.035.208-.047.803-.123 1.937.17 3.415 1.096A11.731 11.731 0 0 1 12 3.315c.912 0 1.818.104 2.684.308 1.477-.933 2.613-1.226 3.422-1.096.085.013.157.03.218.05a1 1 0 0 1 .616.58c.487 1.216.52 2.297.302 3.19.691.936 1.058 2.045 1.058 3.293 0 3.757-1.674 5.665-4.642 6.392.125.415.19.879.19 1.38a300.492 300.492 0 0 1-.012 2.716 1 1 0 0 1-.019 1.958c-1.139.228-1.983-.532-1.983-1.525l.002-.446.005-.705c.005-.708.007-1.338.007-1.998 0-.697-.183-1.152-.425-1.36-.661-.57-.326-1.655.54-1.752 2.967-.333 4.337-1.482 4.337-4.66 0-.955-.312-1.744-.913-2.404a1 1 0 0 1-.19-1.045c.166-.414.237-.957.096-1.614l-.01.003c-.491.139-1.11.44-1.858.949a1 1 0 0 1-.833.135A9.626 9.626 0 0 0 12 5.315c-.89 0-1.772.119-2.592.35a1 1 0 0 1-.83-.134c-.752-.507-1.374-.807-1.868-.947-.144.653-.073 1.194.092 1.607a1 1 0 0 1-.189 1.045C6.016 7.89 5.7 8.694 5.7 9.64c0 3.172 1.371 4.328 4.322 4.66.865.097 1.201 1.177.544 1.748-.192.168-.429.732-.429 1.364v3.15c0 .986-.835 1.725-1.96 1.528a1 1 0 0 1-.04-1.962v-.99c-.91.061-1.662-.088-2.254-.485z"/>
-    </g>
-</svg>
+  <div class="social-links-footer">
 
-		</div>
-	</a>
-	
-	<a href='mailto:yangshbb@163.com' target="_blank" class="mail icon pl-1 text-eucalyptus-400 hover:text-java-400" title="mail link" rel="noopener"
-		aria-label="follow on mail——Opens in a new window">
-		
-		<div class="fill-current h-8 w-8">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <g>
-        <path fill="none" d="M0 0h24v24H0z"/>
-        <path d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm17 4.238l-7.928 7.1L4 7.216V19h16V7.238zM4.511 5l7.55 6.662L19.502 5H4.511z"/>
-    </g>
-</svg>
-		</div>
-	</a>
-	
-</div>
-	<div class="text-sm text-gray-500 leading-tight a-gray">
-		Copyright ©Sooda
-		<br />
-		Built with Hugo and theme <a href="https://github.com/heyeshuang/hugo-theme-tokiwa">Tokiwa</a>. 3235 words in this page.
-	</div>
-</div>
+  
 
-			</div>
-		</aside>
-		<footer class="w-full md:w-3/5 xl:w-1/2 order-3 max-w-3xl md:order-4 pt-2">
-			
-<hr class="double-line" />
-<div class="flex flex-wrap justify-between pb-2 leading-loose font-serif">
-    
-    
-    <a class="flex-grow-0" href="/post/unity%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/">
-        《Unity实战》总结
-        <svg class="fill-current inline-block h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
-            height="24">
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" /></svg></a>
-    
-</div>
-<div >
+  
+  <a href="https://github.com/yLong765" target="_blank"><div class="social-link">GitHub</div></a>
+  
 
+  
 
+  
+
+  
+
+  
 
 </div>
-<hr />
-<div class="pb-2">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "Sooda" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-<hr />
-
-		</footer>
-		
-
-<script src="/dist/app.js"></script>
 
 
-<script src="/lib/fuse.min.js"></script> 
-<script src="/lib/fastsearch.js"></script>
+  <div class="copyright"> Copyright © 2022, All Rights Reserved. </div>
 
-	</div>
+  
+
+  </footer>
+
+</div> 
+
 </body>
-
 </html>
+

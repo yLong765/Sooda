@@ -5,38 +5,24 @@
     <link>https://sooda.net.cn/tags/ai/</link>
     <description>Recent content in AI on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>cn</language>
-    <copyright>Copyright ©Sooda</copyright>
-    <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate>
-    
-	<atom:link href="https://sooda.net.cn/tags/ai/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language>
+    <copyright>Copyright © 2022, All Rights Reserved.</copyright>
+    <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/ai/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》人工智能篇</title>
       <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</link>
       <pubDate>Wed, 19 Jan 2022 21:58:45 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</guid>
-      <description>&lt;h1 id=&#34;搜索空间的表示&#34;&gt;搜索空间的表示&lt;/h1&gt;
-&lt;p&gt;最简单的寻路设计就是将&lt;strong&gt;图&lt;/strong&gt;作为数据结构。图中包含多个&lt;strong&gt;节点&lt;/strong&gt;，连接相邻的点组成&lt;strong&gt;边&lt;/strong&gt;。图有多种表示方式，最简单的是邻接表&lt;/p&gt;
-&lt;h2 id=&#34;游戏世界用图表示的方式&#34;&gt;游戏世界用图表示的方式&lt;/h2&gt;
-&lt;p&gt;游戏世界用图来表示，有多种方法，一种简单的方法就是将世界区分为一个个正方形的格子（或者六边形）。如在《文明》策略游戏中的沙盘地图。而在不规则的地图中要么使用路点要么使用导航网格。&lt;/p&gt;
-&lt;h3 id=&#34;寻路节点&#34;&gt;寻路节点&lt;/h3&gt;
-&lt;p&gt;光卡设计师在游戏世界中拜访AI可以到达的位置。这些点被解释为图中的节点（可手动和自动生成）&lt;/p&gt;
-&lt;p&gt;缺点：AI只能在节点和边缘的位置移动。会有很多不可移动的位置，AI显得比较生硬&lt;/p&gt;
-&lt;h3 id=&#34;导航网格&#34;&gt;导航网格&lt;/h3&gt;
-&lt;p&gt;图上的节点实际上就是&lt;strong&gt;凸多边形&lt;/strong&gt;。邻近节点就是简单的任意邻近凸多边形。意味着游戏世界区域可以通过少量的凸多边形表示。&lt;/p&gt;
-&lt;p&gt;凸多边形内部任意位置都是可走的。意味着AI有了大量的空间可以行动。可返回更自然的路径&lt;/p&gt;
-&lt;h1 id=&#34;启发式算法&#34;&gt;启发式算法&lt;/h1&gt;
-&lt;p&gt;游戏寻路的启发式算法有很多，启发式用公式$h(x)$表示，理想情况下启发式结果越接近真实越好。如果它的估算总是保证小于等于真实开销，那么这个启发式是可接受的。目前比较流行的启发式算法就是&lt;strong&gt;A*算法&lt;/strong&gt;。不过还有&lt;strong&gt;贪婪最佳优先算法&lt;/strong&gt;，&lt;strong&gt;Dijkstra算法&lt;/strong&gt;等。这里只介绍A*算法&lt;/p&gt;
-&lt;h2 id=&#34;a算法&#34;&gt;A*算法&lt;/h2&gt;
-&lt;p&gt;除了启发式 $h(x)$ 需要考虑，A&lt;em&gt;又考虑了路径开销$g(x)$，所以A&lt;/em&gt;的节点开销等式为：
-$$
-f(x) = g(x) + h(x)
-$$&lt;/p&gt;
-&lt;p&gt;在当前节点搜索可到达的节点加入开放集合中，并从中选出开销最小的点放入关闭集合，如此往复。而$g(x)$的开销取决于父节点的$g(x)$的开销。这意味着父节点是可选的，$g(x)$的开销是可变得&lt;/p&gt;
-</description>
+      <description>搜索空间的表示 最简单的寻路设计就是将图作为数据结构。图中包含多个节点，连接相邻的点组成边。图有多种表示方式，最简单的是邻接表
+游戏世界用图表示的方式 游戏世界用图来表示，有多种方法，一种简单的方法就是将世界区分为一个个正方形的格子（或者六边形）。如在《文明》策略游戏中的沙盘地图。而在不规则的地图中要么使用路点要么使用导航网格。
+寻路节点 光卡设计师在游戏世界中拜访AI可以到达的位置。这些点被解释为图中的节点（可手动和自动生成）
+缺点：AI只能在节点和边缘的位置移动。会有很多不可移动的位置，AI显得比较生硬
+导航网格 图上的节点实际上就是凸多边形。邻近节点就是简单的任意邻近凸多边形。意味着游戏世界区域可以通过少量的凸多边形表示。
+凸多边形内部任意位置都是可走的。意味着AI有了大量的空间可以行动。可返回更自然的路径
+启发式算法 游戏寻路的启发式算法有很多，启发式用公式$h(x)$表示，理想情况下启发式结果越接近真实越好。如果它的估算总是保证小于等于真实开销，那么这个启发式是可接受的。目前比较流行的启发式算法就是A*算法。不过还有贪婪最佳优先算法，Dijkstra算法等。这里只介绍A*算法
+A*算法 除了启发式 $h(x)$ 需要考虑，A又考虑了路径开销$g(x)$，所以A的节点开销等式为： $$ f(x) = g(x) + h(x) $$
+在当前节点搜索可到达的节点加入开放集合中，并从中选出开销最小的点放入关闭集合，如此往复。而$g(x)$的开销取决于父节点的$g(x)$的开销。这意味着父节点是可选的，$g(x)$的开销是可变得</description>
     </item>
     
   </channel>

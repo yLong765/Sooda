@@ -5,38 +5,24 @@
     <link>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</link>
     <description>Recent content in 《游戏编程算法与技巧》 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>cn</language>
-    <copyright>Copyright ©Sooda</copyright>
-    <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate>
-    
-	<atom:link href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language>
+    <copyright>Copyright © 2022, All Rights Reserved.</copyright>
+    <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》人工智能篇</title>
       <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</link>
       <pubDate>Wed, 19 Jan 2022 21:58:45 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</guid>
-      <description>&lt;h1 id=&#34;搜索空间的表示&#34;&gt;搜索空间的表示&lt;/h1&gt;
-&lt;p&gt;最简单的寻路设计就是将&lt;strong&gt;图&lt;/strong&gt;作为数据结构。图中包含多个&lt;strong&gt;节点&lt;/strong&gt;，连接相邻的点组成&lt;strong&gt;边&lt;/strong&gt;。图有多种表示方式，最简单的是邻接表&lt;/p&gt;
-&lt;h2 id=&#34;游戏世界用图表示的方式&#34;&gt;游戏世界用图表示的方式&lt;/h2&gt;
-&lt;p&gt;游戏世界用图来表示，有多种方法，一种简单的方法就是将世界区分为一个个正方形的格子（或者六边形）。如在《文明》策略游戏中的沙盘地图。而在不规则的地图中要么使用路点要么使用导航网格。&lt;/p&gt;
-&lt;h3 id=&#34;寻路节点&#34;&gt;寻路节点&lt;/h3&gt;
-&lt;p&gt;光卡设计师在游戏世界中拜访AI可以到达的位置。这些点被解释为图中的节点（可手动和自动生成）&lt;/p&gt;
-&lt;p&gt;缺点：AI只能在节点和边缘的位置移动。会有很多不可移动的位置，AI显得比较生硬&lt;/p&gt;
-&lt;h3 id=&#34;导航网格&#34;&gt;导航网格&lt;/h3&gt;
-&lt;p&gt;图上的节点实际上就是&lt;strong&gt;凸多边形&lt;/strong&gt;。邻近节点就是简单的任意邻近凸多边形。意味着游戏世界区域可以通过少量的凸多边形表示。&lt;/p&gt;
-&lt;p&gt;凸多边形内部任意位置都是可走的。意味着AI有了大量的空间可以行动。可返回更自然的路径&lt;/p&gt;
-&lt;h1 id=&#34;启发式算法&#34;&gt;启发式算法&lt;/h1&gt;
-&lt;p&gt;游戏寻路的启发式算法有很多，启发式用公式$h(x)$表示，理想情况下启发式结果越接近真实越好。如果它的估算总是保证小于等于真实开销，那么这个启发式是可接受的。目前比较流行的启发式算法就是&lt;strong&gt;A*算法&lt;/strong&gt;。不过还有&lt;strong&gt;贪婪最佳优先算法&lt;/strong&gt;，&lt;strong&gt;Dijkstra算法&lt;/strong&gt;等。这里只介绍A*算法&lt;/p&gt;
-&lt;h2 id=&#34;a算法&#34;&gt;A*算法&lt;/h2&gt;
-&lt;p&gt;除了启发式 $h(x)$ 需要考虑，A&lt;em&gt;又考虑了路径开销$g(x)$，所以A&lt;/em&gt;的节点开销等式为：
-$$
-f(x) = g(x) + h(x)
-$$&lt;/p&gt;
-&lt;p&gt;在当前节点搜索可到达的节点加入开放集合中，并从中选出开销最小的点放入关闭集合，如此往复。而$g(x)$的开销取决于父节点的$g(x)$的开销。这意味着父节点是可选的，$g(x)$的开销是可变得&lt;/p&gt;
-</description>
+      <description>搜索空间的表示 最简单的寻路设计就是将图作为数据结构。图中包含多个节点，连接相邻的点组成边。图有多种表示方式，最简单的是邻接表
+游戏世界用图表示的方式 游戏世界用图来表示，有多种方法，一种简单的方法就是将世界区分为一个个正方形的格子（或者六边形）。如在《文明》策略游戏中的沙盘地图。而在不规则的地图中要么使用路点要么使用导航网格。
+寻路节点 光卡设计师在游戏世界中拜访AI可以到达的位置。这些点被解释为图中的节点（可手动和自动生成）
+缺点：AI只能在节点和边缘的位置移动。会有很多不可移动的位置，AI显得比较生硬
+导航网格 图上的节点实际上就是凸多边形。邻近节点就是简单的任意邻近凸多边形。意味着游戏世界区域可以通过少量的凸多边形表示。
+凸多边形内部任意位置都是可走的。意味着AI有了大量的空间可以行动。可返回更自然的路径
+启发式算法 游戏寻路的启发式算法有很多，启发式用公式$h(x)$表示，理想情况下启发式结果越接近真实越好。如果它的估算总是保证小于等于真实开销，那么这个启发式是可接受的。目前比较流行的启发式算法就是A*算法。不过还有贪婪最佳优先算法，Dijkstra算法等。这里只介绍A*算法
+A*算法 除了启发式 $h(x)$ 需要考虑，A又考虑了路径开销$g(x)$，所以A的节点开销等式为： $$ f(x) = g(x) + h(x) $$
+在当前节点搜索可到达的节点加入开放集合中，并从中选出开销最小的点放入关闭集合，如此往复。而$g(x)$的开销取决于父节点的$g(x)$的开销。这意味着父节点是可选的，$g(x)$的开销是可变得</description>
     </item>
     
     <item>
@@ -45,109 +31,12 @@ $$&lt;/p&gt;
       <pubDate>Fri, 14 Jan 2022 21:58:45 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</guid>
-      <description>&lt;h1 id=&#34;摄像机的基础属性&#34;&gt;摄像机的基础属性&lt;/h1&gt;
-&lt;h2 id=&#34;视场&#34;&gt;视场&lt;/h2&gt;
-&lt;p&gt;观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰&lt;/p&gt;
-&lt;p&gt;如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头&lt;/p&gt;
-&lt;h2 id=&#34;高宽比&#34;&gt;高宽比&lt;/h2&gt;
-&lt;p&gt;视口的宽度和高度的比率（如4:3、16:9等)&lt;/p&gt;
-&lt;h1 id=&#34;摄像机的跟随实现&#34;&gt;摄像机的跟随实现&lt;/h1&gt;
-&lt;h2 id=&#34;基础跟随&#34;&gt;基础跟随&lt;/h2&gt;
-&lt;p&gt;跟随在某个对象后方，保持固定距离，固定的俯视角摄像机&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// tPos: 目标位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// tForward: 目标方向
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// hDist: 水平跟随距离
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// vDist: 垂直跟随距离 
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;BasucFollowCamera&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;GameObject&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;hDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#75715e&#34;&gt;// 计算相机位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;position&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;forward&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;hDist&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;up&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#75715e&#34;&gt;// 计算相机朝向
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;cameraForward&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;tPos&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#75715e&#34;&gt;// 设置相机位置和朝向
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//...
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;弹性跟随相机&#34;&gt;弹性跟随相机&lt;/h2&gt;
-&lt;p&gt;实现相机到相机目标位置的逐渐变化，可以理解为&lt;strong&gt;真实位置的相机&lt;/strong&gt;和在基础跟随所要到达的&lt;strong&gt;理想位置&lt;/strong&gt;中间有一个弹簧&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;SpringCamera&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;hDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;     &lt;span style=&#34;color:#75715e&#34;&gt;// 水平和垂直跟随距离
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;springConstant&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 弹性常量：越高弹性越小
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;dampConstant&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;     &lt;span style=&#34;color:#75715e&#34;&gt;// 阻尼常量：由弹性常量决定
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;velocity&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;actualPosition&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 速度和摄像机真实位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;GameObject&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// 跟随目标
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;init&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;GameObject&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;_target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;_springConstant&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;_hDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;_target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;springConstant&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;_springConstant&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;hDist&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;_hDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;vDist&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;_vDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 计算阻尼常量
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;dampConstant&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2.0f&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;sqrt&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;springConstant&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 最开始真实位置 = 理想位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;actualPosition&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;position&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;forward&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;hDist&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;up&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 设置相机位置和朝向
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;//...
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;update&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deltaTime&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 计算理想位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;idealPosition&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;position&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;forward&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;hDist&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;up&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDist&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 计算理想位置到真实位置的向量
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;displacement&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;actualPosition&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;idealPosition&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 根据弹簧计算加速度，然后积分
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;springAccel&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;springConstant&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;displacement&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dampConstant&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;velocity&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;velocity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;springAccel&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deltaTime&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;actualPosition&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;velocity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deltaTime&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 设置相机位置和朝向
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;//...
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;样条摄像机&#34;&gt;样条摄像机&lt;/h1&gt;
-&lt;p&gt;样条可以看作曲线，用线上的点定义的。使用她进行插值能够在整条曲线上得到平滑的效果。&lt;/p&gt;
-&lt;h2 id=&#34;catmull-rom样条&#34;&gt;Catmull-Rom样条&lt;/h2&gt;
-&lt;p&gt;邻近点进行插值。需要四个点，两个在前和后的控制点$P_0$和$P_3$，两个在中间的激活点$P_1$和$P_2$。计算t值介于0到1的所有样条公式(需要在控制点均匀的情况下使用)：&lt;/p&gt;
-&lt;div&gt;
-&lt;p&gt;$$
-P(t) = 0.5 \cdot (2 \cdot P_1) + (-P_0 + P_2) \cdot t + \ 
-(2 \cdot P_0 - 5 \cdot P_1 + 4 \cdot P_2 - P_3) \cdot t^2 + \
-(-P_0 + 3 \cdot P_1 - 3 \cdot P_2 + P_3) \cdot t^3
-$$&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;CRSpline&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;controlPoints&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 样条点的动态数组
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    
-    &lt;span style=&#34;color:#75715e&#34;&gt;// 计算曲线
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// start: t=0对应的控制点
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Compute&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;start&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 检查start-1，start，start+1和start+2都要存在
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;P0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;controlPoints&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;start&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;P1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;controlPoints&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;start&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;P2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;controlPoints&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;start&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;P3&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;controlPoints&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;start&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;
-
-        &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;position&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.5&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;((&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P1&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P0&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P2&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
-                            &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P0&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P3&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
-                            &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P0&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;P3&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;position&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这个公式也可用于计算t介于0到1之间的切线。首先，计算任意的t位置。然后，计算t加很小的增量$\Delta t$的位置。就可以构造一个$p(t)$到$P(t+\Delta t)$的向量并且正规化，从而近似得到切线。为了&lt;strong&gt;表示摄像机的移动方向&lt;/strong&gt;。&lt;/p&gt;
-&lt;h1 id=&#34;相机支持算法&#34;&gt;相机支持算法&lt;/h1&gt;
-&lt;h2 id=&#34;相机碰撞检测&#34;&gt;相机碰撞检测&lt;/h2&gt;
-&lt;p&gt;为了避免穿墙等问题，最简单的方式就是让从目标位置到相机进行光线检测，碰撞到物体则让相机位置改变到碰撞的物体之前。缺点是变换很突然。也可以用物理的方法做碰撞检测。&lt;/p&gt;
-&lt;p&gt;让离相机过近的物体进行消失或者淡出，避免穿模。&lt;/p&gt;
-&lt;h2 id=&#34;拣选鼠标点击从相机发射射线&#34;&gt;拣选（鼠标点击从相机发射射线）&lt;/h2&gt;
-&lt;p&gt;鼠标的位置是屏幕空间中的一个2D点。将这个2D点从屏幕空间变换回世界空间去，称之为反投影。反投影为摄像机矩阵乘以投影矩阵的逆矩阵：
-$$
-unprojection = (camera \times projection)^{-1}
-$$
-但2D点不能乘以4x4矩阵，所以要线将2D点转换到齐次坐标系。z分量通常设置为0或1，取决于近平面或远平面。而作为一个点，w分量总为1.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Unproject&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector4&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;screenPoint&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Matrix&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;camera&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Matrix&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;projection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#75715e&#34;&gt;// 计算逆矩阵
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Matrix&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;unprojection&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;camera&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;projection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;unprojection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Invert&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;screenPoint&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;unprojection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      <description>摄像机的基础属性 视场 观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰
+如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头
+高宽比 视口的宽度和高度的比率（如4:3、16:9等)
+摄像机的跟随实现 基础跟随 跟随在某个对象后方，保持固定距离，固定的俯视角摄像机
+// tPos: 目标位置 // tForward: 目标方向 // hDist: 水平跟随距离 // vDist: 垂直跟随距离 void BasucFollowCamera(GameObject target, float hDist, float vDist) { // 计算相机位置 Vector3 pos = target.position - target.forward * hDist + target.up * vDist; // 计算相机朝向 Vector3 cameraForward = tPos - pos; // 设置相机位置和朝向 //... } 弹性跟随相机 实现相机到相机目标位置的逐渐变化，可以理解为真实位置的相机和在基础跟随所要到达的理想位置中间有一个弹簧
+class SpringCamera { float hDist, vDist; // 水平和垂直跟随距离 float springConstant; // 弹性常量：越高弹性越小 float dampConstant; // 阻尼常量：由弹性常量决定 Vector3 velocity, actualPosition; // 速度和摄像机真实位置 GameObject target; // 跟随目标 void init(GameObject _target, float _springConstant, float _hDist, float vDist) { target = _target; springConstant = _springConstant; hDist = _hDist; vDist = _vDist; // 计算阻尼常量 dampConstant = 2.</description>
     </item>
     
     <item>
@@ -156,171 +45,17 @@ $$
       <pubDate>Tue, 04 Jan 2022 21:58:45 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
-      <description>&lt;h2 id=&#34;平面&#34;&gt;平面&lt;/h2&gt;
-&lt;p&gt;平面在游戏中倾向的数学定义：&lt;/p&gt;
-&lt;p&gt;$$
-P \cdot \hat{n} + d = 0
-$$&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;$P$是平面上任意一点，$\hat{n}$是平面法线，$d$是平面到原点的最小距离&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 平面的数据结构
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Plane&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;d&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;射线和线段&#34;&gt;射线和线段&lt;/h2&gt;
-&lt;p&gt;游戏中射线基本就是线段，因为基本不会让射线无限延伸下去。数学定义为：&lt;/p&gt;
-&lt;p&gt;$$
-R(t) = R_0 + \vec{v}t
-$$&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;$R_0$是起点，$\vec{v}$是射线方向，$t$必须大于等于0。而在代码中的数据结构我们存两个点一个起点(startPoint)，一个终点(endPoint)。则$R_0$就是startPoint，$\vec{v}$就是endPoint-startPoint，而$t$的取值就为0~1了&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;RayCast&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;startPoint&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;endPoint&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;碰撞几何体&#34;&gt;碰撞几何体&lt;/h2&gt;
-&lt;h3 id=&#34;包围球&#34;&gt;包围球&lt;/h3&gt;
-&lt;p&gt;通过中心点和半径表示&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;ShpereCollider&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;center&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;radius&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;轴对齐包围盒aabb&#34;&gt;轴对齐包围盒(AABB)&lt;/h3&gt;
-&lt;p&gt;每条边都与x轴或y轴平行的矩形，只能随轴旋转，多用于2D&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;AABB2D&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;min&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;max&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;朝向包围盒obb&#34;&gt;朝向包围盒OBB&lt;/h3&gt;
-&lt;p&gt;可以自由旋转的类AABB包围盒，较复杂&lt;/p&gt;
-&lt;h3 id=&#34;胶囊体&#34;&gt;胶囊体&lt;/h3&gt;
-&lt;p&gt;3D中为一个圆柱加上两个半圆，还可看作带半径的线段&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Capsule2D&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;startPoint&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;endPoint&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;radius&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;凸多边形&#34;&gt;凸多边形&lt;/h3&gt;
-&lt;p&gt;简称凸包。凸多边形比其他前几个方式效率低，但是更精准&lt;/p&gt;
-&lt;h3 id=&#34;组合碰撞几何体&#34;&gt;组合碰撞几何体&lt;/h3&gt;
-&lt;p&gt;可用多个几何体，组合成一个近似于物体的碰撞盒。提高精度，效率相对来说毕竟高&lt;/p&gt;
-&lt;h2 id=&#34;碰撞检测&#34;&gt;碰撞检测&lt;/h2&gt;
-&lt;h3 id=&#34;球与球的交叉&#34;&gt;球与球的交叉&lt;/h3&gt;
-&lt;p&gt;如果两个球的半径之和小于两个球的距离则发生交叉&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;ShpereIntersection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;ShpereCollider&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;ShpereCollider&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;centerVector&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;center&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;center&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;distSquared&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;centerVector&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;centerVector&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;distSquared&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;((&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;radius&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;radius&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;radius&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;radius&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)))&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;aabb-与-aabb交叉&#34;&gt;AABB 与 AABB交叉&lt;/h3&gt;
-&lt;p&gt;检测2D的两个AABB交叉的时候，检测没交叉会毕竟容易。有四种没交叉的方式&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;A.max.x &amp;lt; B.min.x;&lt;/li&gt;
-&lt;li&gt;B.max.x &amp;lt; A.min.x;&lt;/li&gt;
-&lt;li&gt;A.max.y &amp;lt; B.min.y;&lt;/li&gt;
-&lt;li&gt;B.max.y &amp;lt; A.min.y;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;AABBIntersection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;AABB2D&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;AABB2D&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;bool&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;test&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;max&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;min&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;B&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;max&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;A&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;min&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; 
-                &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;A&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;max&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;B&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;min&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;B&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;max&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;A&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;min&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;test&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;线段与平面交叉&#34;&gt;线段与平面交叉&lt;/h3&gt;
-&lt;p&gt;由上文的平面和线段公式可得，应为判断是否存在一个值$t$，使其线段与平面相交。&lt;/p&gt;
-&lt;div&gt;
-&lt;p&gt;$$
-R(t) \cdot \hat{n} + d = 0 \
-(R_0 + \vec{v}t) \cdot \hat{n} + d = 0
-$$&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;解出t的值：&lt;/p&gt;
-&lt;div&gt;
-&lt;p&gt;$$
-R_0 \cdot \hat{n} + (\vec{v} \cdot \hat{n})t + d = 0 \
-(\vec{v} \cdot \hat{n}) = -(R_0 \cdot \hat{n} + d) \
-t = \frac{-(R_0 \cdot \hat{n} + d)}{\vec{v} \cdot \hat{n}}
-$$&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;$t$的取值范围应该为0~1，所以如果不在此范围则线段就不予平面相交&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;如果线段和平面的法线点乘的结果为0，则表示线段与平面平行，肯定无交点&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 将返回值包装成结构体
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;LSPlaneReturn&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;bool&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;intersects&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 是否相交
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;point&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// 相交的点
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-
-&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;LSPlaneIntersection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;RayCast&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Plane&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;p&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;LSPlaneReturn&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;retVal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;retVal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;intersects&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;v&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;endPoint&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;startPoint&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 计算向量v
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDotn&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;v&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;p&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;normal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;vDotn&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.0f&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 说明线段和平面平行
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;startPoint&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;p&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;normal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;p&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;d&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;vDotn&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 说明线段与平面有交点
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;            &lt;span style=&#34;color:#111&#34;&gt;retVal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;intersects&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-            &lt;span style=&#34;color:#111&#34;&gt;retVal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;startPoint&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;v&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 计算交点
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 测试起点是否在平面上
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// ...
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;retVal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;球与平面交叉&#34;&gt;球与平面交叉&lt;/h3&gt;
-&lt;p&gt;用球的重心建立于平面平行的另一个平面，判断两个平面的距离是否小于半径&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;SpherePlaneIntersection&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;SphereCollider&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;s&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Plane&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;p&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;dSphere&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;p&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;normal&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;s&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;center&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;abs&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;d&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;dSphere&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;s&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;radius&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;球形扫掠体检测&#34;&gt;球形扫掠体检测&lt;/h3&gt;
-&lt;p&gt;前面几种检测方式都是即时碰撞检测。只能检测当前帧状态。但是物体每一帧都是会运动的，所以连续碰撞检测（CCD）是必须的。两个球星扫掠体的碰撞检查可以看作两个胶囊体的碰撞检查。此处就不做详细展开了&lt;/p&gt;
-&lt;h3 id=&#34;响应碰撞&#34;&gt;响应碰撞&lt;/h3&gt;
-&lt;p&gt;实际碰撞的响应事件应该抛出给应用层。比如Unity中有碰撞器和触发器，触发器不需要处理碰撞，而碰撞器则需要处理两个物体之间的物理状态。&lt;/p&gt;
-&lt;h4 id=&#34;找到碰撞的准确位置&#34;&gt;找到碰撞的准确位置&lt;/h4&gt;
-&lt;p&gt;比如使用球与球的交叉来找出碰撞发生的时间。算出时间后回滚到那个时间点。&lt;/p&gt;
-&lt;h4 id=&#34;碰撞后的速度&#34;&gt;碰撞后的速度&lt;/h4&gt;
-&lt;p&gt;两个对象碰撞的时候，有一个恢复系统，衡量两个物体在碰撞后的反弹程度：
-$$
-C_R = \frac{碰撞后的相对速度}{碰撞前的相对速度}
-$$
-在&lt;strong&gt;弹性碰撞&lt;/strong&gt;($C_R &amp;gt; 1$)的情况下，碰撞后的相对速度大于碰撞前的相对速度。在&lt;strong&gt;无弹性碰撞&lt;/strong&gt;($C_R &amp;lt; 1$)就会导致碰撞后相对速度降低&lt;/p&gt;
-&lt;h4 id=&#34;优化碰撞&#34;&gt;优化碰撞&lt;/h4&gt;
-&lt;p&gt;如果游戏对象过多则会由过大的性能问题，一般用四叉树优化。将游戏世界递归切割成矩阵，直到每一个叶子节点引用一个对象&lt;/p&gt;
-&lt;h2 id=&#34;基于物理的移动&#34;&gt;基于物理的移动&lt;/h2&gt;
-&lt;p&gt;游戏一般用经典物理，此处聚焦最基础部分：&lt;strong&gt;线性力学&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;线性力学&#34;&gt;线性力学&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;力&lt;/strong&gt;：是一种相互作用，可导致物体运动。有方向和大小。可用向量表示&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;质量&lt;/strong&gt;：表示物体所害物质的量。质量越大，物体越难运动&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;牛顿第二定律&lt;/strong&gt;：$F = m \cdot a$。$F$是力，$m$是质量，$a$是加速度&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;游戏使用物理计算位置的时候，使用可变时间步长计算会很复杂。所以游戏基本都已固定步长来计算物理&lt;/p&gt;
-&lt;h3 id=&#34;力的计算&#34;&gt;力的计算&lt;/h3&gt;
-&lt;p&gt;游戏中常见的做法就是算出所有力的合力，然后除以质量算出加速度：&lt;/p&gt;
-&lt;center&gt;
-加速度 = 合力 / 质量
-&lt;/center&gt;
-&lt;p&gt;数值积分计算方式：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;欧拉积分&lt;/li&gt;
-&lt;li&gt;半隐式欧拉积分：比欧拉积分更合理，更稳定&lt;/li&gt;
-&lt;li&gt;Verlet积分：比前两个准确，计算更昂贵&lt;/li&gt;
-&lt;li&gt;四阶Runge-Kutta：更准确，计算最昂贵&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;verlet积分法&#34;&gt;Verlet积分法&lt;/h3&gt;
-&lt;p&gt;首先算出本次时间步长中点的速度值。然后将它看作平均速度计算整个步长的位置。然后，加速度根据力和质量计算出来，最终利用新的加速度在步长结束的时候计算出速度&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Update&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deltaTime&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;sumOfForces&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;//... 计算所有力的合力
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;avgVelocity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;velocity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;acceleration&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deltaTime&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2.0f&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;position&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;avgVelocity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deltaTime&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 位置用平均速度计算
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;acceleration&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;sumOfForces&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;mass&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 计算新的加速度和位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;velocity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;avgVelocity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;acceleration&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deltaTime&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2.0f&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 计算速度
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      <description>平面 平面在游戏中倾向的数学定义：
+$$ P \cdot \hat{n} + d = 0 $$
+$P$是平面上任意一点，$\hat{n}$是平面法线，$d$是平面到原点的最小距离
+// 平面的数据结构 struct Plane { Vector3 normal; float d; } 射线和线段 游戏中射线基本就是线段，因为基本不会让射线无限延伸下去。数学定义为：
+$$ R(t) = R_0 + \vec{v}t $$
+$R_0$是起点，$\vec{v}$是射线方向，$t$必须大于等于0。而在代码中的数据结构我们存两个点一个起点(startPoint)，一个终点(endPoint)。则$R_0$就是startPoint，$\vec{v}$就是endPoint-startPoint，而$t$的取值就为0~1了
+struct RayCast { Vector3 startPoint Vector3 endPoint } 碰撞几何体 包围球 通过中心点和半径表示
+class ShpereCollider { Vector3 center; float radius; } 轴对齐包围盒(AABB) 每条边都与x轴或y轴平行的矩形，只能随轴旋转，多用于2D
+class AABB2D { Vector2 min Vector2 max } 朝向包围盒OBB 可以自由旋转的类AABB包围盒，较复杂
+胶囊体 3D中为一个圆柱加上两个半圆，还可看作带半径的线段
+struct Capsule2D { Vector2 startPoint; Vector2 endPoint; float radius; } 凸多边形 简称凸包。凸多边形比其他前几个方式效率低，但是更精准</description>
     </item>
     
     <item>
@@ -329,149 +64,11 @@ $$
       <pubDate>Fri, 24 Dec 2021 08:55:57 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</guid>
-      <description>&lt;h1 id=&#34;游戏输入&#34;&gt;游戏输入&lt;/h1&gt;
-&lt;p&gt;可分为两种：&lt;strong&gt;数字&lt;/strong&gt;与&lt;strong&gt;模拟&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id=&#34;数字输入&#34;&gt;数字输入&lt;/h2&gt;
-&lt;p&gt;只用两种状态：“按下”和“没有按”（例如键盘）&lt;/p&gt;
-&lt;p&gt;如何实现一直按着的判断？
-同时跟踪上一帧和这一帧的状态，根据这两个状态来判断&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;上一帧状态&lt;/th&gt;
-&lt;th&gt;本帧状态&lt;/th&gt;
-&lt;th&gt;结论&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;释放&lt;/td&gt;
-&lt;td&gt;释放&lt;/td&gt;
-&lt;td&gt;一直释放&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;释放&lt;/td&gt;
-&lt;td&gt;按下&lt;/td&gt;
-&lt;td&gt;刚刚按下&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;按下&lt;/td&gt;
-&lt;td&gt;释放&lt;/td&gt;
-&lt;td&gt;刚刚释放&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;按下&lt;/td&gt;
-&lt;td&gt;按下&lt;/td&gt;
-&lt;td&gt;一直按下&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;伪代码：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;KeyState&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;StillReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;JustPressed&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;JustReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;StillPressed&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-
-&lt;span style=&#34;color:#111&#34;&gt;lastState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// 上一帧状态
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;];&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 当前帧状态
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;// 每帧更新状态
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;UpdateKeyboard&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;lastState&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GetKeyboardState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;();&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 获取当前状态
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-
-&lt;span style=&#34;color:#75715e&#34;&gt;// 通过keyCode获取KeyState
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;KeyState&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;GetKeyState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;lastState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;])&lt;/span&gt;
-        &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;])&lt;/span&gt;
-            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;StillReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt;
-            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;JustReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt;
-        &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;currentState&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;keyCode&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;])&lt;/span&gt;
-            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;JustPressed&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt;
-            &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;StillReleased&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;模拟输入&#34;&gt;模拟输入&lt;/h2&gt;
-&lt;p&gt;可返回某个数字的范围（如遥感）。但遥感的数值基本不会归零所以需要输入过滤，来消除偏差值。一般取遥感总值的10%为无效值。&lt;/p&gt;
-&lt;p&gt;遥感的范围为-32768 ~ 32768。最终遥感映射到0 ~ 1的伪代码为：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3000&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 无效值
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;maxValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;32677&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 最大值
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GetJoy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector2&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GetJoystickInput&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 获取遥感的输入
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 当前值长度
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
-    &lt;span style=&#34;color:#75715e&#34;&gt;// 小于无效区域则没有输入
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 计算无效区到最大值之间的百分比
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#00a8c8&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pct&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;maxValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;deadZone&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-
-        &lt;span style=&#34;color:#75715e&#34;&gt;// 正规化向量
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;length&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-        &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;maxValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pct&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color:#00a8c8&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;joy&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;移动设备输入&#34;&gt;移动设备输入&lt;/h2&gt;
-&lt;h3 id=&#34;触摸和手势&#34;&gt;触摸和手势&lt;/h3&gt;
-&lt;p&gt;大多数移动游戏都是通过多点触摸来实现虚拟手柄。还有一些游戏利用手势操作。自定义手势会比较难实现。Rubine算法就是一种流行的实现自定义手势检测的算法&lt;/p&gt;
-&lt;h3 id=&#34;加速器&#34;&gt;加速器&lt;/h3&gt;
-&lt;p&gt;检测设备坐标系轴向上的加速度。总有一个常量添加到设备上：重力。意味着如果设备为空闲状态，加速器可以粗略地通过重力方向检测设备的朝向&lt;/p&gt;
-&lt;h3 id=&#34;陀螺仪&#34;&gt;陀螺仪&lt;/h3&gt;
-&lt;p&gt;检测设备关于设备轴向的旋转&lt;/p&gt;
-&lt;h1 id=&#34;声音&#34;&gt;声音&lt;/h1&gt;
-&lt;p&gt;声音同时播放的频道数量是有限的。所以声音应该有优先级数据&lt;/p&gt;
-&lt;h2 id=&#34;原始数据&#34;&gt;原始数据&lt;/h2&gt;
-&lt;p&gt;又类似Audacity等工具创建的原始音频文件&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;短音效一般存储为WAV格式或者其他无压缩文件格式&lt;/li&gt;
-&lt;li&gt;长音效一般会采用压缩文件格式比如MP3或者OGG&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这两种音效一般会分别用两种方式播放&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;短音效（或常用音效）一般会直接加载到内存中缓存，需要时直接播放&lt;/li&gt;
-&lt;li&gt;长音效一般会以流方式加载。就是播放的同时加载&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;播放场景&#34;&gt;播放场景&lt;/h2&gt;
-&lt;p&gt;声音的播放场景其实有很多，不同游戏有不同的情况。一般来说分为几种&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;短音效的事件触发播放（Unity的Animation中的事件元通道触发），比如脚步声&lt;/li&gt;
-&lt;li&gt;过长动画播放（Unity中的Timeline制作）&lt;/li&gt;
-&lt;li&gt;对话中的音频播放（一般会在对话树中抛出事件播放）&lt;/li&gt;
-&lt;li&gt;背景持续音&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;3d声音&#34;&gt;3D声音&lt;/h2&gt;
-&lt;p&gt;2D音效是指没有位置相关的音效。而3D音效是由随着监听者和发射者距离增大而衰减的方式。&lt;/p&gt;
-&lt;h3 id=&#34;对于3d声音监听者的摆放位置&#34;&gt;对于3D声音监听者的摆放位置&lt;/h3&gt;
-&lt;p&gt;第一人称游戏则很自然的跟随摄像机就能提供最好的效果。但是对于第三人称游戏放在摄像机位置会感觉很怪。放在人物位置如果一个声音在人物和摄像机直接则也会有问题。所以一个解决方式是放在摄像机和玩家之间，朝向跟随摄像机。具体还是得根据游戏类型来测试最优结果&lt;/p&gt;
-&lt;h2 id=&#34;数字信号处理&#34;&gt;数字信号处理&lt;/h2&gt;
-&lt;p&gt;广义上讲，数字信号处理（DSP）是计算机中表示的信号。在音频领域中，其表示加载音频后再修改之后得到的不同效果。&lt;/p&gt;
-&lt;center&gt;&lt;font color = red&gt;
-为什么不把所有的效果离线处理，而要在运行时处理？
-&lt;p&gt;可以节省内存
-&lt;/font&gt;&lt;/center&gt;&lt;/p&gt;
-&lt;h3 id=&#34;数字信号处理效果&#34;&gt;数字信号处理效果&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;高音偏移（多普勒偏移）&lt;/strong&gt;：通过调整牝鹿增加或减小音效的音高&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;压缩机&lt;/strong&gt;：缩小音量范围，导致很小的声音得到了加强，同时很大的声音得到了减小。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;低通滤波器&lt;/strong&gt;：通过删减频率减小音量&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;多普勒效应&#34;&gt;多普勒效应&lt;/h3&gt;
-&lt;p&gt;由于声波在空气中传播需要时间，所以发声者靠近时，意味着声波都比前一个要早到。导致了频率的增加，就会有更高音高。所有与波相关的情况都会有多普勒效应&lt;/p&gt;
-&lt;h3 id=&#34;声音遮挡&#34;&gt;声音遮挡&lt;/h3&gt;
-&lt;p&gt;声音遮挡在声音不是直接由发射者传递到监听者的时候发生。声音遮挡主要就是低通滤波的结果，意味着高频率的声音的音量被移除了。这是因为低频率的音波比高频率的音波更容易传播。但是，声音遮挡的另一个输出就是整体音量的降低&lt;/p&gt;
-&lt;p&gt;相似但是不同的想法就是声音衍射。通过声音衍射，声音可能不再是直线传播的了，但是还是有可能穿透障碍物&lt;/p&gt;
-&lt;p&gt;检测遮挡和衍射的方法就是为发射者构造一系列指向监听者附近的弧形。如果没有一个能量到达，则就是遮挡。如果有一些能到达就是衍射。如果全部能到达就都不是。这个方法称之为&lt;strong&gt;Fresenl声学衍射&lt;/strong&gt;&lt;/p&gt;
-</description>
+      <description>游戏输入 可分为两种：数字与模拟
+数字输入 只用两种状态：“按下”和“没有按”（例如键盘）
+如何实现一直按着的判断？ 同时跟踪上一帧和这一帧的状态，根据这两个状态来判断
+上一帧状态 本帧状态 结论 释放 释放 一直释放 释放 按下 刚刚按下 按下 释放 刚刚释放 按下 按下 一直按下 伪代码：
+enum KeyState { StillReleased, JustPressed, JustReleased, StillPressed } lastState[256]; // 上一帧状态 currentState[256]; // 当前帧状态 // 每帧更新状态 void UpdateKeyboard() { lastState = currentState; currentState = GetKeyboardState(); // 获取当前状态 } // 通过keyCode获取KeyState KeyState GetKeyState(int keyCode) { if (lastState[keyCode]) if (currentState[keyCode]) return StillReleased; else return JustReleased; else if (currentState[keyCode]) return JustPressed; else return StillReleased; } 模拟输入 可返回某个数字的范围（如遥感）。但遥感的数值基本不会归零所以需要输入过滤，来消除偏差值。一般取遥感总值的10%为无效值。</description>
     </item>
     
     <item>
@@ -480,227 +77,25 @@ $$
       <pubDate>Wed, 22 Dec 2021 15:57:24 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
-      <description>&lt;h1 id=&#34;闲话&#34;&gt;闲话&lt;/h1&gt;
-&lt;p&gt;近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读&lt;/p&gt;
-&lt;p&gt;此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。&lt;/p&gt;
-&lt;h1 id=&#34;渲染基础&#34;&gt;渲染基础&lt;/h1&gt;
-&lt;p&gt;此部分只做简单的总结，网上已经有很多的好文章了。而此书作者也没有很详细的写这部分。毕竟这块要是讲细了够学一辈子了&lt;/p&gt;
-&lt;p&gt;推荐一些好文（有兴趣可以看看我写的&lt;a href=&#34;https://gitee.com/GeekL/sheep-render&#34;&gt;软渲染&lt;/a&gt;）&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1X7411F744&#34;&gt;闫令琪老师的GAMES101课程&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/skywind3000/mini3d&#34;&gt;韦易笑老师的mini3d项目&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/skywind3000/RenderHelp&#34;&gt;韦易笑老师的RenderHelp项目&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/ssloy/tinyrenderer&#34;&gt;Dmitry V. Sokolov老师的tinyrender项目&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;双缓冲技术解决渲染撕裂&#34;&gt;双缓冲技术解决渲染撕裂&lt;/h2&gt;
-&lt;p&gt;CRT显示器时代，所谓场消隐期（VBLANK）：喷枪从右下角移动到左上角所花费的时间&lt;/p&gt;
-&lt;p&gt;渲染撕裂：显示器在绘制像素缓冲区中的内容时，游戏输出了新的渲染结果到像素缓冲区，导致渲染撕裂&lt;/p&gt;
-&lt;p&gt;双缓冲技术：解决屏幕撕裂，用两块像素缓冲区，游戏交替的在这两块缓冲区中绘制&lt;/p&gt;
-&lt;p&gt;垂直同步：让交换缓冲区的时机在场消隐期进行&lt;/p&gt;
-&lt;p&gt;三缓冲技术：利用3个缓冲区，让画面更加平滑，但增加输入延迟&lt;/p&gt;
-&lt;h2 id=&#34;画家算法&#34;&gt;画家算法&lt;/h2&gt;
-&lt;p&gt;所有物体按照从后往前的顺序绘制。优点：绘制绝对正确（包括透明物体），缺点：overdraw高，效率慢&lt;/p&gt;
-&lt;h2 id=&#34;3d渲染&#34;&gt;3D渲染&lt;/h2&gt;
-&lt;p&gt;为什么用三角形表示面片？&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;仅用3顶点表示的最简单的多边形&lt;/li&gt;
-&lt;li&gt;三角形总在一个面上&lt;/li&gt;
-&lt;li&gt;任何3D对象都可以简单地用细分三角面表示&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;网格：多个三角面组成&lt;/p&gt;
-&lt;h3 id=&#34;软件光栅化&#34;&gt;软件光栅化&lt;/h3&gt;
-&lt;p&gt;将3D模型正确渲染到2D颜色缓冲的算法&lt;/p&gt;
-&lt;p&gt;3D模型经过4个主要坐标系空间转到最终的2D颜色缓冲中&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;模型（局部）坐标系：相对于模型自身的坐标系（角色模型一般为两脚中间）&lt;/li&gt;
-&lt;li&gt;世界坐标系：所有对象都相对于世界原点偏移&lt;/li&gt;
-&lt;li&gt;视角（摄像机）坐标系：将世界坐标系的模型变换到相对于摄像机的位置上&lt;/li&gt;
-&lt;li&gt;投影坐标系：将3D场景平铺到2D平面上得到的坐标系&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;除了上面的坐标系外，还有一个特殊的坐标系，就是齐次坐标系&lt;/p&gt;
-&lt;p&gt;将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点&lt;/p&gt;
-&lt;h4 id=&#34;矩阵变换&#34;&gt;矩阵变换&lt;/h4&gt;
-&lt;p&gt;将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。&lt;/p&gt;
-&lt;font style=background:yellow&gt;
-此处和之后所用的都为行向量。（OpenGL为列向量）
-&lt;/font&gt;
-&lt;h4 id=&#34;模型转世界坐标系&#34;&gt;模型转世界坐标系&lt;/h4&gt;
-&lt;h5 id=&#34;平移&#34;&gt;平移&lt;/h5&gt;
-&lt;p&gt;将顶点移动一段距离，只作用在点上&lt;/p&gt;
-&lt;div&gt;
-$$
-T(t_x,t_y,t_z) = \begin{bmatrix}
-    1 &amp; 0 &amp; 0 &amp; 0 \\
-    0 &amp; 1 &amp; 0 &amp; 0 \\
-    0 &amp; 0 &amp; 1 &amp; 0 \\
-    t_x &amp; t_y &amp; t_z &amp; 1
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;h5 id=&#34;旋转&#34;&gt;旋转&lt;/h5&gt;
-&lt;p&gt;将顶点或向量相对于某个轴旋转（欧拉角旋转）&lt;/p&gt;
-&lt;font style=background:yellow&gt;
-旋转矩阵是正交的，就是说转置矩阵就是逆矩阵
-&lt;/font&gt;
-&lt;div&gt;
-$$
-RotateX(\theta) = \begin{bmatrix}
-    1 &amp; 0 &amp; 0 &amp; 0 \\
-    0 &amp; \cos \theta &amp; - \sin \theta &amp; 0 \\
-    0 &amp; \sin \theta &amp; \cos \theta &amp; 0 \\
-    0 &amp; 0 &amp; 0 &amp; 1
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;div&gt;
-$$
-RotateY(\theta) = \begin{bmatrix}
-    \cos \theta &amp; 0 &amp; \sin \theta &amp; 0 \\
-    0 &amp; 1 &amp; 0 &amp; 0 \\
-    - \sin \theta &amp; 0 &amp; \cos \theta &amp; 0 \\
-    0 &amp; 0 &amp; 0 &amp; 1
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;div&gt;
-$$
-RotateZ(\theta) = \begin{bmatrix}
-    \cos \theta &amp; - \sin \theta &amp; 0 &amp; 0 \\
-    \sin \theta &amp; \cos \theta &amp; 0 &amp; 0 \\
-    0 &amp; 0 &amp; 1 &amp; 0 \\
-    0 &amp; 0 &amp; 0 &amp; 1
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;h5 id=&#34;缩放&#34;&gt;缩放&lt;/h5&gt;
-&lt;div&gt;
-$$
-S(s_x,s_y,s_z) = \begin{bmatrix}
-    s_x &amp; 0 &amp; 0 &amp; 0 \\
-    0 &amp; s_y &amp; 0 &amp; 0 \\
-    0 &amp; 0 &amp; s_z &amp; 0 \\
-    0 &amp; 0 &amp; 0 &amp; 1
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;p&gt;按行矩阵应用矩阵变换，乘积的顺序应为：$ model2world = scale * rotation * translation $&lt;/p&gt;
-&lt;font style=background:yellow&gt;
-应先旋转在平移，因为旋转是相对于原点的，先旋转对象可自转。而后旋转则对象就是相对于世界坐标系原点旋转了。
-&lt;/font&gt;
-&lt;h4 id=&#34;观察矩阵look-at&#34;&gt;观察矩阵(Look-At)&lt;/h4&gt;
-&lt;p&gt;$L$表示左边或x轴，$U$表示上方或y轴，$F$表示前方或z轴，$T$则是摄像机的平移&lt;/p&gt;
-&lt;div&gt;
-$$
-LookAt = \begin{bmatrix}
-    L_x &amp; U_x &amp; F_x &amp; 0 \\
-    L_y &amp; U_y &amp; F_y &amp; 0 \\
-    L_z &amp; U_z &amp; F_z &amp; 0 \\
-    T_x &amp; T_y &amp; T_z &amp; 1
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#111&#34;&gt;Matrix4x4&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;LookAt&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;target&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;cross&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Up&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;));&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;U&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;cross&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;U&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;z&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;F&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-
-    &lt;span style=&#34;color:#75715e&#34;&gt;//创建并返回观察矩阵
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//...
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;投影坐标系&#34;&gt;投影坐标系&lt;/h4&gt;
-&lt;h5 id=&#34;正交投影&#34;&gt;正交投影&lt;/h5&gt;
-&lt;div&gt;
-$$
-Orthographic = \begin{bmatrix}
-    \frac{2}{width} &amp; 0 &amp; 0 &amp; 0 \\
-    0 &amp; \frac{2}{height} &amp; 0 &amp; 0 \\
-    0 &amp; 0 &amp; \frac{1}{far - near} &amp; 0 \\
-    0 &amp; 0 &amp; \frac{near}{far - near} &amp; 1
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;h5 id=&#34;透视投影&#34;&gt;透视投影&lt;/h5&gt;
-&lt;div&gt;
-$$
-Perspective=\begin{bmatrix}
-    \cot \frac{fov}{2} &amp; 0 &amp; 0 &amp; 0 \\
-    0 &amp; \frac{height}{width} &amp; 0 &amp; 0 \\
-    0 &amp; 0 &amp; \frac{far}{far - near} &amp; 1 \\
-    0 &amp; 0 &amp; \frac{-near * far}{far - near} &amp; 0
-\end{bmatrix}
-$$
-&lt;/div&gt;
-&lt;h4 id=&#34;光照与着色&#34;&gt;光照与着色&lt;/h4&gt;
-&lt;h5 id=&#34;颜色&#34;&gt;颜色&lt;/h5&gt;
-&lt;p&gt;RGB颜色空间：将颜色分为红色，绿色和蓝色分量。&lt;/p&gt;
-&lt;p&gt;色深：每个像素用多少位来存储（大部分每分量都为8位来存储，就是说每位有256种可能，共大约1600万种不同颜色）&lt;/p&gt;
-&lt;p&gt;不透明度（用A表示，从而组成RGBA，一共32位）&lt;/p&gt;
-&lt;h5 id=&#34;顶点属性&#34;&gt;顶点属性&lt;/h5&gt;
-&lt;p&gt;模型顶点上存储的额外信息&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;纹理映射：将2D图片映射到3D的三角形中
-&lt;ul&gt;
-&lt;li&gt;UV坐标：纹理的x坐标为u，y坐标为v&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;顶点法线：产生凹凸感
-&lt;ul&gt;
-&lt;li&gt;将拥有该顶点的三角形的法线取平均值，用于平滑模型（如圆形）&lt;/li&gt;
-&lt;li&gt;每个顶点存储自己的法线方向，用于棱角清晰的模型（如四边形）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;顶点序：顶点的顺序，用于决定叉乘的值向量的朝向，保持全程一致就可。还可用于背面剔除&lt;/p&gt;
-&lt;h5 id=&#34;光照&#34;&gt;光照&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;环境光：添加到场景中每一个物体上固定的光&lt;/li&gt;
-&lt;li&gt;方向光：没有位置，只指定光照方向的光&lt;/li&gt;
-&lt;li&gt;点光源：从某个点向四面八方射出的光照&lt;/li&gt;
-&lt;li&gt;聚光灯：将点光源限制在锥体内有光&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Phong光照模型公式：&lt;/p&gt;
-&lt;div&gt;
-$$
-Phong 光照 = 环境光 + 漫反射 + 高光
-$$
-&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;漫反射：光源作用于物体表面的主要反射。被所有方向光，点光源和聚光灯影响。&lt;/li&gt;
-&lt;li&gt;高光：物体表面的闪光点&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// N = 物体表面法线
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// eye = 摄像机位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// pos = 物体表面位置
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// a = 高光量
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;V&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;eye&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;
-&lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;AmbientColor&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;// 环境光
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;foreach&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Light&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;light&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;scene&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 循环场景中所有的灯光
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;light&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pos&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 从物体表面到光源
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;DiffuseColor&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;N&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 漫反射光照强度
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Vector3&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;R&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;normalize&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;reflect&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;L&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;N&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;));&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 计算-L关于N的反射
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;Phong&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;SpecularColor&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;pow&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;dot&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;R&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;),&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// 高光强度
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h6 id=&#34;着色方式&#34;&gt;着色方式&lt;/h6&gt;
-&lt;ul&gt;
-&lt;li&gt;平面着色：每个三角面只用一种颜色&lt;/li&gt;
-&lt;li&gt;Gouraud着色：通过顶点颜色插值填充（多边形数量越多越好）&lt;/li&gt;
-&lt;li&gt;Phong着色：逐像素光照，针对每个像素单独计算&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;深度缓冲区&#34;&gt;深度缓冲区&lt;/h4&gt;
-&lt;p&gt;为场景的每个像素存储数据，与颜色缓冲一样，不过存储的是像素到摄像机的距离（深度）&lt;/p&gt;
-&lt;p&gt;在每一帧渲染前会清空深度缓冲区（让所有像素无限远）。渲染过程中，深度会在像素着色器渲染前计算出来。如果比当前深度小，则绘制并写入新的深度&lt;/p&gt;
-&lt;h5 id=&#34;透明对象的绘制&#34;&gt;透明对象的绘制&lt;/h5&gt;
-&lt;p&gt;透明对象不适用于深度缓冲，如果透明物体比不透明物体深度浅，如果先画透明物体，则不透明物体就不会被绘制了&lt;/p&gt;
-&lt;p&gt;为了解决此问题，应用深度测试先画所有的不透明物体，然后关闭深度测试，渲染所有透明物体。确保不透明物体背后的对象不进行渲染仍需进行深度检查&lt;/p&gt;
-&lt;p&gt;大多数会采用24位或32位的深度缓冲区&lt;/p&gt;
-&lt;p&gt;怎么解决像素重绘问题？
-先绘制深度pass，然后按照所得的深度缓冲结果计算光照pass&lt;/p&gt;
-&lt;p&gt;利用剔除或者遮挡算法可消除在某些帧完全看不到的对象。类似的算法有二叉树分区算法（BSP），人口算法和遮挡体积等。&lt;/p&gt;
-&lt;p&gt;（完）&lt;/p&gt;
-</description>
+      <description>闲话 近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读
+此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。
+渲染基础 此部分只做简单的总结，网上已经有很多的好文章了。而此书作者也没有很详细的写这部分。毕竟这块要是讲细了够学一辈子了
+推荐一些好文（有兴趣可以看看我写的软渲染）
+闫令琪老师的GAMES101课程 韦易笑老师的mini3d项目 韦易笑老师的RenderHelp项目 Dmitry V. Sokolov老师的tinyrender项目 双缓冲技术解决渲染撕裂 CRT显示器时代，所谓场消隐期（VBLANK）：喷枪从右下角移动到左上角所花费的时间
+渲染撕裂：显示器在绘制像素缓冲区中的内容时，游戏输出了新的渲染结果到像素缓冲区，导致渲染撕裂
+双缓冲技术：解决屏幕撕裂，用两块像素缓冲区，游戏交替的在这两块缓冲区中绘制
+垂直同步：让交换缓冲区的时机在场消隐期进行
+三缓冲技术：利用3个缓冲区，让画面更加平滑，但增加输入延迟
+画家算法 所有物体按照从后往前的顺序绘制。优点：绘制绝对正确（包括透明物体），缺点：overdraw高，效率慢
+3D渲染 为什么用三角形表示面片？
+仅用3顶点表示的最简单的多边形 三角形总在一个面上 任何3D对象都可以简单地用细分三角面表示 网格：多个三角面组成
+软件光栅化 将3D模型正确渲染到2D颜色缓冲的算法
+3D模型经过4个主要坐标系空间转到最终的2D颜色缓冲中
+模型（局部）坐标系：相对于模型自身的坐标系（角色模型一般为两脚中间） 世界坐标系：所有对象都相对于世界原点偏移 视角（摄像机）坐标系：将世界坐标系的模型变换到相对于摄像机的位置上 投影坐标系：将3D场景平铺到2D平面上得到的坐标系 除了上面的坐标系外，还有一个特殊的坐标系，就是齐次坐标系
+将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点
+矩阵变换 将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。
+模型转世界坐标系 平移 将顶点移动一段距离，只作用在点上
+$$ T(t_x,t_y,t_z) = \begin{bmatrix} 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \newline 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \newline 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \newline t_x &amp;amp; t_y &amp;amp; t_z &amp;amp; 1 \end{bmatrix} $$</description>
     </item>
     
   </channel>

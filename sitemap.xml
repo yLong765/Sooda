@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</loc>
+    <lastmod>2022-01-19T21:58:45+08:00</lastmod>
+  </url><url>
+    <loc>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</loc>
+    <lastmod>2022-01-19T21:58:45+08:00</lastmod>
+  </url><url>
     <loc>https://sooda.net.cn/tags/ai/</loc>
     <lastmod>2022-01-19T21:58:45+08:00</lastmod>
   </url><url>
@@ -15,12 +21,6 @@
     <lastmod>2022-01-19T21:58:45+08:00</lastmod>
   </url><url>
     <loc>https://sooda.net.cn/tags/</loc>
-    <lastmod>2022-01-19T21:58:45+08:00</lastmod>
-  </url><url>
-    <loc>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</loc>
-    <lastmod>2022-01-19T21:58:45+08:00</lastmod>
-  </url><url>
-    <loc>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</loc>
     <lastmod>2022-01-19T21:58:45+08:00</lastmod>
   </url><url>
     <loc>https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/</loc>
@@ -61,7 +61,5 @@
   </url><url>
     <loc>https://sooda.net.cn/tags/%E5%8A%A8%E7%94%BB/</loc>
     <lastmod>2021-11-07T17:14:24+08:00</lastmod>
-  </url><url>
-    <loc>https://sooda.net.cn/series/</loc>
   </url>
 </urlset>
