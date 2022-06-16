@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>《游戏编程算法与技巧》 on Sooda</title>
-    <link>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</link>
+    <link>https://ylong765.github.io/Sooda/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</link>
     <description>Recent content in 《游戏编程算法与技巧》 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://ylong765.github.io/Sooda/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》人工智能篇</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</link>
+      <link>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</link>
       <pubDate>Wed, 19 Jan 2022 21:58:45 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</guid>
+      <guid>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</guid>
       <description>搜索空间的表示 最简单的寻路设计就是将图作为数据结构。图中包含多个节点，连接相邻的点组成边。图有多种表示方式，最简单的是邻接表
 游戏世界用图表示的方式 游戏世界用图来表示，有多种方法，一种简单的方法就是将世界区分为一个个正方形的格子（或者六边形）。如在《文明》策略游戏中的沙盘地图。而在不规则的地图中要么使用路点要么使用导航网格。
 寻路节点 光卡设计师在游戏世界中拜访AI可以到达的位置。这些点被解释为图中的节点（可手动和自动生成）
@@ -27,10 +27,10 @@ A*算法 除了启发式 $h(x)$ 需要考虑，A又考虑了路径开销$g(x)$�
     
     <item>
       <title>《游戏编程算法与技巧》摄像机篇</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</link>
+      <link>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</link>
       <pubDate>Fri, 14 Jan 2022 21:58:45 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</guid>
+      <guid>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</guid>
       <description>摄像机的基础属性 视场 观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰
 如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头
 高宽比 视口的宽度和高度的比率（如4:3、16:9等)
@@ -41,10 +41,10 @@ class SpringCamera { float hDist, vDist; // 水平和垂直跟随距离 float sp
     
     <item>
       <title>《游戏编程算法与技巧》物理篇</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</link>
+      <link>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</link>
       <pubDate>Tue, 04 Jan 2022 21:58:45 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
+      <guid>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
       <description>平面 平面在游戏中倾向的数学定义：
 $$ P \cdot \hat{n} + d = 0 $$
 $P$是平面上任意一点，$\hat{n}$是平面法线，$d$是平面到原点的最小距离
@@ -60,10 +60,10 @@ struct Capsule2D { Vector2 startPoint; Vector2 endPoint; float radius; } 凸多�
     
     <item>
       <title>《游戏编程算法与技巧》输入和声音篇</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</link>
+      <link>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</link>
       <pubDate>Fri, 24 Dec 2021 08:55:57 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</guid>
+      <guid>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</guid>
       <description>游戏输入 可分为两种：数字与模拟
 数字输入 只用两种状态：“按下”和“没有按”（例如键盘）
 如何实现一直按着的判断？ 同时跟踪上一帧和这一帧的状态，根据这两个状态来判断
@@ -73,10 +73,10 @@ enum KeyState { StillReleased, JustPressed, JustReleased, StillPressed } lastSta
     
     <item>
       <title>《游戏编程算法与技巧》渲染篇</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</link>
+      <link>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</link>
       <pubDate>Wed, 22 Dec 2021 15:57:24 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
+      <guid>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
       <description>闲话 近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读
 此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。
 渲染基础 此部分只做简单的总结，网上已经有很多的好文章了。而此书作者也没有很详细的写这部分。毕竟这块要是讲细了够学一辈子了

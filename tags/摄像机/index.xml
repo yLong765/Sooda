@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>摄像机 on Sooda</title>
-    <link>https://sooda.net.cn/tags/%E6%91%84%E5%83%8F%E6%9C%BA/</link>
+    <link>https://ylong765.github.io/Sooda/tags/%E6%91%84%E5%83%8F%E6%9C%BA/</link>
     <description>Recent content in 摄像机 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Fri, 14 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E6%91%84%E5%83%8F%E6%9C%BA/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://ylong765.github.io/Sooda/tags/%E6%91%84%E5%83%8F%E6%9C%BA/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》摄像机篇</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</link>
+      <link>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</link>
       <pubDate>Fri, 14 Jan 2022 21:58:45 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</guid>
+      <guid>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</guid>
       <description>摄像机的基础属性 视场 观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰
 如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头
 高宽比 视口的宽度和高度的比率（如4:3、16:9等)
