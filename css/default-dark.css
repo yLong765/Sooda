@@ -5,18 +5,21 @@
 
 :root {
     --main-bg-color: #101010;
-    --main-text: #ffffff;
+    --main-text: #c6c6c7;
     --main-sec: #99cc66; /* main secondary color for the site */
     --code-quote-bg: #1D1F21; /* background color for quotes and code blocks */
     --copyright: #808080; /* copyright text color */
+    --font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
 }
 
 body {
+  font-family: var(--font-family);
   background: var(--main-bg-color);
   color: var(--main-text);
 }
 
 a {
+  font-family: var(--font-family);
   color: var(--main-text);
 }
 
@@ -66,16 +69,25 @@ table, th, td { border: 1px solid #5C5C5C; }
 tr:hover { background: #1D1F21; }
 th { background: #101010; }
 .siteTitle a {
+  font-family: var(--font-family);
   color: var(--main-sec);
 }
 
+.font {
+  font-family: var(--font-family);
+  color: #c6c6c7;
+}
+
 .post {
-  background: #202020;
+  font-family: var(--font-family);
+  background: #2c2c2c;
   border-left: 1px solid #303030;
   border-right: 1px solid #303030;
   border-top: 1px solid #303030;
   border-radius: 0.2em;
   box-shadow: 0 1px 2px 0 #000000, 0 2px 5px 0 #000000;
+  line-height: 2;
+  color: #c6c6c7;
 }
 
 .post .content h1{ color: var(--main-sec); }

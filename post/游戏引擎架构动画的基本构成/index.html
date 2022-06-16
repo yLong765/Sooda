@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="cn">
 
 <head>
 
@@ -28,7 +28,7 @@
 <meta itemprop="name" content="《游戏引擎架构》动画的基本构成">
 <meta itemprop="description" content="游戏引擎动画组件的基本数据构成和关于动画的知识点和概念"><meta itemprop="datePublished" content="2021-11-07T17:14:24+08:00" />
 <meta itemprop="dateModified" content="2021-11-07T17:14:24+08:00" />
-<meta itemprop="wordCount" content="281">
+<meta itemprop="wordCount" content="333">
 <meta itemprop="keywords" content="《游戏引擎框架》,动画," />
 
 <link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
@@ -67,8 +67,9 @@
     <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
     
   </nav>
-  
-  简简单单生活，安安静静编程
+  <div class="font">
+    简简单单生活，安安静静编程
+  </div>
   
 
 </div>
@@ -146,7 +147,11 @@ $$</p>
 </span></span></code></pre></div><h4 id="全局姿势">全局姿势</h4>
 <p>关节姿势表示为相对于模型空间或世界空间。关节j的空间姿势(全局姿势)，可通过从该关节遍历至根节点并乘上其局部姿势</p>
 <p>任何关节$j$的全局姿势（关节至模型空间的变换）可写成：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+P_{j \rightarrow M} = \prod_{i=j}^0 P_{i \rightarrow p(i)}
+$$
+</div>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 全局关节的内存表示
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">SkeletonPose</span> {
 </span></span><span style="display:flex;"><span>  Skeleton<span style="color:#f92672">*</span> pSkeleton;    <span style="color:#75715e">// 骨骼 + 关节数量
@@ -226,12 +231,28 @@ $$</p>
 <p>顶点绑定至关节的位置时，在该关节空间中的位置时不变的。所以可把顶点于模型空间的绑定姿势位置转换至关节空间，再把关节空间移至当前姿势，最后把该顶点转回模型空间。这个转换过程结合的转换矩阵就是蒙皮矩阵</p>
 <h5 id="单个关节的蒙皮矩阵">单个关节的蒙皮矩阵</h5>
 <p>绑定姿势顶点的模型空间位置为$V_M^B$。矩阵$B_{j \rightarrow M}$把点或者矢量从关节$j$空间变换至模型空间。则矩阵$B_{M \rightarrow j}$就是从模型空间到关节$j$空间的变换矩阵。而$B_{M \rightarrow j} = (B_{j \rightarrow M})^{-1}$。则关节空间的顶点公式为：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+V_j = V_M^B B_{M \rightarrow j} = V_M^B(B_{j \rightarrow M}^{-1})
+$$
+</div>
 <p>矩阵$C_{j  \rightarrow M}$表示关节空间转换到当前姿势的模型空间。则当前姿势顶点的模型空间位置$V_M^C$公式为：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+V_M^C = V_jC_{j \rightarrow M}
+$$
+</div>
 <p>则联合后的蒙皮矩阵$K_j$为：</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<div>
+$$
+V_M^C = V_jC_{j \rightarrow M} = V_M^B(B{j \rightarrow M})^{-1}C_{j \rightarrow M} = V_M^BK_j
+$$
+</div>
+<div>
+$$
+K_j =(B_{j \rightarrow M})^{-1}C_{j \rightarrow M}
+$$
+</div>
 <h5 id="多个关节的蒙皮矩阵">多个关节的蒙皮矩阵</h5>
 <p>将单关节蒙皮矩阵扩展至多关节须计算矩阵调色板，就是一组蒙皮矩阵$K_j$，当中每个矩阵对应第j个关节。当渲染一个蒙皮网络时，矩阵调色板便要传送至渲染引擎。渲染器会为每个顶点查找调色板中合适的关节蒙皮矩阵，并用该矩阵把顶点从绑定姿势转换至当前姿势</p>
 <ul>

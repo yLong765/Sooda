@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="cn">
 
 <head>
 
@@ -28,7 +28,7 @@
 <meta itemprop="name" content="《游戏编程算法与技巧》物理篇">
 <meta itemprop="description" content="此篇主要介绍游戏中常用物理的原理"><meta itemprop="datePublished" content="2022-01-04T21:58:45+08:00" />
 <meta itemprop="dateModified" content="2022-01-04T21:58:45+08:00" />
-<meta itemprop="wordCount" content="412">
+<meta itemprop="wordCount" content="417">
 <meta itemprop="keywords" content="《游戏编程算法与技巧》,物理," />
 
 <link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
@@ -67,8 +67,9 @@
     <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
     
   </nav>
-  
-  简简单单生活，安安静静编程
+  <div class="font">
+    简简单单生活，安安静静编程
+  </div>
   
 
 </div>
@@ -220,7 +221,9 @@ $$
 <p>游戏使用物理计算位置的时候，使用可变时间步长计算会很复杂。所以游戏基本都已固定步长来计算物理</p>
 <h3 id="力的计算">力的计算</h3>
 <p>游戏中常见的做法就是算出所有力的合力，然后除以质量算出加速度：</p>
-<!-- raw HTML omitted -->
+<center>
+加速度 = 合力 / 质量
+</center>
 <p>数值积分计算方式：</p>
 <ul>
 <li>欧拉积分</li>

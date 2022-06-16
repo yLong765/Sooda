@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="cn">
 
 <head>
 
@@ -28,7 +28,7 @@
 <meta itemprop="name" content="《游戏编程算法与技巧》渲染篇">
 <meta itemprop="description" content="此篇主要介绍最近本的渲染知识点"><meta itemprop="datePublished" content="2021-12-22T15:57:24+08:00" />
 <meta itemprop="dateModified" content="2021-12-22T15:57:24+08:00" />
-<meta itemprop="wordCount" content="521">
+<meta itemprop="wordCount" content="534">
 <meta itemprop="keywords" content="《游戏编程算法与技巧》,渲染," />
 
 <link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
@@ -67,8 +67,9 @@
     <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
     
   </nav>
-  
-  简简单单生活，安安静静编程
+  <div class="font">
+    简简单单生活，安安静静编程
+  </div>
   
 
 </div>
@@ -120,7 +121,9 @@
 <p>将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点</p>
 <h4 id="矩阵变换">矩阵变换</h4>
 <p>将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。</p>
-<!-- raw HTML omitted -->
+<font style=background:yellow>
+此处和之后所用的都为行向量。（OpenGL为列向量）
+</font>
 <h4 id="模型转世界坐标系">模型转世界坐标系</h4>
 <h5 id="平移">平移</h5>
 <p>将顶点移动一段距离，只作用在点上</p>
@@ -134,7 +137,9 @@ t_x &amp; t_y &amp; t_z &amp; 1
 $$</p>
 <h5 id="旋转">旋转</h5>
 <p>将顶点或向量相对于某个轴旋转（欧拉角旋转）</p>
-<!-- raw HTML omitted -->
+<font style=background:yellow>
+旋转矩阵是正交的，就是说转置矩阵就是逆矩阵
+</font>
 <p>$$
 RotateX(\theta) = \begin{bmatrix}
 1 &amp; 0 &amp; 0 &amp; 0 \newline
@@ -169,7 +174,9 @@ s_x &amp; 0 &amp; 0 &amp; 0 \newline
 \end{bmatrix}
 $$</p>
 <p>按行矩阵应用矩阵变换，乘积的顺序应为：$ model2world = scale * rotation * translation $</p>
-<!-- raw HTML omitted -->
+<font style=background:yellow>
+应先旋转在平移，因为旋转是相对于原点的，先旋转对象可自转。而后旋转则对象就是相对于世界坐标系原点旋转了。
+</font>
 <h4 id="观察矩阵look-at">观察矩阵(Look-At)</h4>
 <p>$L$表示左边或x轴，$U$表示上方或y轴，$F$表示前方或z轴，$T$则是摄像机的平移</p>
 <p>$$
@@ -240,7 +247,11 @@ $$</p>
 <li>聚光灯：将点光源限制在锥体内有光</li>
 </ul>
 <p>Phong光照模型公式：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+Phong 光照 = 环境光 + 漫反射 + 高光
+$$
+</div>
 <ul>
 <li>漫反射：光源作用于物体表面的主要反射。被所有方向光，点光源和聚光灯影响。</li>
 <li>高光：物体表面的闪光点</li>

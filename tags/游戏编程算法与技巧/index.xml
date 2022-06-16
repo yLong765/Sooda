@@ -5,7 +5,7 @@
     <link>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</link>
     <description>Recent content in 《游戏编程算法与技巧》 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
+    <language>cn</language>
     <copyright>Copyright © 2022, All Rights Reserved.</copyright>
     <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -94,7 +94,7 @@ enum KeyState { StillReleased, JustPressed, JustReleased, StillPressed } lastSta
 模型（局部）坐标系：相对于模型自身的坐标系（角色模型一般为两脚中间） 世界坐标系：所有对象都相对于世界原点偏移 视角（摄像机）坐标系：将世界坐标系的模型变换到相对于摄像机的位置上 投影坐标系：将3D场景平铺到2D平面上得到的坐标系 除了上面的坐标系外，还有一个特殊的坐标系，就是齐次坐标系
 将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点
 矩阵变换 将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。
-模型转世界坐标系 平移 将顶点移动一段距离，只作用在点上
+此处和之后所用的都为行向量。（OpenGL为列向量） 模型转世界坐标系 平移 将顶点移动一段距离，只作用在点上
 $$ T(t_x,t_y,t_z) = \begin{bmatrix} 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \newline 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \newline 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \newline t_x &amp;amp; t_y &amp;amp; t_z &amp;amp; 1 \end{bmatrix} $$</description>
     </item>
     
