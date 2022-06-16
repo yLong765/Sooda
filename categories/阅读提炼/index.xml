@@ -7,24 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Thu, 16 Jun 2022 11:16:04 +0800</lastBuildDate><atom:link href="https://ylong765.github.io/Sooda/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>《CLR via C#》总结</title>
-      <link>https://ylong765.github.io/Sooda/post/clr-via-csharp/</link>
-      <pubDate>Thu, 16 Jun 2022 11:16:04 +0800</pubDate>
-      
-      <guid>https://ylong765.github.io/Sooda/post/clr-via-csharp/</guid>
-      <description>CLR的执行模型 公共语言运行时(Common Language Runtime, CLR)是一个可由多种编程语言使用的“运行时”。CLR的核心功能(比如内存管理、程序集加载、安全性、异常处理和线程同步)可由面向CLR的所有语言使用。
-不同编程语言的意义？ 可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。
-无论任何用哪个编译器，最终编译的结果都是托管模块(managed module)。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件
-托管程序集总是利用Windows的数据执行保护(Data Execution Prevention, DEP)和地址空间布局随机化(Address Space Layout Randomization, ASLR)来增强系统安全性
-托管模块的组成部分 说明 PE32或PE32+头 标准Windows PE文件头，类似于“公共对象文件格式”(Common Oject File Format, COFF)头。 CLR头 包含使这个模块成为托管模块的信息(可由CLR和一些实用程序进行解释)。 元数据 每个托管模块都包含元数据表。主要由两种表：一种描述源代码中定义的类型和成员，另一种描述源代码引用的类型和成员。 IL(中间语言)代码 编译器编译源代码时生成的代码。在运行时，CLR将IL编程成本机CPU指令 本机代码编译器(native code compilers)生成的是面向特定CPU架构的代码。
-每个面向CLR的编译器生成的都是IL代码。IL有时候成为托管代码(managed code)，因为CLR管理它的执行。
-除了IL，每个面向CLR的编译器还要在每个托管模块中生成完整的元数据(metadata)。
-元数据的用途：
-避免编译时对原生C/C++头和库文件的需求，因为在实现类型/成员的IL代码文件中，已包含有关引用类型/成员的全部信息。编译器直接从托管模块读取元数据。 “智能感知”(IntelliSense)技术会解析元数据，告诉你一个类型提供了哪些方法、属性、事件和字段。对于方法，还能告诉其参数 </description>
-    </item>
-    
+    <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://ylong765.github.io/Sooda/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》人工智能篇</title>
       <link>https://ylong765.github.io/Sooda/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</link>
