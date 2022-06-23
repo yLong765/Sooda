@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>《剑指Offer》 on Sooda</title>
-    <link>https://ylong765.github.io/Sooda/tags/%E5%89%91%E6%8C%87offer/</link>
+    <link>https://sooda.net.cn/tags/%E5%89%91%E6%8C%87offer/</link>
     <description>Recent content in 《剑指Offer》 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 21 Jun 2022 19:37:19 +0800</lastBuildDate><atom:link href="https://ylong765.github.io/Sooda/tags/%E5%89%91%E6%8C%87offer/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 Jun 2022 19:37:19 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E5%89%91%E6%8C%87offer/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《剑指Offer》习题总结</title>
-      <link>https://ylong765.github.io/Sooda/post/%E5%89%91%E6%8C%87offer%E4%B9%A0%E9%A2%98%E6%80%BB%E7%BB%93/</link>
+      <link>https://sooda.net.cn/post/%E5%89%91%E6%8C%87offer%E4%B9%A0%E9%A2%98%E6%80%BB%E7%BB%93/</link>
       <pubDate>Tue, 21 Jun 2022 19:37:19 +0800</pubDate>
       
-      <guid>https://ylong765.github.io/Sooda/post/%E5%89%91%E6%8C%87offer%E4%B9%A0%E9%A2%98%E6%80%BB%E7%BB%93/</guid>
+      <guid>https://sooda.net.cn/post/%E5%89%91%E6%8C%87offer%E4%B9%A0%E9%A2%98%E6%80%BB%E7%BB%93/</guid>
       <description>面试技巧 如果在面试的时候没有听清楚或者听懂面试官的问题，千万不要不懂装懂、答非所问。要大胆的向面试官提问，直到弄清面试官的意图 编程习惯 思考清楚再编码 良好的代码命名和缩进对齐习惯 能够进行单元测试（如果能在编码前就能列出一些边缘测试数据更好） 面试的三个环节 行为面试 简短的自我介绍（30秒~1分钟左右介绍自己的学习，工作经历），参照简历了解应聘者的过往经验，项目经验
 1. 项目经验：用STAR模型描述项目 Situation：简短的项目背景 Task：自己完成的任务（重点描述） Action：为了完成任务自己做了哪些工作，是怎么做的（重点描述） Result：自己的贡献（重点描述） 面试官针对项目经验最常问的问题 1. 你在项目中碰到的最大问题是什么，怎么解决的？ 2. 从这个项目中你学到了什么？ 3. 什么时候和其他团队成员有什么样的冲突，怎么解决的？ 技术面试：代码能力相关 应聘者提问</description>
     </item>

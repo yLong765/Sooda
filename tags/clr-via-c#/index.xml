@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>《CLR via C#》 on Sooda</title>
-    <link>https://ylong765.github.io/Sooda/tags/clr-via-c#/</link>
+    <link>https://sooda.net.cn/tags/clr-via-c#/</link>
     <description>Recent content in 《CLR via C#》 on Sooda</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Thu, 16 Jun 2022 11:16:04 +0800</lastBuildDate><atom:link href="https://ylong765.github.io/Sooda/tags/clr-via-c#/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Jun 2022 11:16:04 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/clr-via-c#/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《CLR via C#》认知CLR</title>
-      <link>https://ylong765.github.io/Sooda/post/clr-via-csharp/</link>
+      <link>https://sooda.net.cn/post/clr-via-csharp/</link>
       <pubDate>Thu, 16 Jun 2022 11:16:04 +0800</pubDate>
       
-      <guid>https://ylong765.github.io/Sooda/post/clr-via-csharp/</guid>
+      <guid>https://sooda.net.cn/post/clr-via-csharp/</guid>
       <description>CLR的执行模型 公共语言运行时(Common Language Runtime, CLR)是一个可由多种编程语言使用的“运行时”。CLR的核心功能(比如内存管理、程序集加载、安全性、异常处理和线程同步)可由面向CLR的所有语言使用。
 不同编程语言的意义？ 可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。
 无论任何用哪个编译器，最终编译的结果都是托管模块(managed module)。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件
