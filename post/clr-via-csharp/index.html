@@ -4,7 +4,7 @@
 <head>
 
 <link rel="stylesheet" href="https://cdn.bootcss.com/KaTeX/0.16.0/katex.min.css">
-<script defer src = "http://cdn.bootcss.com/KaTeX/0.16.0/katex.min.js"></script>
+<script defer src = "https://cdn.bootcss.com/KaTeX/0.16.0/katex.min.js"></script>
 <script>
 	var katex_config = {
 		delimiters:[
@@ -16,6 +16,9 @@
 <script defer src="https://cdn.bootcss.com/KaTeX/0.16.0/contrib/auto-render.min.js" onload="renderMathInElement(document.body, katex_config)"></script>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad: true, theme: 'forest'});</script>
+
 <meta charset="utf-8" />
 <meta name="author" content="Alaya" />
 <meta name="description" content="简简单单生活，安安静静编程" />
@@ -24,7 +27,7 @@
 <meta name="generator" content="Hugo 0.100.2" />
 
 <link rel="canonical" href="https://ylong765.github.io/Sooda/post/clr-via-csharp/">
-<meta property="og:title" content="《CLR via C#》总结" />
+<meta property="og:title" content="《CLR via C#》认知CLR" />
 <meta property="og:description" content="《CLR via C#》总结" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://ylong765.github.io/Sooda/post/clr-via-csharp/" /><meta property="article:section" content="post" />
@@ -33,14 +36,14 @@
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="《CLR via C#》总结"/>
+<meta name="twitter:title" content="《CLR via C#》认知CLR"/>
 <meta name="twitter:description" content="《CLR via C#》总结"/>
 
 
-<meta itemprop="name" content="《CLR via C#》总结">
+<meta itemprop="name" content="《CLR via C#》认知CLR">
 <meta itemprop="description" content="《CLR via C#》总结"><meta itemprop="datePublished" content="2022-06-16T11:16:04+08:00" />
 <meta itemprop="dateModified" content="2022-06-16T11:16:04+08:00" />
-<meta itemprop="wordCount" content="44">
+<meta itemprop="wordCount" content="49">
 <meta itemprop="keywords" content="《CLR via C#》," />
 
 <link rel="stylesheet" href="https://ylong765.github.io/Sooda/css/layout.css" />
@@ -54,7 +57,7 @@
 <title>
 
 
-     《CLR via C#》总结 
+     《CLR via C#》认知CLR 
 
 </title>
 
@@ -91,13 +94,17 @@
 
 
 <article class="post">
-    <h1 class="title"> 《CLR via C#》总结 </h1>
+    <h1 class="title"> 《CLR via C#》认知CLR </h1>
     <div class="content"> <h1 id="clr的执行模型">CLR的执行模型</h1>
 <p>公共语言运行时(Common Language Runtime, CLR)是一个可由多种编程语言使用的“运行时”。CLR的核心功能(比如内存管理、程序集加载、安全性、异常处理和线程同步)可由面向CLR的所有语言使用。</p>
 <p>不同编程语言的意义？
 可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。</p>
 <p>无论任何用哪个编译器，最终编译的结果都是<strong>托管模块(managed module)</strong>。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件</p>
-<p>托管程序集总是利用Windows的数据执行保护(Data Execution Prevention, DEP)和地址空间布局随机化(Address Space Layout Randomization, ASLR)来增强系统安全性</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TD;
+    A(&#34;C#源代码文件&#34;)--&gt;B(&#34;C#编译器&#34;)--&gt;F(&#34;托管模块(中间语言和元数据)&#34;);
+    C(&#34;Basic源代码文件&#34;)--&gt;D(&#34;Basic编译器&#34;)--&gt;F;
+    E(&#34;IL源代码文件&#34;)--&gt;G(&#34;IL汇编器&#34;)--&gt;F;
+</code></pre><p>托管程序集总是利用Windows的数据执行保护(Data Execution Prevention, DEP)和地址空间布局随机化(Address Space Layout Randomization, ASLR)来增强系统安全性</p>
 <table>
 <thead>
 <tr>
@@ -129,7 +136,7 @@
 <p>除了IL，每个面向CLR的编译器还要在每个托管模块中生成完整的元数据(metadata)。</p>
 <p>元数据的用途：</p>
 <ul>
-<li>避免编译时对原生C/C++头和库文件的需求，因为在实现类型/成员的IL代码文件中，已包含有关引用类型/成员的全部信息。编译器直接从托管模块读取元数据。</li>
+<li>避免编译时对原生C/C++头和库文件的需求，因为在实现类型或成员的IL代码文件中，已包含有关引用类型或成员的全部信息。编译器直接从托管模块读取元数据。</li>
 <li>“智能感知”(IntelliSense)技术会解析元数据，告诉你一个类型提供了哪些方法、属性、事件和字段。对于方法，还能告诉其参数</li>
 </ul>
  </div>
@@ -207,6 +214,19 @@
   </footer>
 
 </div> 
+
+<script>
+  Array.from(document.getElementsByClassName('language-mermaid')).forEach(el => {
+    el.parentElement.outerHTML = `<div class="mermaid">${el.innerText}</div>`
+  })
+</script>
+<style>
+   
+  .mermaid svg {
+      display: block;
+      margin: auto;
+  }
+  </style>
 
 </body>
 </html>
