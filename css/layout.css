@@ -412,6 +412,10 @@ th, td {
 
 /* summary list on main page  */
 
+.post-preview h2{
+  margin-left: 0.3em;
+}
+
 .post-preview {
   text-decoration: none;
   padding: 0.5em 0.5em 1em 0.5em;

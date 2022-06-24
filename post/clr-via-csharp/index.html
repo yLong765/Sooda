@@ -27,8 +27,8 @@
 <meta name="generator" content="Hugo 0.100.2" />
 
 <link rel="canonical" href="https://sooda.net.cn/post/clr-via-csharp/">
-<meta property="og:title" content="《CLR via C#》认知CLR" />
-<meta property="og:description" content="《CLR via C#》总结" />
+<meta property="og:title" content="CLR基础" />
+<meta property="og:description" content="对CLR相关的IL，程序集，托管模块等进行基础介绍。并初探CLR的执行过程" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://sooda.net.cn/post/clr-via-csharp/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-06-16T11:16:04+08:00" />
@@ -36,13 +36,13 @@
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="《CLR via C#》认知CLR"/>
-<meta name="twitter:description" content="《CLR via C#》总结"/>
+<meta name="twitter:title" content="CLR基础"/>
+<meta name="twitter:description" content="对CLR相关的IL，程序集，托管模块等进行基础介绍。并初探CLR的执行过程"/>
 
-<meta itemprop="name" content="《CLR via C#》认知CLR">
-<meta itemprop="description" content="《CLR via C#》总结"><meta itemprop="datePublished" content="2022-06-16T11:16:04+08:00" />
+<meta itemprop="name" content="CLR基础">
+<meta itemprop="description" content="对CLR相关的IL，程序集，托管模块等进行基础介绍。并初探CLR的执行过程"><meta itemprop="datePublished" content="2022-06-16T11:16:04+08:00" />
 <meta itemprop="dateModified" content="2022-06-16T11:16:04+08:00" />
-<meta itemprop="wordCount" content="49">
+<meta itemprop="wordCount" content="88">
 <meta itemprop="keywords" content="《CLR via C#》," />
 
 <link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
@@ -56,7 +56,7 @@
 <title>
 
 
-     《CLR via C#》认知CLR 
+     CLR基础 
 
 </title>
 
@@ -93,51 +93,86 @@
 
 
 <article class="post">
-    <h1 class="title"> 《CLR via C#》认知CLR </h1>
+    <h1 class="title"> CLR基础 </h1>
     <div class="content"> <h1 id="clr的执行模型">CLR的执行模型</h1>
 <p>公共语言运行时(Common Language Runtime, CLR)是一个可由多种编程语言使用的“运行时”。CLR的核心功能(比如内存管理、程序集加载、安全性、异常处理和线程同步)可由面向CLR的所有语言使用。</p>
-<p>不同编程语言的意义？
-可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。</p>
-<p>无论任何用哪个编译器，最终编译的结果都是<strong>托管模块(managed module)</strong>。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件</p>
+<p>不同编程语言的意义？可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。但是无论任何用哪个编译器，最终编译的结果都是<strong>托管模块(managed module)</strong>。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件。</p>
 <pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TD;
-    A(&#34;C#源代码文件&#34;)--&gt;B(&#34;C#编译器&#34;)--&gt;F(&#34;托管模块(中间语言和元数据)&#34;);
+    A(&#34;C#源代码文件&#34;)--&gt;B(&#34;C#编译器&#34;)--&gt;F(&#34;托管模块(IL和元数据)&#34;);
     C(&#34;Basic源代码文件&#34;)--&gt;D(&#34;Basic编译器&#34;)--&gt;F;
     E(&#34;IL源代码文件&#34;)--&gt;G(&#34;IL汇编器&#34;)--&gt;F;
-</code></pre><p>托管程序集总是利用Windows的数据执行保护(Data Execution Prevention, DEP)和地址空间布局随机化(Address Space Layout Randomization, ASLR)来增强系统安全性</p>
-<table>
-<thead>
-<tr>
-<th>托管模块的组成部分</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PE32或PE32+头</td>
-<td>标准Windows PE文件头，类似于“公共对象文件格式”(Common Oject File Format, COFF)头。</td>
-</tr>
-<tr>
-<td>CLR头</td>
-<td>包含使这个模块成为托管模块的信息(可由CLR和一些实用程序进行解释)。</td>
-</tr>
-<tr>
-<td>元数据</td>
-<td>每个托管模块都包含元数据表。主要由两种表：一种描述源代码中定义的类型和成员，另一种描述源代码引用的类型和成员。</td>
-</tr>
-<tr>
-<td>IL(中间语言)代码</td>
-<td>编译器编译源代码时生成的代码。在运行时，CLR将IL编程成本机CPU指令</td>
-</tr>
-</tbody>
-</table>
-<p>本机代码编译器(native code compilers)生成的是面向特定CPU架构的代码。</p>
-<p>每个面向CLR的编译器生成的都是IL代码。IL有时候成为托管代码(managed code)，因为CLR管理它的执行。</p>
-<p>除了IL，每个面向CLR的编译器还要在每个托管模块中生成完整的元数据(metadata)。</p>
-<p>元数据的用途：</p>
+</code></pre><p><strong>高级语言(例如C#、F#等)通常只公开的CLR全部功能的一个子集。然而，IL汇编语言允许开发人员访问CLR的全部功能。</strong></p>
+<h2 id="托管模块的组成部分">托管模块的组成部分</h2>
+<ul>
+<li>PE32或PE32+头部：标准Windows PE文件头，类似于“公共对象文件格式”(Common Oject File Format, COFF)。</li>
+<li>CLR头部：包含使这个模块成为托管模块的信息(可由CLR和一些实用程序进行解释)。包含要求的CLR版本，一些标志(flag)，托管模块入口方法(Main方法)的MethodDef元数据token以及模块的元数据、资源、强名称、一些标志及其他不太重要的数据项的位置/大小。</li>
+<li>元数据：每个托管模块都包含元数据表。主要由两种表：一种描述源代码中定义的类型和成员，另一种描述源代码引用的类型和成员。
+<ul>
+<li>用途：
 <ul>
 <li>避免编译时对原生C/C++头和库文件的需求，因为在实现类型或成员的IL代码文件中，已包含有关引用类型或成员的全部信息。编译器直接从托管模块读取元数据。</li>
-<li>“智能感知”(IntelliSense)技术会解析元数据，告诉你一个类型提供了哪些方法、属性、事件和字段。对于方法，还能告诉其参数</li>
+<li>“智能感知”(IntelliSense)技术会解析元数据，告诉你一个类型提供了哪些方法、属性、事件和字段。对于方法，还能告诉其参数。</li>
+<li>CLR的代码验证过程使用元数据确保代码只执行“类型安全”的操作。</li>
+<li>允许将对象的字段序列化和反序列化。</li>
+<li>允许垃圾回收器跟踪对象生存期。</li>
 </ul>
+</li>
+</ul>
+</li>
+<li>IL(中间语言)代码：编译器编译源代码时生成的代码。在运行时，CLR用本机代码编译器(native code compolers)将IL编译成面向本机特定CPU架构的指令代码。
+<ul>
+<li>IL指令是一种基于栈的指令集（跟Lua一样）。操作压入栈，并从让结果从栈弹出。</li>
+<li>IL指令还是无类型(typeless)的。</li>
+</ul>
+</li>
+</ul>
+<h2 id="将托管模块组合成程序集">将托管模块组合成程序集</h2>
+<p><strong>程序集(assembly)</strong> 是一个或多个模块或资源文件的逻辑性分组。程序集是重用、安全性以及版本控制的最小单元。CLR实际与程序集一起工作，程序集相当于它的“组件”。</p>
+<p><strong>清单(manifest)</strong> 是元数据表的集合。这些表描述构成程序集的文件、程序集中的文件所实现的public类型以及与程序集关联的资源或数据文件。</p>
+<p><strong>程序集的自描述(self-describing)</strong> 利用程序集模块中包含的引用程序集有关的信息(版本号)，CLR能判断为了执行程序集中的代码，程序集的直接依赖对象(immediate dependency)。</p>
+<p>托管程序集总是利用Windows的数据执行保护(Data Execution Prevention, DEP)和地址空间布局随机化(Address Space Layout Randomization, ASLR)来增强系统安全性。</p>
+<p>如果只有一个托管模块而且无资源(或数据)生成的程序集就是托管模块本身，生成无需额步骤。但如果希望将一组文件合并到程序集中，就必须用AL(程序集连接器)等工具生成。</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph LR;
+    A(&#34;托管模块(IL和元数据)【可多个】&#34;)--&gt;P(&#34;将多个托管模块和资源合并成程序集的工具&lt;br/&gt;对应语言的编译器(例：C#为CSC.exe)&lt;br/&gt;程序集链接器(AL.exe)&#34;)
+    C(&#34;资源文件(.jpeg,.gif,.html等)【可多个】&#34;)--&gt;P
+    P--&gt;L(&#34;程序集&lt;br/&gt;清单(描述程序集中的文件集)&lt;br/&gt;托管模块(IL和元数据)【可多个】&lt;br/&gt;资源文件【可多个】&#34;)
+</code></pre><h2 id="程序集的执行">程序集的执行</h2>
+<p>分析以下程序的执行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main() {
+</span></span><span style="display:flex;"><span>    Console.WriteLine(<span style="color:#e6db74">&#34;Hello World!&#34;</span>);
+</span></span><span style="display:flex;"><span>    Console.WriteLine(<span style="color:#e6db74">&#34;Goodbye!&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ol>
+<li>在Main方法执行之前，CLR会检测出Main方法的代码引用的所有类型(本例为Console)。并分配一个内部数据结构来管理对引用类型的访问。内部数据结构中对类型定义的每个方法都有一个对应的记录项。每个记录项都含有一个地址，根据此地址即可找到方法的实现。对这个结构初始化时，CLR将每个记录项的指针都指向包含在CLR内部的一个未编档函数(本书定义为JITCompiler)。</li>
+<li>第一次执行Console.WriteLine方法时，JITCompiler函数会被调用。它负责将方法的IL代码编译成本机CPU指令。由于IL是“即时”(just in time)编译的，所有通常将CLR的这个组件叫做<strong>JIT编译器</strong>。JITCompiler函数的执行方式如下：
+<ol>
+<li>在负责实现类型(Console)的程序集的元数据中查找被调用的方法(WriteLine)。</li>
+<li>从元数据中获取该方法的IL代码。并验证</li>
+<li>动态分配内存块。</li>
+<li>将IL代码编译成本机CPU指令然后将本机代码存储到步骤3分配的内存中。</li>
+<li>在Type表(Main函数指向Console.WriteLine的记录项)中修改与方法对应的条目，使它指向步骤3分配的内存块。</li>
+<li>跳转到内存块中的本机代码，并执行。</li>
+<li>执行完后返回到Main方法中继续执行。</li>
+</ol>
+</li>
+<li>当第二次执行Console.WriteLine方法时，由于已经对其方法的代码进行了验证和编译，所以会直接执行内存块中的代码，完全跳过JITCompiler函数。</li>
+</ol>
+<blockquote>
+<p>托管代码的缺点：</p>
+<ul>
+<li>本机CPU指令都存储在动态内存中，一旦应用程序终止，编译好的代码也会被丢弃。</li>
+<li>将本机CPU指令都存储在动态内存中会增加内存消耗。</li>
+<li>首次调用函数时会验证代码和编译代码所以有性能损失。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>托管代码的优点：</p>
+<ul>
+<li>JIT编译器能够判断是否运行在特定CPU中，从而进行特殊指令优化。而非托管代码通常只能针对最小功能及和的CPU来编译。</li>
+<li>JIT编译器能判断一个特定的if语句测试在它运行的机器上是否总是失败。从而不会为其生成任何CPU指令。使其代码边得更小。(写代码时应该避免写出这样的代码)</li>
+<li><del>CLR可评估代码的运行，并将IL重新编译成本机代码。重新编译的代码可以重新组织，根据观察到的执行模式，减少不正确的分支预测</del>(作者意淫的)</li>
+</ul>
+</blockquote>
  </div>
     <footer class="post-footer">
 
