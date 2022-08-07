@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+
+
+<meta charset="utf-8" />
+<meta name="author" content="Alaya" />
+<meta name="description" content="简简单单生活，安安静静编程" />
+<meta name="keywords" content="" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.100.2" />
+
+<link rel="canonical" href="https://sooda.net.cn/post/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/">
+<meta property="og:title" content="基元类型、引用类型和值类型" />
+<meta property="og:description" content="C#中最基础的类型的使用和其需要注意的事项。装箱拆箱的分析" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sooda.net.cn/post/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-12T17:49:41+08:00" />
+<meta property="article:modified_time" content="2022-07-12T17:49:41+08:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="基元类型、引用类型和值类型"/>
+<meta name="twitter:description" content="C#中最基础的类型的使用和其需要注意的事项。装箱拆箱的分析"/>
+
+<meta itemprop="name" content="基元类型、引用类型和值类型">
+<meta itemprop="description" content="C#中最基础的类型的使用和其需要注意的事项。装箱拆箱的分析"><meta itemprop="datePublished" content="2022-07-12T17:49:41+08:00" />
+<meta itemprop="dateModified" content="2022-07-12T17:49:41+08:00" />
+<meta itemprop="wordCount" content="351">
+<meta itemprop="keywords" content="《CLR via C#》," />
+
+<link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
+
+
+<link rel="stylesheet" href="https://sooda.net.cn/css/default-dark.css" />
+
+
+
+
+<title>
+
+
+     基元类型、引用类型和值类型 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://sooda.net.cn">Sooda</a>
+    </div> 
+
+    
+    
+    <a class="nav-item" href="https://sooda.net.cn/categories/"><div class="nav-item-title">Categories</div></a>
+    
+    <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
+    
+  </nav>
+  <div class="font">
+    简简单单生活，安安静静编程
+  </div>
+  
+
+</div>
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> 基元类型、引用类型和值类型 </h1>
+    <div class="content"> <h2 id="type基础">Type基础</h2>
+<p>C#中有三种类型分别是基元类型、引用类型和值类型</p>
+<h3 id="基元类型">基元类型</h3>
+<p>编辑器直接支持的数据类型称为<strong>基元类型(primitive type)</strong>。基元类型直接映射到Framework类库(FCL)中存在的类型。</p>
+<table>
+<thead>
+<tr>
+<th>C#基元类型</th>
+<th>FCL类型</th>
+<th>符合公共语言规范(CLS)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sbyte</td>
+<td>System.SByte</td>
+<td>否</td>
+<td>有符号8位</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>System.Byte</td>
+<td>是</td>
+<td>无符号8位</td>
+</tr>
+<tr>
+<td>short</td>
+<td>System.Int16</td>
+<td>是</td>
+<td>有符号16位</td>
+</tr>
+<tr>
+<td>ushort</td>
+<td>System.UInt16</td>
+<td>否</td>
+<td>无符号16位</td>
+</tr>
+<tr>
+<td>int</td>
+<td>System.Int32</td>
+<td>是</td>
+<td>有符号32位</td>
+</tr>
+<tr>
+<td>uint</td>
+<td>System.UInt32</td>
+<td>否</td>
+<td>无符号32位</td>
+</tr>
+<tr>
+<td>long</td>
+<td>System.Int64</td>
+<td>是</td>
+<td>有符号64位</td>
+</tr>
+<tr>
+<td>ulong</td>
+<td>System.UInt64</td>
+<td>否</td>
+<td>无符号64位</td>
+</tr>
+<tr>
+<td>char</td>
+<td>System.Char</td>
+<td>是</td>
+<td>16位Unicode字符</td>
+</tr>
+<tr>
+<td>float</td>
+<td>System.Single</td>
+<td>是</td>
+<td>IEEE 32位浮点值</td>
+</tr>
+<tr>
+<td>double</td>
+<td>System.Double</td>
+<td>是</td>
+<td>IEEE 64位浮点值</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>System.Boolean</td>
+<td>是</td>
+<td>true/false</td>
+</tr>
+<tr>
+<td>decimal</td>
+<td>System.Decimal</td>
+<td>是</td>
+<td>128位高精度浮点值，常用于不容许误差的金融计算</td>
+</tr>
+<tr>
+<td>string</td>
+<td>System.String</td>
+<td>是</td>
+<td>字符数组</td>
+</tr>
+<tr>
+<td>object</td>
+<td>System.Object</td>
+<td>是</td>
+<td>所有类型的基类</td>
+</tr>
+<tr>
+<td>dynamic</td>
+<td>System.Object</td>
+<td>是</td>
+<td>对于CLR，dynamic和object完全一致。但C#编译器允许使用简单的语法让dynamic变量参与动态调度</td>
+</tr>
+</tbody>
+</table>
+<p>C#编译器非常熟悉基元类型，会在编译代码的时候引用自己的规则。</p>
+<ul>
+<li>编译器能执行基元类型之间的隐式或显示转型。<strong>但是只有在数据不会发生丢失的时候，C#才允许隐式转换。</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Int32 i = <span style="color:#ae81ff">5</span>;            <span style="color:#75715e">// 整数字面值默认解释为Int32</span>
+</span></span><span style="display:flex;"><span>Int64 l = i;            <span style="color:#75715e">// Int32隐式转为Int64</span>
+</span></span><span style="display:flex;"><span>Single s = i;           <span style="color:#75715e">// Int32隐式转为Single</span>
+</span></span><span style="display:flex;"><span>Byte b = (Byte) i;      <span style="color:#75715e">// Int32显示转为Byte</span>
+</span></span><span style="display:flex;"><span>Int16 v = (Int16) s;    <span style="color:#75715e">// Single显示转为Int16</span>
+</span></span></code></pre></div></li>
+<li>浮点值转证书C#编译器总是对浮点值进行接端，不向上取整。</li>
+<li>基元类型也可写成字面值(literal)。字面值被看成是类型本身的实例。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#ae81ff">123.</span>ToString();
+</span></span></code></pre></div></li>
+<li>表达式由字面值构成，编译器则可在编译期间就完成表达式求值。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Boolean found = <span style="color:#66d9ef">false</span>;  <span style="color:#75715e">// 生成的代码将found设为0</span>
+</span></span><span style="display:flex;"><span>Int32 x = <span style="color:#ae81ff">100</span> + <span style="color:#ae81ff">20</span> + <span style="color:#ae81ff">3</span>; <span style="color:#75715e">// 生成的代码将x设为123</span>
+</span></span><span style="display:flex;"><span>String s = <span style="color:#e6db74">&#34;a &#34;</span> + <span style="color:#e6db74">&#34;bc&#34;</span>; <span style="color:#75715e">// 生成的代码将s设为&#34;a bc&#34;</span>
+</span></span></code></pre></div></li>
+</ul>
+<h4 id="checked和unchecked基元类型操作">checked和unchecked基元类型操作</h4>
+<p>C#允许程序员自己决定是否开启处理溢出检查。溢出检查默认关闭。可以通过/checked+编译器开关来全局替换是否生成检查版本的指令。如果想在特定代码区域控制溢出检查，则可用checked和unchecked操作符或语句</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Byte b = <span style="color:#ae81ff">100</span>;
+</span></span><span style="display:flex;"><span>b = <span style="color:#66d9ef">checked</span>((Byte) (b + <span style="color:#ae81ff">200</span>)); <span style="color:#75715e">// 抛出OverflowException异常</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">checked</span> {                   <span style="color:#75715e">// 开始checked块</span>
+</span></span><span style="display:flex;"><span>    Byte b = <span style="color:#ae81ff">100</span>;
+</span></span><span style="display:flex;"><span>    b = (Byte) (b + <span style="color:#ae81ff">200</span>);   <span style="color:#75715e">// 抛出OverflowException异常</span>
+</span></span><span style="display:flex;"><span>}                           <span style="color:#75715e">// 结束checked块</span>
+</span></span></code></pre></div><h3 id="引用类型">引用类型</h3>
+<p><strong>引用类型总是从托管堆分配</strong>，C#的new操作符返回对象内存地址——即指向对象数据的内存地址。</p>
+<ol>
+<li>内存必须从托管堆分配。</li>
+<li>堆上分配的每个对象都有一些额外成员，这些成员必须初始化。</li>
+<li>对象中的其他字节(为字段而设)总是设为零。</li>
+<li>从托管堆分配对象时，可能强制执行一次垃圾回收。</li>
+</ol>
+<p><strong>用class声明的都是引用类型</strong></p>
+<h3 id="值类型">值类型</h3>
+<p><strong>值类型的实例一般在线程栈上分配(也可作为字段嵌入引用类型的对象中)</strong>。值类型实例在线程栈中，所以不受垃圾回收器控制。</p>
+<p>所有结构都是抽象类型System.ValueType的直接派生类。而后者从System.Object派生。所有枚举都从System.Enum派生，而后者从System.ValueType派生。所有值类型都隐式密封，防止将值类型用作其他引用类型或值类型的基类型。</p>
+<p><strong>用struct声明的都是值类型</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">vector2</span> { <span style="color:#66d9ef">int</span> x, y; }
+</span></span><span style="display:flex;"><span>vector2 v1 = <span style="color:#66d9ef">new</span> vector2(); <span style="color:#75715e">// 在线程栈中分配一个vector2的实例，并确保其中所有字段被初始化为零</span>
+</span></span><span style="display:flex;"><span>vector2 v2;                 <span style="color:#75715e">// 跟上方一样，但C#不认为所有字段被初始化为零</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a = v1.x;               <span style="color:#75715e">// 无问题</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> b = v2.x;               <span style="color:#75715e">// 报错 error CS0170: 使用了可能未赋值的字段&#34;x&#34;</span>
+</span></span></code></pre></div><h4 id="装箱和拆箱">装箱和拆箱</h4>
+<p>将值类型转换为引用类型需要用装箱机制。其装箱的流程为：</p>
+<ol>
+<li>在托管堆中分配内存。分配的内存量是值类型各个字段所需的内存量，还要加上两个额外成员(类型对象指针和同步索引块)。</li>
+<li>值类型的字段复制到新分配的堆内存</li>
+<li>返回对象地址。</li>
+</ol>
+<p>将引用类型转换为值类型需要用拆箱机制。其拆箱的流程为：</p>
+<ol>
+<li>如果包含“对已装箱值类型实例的引用”的变量为null，抛出NullReferenceException异常。</li>
+<li>如果引用的对象不是所需值类型的已装箱实例，抛出InvalidCastException异常。</li>
+<li>获取已装箱对象中的各个字段的地址。这部叫做拆箱(unboxing)。</li>
+<li>将字段包含的值从堆复制到基于栈的值类型实例中。</li>
+</ol>
+<p>拆箱的代价比装箱低很多。少了堆内存请求分配和字段复制。</p>
+<h5 id="注意">注意</h5>
+<ul>
+<li>值类型重写虚方法(例如Equals, GetHashCode或ToString)如果在其中调用的基类型的实现，则会在调用时进行装箱。以便能够通过this指针将对一个堆对象的引用传给基方法。</li>
+<li>调用非虚的、继承的方法时(如GetType或MemberwiseClone)，无论如何都有对类型进行装箱。因为这些方法由System.Object定义，要求this实参是指向对对象的指针。</li>
+<li>将值类型的未装箱实例转换为类型的某个接口时要对实例进行装箱。这是因为接口变量必须包含对堆对象的引用。</li>
+<li>C#一般无法修改已装箱值类型中的字段。有一种例外就是利用接口来修改。(尽量还是不要使用，破坏C#值类型的不可变&quot;immutable&quot;性)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IChange</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> Change(<span style="color:#66d9ef">int</span> x, <span style="color:#66d9ef">int</span> y);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Point</span> : IChange {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> x, y;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Change(<span style="color:#66d9ef">int</span> x, <span style="color:#66d9ef">int</span> y) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.x = x;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.y = y;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Mian() {
+</span></span><span style="display:flex;"><span>    Point p = <span style="color:#66d9ef">new</span> Point();
+</span></span><span style="display:flex;"><span>    p.x = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    p.y = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 一次装箱</span>
+</span></span><span style="display:flex;"><span>    Object o = p;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 一次拆箱。Change修改的是拆箱后的临时值类型。o内部的值类型还是(1,1)</span>
+</span></span><span style="display:flex;"><span>    ((Point) o).Change(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 一次装箱。Change修改的是装箱后临时的引用类型。然后丢弃它。不影响p。</span>
+</span></span><span style="display:flex;"><span>    ((IChange) p).Change(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// o内部的值类型字段x和y被修改为(4,4)</span>
+</span></span><span style="display:flex;"><span>    ((IChange) o).Chage(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="值类型和引用类型的区别">值类型和引用类型的区别</h3>
+<ul>
+<li>值类型对象有两种表示形式：未装箱和已装箱。而引用类型总是已装箱。</li>
+<li>由于不能将值类型作为基类型来定义新的值类型或引用类型，所以不应该在值类型中引入任何虚方法。所有的方法也不能时抽象的，所有的方法都隐式密封(不可重写)。</li>
+<li>引用类型的变量包含堆中对象的地址。引用类型的变量创建时默认初始化为null。而值类型的变量总是包含其基础类型的一个值，而值类型的所有成员变量都初始化为0。</li>
+<li>将值类型变量赋值给另一个值类型变量会逐字段复制。而引用类型只会复制内存地址。</li>
+</ul>
+<h3 id="c模拟union">C#模拟Union</h3>
+<p>特性<code>[StructLayout(LayoutKind.Explicit)]</code>用于告知编辑器此struct显示指定每个字段的偏移量。</p>
+<p>特性<code>FieldOffset(Int32 val)</code>用于指出字段距离实例启始出的偏移量(字节为单位)</p>
+<p><strong>注意：引用类型与值类型互相重叠是不合法的</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#75715e">// 此struct中m_b与m_x互相重叠</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">[StructLayout(LayoutKind.Explicit)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ValType</span> {
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [FieldOffset(0)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> Byte m_b;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [FieldOffset(0)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> Int16 m_x;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="equals函数的同一性identity或相等性equality判断">Equals函数的同一性(identity)或相等性(equality)判断</h3>
+<p>同一性指两个引用是否指向同一个对象，最好调用&rsquo;ReferenceEquals&rsquo;来判断，或先把两个操作数转为Object在调用==操作符。</p>
+<p>相等性指两个实际的值是否相同，或引用的对象的值是否相同。</p>
+<h3 id="dynamic基元类型">dynamic基元类型</h3>
+<p>代码使用dynamic表达式或变量调用成员时，编译器生成特殊IL代码来描述所需的操作。这种特殊的代码称为payload(有效载荷)。在运行时，payload代码根据dynamic表达式或变量引用的对象的实际来决定具体执行的操作。</p>
+<p>如果字段、方法参数或方法返回值的类型是dynamic，编译器会将该类型装欢为System.Object，并在元数据中向字段、参数或返回类型应用System.Runtime.CompilerServices.DynamicAttribute的实例。如果局部变量被指定为dynamic，则变量类型也会成为Object,但不会向局部变量应用DynamicAttribute，因为它限制在方法内部受用。dynamic其实就是Object。</p>
+<p><strong>值类型赋值给dynamic需要装箱，因为dynamic本质就是Object</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">dynamic</span> d = <span style="color:#ae81ff">123</span>;    <span style="color:#75715e">// Int32隐式转换到dynamic(装箱)</span>
+</span></span><span style="display:flex;"><span>Int32 i = d;        <span style="color:#75715e">// dynamic隐式转换到Int32(拆箱)</span>
+</span></span></code></pre></div><p>不能定义对dynamic进行扩展的扩展方法。不能将lambda表达式或匿名方法作为实参传给dynamic方法调用，因为编译器推断不了要使用的类型。</p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+            
+<div class="tags">
+  
+    
+      <div class="tag">
+        <a href="https://sooda.net.cn/tags/clr-via-c">#《CLR via C#》</a>
+      </div>
+    
+  
+</div>
+
+    <div class="date"> 2022-07-12 </div>
+    
+    <hr>
+            
+<div class="categories">
+  
+  Published in:
+    
+      <div class="category">
+        <a href="https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC">阅读提炼</a>
+      </div>
+    
+  
+</div>
+
+            
+<div class="series">
+  
+</div>
+
+    
+  </div>
+</footer>
+
+
+  
+  
+
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+
+  
+  <a href="https://github.com/yLong765" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+
+  
+
+  
+
+  
+
+</div>
+
+
+  <div class="copyright"> Copyright © 2022, All Rights Reserved. </div>
+
+  
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+

@@ -7,14 +7,43 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>cn</language>
     <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 28 Jun 2022 17:09:01 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 27 Jul 2022 15:20:36 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>C# Class</title>
+      <title>Class成员</title>
+      <link>https://sooda.net.cn/post/clrviacsharp-class%E6%88%90%E5%91%98/</link>
+      <pubDate>Wed, 27 Jul 2022 15:20:36 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/post/clrviacsharp-class%E6%88%90%E5%91%98/</guid>
+      <description>类型成员基础 常量：数据恒定不变的符号。 字段：只读或可读/可写的数据值。 实例构造器：将新对象的实例字段初始化的特殊方法 类型构造器：将类型的静态字段初始化的特殊方法。 方法：更改或查询类型或对象状态的函数。作用于类型成为静态方法，作用于对象为实例方法。 操作符重载：实际是方法，定义了当操作符作用于对象时，应该如何操作对象。 转换操作符：定义如何隐式或显式将对象从一种类型转型为另一种类型的方法。 属性：设置或查询类型或对象的逻辑状态。作用于类型为静态属性，作用域对象为实例属性。 事件：静态事件允许类型向一个或多个静态或实例方法发送通知。实例事件允许对象向一个或多个静态或实例方法发送通知。 类型：可以定义其他嵌套类型。 常量 定义常量符号时，值必须能在编译时确定。编译器将常量值保存到程序集元数据中。意味着只能定义编译器可识别的基元类型常量。非基元类型的常量变量只能为null。
+编译器会在定义常量的程序集元数据中查找该符号，提取常量值并嵌入IL代码中。所以运行时没有任何额外内存分配，但是不能取常量地址或引用传递常量。
+C#不允许常量设置为static，因为常量总隐式设置为static。
+如果希望在运行时从一个程序集中提取另一个程序集中的值，那么不应该使用常量，而应该使用readonly字段。
+字段 字段是一种数据成员，容纳了一个值类型的实例或对一个引用类型的引用。
+CLR支持类型(静态)字段和实例(非静态)字段。类型字段所需的动态内存是在类型对象中分配的，而类型对象是在类型加载到一个AppDomain时创建的。类型加载到AppDmain的时机又是在引用该类型的任何方法首次进行JIT编译的时候。实例字段容纳字段数据所需的动态内存是在构造类型的实例时分配的。
+字段修饰符 CLR术语 C#术语 说明 Static static 类型(静态)字段 Instance (默认) 实例(非静态)字段 InitOnly readonly 只能有一个构造方法中的代码写入(但可利用反射修改readonly字段) Volatile volatile 编译器、CLR和硬件不会对访问这种字段的代码执行“线程不安全”的优化措施 注意：当某个字段时引用类型，并且该字段呗标记为readonly时，不可改变的是引用，而非字段引用的对象。
+方法 实例构造器(引用类型) 实例构造器是初始化类型的实例的特殊方法。构造器方法在“方法定义元数据表”中始终叫做.ctor。创建引用类型的实例时，首先为实例的数据字段分配内存，然后把内存部分归零(保证没有被构造器显式赋值的所有字段都为0或null值)，接着初始化对象的附加字段(类型对象指针和同步索引块)，最后调用类型的实例构造器来设置对象的初始状态。
+注意事项 实例构造器永远不能被继承。所以不能使用:virtual，new，override，sealed，abstract修饰符。 如果没有显式定义构造器，C#编译器则会默认定义一个(无参)构造器。这个构造器只是简单的调用了基类的构造器 public class A {} //等价于： public class A { public A() : base() {} } 如果类的修饰符为abstract，则编译器生成的默认构造器的可访问性就为protected。否则为public。 如果类的修饰符为static，则编译器不会生成默认构造器。 为了使代码“可验证”，类的实例构造器在访问从基类继承的任何字段之前，必须先调动基类的构造器。如果派生类的构造器没有显式调用一个基类构造器，C#编译器会自动生成对默认的基类构造器的调用。 极少数可以在不调用实例构造器的前提下创建类型的实例。比如Object的MemberwiseClone方法、或反序列化时。 不要在构造函数中调用虚方法。 C#编译器以“内联”(嵌入)方式初始化实例字段。在每个构造器方法开始的位置，包含类字段中直接赋值的代码。在其后会插入对基类构造器的调用。然后再插入构造函数的代码。
+class B { } class A { public int a = 1; public int b = 3; public A() { b = 2; } } // C#编译器编译后的代码为 class A : B { public int a; public int b; public A() { a = 1; b = 3; // 调用父类构造器 b = 2; // b会被重复赋值 } } 优化：在声明字段是就赋值会导致再每个构造器中都会加入初始化代码。可以不在声明字段时赋值。用一个构造函数初始化，并在其他构造函数中调用那个构造函数。</description>
+    </item>
+    
+    <item>
+      <title>基元类型、引用类型和值类型</title>
+      <link>https://sooda.net.cn/post/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Tue, 12 Jul 2022 17:49:41 +0800</pubDate>
+      
+      <guid>https://sooda.net.cn/post/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</guid>
+      <description>Type基础 C#中有三种类型分别是基元类型、引用类型和值类型
+基元类型 编辑器直接支持的数据类型称为基元类型(primitive type)。基元类型直接映射到Framework类库(FCL)中存在的类型。
+C#基元类型 FCL类型 符合公共语言规范(CLS) 说明 sbyte System.SByte 否 有符号8位 byte System.Byte 是 无符号8位 short System.Int16 是 有符号16位 ushort System.UInt16 否 无符号16位 int System.Int32 是 有符号32位 uint System.UInt32 否 无符号32位 long System.Int64 是 有符号64位 ulong System.UInt64 否 无符号64位 char System.Char 是 16位Unicode字符 float System.Single 是 IEEE 32位浮点值 double System.Double 是 IEEE 64位浮点值 bool System.Boolean 是 true/false decimal System.Decimal 是 128位高精度浮点值，常用于不容许误差的金融计算 string System.String 是 字符数组 object System.Object 是 所有类型的基类 dynamic System.</description>
+    </item>
+    
+    <item>
+      <title>C# class及成员基础</title>
       <link>https://sooda.net.cn/post/clrviacsharp-class/</link>
       <pubDate>Tue, 28 Jun 2022 17:09:01 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/clrviacsharp-class/</guid>
-      <description>Class基础 System.Object “运行时”所有的类型最终都从System.Object类型派生。
+      <description>class System.Object “运行时”所有的类型最终都从System.Object类型派生。
 // 隐式派生自Object class A {} // 显式派生自Object class A : System.Object {} System.Object的public方法
 Equals：比较函数 GetHashCode：对象哈希值 ToString：转换成String类型对象 GetType：返回对象的类型 System.Object的protected方法
 MemberwiseClone：创建类型的新实例，并将新对象的实例字段设置与this对象的实例字段完全一致。返回对新实例的引用 Finalize：垃圾回收阶段实际清理之前会调用此方法。 new操作符都做了什么工作 A a = new A(&amp;#34;123&amp;#34;); 上面的代码中new操作符所作的事情：
