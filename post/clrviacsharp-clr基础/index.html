@@ -27,7 +27,7 @@
 <meta name="generator" content="Hugo 0.100.2" />
 
 <link rel="canonical" href="https://sooda.net.cn/post/clrviacsharp-clr%E5%9F%BA%E7%A1%80/">
-<meta property="og:title" content="CLR基础" />
+<meta property="og:title" content="C# CLR基础" />
 <meta property="og:description" content="对CLR相关的IL，程序集，托管模块等进行基础介绍。并初探CLR的执行过程" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://sooda.net.cn/post/clrviacsharp-clr%E5%9F%BA%E7%A1%80/" /><meta property="article:section" content="post" />
@@ -36,10 +36,10 @@
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="CLR基础"/>
+<meta name="twitter:title" content="C# CLR基础"/>
 <meta name="twitter:description" content="对CLR相关的IL，程序集，托管模块等进行基础介绍。并初探CLR的执行过程"/>
 
-<meta itemprop="name" content="CLR基础">
+<meta itemprop="name" content="C# CLR基础">
 <meta itemprop="description" content="对CLR相关的IL，程序集，托管模块等进行基础介绍。并初探CLR的执行过程"><meta itemprop="datePublished" content="2022-06-16T11:16:04+08:00" />
 <meta itemprop="dateModified" content="2022-06-16T11:16:04+08:00" />
 <meta itemprop="wordCount" content="151">
@@ -56,7 +56,7 @@
 <title>
 
 
-     CLR基础 
+     C# CLR基础 
 
 </title>
 
@@ -93,7 +93,7 @@
 
 
 <article class="post">
-    <h1 class="title"> CLR基础 </h1>
+    <h1 class="title"> C# CLR基础 </h1>
     <div class="content"> <h1 id="clr的执行模型">CLR的执行模型</h1>
 <p>公共语言运行时(Common Language Runtime, CLR)是一个可由多种编程语言使用的“运行时”。CLR的核心功能(比如内存管理、程序集加载、安全性、异常处理和线程同步)可由面向CLR的所有语言使用。</p>
 <p>不同编程语言的意义？可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。但是无论任何用哪个编译器，最终编译的结果都是<strong>托管模块(managed module)</strong>。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件。</p>

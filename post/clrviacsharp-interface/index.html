@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+
+
+<meta charset="utf-8" />
+<meta name="author" content="Alaya" />
+<meta name="description" content="简简单单生活，安安静静编程" />
+<meta name="keywords" content="" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.100.2" />
+
+<link rel="canonical" href="https://sooda.net.cn/post/clrviacsharp-interface/">
+<meta property="og:title" content="C# 接口" />
+<meta property="og:description" content="C#的接口使用方式和注意事项" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sooda.net.cn/post/clrviacsharp-interface/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-08-08T17:28:55+08:00" />
+<meta property="article:modified_time" content="2022-08-08T17:28:55+08:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C# 接口"/>
+<meta name="twitter:description" content="C#的接口使用方式和注意事项"/>
+
+<meta itemprop="name" content="C# 接口">
+<meta itemprop="description" content="C#的接口使用方式和注意事项"><meta itemprop="datePublished" content="2022-08-08T17:28:55+08:00" />
+<meta itemprop="dateModified" content="2022-08-08T17:28:55+08:00" />
+<meta itemprop="wordCount" content="237">
+<meta itemprop="keywords" content="《CLR via C#》," />
+
+<link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
+
+
+<link rel="stylesheet" href="https://sooda.net.cn/css/default-dark.css" />
+
+
+
+
+<title>
+
+
+     C# 接口 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://sooda.net.cn">Sooda</a>
+    </div> 
+
+    
+    
+    <a class="nav-item" href="https://sooda.net.cn/categories/"><div class="nav-item-title">Categories</div></a>
+    
+    <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
+    
+  </nav>
+  <div class="font">
+    简简单单生活，安安静静编程
+  </div>
+  
+
+</div>
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> C# 接口 </h1>
+    <div class="content"> <p>接口实际只是对一组方法签名进行了统一命名。这些方法不提供任何实现。类通过指定接口名称来继承接口，而且必须显式实现接口方法，否则CLR会认为此类型定义无效。</p>
+<h2 id="定义接口">定义接口</h2>
+<p>接口可以定义事件、无参属性和有参属性。但接口不能定义任何构造器方法，也布恩那个定义任何实例字段。</p>
+<blockquote>
+<p>提示：CLR允许接口定义静态方法、静态字段、常量和静态构造器，但C#不允许。</p>
+<p>注意：对于CLR来说接口定义就是类型定义。</p>
+</blockquote>
+<h2 id="继承接口">继承接口</h2>
+<p>C#编译器要求将实现接口的方法(接口方法)标记为public。CLR要求将接口方法标记为virtual。不将方法标记为virtual，编译器会将他们标记为virtual和sealed；这会阻止派生类重写接口方法。将方法显式标记为virtual，编译器就会将该方法标记为virtual(并保持他的非密封状态)，使派生类能重写它。</p>
+<p>派生类不能重写sealed接口方法。但派生类可以重新继承同一个接口，并为接口方法提供自己的实现。在<strong>对象上调用接口方法时，调用的是该方法在该对象的类型中的实现</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#75715e">// 这个类派生自Object，它实现了IDisposable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Base</span> : IDisposable {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 这个方法隐式密封，不能被重写</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Dispose() {
+</span></span><span style="display:flex;"><span>        Console.WriteLine(<span style="color:#e6db74">&#34;Base&#39;s Dispose&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 这个类派生自Base，它重新实现了IDisposable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Derived</span> : Base, IDisposable {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 这个方法不能重写Base的Dispose，&#39;new&#39;表明该方法重新实现了IDisposable的Dispose方法</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Dispose() {
+</span></span><span style="display:flex;"><span>        Console.WriteLine(<span style="color:#e6db74">&#34;Derived&#39;s Dispose&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 调用基类的实现</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">base</span>.Dispose();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Base b = <span style="color:#66d9ef">new</span> Base();
+</span></span><span style="display:flex;"><span>b.Dispose();                <span style="color:#75715e">// 显示 &#34;Base&#39;s Dispose&#34;</span>
+</span></span><span style="display:flex;"><span>((IDisposable)b).Dispose(); <span style="color:#75715e">// 显示 &#34;Base&#39;s Dispose&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Derived d = <span style="color:#66d9ef">new</span> Derived();
+</span></span><span style="display:flex;"><span>d.Dispose();                <span style="color:#75715e">// 显示 &#34;Derived&#39;s Dispose&#34;</span>
+</span></span><span style="display:flex;"><span>((IDisposable)d).Dispose(); <span style="color:#75715e">// 显示 &#34;Derived&#39;s Dispose&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>b = <span style="color:#66d9ef">new</span> Derived();
+</span></span><span style="display:flex;"><span>b.Dispose();                <span style="color:#75715e">// 显示 &#34;Base&#39;s Dispose&#34;</span>
+</span></span><span style="display:flex;"><span>((IDisposable)b).Dispose(); <span style="color:#75715e">// 显示 &#34;Derived&#39;s Dispose&#34;</span>
+</span></span></code></pre></div><blockquote>
+<p>注意：值类型可以实现零个或多个接口，但值类型的实例在转换为接口类型的时候必须装箱。</p>
+</blockquote>
+<h2 id="隐式和显式接口方法实现">隐式和显式接口方法实现</h2>
+<p>类型加载到CLR中会为类型创建一个方法表。这个表中类型引入的每个新方法都有对应的记录项；另外，还为该类型继承的所有虚方法添加了记录项。继承的虚方法既有继承层次就中各个基类型定义的，也有接口定义的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleType</span> : IDisposable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Dispose() {Console.WriteLine(<span style="color:#e6db74">&#34;Dispose&#34;</span>);}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SimpleType st = <span style="color:#66d9ef">new</span> SimpleType();
+</span></span><span style="display:flex;"><span>st.Dispose(); <span style="color:#75715e">// 输出：&#34;Dispose&#34;</span>
+</span></span><span style="display:flex;"><span>IDisposable d = st;
+</span></span><span style="display:flex;"><span>d.Dispose();  <span style="color:#75715e">// 输出：&#34;Dispose&#34;</span>
+</span></span></code></pre></div><p>上述代码中类SimpleType的方法表包含：</p>
+<ul>
+<li>Object(隐式继承)定义的所有虚实例方法。</li>
+<li>IDisposable(继承的接口)定义的所有接口方法。</li>
+<li>SimpleType引入的新方法Dispose。</li>
+</ul>
+<p>IDisposable中有Dispose方法，但是方法表中将其与SimpleType的Dispose方法区分开来。但C#编译器假定SimpleType中的Dispose方法是对IDisposable的Dispose方法的实现，因为两个方法的签名(可访问型，名称等)完全一致。<strong>如果Dispose方法被标记为virtual，C#编译器也认为其方法匹配接口</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleType</span> : IDisposable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Dispose() {Console.WriteLine(<span style="color:#e6db74">&#34;Dispose&#34;</span>);}
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 显式实现接口方法(不允许指定可访问性，默认为private)，不能标记为virtual</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> IDisposable.Dispose() {Console.WriteLine(<span style="color:#e6db74">&#34;IDisposable.Dispose&#34;</span>);}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SimpleType st = <span style="color:#66d9ef">new</span> SimpleType();
+</span></span><span style="display:flex;"><span>st.Dispose(); <span style="color:#75715e">// 输出：&#34;Dispose&#34;</span>
+</span></span><span style="display:flex;"><span>IDisposable d = st;
+</span></span><span style="display:flex;"><span>d.Dispose();  <span style="color:#75715e">// 输出：&#34;IDisposable.Dispose&#34;</span>
+</span></span></code></pre></div><p>上述方法中将定义方法接口名称作为方法名前缀的写法就为显式接口方法实现(EIMI)。C#不允许指定可访问性，自动设为private，为防止其他代码在使用类的实例时直接调用接口方法。只有通过接口类型的变量才能调用接口方法。</p>
+<blockquote>
+<p>注意：EIMI不能标记为virtual，所以不能被重写。由于EIMI方法并非真的是类型的对象模型的一部分，它只是将接口和类型连接起来，同时避免公开行为/方法</p>
+</blockquote>
+<h2 id="泛型接口">泛型接口</h2>
+<p>好处：</p>
+<ul>
+<li>提供编译时类型安全性</li>
+<li>装箱变少</li>
+<li>类可以实现同一个接口若干次，只需要每次使用不同的参数类型</li>
+</ul>
+<h2 id="泛型和接口约束">泛型和接口约束</h2>
+<p>将泛型参数约束为接口的好处</p>
+<ul>
+<li>可将放行类型参数约束为多个接口，这样一来，传递的参数类型必须实现全部接口类型。
+<ul>
+<li>如果参数的类型时接口，那么实参可以时任意类型，只要该类实现了接口。</li>
+</ul>
+</li>
+<li>传递值类型的实例时减少装箱。
+<ul>
+<li>C#编译器为接口约束生成特殊IL指令，导致直接在值类型上调用接口方法而不装箱。</li>
+</ul>
+<blockquote>
+<p>注意：在值类型实现了一个接口方法，在值类型的实例上调用这个方法不会装箱。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="实现多个具有相同方法名和签名的接口">实现多个具有相同方法名和签名的接口</h2>
+<p>继承的多个接口具有相同方法名和返回值时，必须使用“显式接口方法实现”来实现这个方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IWindow</span> {
+</span></span><span style="display:flex;"><span>    Object GetMenu();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IRestaurant</span> {
+</span></span><span style="display:flex;"><span>    Object GetMenu();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> : IWindow, IRestaurant {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// IWindow接口的实现</span>
+</span></span><span style="display:flex;"><span>    Object IWindow.GetMenu() { ... }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// IRestaurant接口的实现</span>
+</span></span><span style="display:flex;"><span>    Object IRestaurant.GetMenu() { ... }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在调用其对象时，必须将其转换胃具体的接口才能调用所需的方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>A a = <span style="color:#66d9ef">new</span> A();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>IWindow window = a;
+</span></span><span style="display:flex;"><span>window.GetMenu(); <span style="color:#75715e">// 调用的IWindow接口的方法</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>IRestaurant restaurant = a;
+</span></span><span style="display:flex;"><span>resturant.GetMenu(); <span style="color:#75715e">// 调用IRestaurant接口的方法</span>
+</span></span></code></pre></div><h2 id="谨慎使用eimi">谨慎使用EIMI</h2>
+<p>EIMI的问题</p>
+<ul>
+<li>值类型的实例在转换成接口时装箱</li>
+<li>EIMI不能由派生类调用</li>
+</ul>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+            
+<div class="tags">
+  
+    
+      <div class="tag">
+        <a href="https://sooda.net.cn/tags/clr-via-c">#《CLR via C#》</a>
+      </div>
+    
+  
+</div>
+
+    <div class="date"> 2022-08-08 </div>
+    
+    <hr>
+            
+<div class="categories">
+  
+  Published in:
+    
+      <div class="category">
+        <a href="https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC">阅读提炼</a>
+      </div>
+    
+  
+</div>
+
+            
+<div class="series">
+  
+</div>
+
+    
+  </div>
+</footer>
+
+
+  
+  
+
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+
+  
+  <a href="https://github.com/yLong765" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+
+  
+
+  
+
+  
+
+</div>
+
+
+  <div class="copyright"> Copyright © 2022, All Rights Reserved. </div>
+
+  
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+
