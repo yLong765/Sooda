@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>物理 on Alaya</title>
-    <link>http://www.sooda.net.cn/tags/%E7%89%A9%E7%90%86/</link>
+    <link>https://www.sooda.net.cn/tags/%E7%89%A9%E7%90%86/</link>
     <description>Recent content in 物理 on Alaya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Alaya</copyright>
-    <lastBuildDate>Tue, 04 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="http://www.sooda.net.cn/tags/%E7%89%A9%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://www.sooda.net.cn/tags/%E7%89%A9%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》物理篇</title>
-      <link>http://www.sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</link>
+      <link>https://www.sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</link>
       <pubDate>Tue, 04 Jan 2022 21:58:45 +0800</pubDate>
       
-      <guid>http://www.sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
+      <guid>https://www.sooda.net.cn/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
       <description>平面 平面在游戏中倾向的数学定义：
 $$ P \cdot \hat{n} + d = 0 $$
 $P$是平面上任意一点，$\hat{n}$是平面法线，$d$是平面到原点的最小距离
