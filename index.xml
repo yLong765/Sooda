@@ -14,7 +14,10 @@
       <pubDate>Mon, 22 Aug 2022 16:25:27 +0800</pubDate>
       
       <guid>https://localhost:1313/posts/clrviacsharp-attribute/</guid>
-      <description>定制特性 自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。</description>
+      <description>定制特性 自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。
+CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。
+应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素
+1using System; 2[assembly: SomeAttr] // 应用于程序集 3[module: SomeAttr] // 应用于模块 4[type: SomeAttr] // 应用于类型 5internal sealed class SomeType&amp;lt;[typevar: SomeAttr] T&amp;gt; { // 应用于泛型类型变量 6 [field: SomeAttr] // 应用于字段 7 public int SomeField = 0; 8 [return: SomeAttr] // 应用于返回值 9 [method: SomeAttr] // 应用于方法 10 public int SomeMethod([param: SomAttr] int SomeParam) { // 应用于参数 11 return SomeParam; 12 } 13 [property: SomAttr] // 应用于属性 14 public string SomeProp { 15 [method: SomeAttr] // 应用于get访问器方法 16 get { return null; } 17 } 18 [event: SomeAttr] // 应用于事件 19 [field: SomeAttr] // 应用于编译器生成的字段 20 [method: SomeAttr] // 应用于编译器生成的add和remove方法 21 public event EventHandler SomeEvent; 22} </description>
     </item>
     
     <item>
