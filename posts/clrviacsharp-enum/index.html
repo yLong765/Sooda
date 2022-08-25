@@ -5,10 +5,6 @@
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" href="/fonts/chancery/apple-chancery-webfont.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" href="/fonts/fira-sans-v10-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" href="/fonts/ibm-plex-mono-v6-latin-500italic.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" href="/fonts/roboto-mono-v12-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.1.0/style.css" />
@@ -31,7 +27,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> 《CLR via C#》 枚举和标志位 | Alaya</title>
-  <link rel = 'canonical' href = 'https://localhost:1313/posts/clrviacsharp-enum/'>
+  <link rel = 'canonical' href = 'http://www.sooda.net.cn/posts/clrviacsharp-enum/'>
   <meta name="description" content="Simple Life Simple Coding.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -42,7 +38,7 @@
 1public static class EnumExtension { 2 public static bool Extension(this Color color) { 3 // ... 4 } 5} 编译器编译枚举类型时，把每个符号转换成类型的一个常量字段。类似于如下代码
 1// 伪代码 2public struct Color : System.Enum { 3 public const Color White = (Color) 0; 4 public const Color Red = (Color) 1; 5 public const Color Green = (Color) 2; 6 // 以下是一个公共实例字段，包含Color变量的值，不能写代码来直接引用该字段 7 public int value__; 8} 注意" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://localhost:1313/posts/clrviacsharp-enum/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="http://www.sooda.net.cn/posts/clrviacsharp-enum/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-08-18T10:23:40+08:00" />
 <meta property="article:modified_time" content="2022-08-18T10:23:40+08:00" />
 
@@ -59,7 +55,7 @@
     
   
   
-  <link rel="stylesheet" href="https://localhost:1313/css/styles.166db686fda6f9c6a78da384702e8843f300f1bb91f7a773ad821803d8351c8e7e9e1eea1f977be1888e367f25d0a78d1d9c403ad3255e62df88b0a84b4b24c9.css" integrity="sha512-Fm22hv2m&#43;canjaOEcC6IQ/MA8buR96dzrYIYA9g1HI5&#43;nh7qH5d74YiONn8l0KeNHZxAOtMlXmLfiLCoS0skyQ=="> 
+  <link rel="stylesheet" href="http://www.sooda.net.cn/css/styles.166db686fda6f9c6a78da384702e8843f300f1bb91f7a773ad821803d8351c8e7e9e1eea1f977be1888e367f25d0a78d1d9c403ad3255e62df88b0a84b4b24c9.css" integrity="sha512-Fm22hv2m&#43;canjaOEcC6IQ/MA8buR96dzrYIYA9g1HI5&#43;nh7qH5d74YiONn8l0KeNHZxAOtMlXmLfiLCoS0skyQ=="> 
 
   
   
@@ -71,7 +67,7 @@
   
 
   
-<link rel="icon" type="image/png" href="https://localhost:1313/images/favicon.ico" />
+<link rel="icon" type="image/png" href="http://www.sooda.net.cn/images/favicon.ico" />
 
   
   
@@ -103,14 +99,14 @@
       <ul>
         
         <li>
-          <a class="icon" href=" https://localhost:1313/posts/clrviacsharp-string/" aria-label="Previous">
+          <a class="icon" href=" http://www.sooda.net.cn/posts/clrviacsharp-string/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="https://localhost:1313/posts/clrviacsharp-array/" aria-label="Next">
+          <a class="icon" href="http://www.sooda.net.cn/posts/clrviacsharp-array/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -141,47 +137,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&body=Check out this article: http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&description=%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%20%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e5%ae%9a%e4%b9%89%e4%ba%86%e4%b8%80%e7%bb%84%e2%80%9c%e7%ac%a6%e5%8f%b7%e5%90%8d%e7%a7%b0%2f%e5%80%bc%e2%80%9d%e7%9a%84%e9%85%8d%e5%af%b9%e3%80%82%e4%b8%94%e6%98%af%e5%bc%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e3%80%82%0a1enum%20Color%20%7b%202%20White%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc0%203%20Red%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc1%204%20Green%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc2%205%7d%20%e6%af%8f%e4%b8%aa%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e9%83%bd%e6%98%af%e4%bb%8eSystem.Enum%e6%b4%be%e7%94%9f%ef%bc%8c%e5%90%8e%e8%80%85%e4%bb%8eSystem.ValueType%e6%b4%be%e7%94%9f%ef%bc%8c%e8%80%8cSystem.ValueType%e4%bb%8eSystem.Object%e6%b4%be%e7%94%9f%e3%80%82%e6%89%80%e4%bb%a5%e6%9e%9a%e4%b8%be%e6%98%af%e5%80%bc%e7%b1%bb%e5%9e%8b%ef%bc%8c%e4%bd%86%e6%9e%9a%e4%b8%be%e4%b8%8d%e8%83%bd%e5%ae%9a%e4%b9%89%e4%bb%bb%e4%bd%95%e6%96%b9%e6%b3%95%e3%80%81%e5%b1%9e%e6%80%a7%e6%88%96%e4%ba%8b%e4%bb%b6%e3%80%82%e4%b8%8d%e8%bf%87%e5%8f%af%e4%bb%a5%e5%88%a9%e7%94%a8%e6%89%a9%e5%b1%95%e6%96%b9%e6%b3%95%e6%a8%a1%e6%8b%9f%e5%90%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%b7%bb%e5%8a%a0%e6%96%b9%e6%b3%95%e3%80%82%0a1public%20static%20class%20EnumExtension%20%7b%202%20public%20static%20bool%20Extension%28this%20Color%20color%29%20%7b%203%20%2f%2f%20...%204%20%7d%205%7d%20%e7%bc%96%e8%af%91%e5%99%a8%e7%bc%96%e8%af%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%97%b6%ef%bc%8c%e6%8a%8a%e6%af%8f%e4%b8%aa%e7%ac%a6%e5%8f%b7%e8%bd%ac%e6%8d%a2%e6%88%90%e7%b1%bb%e5%9e%8b%e7%9a%84%e4%b8%80%e4%b8%aa%e5%b8%b8%e9%87%8f%e5%ad%97%e6%ae%b5%e3%80%82%e7%b1%bb%e4%bc%bc%e4%ba%8e%e5%a6%82%e4%b8%8b%e4%bb%a3%e7%a0%81%0a1%2f%2f%20%e4%bc%aa%e4%bb%a3%e7%a0%81%202public%20struct%20Color%20%3a%20System.Enum%20%7b%203%20public%20const%20Color%20White%20%3d%20%28Color%29%200%3b%204%20public%20const%20Color%20Red%20%3d%20%28Color%29%201%3b%205%20public%20const%20Color%20Green%20%3d%20%28Color%29%202%3b%206%20%2f%2f%20%e4%bb%a5%e4%b8%8b%e6%98%af%e4%b8%80%e4%b8%aa%e5%85%ac%e5%85%b1%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%ef%bc%8c%e5%8c%85%e5%90%abColor%e5%8f%98%e9%87%8f%e7%9a%84%e5%80%bc%ef%bc%8c%e4%b8%8d%e8%83%bd%e5%86%99%e4%bb%a3%e7%a0%81%e6%9d%a5%e7%9b%b4%e6%8e%a5%e5%bc%95%e7%94%a8%e8%af%a5%e5%ad%97%e6%ae%b5%207%20public%20int%20value__%3b%208%7d%20%e6%b3%a8%e6%84%8f" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&description=%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%20%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e5%ae%9a%e4%b9%89%e4%ba%86%e4%b8%80%e7%bb%84%e2%80%9c%e7%ac%a6%e5%8f%b7%e5%90%8d%e7%a7%b0%2f%e5%80%bc%e2%80%9d%e7%9a%84%e9%85%8d%e5%af%b9%e3%80%82%e4%b8%94%e6%98%af%e5%bc%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e3%80%82%0a1enum%20Color%20%7b%202%20White%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc0%203%20Red%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc1%204%20Green%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc2%205%7d%20%e6%af%8f%e4%b8%aa%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e9%83%bd%e6%98%af%e4%bb%8eSystem.Enum%e6%b4%be%e7%94%9f%ef%bc%8c%e5%90%8e%e8%80%85%e4%bb%8eSystem.ValueType%e6%b4%be%e7%94%9f%ef%bc%8c%e8%80%8cSystem.ValueType%e4%bb%8eSystem.Object%e6%b4%be%e7%94%9f%e3%80%82%e6%89%80%e4%bb%a5%e6%9e%9a%e4%b8%be%e6%98%af%e5%80%bc%e7%b1%bb%e5%9e%8b%ef%bc%8c%e4%bd%86%e6%9e%9a%e4%b8%be%e4%b8%8d%e8%83%bd%e5%ae%9a%e4%b9%89%e4%bb%bb%e4%bd%95%e6%96%b9%e6%b3%95%e3%80%81%e5%b1%9e%e6%80%a7%e6%88%96%e4%ba%8b%e4%bb%b6%e3%80%82%e4%b8%8d%e8%bf%87%e5%8f%af%e4%bb%a5%e5%88%a9%e7%94%a8%e6%89%a9%e5%b1%95%e6%96%b9%e6%b3%95%e6%a8%a1%e6%8b%9f%e5%90%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%b7%bb%e5%8a%a0%e6%96%b9%e6%b3%95%e3%80%82%0a1public%20static%20class%20EnumExtension%20%7b%202%20public%20static%20bool%20Extension%28this%20Color%20color%29%20%7b%203%20%2f%2f%20...%204%20%7d%205%7d%20%e7%bc%96%e8%af%91%e5%99%a8%e7%bc%96%e8%af%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%97%b6%ef%bc%8c%e6%8a%8a%e6%af%8f%e4%b8%aa%e7%ac%a6%e5%8f%b7%e8%bd%ac%e6%8d%a2%e6%88%90%e7%b1%bb%e5%9e%8b%e7%9a%84%e4%b8%80%e4%b8%aa%e5%b8%b8%e9%87%8f%e5%ad%97%e6%ae%b5%e3%80%82%e7%b1%bb%e4%bc%bc%e4%ba%8e%e5%a6%82%e4%b8%8b%e4%bb%a3%e7%a0%81%0a1%2f%2f%20%e4%bc%aa%e4%bb%a3%e7%a0%81%202public%20struct%20Color%20%3a%20System.Enum%20%7b%203%20public%20const%20Color%20White%20%3d%20%28Color%29%200%3b%204%20public%20const%20Color%20Red%20%3d%20%28Color%29%201%3b%205%20public%20const%20Color%20Green%20%3d%20%28Color%29%202%3b%206%20%2f%2f%20%e4%bb%a5%e4%b8%8b%e6%98%af%e4%b8%80%e4%b8%aa%e5%85%ac%e5%85%b1%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%ef%bc%8c%e5%8c%85%e5%90%abColor%e5%8f%98%e9%87%8f%e7%9a%84%e5%80%bc%ef%bc%8c%e4%b8%8d%e8%83%bd%e5%86%99%e4%bb%a3%e7%a0%81%e6%9d%a5%e7%9b%b4%e6%8e%a5%e5%bc%95%e7%94%a8%e8%af%a5%e5%ad%97%e6%ae%b5%207%20public%20int%20value__%3b%208%7d%20%e6%b3%a8%e6%84%8f" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -370,47 +366,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&body=Check out this article: http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&description=%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%20%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e5%ae%9a%e4%b9%89%e4%ba%86%e4%b8%80%e7%bb%84%e2%80%9c%e7%ac%a6%e5%8f%b7%e5%90%8d%e7%a7%b0%2f%e5%80%bc%e2%80%9d%e7%9a%84%e9%85%8d%e5%af%b9%e3%80%82%e4%b8%94%e6%98%af%e5%bc%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e3%80%82%0a1enum%20Color%20%7b%202%20White%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc0%203%20Red%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc1%204%20Green%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc2%205%7d%20%e6%af%8f%e4%b8%aa%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e9%83%bd%e6%98%af%e4%bb%8eSystem.Enum%e6%b4%be%e7%94%9f%ef%bc%8c%e5%90%8e%e8%80%85%e4%bb%8eSystem.ValueType%e6%b4%be%e7%94%9f%ef%bc%8c%e8%80%8cSystem.ValueType%e4%bb%8eSystem.Object%e6%b4%be%e7%94%9f%e3%80%82%e6%89%80%e4%bb%a5%e6%9e%9a%e4%b8%be%e6%98%af%e5%80%bc%e7%b1%bb%e5%9e%8b%ef%bc%8c%e4%bd%86%e6%9e%9a%e4%b8%be%e4%b8%8d%e8%83%bd%e5%ae%9a%e4%b9%89%e4%bb%bb%e4%bd%95%e6%96%b9%e6%b3%95%e3%80%81%e5%b1%9e%e6%80%a7%e6%88%96%e4%ba%8b%e4%bb%b6%e3%80%82%e4%b8%8d%e8%bf%87%e5%8f%af%e4%bb%a5%e5%88%a9%e7%94%a8%e6%89%a9%e5%b1%95%e6%96%b9%e6%b3%95%e6%a8%a1%e6%8b%9f%e5%90%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%b7%bb%e5%8a%a0%e6%96%b9%e6%b3%95%e3%80%82%0a1public%20static%20class%20EnumExtension%20%7b%202%20public%20static%20bool%20Extension%28this%20Color%20color%29%20%7b%203%20%2f%2f%20...%204%20%7d%205%7d%20%e7%bc%96%e8%af%91%e5%99%a8%e7%bc%96%e8%af%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%97%b6%ef%bc%8c%e6%8a%8a%e6%af%8f%e4%b8%aa%e7%ac%a6%e5%8f%b7%e8%bd%ac%e6%8d%a2%e6%88%90%e7%b1%bb%e5%9e%8b%e7%9a%84%e4%b8%80%e4%b8%aa%e5%b8%b8%e9%87%8f%e5%ad%97%e6%ae%b5%e3%80%82%e7%b1%bb%e4%bc%bc%e4%ba%8e%e5%a6%82%e4%b8%8b%e4%bb%a3%e7%a0%81%0a1%2f%2f%20%e4%bc%aa%e4%bb%a3%e7%a0%81%202public%20struct%20Color%20%3a%20System.Enum%20%7b%203%20public%20const%20Color%20White%20%3d%20%28Color%29%200%3b%204%20public%20const%20Color%20Red%20%3d%20%28Color%29%201%3b%205%20public%20const%20Color%20Green%20%3d%20%28Color%29%202%3b%206%20%2f%2f%20%e4%bb%a5%e4%b8%8b%e6%98%af%e4%b8%80%e4%b8%aa%e5%85%ac%e5%85%b1%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%ef%bc%8c%e5%8c%85%e5%90%abColor%e5%8f%98%e9%87%8f%e7%9a%84%e5%80%bc%ef%bc%8c%e4%b8%8d%e8%83%bd%e5%86%99%e4%bb%a3%e7%a0%81%e6%9d%a5%e7%9b%b4%e6%8e%a5%e5%bc%95%e7%94%a8%e8%af%a5%e5%ad%97%e6%ae%b5%207%20public%20int%20value__%3b%208%7d%20%e6%b3%a8%e6%84%8f" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d&description=%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%20%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e5%ae%9a%e4%b9%89%e4%ba%86%e4%b8%80%e7%bb%84%e2%80%9c%e7%ac%a6%e5%8f%b7%e5%90%8d%e7%a7%b0%2f%e5%80%bc%e2%80%9d%e7%9a%84%e9%85%8d%e5%af%b9%e3%80%82%e4%b8%94%e6%98%af%e5%bc%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e3%80%82%0a1enum%20Color%20%7b%202%20White%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc0%203%20Red%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc1%204%20Green%2c%20%2f%2f%20%e8%b5%8b%e5%80%bc2%205%7d%20%e6%af%8f%e4%b8%aa%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e9%83%bd%e6%98%af%e4%bb%8eSystem.Enum%e6%b4%be%e7%94%9f%ef%bc%8c%e5%90%8e%e8%80%85%e4%bb%8eSystem.ValueType%e6%b4%be%e7%94%9f%ef%bc%8c%e8%80%8cSystem.ValueType%e4%bb%8eSystem.Object%e6%b4%be%e7%94%9f%e3%80%82%e6%89%80%e4%bb%a5%e6%9e%9a%e4%b8%be%e6%98%af%e5%80%bc%e7%b1%bb%e5%9e%8b%ef%bc%8c%e4%bd%86%e6%9e%9a%e4%b8%be%e4%b8%8d%e8%83%bd%e5%ae%9a%e4%b9%89%e4%bb%bb%e4%bd%95%e6%96%b9%e6%b3%95%e3%80%81%e5%b1%9e%e6%80%a7%e6%88%96%e4%ba%8b%e4%bb%b6%e3%80%82%e4%b8%8d%e8%bf%87%e5%8f%af%e4%bb%a5%e5%88%a9%e7%94%a8%e6%89%a9%e5%b1%95%e6%96%b9%e6%b3%95%e6%a8%a1%e6%8b%9f%e5%90%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%b7%bb%e5%8a%a0%e6%96%b9%e6%b3%95%e3%80%82%0a1public%20static%20class%20EnumExtension%20%7b%202%20public%20static%20bool%20Extension%28this%20Color%20color%29%20%7b%203%20%2f%2f%20...%204%20%7d%205%7d%20%e7%bc%96%e8%af%91%e5%99%a8%e7%bc%96%e8%af%91%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b%e6%97%b6%ef%bc%8c%e6%8a%8a%e6%af%8f%e4%b8%aa%e7%ac%a6%e5%8f%b7%e8%bd%ac%e6%8d%a2%e6%88%90%e7%b1%bb%e5%9e%8b%e7%9a%84%e4%b8%80%e4%b8%aa%e5%b8%b8%e9%87%8f%e5%ad%97%e6%ae%b5%e3%80%82%e7%b1%bb%e4%bc%bc%e4%ba%8e%e5%a6%82%e4%b8%8b%e4%bb%a3%e7%a0%81%0a1%2f%2f%20%e4%bc%aa%e4%bb%a3%e7%a0%81%202public%20struct%20Color%20%3a%20System.Enum%20%7b%203%20public%20const%20Color%20White%20%3d%20%28Color%29%200%3b%204%20public%20const%20Color%20Red%20%3d%20%28Color%29%201%3b%205%20public%20const%20Color%20Green%20%3d%20%28Color%29%202%3b%206%20%2f%2f%20%e4%bb%a5%e4%b8%8b%e6%98%af%e4%b8%80%e4%b8%aa%e5%85%ac%e5%85%b1%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%ef%bc%8c%e5%8c%85%e5%90%abColor%e5%8f%98%e9%87%8f%e7%9a%84%e5%80%bc%ef%bc%8c%e4%b8%8d%e8%83%bd%e5%86%99%e4%bb%a3%e7%a0%81%e6%9d%a5%e7%9b%b4%e6%8e%a5%e5%bc%95%e7%94%a8%e8%af%a5%e5%ad%97%e6%ae%b5%207%20public%20int%20value__%3b%208%7d%20%e6%b3%a8%e6%84%8f" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-enum%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-enum%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%9e%9a%e4%b8%be%e5%92%8c%e6%a0%87%e5%bf%97%e4%bd%8d" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

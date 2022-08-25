@@ -2,36 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Alaya</title>
-    <link>https://localhost:1313/categories/</link>
+    <link>http://www.sooda.net.cn/categories/</link>
     <description>Recent content in Categories on Alaya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Alaya</copyright>
-    <lastBuildDate>Mon, 22 Aug 2022 16:25:27 +0800</lastBuildDate><atom:link href="https://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 22 Aug 2022 16:25:27 +0800</lastBuildDate><atom:link href="http://www.sooda.net.cn/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《CLR via CSharp》</title>
-      <link>https://localhost:1313/categories/clr-via-csharp/</link>
+      <link>http://www.sooda.net.cn/categories/clr-via-csharp/</link>
       <pubDate>Mon, 22 Aug 2022 16:25:27 +0800</pubDate>
       
-      <guid>https://localhost:1313/categories/clr-via-csharp/</guid>
+      <guid>http://www.sooda.net.cn/categories/clr-via-csharp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>《游戏编程算法与技巧》</title>
-      <link>https://localhost:1313/categories/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</link>
+      <link>http://www.sooda.net.cn/categories/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</link>
       <pubDate>Wed, 19 Jan 2022 21:58:45 +0800</pubDate>
       
-      <guid>https://localhost:1313/categories/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</guid>
+      <guid>http://www.sooda.net.cn/categories/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</guid>
       <description></description>
     </item>
     
     <item>
       <title>《Unity实战》</title>
-      <link>https://localhost:1313/categories/unity%E5%AE%9E%E6%88%98/</link>
+      <link>http://www.sooda.net.cn/categories/unity%E5%AE%9E%E6%88%98/</link>
       <pubDate>Sun, 07 Nov 2021 22:05:19 +0800</pubDate>
       
-      <guid>https://localhost:1313/categories/unity%E5%AE%9E%E6%88%98/</guid>
+      <guid>http://www.sooda.net.cn/categories/unity%E5%AE%9E%E6%88%98/</guid>
       <description></description>
     </item>
     

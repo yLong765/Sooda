@@ -1,2 +1,0 @@
-User-agent: *
-Sitemap: https://sooda.net.cn/sitemap.xml

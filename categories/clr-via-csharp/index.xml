@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>《CLR via CSharp》 on Alaya</title>
-    <link>https://localhost:1313/categories/clr-via-csharp/</link>
+    <link>http://www.sooda.net.cn/categories/clr-via-csharp/</link>
     <description>Recent content in 《CLR via CSharp》 on Alaya</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Alaya</copyright>
-    <lastBuildDate>Mon, 22 Aug 2022 16:25:27 +0800</lastBuildDate><atom:link href="https://localhost:1313/categories/clr-via-csharp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 22 Aug 2022 16:25:27 +0800</lastBuildDate><atom:link href="http://www.sooda.net.cn/categories/clr-via-csharp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《CLR via C#》 特性</title>
-      <link>https://localhost:1313/posts/clrviacsharp-attribute/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-attribute/</link>
       <pubDate>Mon, 22 Aug 2022 16:25:27 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-attribute/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-attribute/</guid>
       <description>定制特性 自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。
 CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。
 应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素
@@ -22,20 +22,20 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     
     <item>
       <title>《CLR via C#》 委托</title>
-      <link>https://localhost:1313/posts/clrviacsharp-delegate/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-delegate/</link>
       <pubDate>Thu, 18 Aug 2022 16:55:54 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-delegate/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-delegate/</guid>
       <description>在非委托C/C++中，非成员函数的地址只是一个内存地址。这个地址不携带任何额外信息。它们很轻量但是不是类型安全的。
 委托使用方式 1// 声明一个委托类型，它的实例引用一个方法 2// 该方法获取一个int参数，返回void 3public delegate void DelFunc(int value); 4 5public class DelClass { 6 public static void Func1(int value) { 7 Console.WriteLine(&amp;#34;Func1 &amp;#34; + value); 8 } 9 10 public static void Func2(int value) { 11 Console.WriteLine(&amp;#34;Func2 &amp;#34; + value); 12 } 13 14 public void Func3(int value) { 15 Console.WriteLine(&amp;#34;Func3 &amp;#34; + value); 16 } 17} 18 19DelClass dc = new DelClass(); 20DelFunc df1 = new DelFunc(DelClass.</description>
     </item>
     
     <item>
       <title>《CLR via C#》 数组</title>
-      <link>https://localhost:1313/posts/clrviacsharp-array/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-array/</link>
       <pubDate>Thu, 18 Aug 2022 14:09:37 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-array/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-array/</guid>
       <description>CLR支持一维、多维和交错数组。所有数组都隐式地从System.Array抽象类派生，后者又派生自System.Object。这意味着数组始终是引用类型，从托管堆分配。
 一维数组 1int[] arr; // 声明一个数组引用 2arr = new int[100]; // 创建含有100个int的数组，并全部初始化为0 实际上，除了数组元素，数组对象占据的内存块还包含一个类型对象指针、一个同步块索引和一些额外的成员。
 注意
@@ -46,10 +46,10 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     
     <item>
       <title>《CLR via C#》 枚举和标志位</title>
-      <link>https://localhost:1313/posts/clrviacsharp-enum/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-enum/</link>
       <pubDate>Thu, 18 Aug 2022 10:23:40 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-enum/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-enum/</guid>
       <description>枚举类型 枚举类型定义了一组“符号名称/值”的配对。且是强类型的。
 1enum Color { 2 White, // 赋值0 3 Red, // 赋值1 4 Green, // 赋值2 5} 每个枚举类型都是从System.Enum派生，后者从System.ValueType派生，而System.ValueType从System.Object派生。所以枚举是值类型，但枚举不能定义任何方法、属性或事件。不过可以利用扩展方法模拟向枚举类型添加方法。
 1public static class EnumExtension { 2 public static bool Extension(this Color color) { 3 // ... 4 } 5} 编译器编译枚举类型时，把每个符号转换成类型的一个常量字段。类似于如下代码
@@ -58,10 +58,10 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     
     <item>
       <title>《CLR via C#》 字符、字符串和文本处理</title>
-      <link>https://localhost:1313/posts/clrviacsharp-string/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-string/</link>
       <pubDate>Tue, 16 Aug 2022 15:57:16 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-string/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-string/</guid>
       <description>字符 字符总是表示成16位Unicode代码值，每个字符都是System.Char接口(值类型)的实例。
 Sytem.Char 方法 方法名 说明 GetUnicodeCategory 返回UnicodeCategory枚举，表明该字符是由Unicode标准定义的控制字符、货币符号、小写字母、大写字母、标点符号还是其他字符。 ToLowerInvariant 忽略语言文化将字符转换位小写 ToLower 转换小写，但会使用与调用线程关联的语言文化信息(System.Threading.Thread的静态属性CurrentCulture) Equals 两个Char实例代表同一个16位Unicode码位的前提下返回true CompareTo 两个Char实例忽略语言文化的比较结果 GetNumericValue 返回字符的数值形式 Char实例的相互转换 转型(强制类型转换)：是效率最高的，因为编译器会生成中间语言指令来执行转换，而且不必调用方法。 使用Convert类：System.Convert提供了几个静态方法来实现Char和数值类型的转换。所有转换都以checked方式执行，发现转换将造成数据丢失就会抛出OverflowException异常。 使用IConvertible接口：效率最差，因为再值类型上调用接口方法会装箱。而且很多是显式实现的接口。 System.String 字符串构造 C#将String视为基元类型，也就是允许再源代码中直接使用字面值(literal)字符串。编译器将这些字符串放到模块的元数据中，并在运行时加载和引用它们。
 逐字字符串(verbatim string)：用@来声明字符串，其字符串中所有的字符都视为一部分。下面的代码在元数据中生成同样的字符串，但是逐字字符串可读性更好。
@@ -85,10 +85,10 @@ ToString方法 System.Object定义了一个public、virtual、无参的ToString�
     
     <item>
       <title>《CLR via C#》 接口</title>
-      <link>https://localhost:1313/posts/clrviacsharp-interface/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-interface/</link>
       <pubDate>Mon, 08 Aug 2022 17:28:55 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-interface/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-interface/</guid>
       <description>接口实际只是对一组方法签名进行了统一命名。这些方法不提供任何实现。类通过指定接口名称来继承接口，而且必须显式实现接口方法，否则CLR会认为此类型定义无效。
 定义接口 接口可以定义事件、无参属性和有参属性。但接口不能定义任何构造器方法，也布恩那个定义任何实例字段。
 提示
@@ -102,10 +102,10 @@ CLR允许接口定义静态方法、静态字段、常量和静态构造器，�
     
     <item>
       <title>《CLR via C#》 泛型</title>
-      <link>https://localhost:1313/posts/clrviacsharp-%E6%B3%9B%E5%9E%8B/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-%E6%B3%9B%E5%9E%8B/</link>
       <pubDate>Sun, 07 Aug 2022 15:38:51 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-%E6%B3%9B%E5%9E%8B/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-%E6%B3%9B%E5%9E%8B/</guid>
       <description>泛型(generic)是CLR和变成语言提供的一种特殊机制，它支持另一种形式的代码重用，即“算法重用”。
 CLR允许创建泛型引用类型和泛型值类型，但不允许创建泛型枚举类型。CLR还允许创建泛型接口和泛型委托。
 类型实参(type argument)：使用泛型类型或方法时指定的具体数据类型。
@@ -117,10 +117,10 @@ CLR允许创建泛型引用类型和泛型值类型，但不允许创建泛型�
     
     <item>
       <title>《CLR via C#》 Class成员</title>
-      <link>https://localhost:1313/posts/clrviacsharp-class%E6%88%90%E5%91%98/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-class%E6%88%90%E5%91%98/</link>
       <pubDate>Wed, 27 Jul 2022 15:20:36 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-class%E6%88%90%E5%91%98/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-class%E6%88%90%E5%91%98/</guid>
       <description>类型成员基础 常量：数据恒定不变的符号。 字段：只读或可读/可写的数据值。 实例构造器：将新对象的实例字段初始化的特殊方法 类型构造器：将类型的静态字段初始化的特殊方法。 方法：更改或查询类型或对象状态的函数。作用于类型成为静态方法，作用于对象为实例方法。 操作符重载：实际是方法，定义了当操作符作用于对象时，应该如何操作对象。 转换操作符：定义如何隐式或显式将对象从一种类型转型为另一种类型的方法。 属性：设置或查询类型或对象的逻辑状态。作用于类型为静态属性，作用域对象为实例属性。 事件：静态事件允许类型向一个或多个静态或实例方法发送通知。实例事件允许对象向一个或多个静态或实例方法发送通知。 类型：可以定义其他嵌套类型。 常量 定义常量符号时，值必须能在编译时确定。编译器将常量值保存到程序集元数据中。意味着只能定义编译器可识别的基元类型常量。非基元类型的常量变量只能为null。
 编译器会在定义常量的程序集元数据中查找该符号，提取常量值并嵌入IL代码中。所以运行时没有任何额外内存分配，但是不能取常量地址或引用传递常量。
 C#不允许常量设置为static，因为常量总隐式设置为static。
@@ -137,10 +137,10 @@ CLR支持类型(静态)字段和实例(非静态)字段。类型字段所需的�
     
     <item>
       <title>《CLR via C#》 基元类型、引用类型和值类型</title>
-      <link>https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Tue, 12 Jul 2022 17:49:41 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</guid>
       <description>Type基础 C#中有三种类型分别是基元类型、引用类型和值类型
 基元类型 编辑器直接支持的数据类型称为基元类型(primitive type)。基元类型直接映射到Framework类库(FCL)中存在的类型。
 C#基元类型 FCL类型 符合公共语言规范(CLS) 说明 sbyte System.SByte 否 有符号8位 byte System.Byte 是 无符号8位 short System.Int16 是 有符号16位 ushort System.UInt16 否 无符号16位 int System.Int32 是 有符号32位 uint System.UInt32 否 无符号32位 long System.Int64 是 有符号64位 ulong System.UInt64 否 无符号64位 char System.Char 是 16位Unicode字符 float System.Single 是 IEEE 32位浮点值 double System.Double 是 IEEE 64位浮点值 bool System.Boolean 是 true/false decimal System.Decimal 是 128位高精度浮点值，常用于不容许误差的金融计算 string System.String 是 字符数组 object System.Object 是 所有类型的基类 dynamic System.</description>
@@ -148,10 +148,10 @@ C#基元类型 FCL类型 符合公共语言规范(CLS) 说明 sbyte System.SByte
     
     <item>
       <title>《CLR via C#》 class及成员基础</title>
-      <link>https://localhost:1313/posts/clrviacsharp-class/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-class/</link>
       <pubDate>Tue, 28 Jun 2022 17:09:01 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-class/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-class/</guid>
       <description>class System.Object “运行时”所有的类型最终都从System.Object类型派生。
 1// 隐式派生自Object 2class A {} 3 4// 显式派生自Object 5class A : System.Object {} System.Object的public方法
 Equals：比较函数 GetHashCode：对象哈希值 ToString：转换成String类型对象 GetType：返回对象的类型 System.Object的protected方法
@@ -164,10 +164,10 @@ is 和 as is操作符用于检查是否兼容于指定类型，如果对象引�
     
     <item>
       <title>《CLR via C#》 CLR基础</title>
-      <link>https://localhost:1313/posts/clrviacsharp-clr%E5%9F%BA%E7%A1%80/</link>
+      <link>http://www.sooda.net.cn/posts/clrviacsharp-clr%E5%9F%BA%E7%A1%80/</link>
       <pubDate>Thu, 16 Jun 2022 11:16:04 +0800</pubDate>
       
-      <guid>https://localhost:1313/posts/clrviacsharp-clr%E5%9F%BA%E7%A1%80/</guid>
+      <guid>http://www.sooda.net.cn/posts/clrviacsharp-clr%E5%9F%BA%E7%A1%80/</guid>
       <description>CLR的执行模型 公共语言运行时(Common Language Runtime, CLR)是一个可由多种编程语言使用的“运行时”。CLR的核心功能(比如内存管理、程序集加载、安全性、异常处理和线程同步)可由面向CLR的所有语言使用。
 不同编程语言的意义？可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。但是无论任何用哪个编译器，最终编译的结果都是托管模块(managed module)。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件。
 高级语言(例如C#、F#等)通常只公开的CLR全部功能的一个子集。然而，IL汇编语言允许开发人员访问CLR的全部功能。
