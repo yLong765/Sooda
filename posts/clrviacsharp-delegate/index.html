@@ -259,20 +259,17 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>dfs += df1;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>dfs -= df1;
 </span></span></code></pre></div><div class="admonition tip"><p class="admonition-title">提示</p>
-  
-委托对象其实是方法的包装器(wrapper)，使方法能够通过包装器来间接回调。
-
-在一个类型中通过委托来调用另一个类型的私有成员，只要委托对象是由具有足够安全性/可访问性的代码创建的，便没有问题。
-将方法绑定到委托时，允许参数或返回值中的引用类型使用协变性和逆变性。
-```csharp
-delegate Object Callback(FileStream s);
-// 上方的委托可以用以下的方法原型来绑定
-String Func1(Stream s);
-// 但不能用以下的方法原型来绑定，因为int是值类型
-int Func2(Stream s);
-```
-
+<p>委托对象其实是方法的包装器(wrapper)，使方法能够通过包装器来间接回调。</p>
 </div>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>在一个类型中通过委托来调用另一个类型的私有成员，只要委托对象是由具有足够安全性/可访问性的代码创建的，便没有问题。
+将方法绑定到委托时，允许参数或返回值中的引用类型使用协变性和逆变性。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">delegate</span> Object Callback(FileStream s);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#6272a4">// 上方的委托可以用以下的方法原型来绑定</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>String Func1(Stream s);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#6272a4">// 但不能用以下的方法原型来绑定，因为int是值类型</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#8be9fd">int</span> Func2(Stream s);
+</span></span></code></pre></div></div>
 <h2 id="揭秘委托的内幕">揭秘委托的内幕</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">delegate</span> <span style="color:#ff79c6">void</span> DelFunc(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>);
 </span></span></code></pre></div><p>上述代码定义了一个委托，而这段委托定义会让编译器定义一个完整的类：</p>
