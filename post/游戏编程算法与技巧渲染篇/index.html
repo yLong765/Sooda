@@ -1,29 +1,47 @@
 <!DOCTYPE html>
-<html lang="cn">
-
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>《游戏编程算法与技巧》渲染篇 - Alaya - Simple Life Simple Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-<link rel="stylesheet" href="https://cdn.bootcss.com/KaTeX/0.16.0/katex.min.css">
-<script defer src = "https://cdn.bootcss.com/KaTeX/0.16.0/katex.min.js"></script>
-<script>
-	var katex_config = {
-		delimiters:[
-			{left: "$$", right: "$$", display: true},
-			{left: "$", right: "$", display: false}
-		]
-	};
-</script>
-<script defer src="https://cdn.bootcss.com/KaTeX/0.16.0/contrib/auto-render.min.js" onload="renderMathInElement(document.body, katex_config)"></script>
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta charset="utf-8" />
-<meta name="author" content="Alaya" />
-<meta name="description" content="简简单单生活，安安静静编程" />
-<meta name="keywords" content="" />
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.100.2" />
+<meta name="author" content="Alaya" /><meta name="description" content="此篇主要介绍最近本的渲染知识点" /><meta name="keywords" content="Hugo, theme, even" />
 
-<link rel="canonical" href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/">
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+  
+
+
 <meta property="og:title" content="《游戏编程算法与技巧》渲染篇" />
 <meta property="og:description" content="此篇主要介绍最近本的渲染知识点" />
 <meta property="og:type" content="article" />
@@ -31,67 +49,111 @@
 <meta property="article:published_time" content="2021-12-22T15:57:24+08:00" />
 <meta property="article:modified_time" content="2021-12-22T15:57:24+08:00" />
 
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="《游戏编程算法与技巧》渲染篇"/>
-<meta name="twitter:description" content="此篇主要介绍最近本的渲染知识点"/>
-
 <meta itemprop="name" content="《游戏编程算法与技巧》渲染篇">
 <meta itemprop="description" content="此篇主要介绍最近本的渲染知识点"><meta itemprop="datePublished" content="2021-12-22T15:57:24+08:00" />
 <meta itemprop="dateModified" content="2021-12-22T15:57:24+08:00" />
-<meta itemprop="wordCount" content="534">
-<meta itemprop="keywords" content="《游戏编程算法与技巧》,渲染," />
+<meta itemprop="wordCount" content="2489">
+<meta itemprop="keywords" content="游戏编程算法与技巧,渲染," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《游戏编程算法与技巧》渲染篇"/>
+<meta name="twitter:description" content="此篇主要介绍最近本的渲染知识点"/>
 
-<link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
 
-
-<link rel="stylesheet" href="https://sooda.net.cn/css/default-dark.css" />
-
-
-
-
-<title>
-
-
-     《游戏编程算法与技巧》渲染篇 
-
-</title>
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
 </head>
-
-
 <body>
-<div class="main">
-<header>
-
-<div class="header-bar">
-
-  <nav>
-    <div class="siteTitle">
-      <a href="https://sooda.net.cn">Sooda</a>
-    </div> 
-
-    
-    
-    <a class="nav-item" href="https://sooda.net.cn/categories/"><div class="nav-item-title">Categories</div></a>
-    
-    <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
-    
-  </nav>
-  <div class="font">
-    简简单单生活，安安静静编程
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Alaya</a>
   </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+
   
 
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Alaya</a>
 </div>
 
 
-</header>
 
 
-<article class="post">
-    <h1 class="title"> 《游戏编程算法与技巧》渲染篇 </h1>
-    <div class="content"> <h1 id="闲话">闲话</h1>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">《游戏编程算法与技巧》渲染篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/"> 阅读提炼 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#闲话">闲话</a></li>
+    <li><a href="#渲染基础">渲染基础</a>
+      <ul>
+        <li><a href="#双缓冲技术解决渲染撕裂">双缓冲技术解决渲染撕裂</a></li>
+        <li><a href="#画家算法">画家算法</a></li>
+        <li><a href="#3d渲染">3D渲染</a>
+          <ul>
+            <li><a href="#软件光栅化">软件光栅化</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="闲话">闲话</h1>
 <p>近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读</p>
 <p>此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。</p>
 <h1 id="渲染基础">渲染基础</h1>
@@ -198,19 +260,37 @@ L_z &amp; U_z &amp; F_z &amp; 0 \newline
 T_x &amp; T_y &amp; T_z &amp; 1
 \end{bmatrix}
 $$</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Matrix4x4 <span style="color:#a6e22e">LookAt</span>(Vector3 eye, Vector3 target, Vector3 Up) {
-</span></span><span style="display:flex;"><span>    Vector3 F <span style="color:#f92672">=</span> normalize(target <span style="color:#f92672">-</span> eye);
-</span></span><span style="display:flex;"><span>    Vector3 L <span style="color:#f92672">=</span> normalize(cross(Up, F));
-</span></span><span style="display:flex;"><span>    Vector3 U <span style="color:#f92672">=</span> cross(F, L);
-</span></span><span style="display:flex;"><span>    Vector3 T;
-</span></span><span style="display:flex;"><span>    T.x <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>dot(L, eye);
-</span></span><span style="display:flex;"><span>    T.y <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>dot(U, eye);
-</span></span><span style="display:flex;"><span>    T.z <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>dot(F, eye);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//创建并返回观察矩阵
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
-</span></span></code></pre></div><h4 id="投影坐标系">投影坐标系</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Matrix4x4</span> <span class="nf">LookAt</span><span class="p">(</span><span class="n">Vector3</span> <span class="n">eye</span><span class="p">,</span> <span class="n">Vector3</span> <span class="n">target</span><span class="p">,</span> <span class="n">Vector3</span> <span class="n">Up</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Vector3</span> <span class="n">F</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">eye</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Vector3</span> <span class="n">L</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">Up</span><span class="p">,</span> <span class="n">F</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Vector3</span> <span class="n">U</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">L</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Vector3</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">dot</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">eye</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">eye</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="n">dot</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">eye</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//创建并返回观察矩阵
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">//...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="投影坐标系">投影坐标系</h4>
 <h5 id="正交投影">正交投影</h5>
 <p>$$
 Orthographic = \begin{bmatrix}
@@ -267,18 +347,35 @@ $$
 <li>漫反射：光源作用于物体表面的主要反射。被所有方向光，点光源和聚光灯影响。</li>
 <li>高光：物体表面的闪光点</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// N = 物体表面法线
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// eye = 摄像机位置
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// pos = 物体表面位置
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// a = 高光量
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Vector3 V <span style="color:#f92672">=</span> normalize(eye <span style="color:#f92672">-</span> pos);
-</span></span><span style="display:flex;"><span>Vector3 Phong <span style="color:#f92672">=</span> AmbientColor;   <span style="color:#75715e">// 环境光
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>foreach Light light in scene    <span style="color:#75715e">// 循环场景中所有的灯光
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Vector3 L <span style="color:#f92672">=</span> normalize(light.pos <span style="color:#f92672">-</span> pos); <span style="color:#75715e">// 从物体表面到光源
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Phong <span style="color:#f92672">+=</span> DiffuseColor <span style="color:#f92672">*</span> dot(N, L);  <span style="color:#75715e">// 漫反射光照强度
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Vector3 R <span style="color:#f92672">=</span> normalize(reflect(<span style="color:#f92672">-</span>L, N)); <span style="color:#75715e">// 计算-L关于N的反射
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Phong <span style="color:#f92672">+=</span> SpecularColor <span style="color:#f92672">*</span> pow(dot(R, V), a); <span style="color:#75715e">// 高光强度
-</span></span></span></code></pre></div><h6 id="着色方式">着色方式</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// N = 物体表面法线
+</span></span></span><span class="line"><span class="cl"><span class="c1">// eye = 摄像机位置
+</span></span></span><span class="line"><span class="cl"><span class="c1">// pos = 物体表面位置
+</span></span></span><span class="line"><span class="cl"><span class="c1">// a = 高光量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Vector3</span> <span class="n">V</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">eye</span> <span class="o">-</span> <span class="n">pos</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Vector3</span> <span class="n">Phong</span> <span class="o">=</span> <span class="n">AmbientColor</span><span class="p">;</span>   <span class="c1">// 环境光
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">foreach</span> <span class="n">Light</span> <span class="n">light</span> <span class="n">in</span> <span class="n">scene</span>    <span class="c1">// 循环场景中所有的灯光
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Vector3</span> <span class="n">L</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">pos</span> <span class="o">-</span> <span class="n">pos</span><span class="p">);</span> <span class="c1">// 从物体表面到光源
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Phong</span> <span class="o">+=</span> <span class="n">DiffuseColor</span> <span class="o">*</span> <span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">);</span>  <span class="c1">// 漫反射光照强度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Vector3</span> <span class="n">R</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">L</span><span class="p">,</span> <span class="n">N</span><span class="p">));</span> <span class="c1">// 计算-L关于N的反射
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Phong</span> <span class="o">+=</span> <span class="n">SpecularColor</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">V</span><span class="p">),</span> <span class="n">a</span><span class="p">);</span> <span class="c1">// 高光强度
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h6 id="着色方式">着色方式</h6>
 <ul>
 <li>平面着色：每个三角面只用一种颜色</li>
 <li>Gouraud着色：通过顶点颜色插值填充（多边形数量越多越好）</li>
@@ -295,86 +392,98 @@ $$
 先绘制深度pass，然后按照所得的深度缓冲结果计算光照pass</p>
 <p>利用剔除或者遮挡算法可消除在某些帧完全看不到的对象。类似的算法有二叉树分区算法（BSP），人口算法和遮挡体积等。</p>
 <p>（完）</p>
- </div>
-    <footer class="post-footer">
 
-  <div class="post-footer-data">
-            
-<div class="tags">
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Alaya</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-12-22
+        
+    </span>
+  </p>
   
-    
-      <div class="tag">
-        <a href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7">#《游戏编程算法与技巧》</a>
-      </div>
-    
-      <div class="tag">
-        <a href="https://sooda.net.cn/tags/%E6%B8%B2%E6%9F%93">#渲染</a>
-      </div>
-    
   
 </div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/">游戏编程算法与技巧</a>
+          <a href="/tags/%E6%B8%B2%E6%9F%93/">渲染</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">《游戏编程算法与技巧》输入和声音篇</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/unity%E5%AE%9E%E6%88%98/">
+            <span class="next-text nav-default">《Unity实战》总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
 
-    <div class="date"> 2021-12-22 </div>
-    
-    <hr>
-            
-<div class="categories">
   
-  Published in:
-    
-      <div class="category">
-        <a href="https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC">阅读提炼</a>
+
+  
+
       </div>
-    
-  
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/yLong765" class="iconfont icon-github" title="github"></a>
+  <a href="https://sooda.net.cn/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
-            
-<div class="series">
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
   
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Alaya</span>
+  </span>
 </div>
 
-    
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
   </div>
-</footer>
-
-
   
-  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
 
 
 
-</article>
-
-  <footer>
-
-  <div class="social-links-footer">
-
-  
-
-  
-  <a href="https://github.com/yLong765" target="_blank"><div class="social-link">GitHub</div></a>
-  
-
-  
-
-  
-
-  
-
-  
-
-</div>
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
 
 
-  <div class="copyright"> Copyright © 2022, All Rights Reserved. </div>
 
-  
 
-  </footer>
 
-</div> 
+
+
 
 </body>
 </html>
-

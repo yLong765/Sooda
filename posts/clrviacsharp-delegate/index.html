@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 《CLR via C#》 委托 | Alaya</title>
+  <link rel = 'canonical' href = 'https://localhost:1313/posts/clrviacsharp-delegate/'>
+  <meta name="description" content="Simple Life Simple Coding.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="《CLR via C#》 委托" />
+<meta property="og:description" content="在非委托C/C&#43;&#43;中，非成员函数的地址只是一个内存地址。这个地址不携带任何额外信息。它们很轻量但是不是类型安全的。
+委托使用方式 1// 声明一个委托类型，它的实例引用一个方法 2// 该方法获取一个int参数，返回void 3public delegate void DelFunc(int value); 4 5public class DelClass { 6 public static void Func1(int value) { 7 Console.WriteLine(&#34;Func1 &#34; &#43; value); 8 } 9 10 public static void Func2(int value) { 11 Console.WriteLine(&#34;Func2 &#34; &#43; value); 12 } 13 14 public void Func3(int value) { 15 Console.WriteLine(&#34;Func3 &#34; &#43; value); 16 } 17} 18 19DelClass dc = new DelClass(); 20DelFunc df1 = new DelFunc(DelClass." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://localhost:1313/posts/clrviacsharp-delegate/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-08-18T16:55:54+08:00" />
+<meta property="article:modified_time" content="2022-08-18T16:55:54+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《CLR via C#》 委托"/>
+<meta name="twitter:description" content="在非委托C/C&#43;&#43;中，非成员函数的地址只是一个内存地址。这个地址不携带任何额外信息。它们很轻量但是不是类型安全的。
+委托使用方式 1// 声明一个委托类型，它的实例引用一个方法 2// 该方法获取一个int参数，返回void 3public delegate void DelFunc(int value); 4 5public class DelClass { 6 public static void Func1(int value) { 7 Console.WriteLine(&#34;Func1 &#34; &#43; value); 8 } 9 10 public static void Func2(int value) { 11 Console.WriteLine(&#34;Func2 &#34; &#43; value); 12 } 13 14 public void Func3(int value) { 15 Console.WriteLine(&#34;Func3 &#34; &#43; value); 16 } 17} 18 19DelClass dc = new DelClass(); 20DelFunc df1 = new DelFunc(DelClass."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://localhost:1313/css/styles.1e769e967e9c06518a5e0618da426e1be02b65c215ab7586c2b95fa09a2997b516357fd281da2cb1044ec3d691b106662e083110bbda88c3203e884f0485d6b5.css" integrity="sha512-Hnaeln6cBlGKXgYY2kJuG&#43;ArZcIVq3WGwrlfoJopl7UWNX/SgdossQROw9aRsQZmLggxELvaiMMgPohPBIXWtQ=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://localhost:1313/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://localhost:1313/posts/clrviacsharp-array/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://localhost:1313/posts/clrviacsharp-attribute/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98&description=%e5%9c%a8%e9%9d%9e%e5%a7%94%e6%89%98C%2fC%2b%2b%e4%b8%ad%ef%bc%8c%e9%9d%9e%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e7%9a%84%e5%9c%b0%e5%9d%80%e5%8f%aa%e6%98%af%e4%b8%80%e4%b8%aa%e5%86%85%e5%ad%98%e5%9c%b0%e5%9d%80%e3%80%82%e8%bf%99%e4%b8%aa%e5%9c%b0%e5%9d%80%e4%b8%8d%e6%90%ba%e5%b8%a6%e4%bb%bb%e4%bd%95%e9%a2%9d%e5%a4%96%e4%bf%a1%e6%81%af%e3%80%82%e5%ae%83%e4%bb%ac%e5%be%88%e8%bd%bb%e9%87%8f%e4%bd%86%e6%98%af%e4%b8%8d%e6%98%af%e7%b1%bb%e5%9e%8b%e5%ae%89%e5%85%a8%e7%9a%84%e3%80%82%0a%e5%a7%94%e6%89%98%e4%bd%bf%e7%94%a8%e6%96%b9%e5%bc%8f%201%2f%2f%20%e5%a3%b0%e6%98%8e%e4%b8%80%e4%b8%aa%e5%a7%94%e6%89%98%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%ae%83%e7%9a%84%e5%ae%9e%e4%be%8b%e5%bc%95%e7%94%a8%e4%b8%80%e4%b8%aa%e6%96%b9%e6%b3%95%202%2f%2f%20%e8%af%a5%e6%96%b9%e6%b3%95%e8%8e%b7%e5%8f%96%e4%b8%80%e4%b8%aaint%e5%8f%82%e6%95%b0%ef%bc%8c%e8%bf%94%e5%9b%9evoid%203public%20delegate%20void%20DelFunc%28int%20value%29%3b%204%205public%20class%20DelClass%20%7b%206%20public%20static%20void%20Func1%28int%20value%29%20%7b%207%20Console.WriteLine%28%26%2334%3bFunc1%20%26%2334%3b%20%2b%20value%29%3b%208%20%7d%209%2010%20public%20static%20void%20Func2%28int%20value%29%20%7b%2011%20Console.WriteLine%28%26%2334%3bFunc2%20%26%2334%3b%20%2b%20value%29%3b%2012%20%7d%2013%2014%20public%20void%20Func3%28int%20value%29%20%7b%2015%20Console.WriteLine%28%26%2334%3bFunc3%20%26%2334%3b%20%2b%20value%29%3b%2016%20%7d%2017%7d%2018%2019DelClass%20dc%20%3d%20new%20DelClass%28%29%3b%2020DelFunc%20df1%20%3d%20new%20DelFunc%28DelClass." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#委托使用方式">委托使用方式</a></li>
+    <li><a href="#揭秘委托的内幕">揭秘委托的内幕</a></li>
+    <li><a href="#委托链">委托链</a>
+      <ul>
+        <li><a href="#添加委托">添加委托</a></li>
+        <li><a href="#删除委托">删除委托</a></li>
+        <li><a href="#invoke方法调用委托链">Invoke方法调用委托链</a></li>
+        <li><a href="#对委托链的更多控制">对委托链的更多控制</a></li>
+      </ul>
+    </li>
+    <li><a href="#委托的简化">委托的简化</a>
+      <ul>
+        <li><a href="#1-不需要构造委托对象">1. 不需要构造委托对象</a></li>
+        <li><a href="#2-不需要定义回调方法lambda表达式">2. 不需要定义回调方法(lambda表达式)</a></li>
+        <li><a href="#3-局部变量不需要手动包装到类中即可传递给方法">3. 局部变量不需要手动包装到类中即可传递给方法</a></li>
+      </ul>
+    </li>
+    <li><a href="#委托和反射">委托和反射</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        《CLR via C#》 委托
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-08-18 16:55:54 &#43;0800 CST" itemprop="datePublished">2022-08-18</time>
+          
+        </div>
+        
+        
+        
+        <div class="article-category">
+            <i class="fas fa-archive"></i>
+            
+            
+            <a class="category-link" href="/categories/clr-via-csharp">《CLR via CSharp》</a>
+            
+        </div>
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <p>在非委托C/C++中，非成员函数的地址只是一个内存地址。这个地址不携带任何额外信息。它们很轻量但是不是类型安全的。</p>
+<h2 id="委托使用方式">委托使用方式</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// 声明一个委托类型，它的实例引用一个方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#6272a4">// 该方法获取一个int参数，返回void</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">delegate</span> <span style="color:#ff79c6">void</span> DelFunc(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">DelClass</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Func1(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;Func1 &#34;</span> + <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Func2(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;Func2 &#34;</span> + <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> Func3(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;Func3 &#34;</span> + <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>DelClass dc = <span style="color:#ff79c6">new</span> DelClass();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>DelFunc df1 = <span style="color:#ff79c6">new</span> DelFunc(DelClass.Func1);  <span style="color:#6272a4">// 引用静态函数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>DelFunc df2 = <span style="color:#ff79c6">new</span> DelFunc(DelClass.Func2);  <span style="color:#6272a4">// 引用静态函数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>DelFunc df3 = <span style="color:#ff79c6">new</span> DelFunc(dc.Func3);        <span style="color:#6272a4">// 引用实例函数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style="color:#6272a4">// 利用Combine方法向委托添加多个引用函数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>DelFunc dfs = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>dfs = (DelFunc) Delegate.Combine(dfs, df1);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>dfs = (DelFunc) Delegate.Combine(dfs, df3);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span><span style="color:#6272a4">// 利用Remove方法移除委托中的方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>dfs = (DelFunc) Delegate.Remove(dfs, <span style="color:#ff79c6">new</span> DelFunc(dc.Func3));
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span><span style="color:#6272a4">// 简化的添加与删除</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>dfs += df1;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>dfs -= df1;
+</span></span></code></pre></div><div class="admonition tip"><p class="admonition-title">提示</p>
+  
+委托对象其实是方法的包装器(wrapper)，使方法能够通过包装器来间接回调。
+
+在一个类型中通过委托来调用另一个类型的私有成员，只要委托对象是由具有足够安全性/可访问性的代码创建的，便没有问题。
+将方法绑定到委托时，允许参数或返回值中的引用类型使用协变性和逆变性。
+```csharp
+delegate Object Callback(FileStream s);
+// 上方的委托可以用以下的方法原型来绑定
+String Func1(Stream s);
+// 但不能用以下的方法原型来绑定，因为int是值类型
+int Func2(Stream s);
+```
+
+</div>
+<h2 id="揭秘委托的内幕">揭秘委托的内幕</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">delegate</span> <span style="color:#ff79c6">void</span> DelFunc(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>);
+</span></span></code></pre></div><p>上述代码定义了一个委托，而这段委托定义会让编译器定义一个完整的类：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">DelFunc</span> : System.MulticastDelegate {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#6272a4">// 构造器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#ff79c6">public</span> DelFunc(Object @object, IntPtr method);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">virtual</span> <span style="color:#ff79c6">void</span> Invoke(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#6272a4">// 以下方法实现对回调方法的异步回调</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">virtual</span> IAsyncResult BeginInvoke(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>, AsyncCallback callback, Object @object);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">virtual</span> <span style="color:#ff79c6">void</span> EndInvoke(IAsyncResult result);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>}
+</span></span></code></pre></div><p>所有的委托类型都派生自<code>System.MulticastDelegate</code>，<code>System.MulticastDelegate</code>又派生自<code>System.Delegate</code>，<code>System.Delegate</code>又派生自<code>System.Object</code>。</p>
+<p><code>MulticastDelegate</code>中的三个重要的非公共字段</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_target</td>
+<td>System.Object</td>
+<td>当委托对象包装一个静态方法时，这个字段为null。当委托对象包装一个实例方法时，这个字段引用的是回调方法要操作的对象。换言之，这个字段指出要传给实例方法的隐式参数this的值</td>
+</tr>
+<tr>
+<td>_methodPtr</td>
+<td>System.IntPtr</td>
+<td>用来标识要回调的方法</td>
+</tr>
+<tr>
+<td>_invocationList</td>
+<td>System.Object</td>
+<td>该字段通常为null。构造委托链时它引用一个委托数组</td>
+</tr>
+</tbody>
+</table>
+<p>委托的构造器获取两个参数：一个对象引用，一个引用了回调方法的整数。看起啦应该不会通过编译才对。而编译器知道要构造的时委托，所以会分析代码来确定引用的是哪个对象和方法。对象的引用被传递给构造器的<code>object</code>参数，标识了方法的特殊<code>IntPtr</code>值(从MethodDef或MemberRef元数据获取)被传递给构造器的<code>method</code>参数。静态方法会为<code>object</code>传递<code>null</code>值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// 引用静态方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#6272a4">// _target = null</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#6272a4">// _methodPtr = Func1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#6272a4">// _invocationList = null</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>DelFunc fstatic = <span style="color:#ff79c6">new</span> DelFunc(Func1);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>DelClass dc = <span style="color:#ff79c6">new</span> DelClass();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#6272a4">// 引用实例方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#6272a4">// _target = DelClass对象dc</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#6272a4">// _methodPtr = Func3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#6272a4">// _invocationList = null</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>DelFunc fInstance = <span style="color:#ff79c6">new</span> DelFunc(dc.Func3);
+</span></span></code></pre></div><p>而调用委托的回调方法其实就是调用其委托类中的<code>Invoke</code>方法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> Callback(DelFunc df, <span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#ff79c6">if</span> (df != <span style="color:#ff79c6">null</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>        df(<span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>        <span style="color:#6272a4">// 编译器编译后会转换成以下代码</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>        df.Invoke(<span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
+</span></span></code></pre></div><h2 id="委托链">委托链</h2>
+<h3 id="添加委托">添加委托</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>DelFunc dfs = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>dfs = (DelFunc) Delegate.Combine(dfs, df1);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>dfs = (DelFunc) Delegate.Combine(dfs, df2);
+</span></span></code></pre></div><p>第一次调用<code>Delegate.Combine</code>方法时将<code>null</code>和<code>df1</code>合并，返回<code>df1</code>。</p>
+<p>第二次合并发现<code>dfs</code>已经引用了一个委托，所以会构造一个新的委托对象。新委托对象对它的私有字段<code>_target</code>和<code>_methodPtr</code>进行初始化。<code>_invocationList</code>字段被初始化为引用一个委托对像数组。数组的第一个元素被初始化为引用包装<code>df1</code>方法的委托。第二个元素为引用了<code>df2</code>方法的委托。最后<code>dfs</code>被设为引用新委托的对象。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/20220819155925.png" alt="委托链"></p>
+<h3 id="删除委托">删除委托</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>dfs = (DelFunc) Delegate.Remove(dfs, <span style="color:#ff79c6">new</span> DelFunc(dc.Func3));
+</span></span></code></pre></div><p><code>Remove</code>方法被调用时，扫描第一个参数<code>dfs</code>的委托对象内部的委托数组(<strong>从末尾向索引0扫描</strong>)。查找其<code>_target</code>和<code>_methodPtr</code>与数组中匹配的项。<strong>如果找到匹配且删除后还剩一个数据项就返回那个数据项</strong>。<strong>如果找到匹配且有多个数据项，就新建一个委托对象并初始化_invocationList引用除删除项其它的所有数据项。并返回对这个新建委托对象的引用</strong>。</p>
+<h3 id="invoke方法调用委托链">Invoke方法调用委托链</h3>
+<p>如果委托为</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">delegate</span> <span style="color:#8be9fd">int</span> DelFunc(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>);
+</span></span></code></pre></div><p>则其<code>Invoke</code>方法的伪代码为</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> Invoke(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#8be9fd">int</span> result;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    Delegate[] delegateSet = _invocationList <span style="color:#ff79c6">as</span> Delegate[]&#39;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">if</span> (delegateSet != <span style="color:#ff79c6">null</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        <span style="color:#6272a4">// 这个委托数组指定了应该调用的委托</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#ff79c6">foreach</span> (DelFunc d <span style="color:#ff79c6">in</span> delegateSet) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>            result = d(<span style="color:#ff79c6">value</span>); <span style="color:#6272a4">// 调用每个委托</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    } <span style="color:#ff79c6">else</span> { <span style="color:#6272a4">// 不是委托链的情况</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#6272a4">// 该委托标识了要回调的单个方法，在指定的目标对象上调用这个回调方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#6272a4">// 以下的代码接近实际情况，不过用C#无法表达出来</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        result = _methodPtr.Invoke(_target, <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#6272a4">// 数组中每个委托被调用时，其返回值被保存到result中。循环过后只会保存最后一个委托的结果，之前的都会被抛弃。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#ff79c6">return</span> result;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
+</span></span></code></pre></div><h3 id="对委托链的更多控制">对委托链的更多控制</h3>
+<p>对委托链的调用会有很多局限性，比如返回值只有最后一个调用才能返回。如果其中一个委托中有异常就会阻塞后续所有委托的执行。所以<code>MulticastDelegate</code>类提供了一个实例方法<code>GetInvocationList</code>，用于显式调用链中的每一个委托。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">abstract</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">MulticastDelegate</span> : Delegate {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">sealed</span> <span style="color:#ff79c6">override</span> Delegate[] GetInvocationList();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>}
+</span></span></code></pre></div><p><code>GetInvocationList</code>方法在内部初始化一个数组，让它每个元素都引用链中的一个委托，然后返回对该数组的引用。如果<code>_invocationList</code>字段为<code>null</code>，返回的数组就只有一个元素，该元素引用链中唯一的委托，既委托本身。</p>
+<h2 id="委托的简化">委托的简化</h2>
+<h3 id="1-不需要构造委托对象">1. 不需要构造委托对象</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Call(DelFunc func) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    func?.Invoke();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#6272a4">// Call(new DelFunc(DelClass.Func1));</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#6272a4">// 可简写为</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>Call(DelClass.Func1);
+</span></span></code></pre></div><h3 id="2-不需要定义回调方法lambda表达式">2. 不需要定义回调方法(lambda表达式)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Callback() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>        ThreadPool.QueueUserWorkItem(obj =&gt; Console.WriteLine(obj), <span style="color:#bd93f9">5</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
+</span></span></code></pre></div><p>编译器看到lambda表达式后会在类中自动定义一个新的私有方法。这个方法为<strong>匿名函数</strong>。方法名带有‘&lt;’和‘&gt;’符号来区别与其他函数。CLR允许带‘&lt;’或‘&gt;’符号的方法名。而且C#编译器会向其应用特性<code>System.Runtim.CompilerServices.CompilerGeneratedAttribute</code>，来表明方法是由编译器生成的。</p>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>lambda表达式没有办法定制特性，也不能引用任何方法修饰符(如<code>unsafe</code>)。编译器生成的匿名函数总是私有方法。根据是否访问了任何实例成员来决定方法的静态和非静态。如果没有访问实例成员会生成静态方法，因为静态方法效率更高。</p>
+</div>
+<h3 id="3-局部变量不需要手动包装到类中即可传递给方法">3. 局部变量不需要手动包装到类中即可传递给方法</h3>
+<p>C#编译器会在类中生成一个辅助类来存储当前类中的局部变量，和匿名方法。然后调用匿名方法的时候就可以调用到局部变量了，但是会导致局部变量的声明周期变长，并且无法被GC回收。</p>
+<h2 id="委托和反射">委托和反射</h2>
+<p>为了解决调用委托时无法事先知道回调方法原型的情况。利用<code>System.Delegate.MethodInfo</code>提供的<code>CreateDelegate</code>方法来创建委托。</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">Writings</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#委托使用方式">委托使用方式</a></li>
+    <li><a href="#揭秘委托的内幕">揭秘委托的内幕</a></li>
+    <li><a href="#委托链">委托链</a>
+      <ul>
+        <li><a href="#添加委托">添加委托</a></li>
+        <li><a href="#删除委托">删除委托</a></li>
+        <li><a href="#invoke方法调用委托链">Invoke方法调用委托链</a></li>
+        <li><a href="#对委托链的更多控制">对委托链的更多控制</a></li>
+      </ul>
+    </li>
+    <li><a href="#委托的简化">委托的简化</a>
+      <ul>
+        <li><a href="#1-不需要构造委托对象">1. 不需要构造委托对象</a></li>
+        <li><a href="#2-不需要定义回调方法lambda表达式">2. 不需要定义回调方法(lambda表达式)</a></li>
+        <li><a href="#3-局部变量不需要手动包装到类中即可传递给方法">3. 局部变量不需要手动包装到类中即可传递给方法</a></li>
+      </ul>
+    </li>
+    <li><a href="#委托和反射">委托和反射</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98&description=%e5%9c%a8%e9%9d%9e%e5%a7%94%e6%89%98C%2fC%2b%2b%e4%b8%ad%ef%bc%8c%e9%9d%9e%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e7%9a%84%e5%9c%b0%e5%9d%80%e5%8f%aa%e6%98%af%e4%b8%80%e4%b8%aa%e5%86%85%e5%ad%98%e5%9c%b0%e5%9d%80%e3%80%82%e8%bf%99%e4%b8%aa%e5%9c%b0%e5%9d%80%e4%b8%8d%e6%90%ba%e5%b8%a6%e4%bb%bb%e4%bd%95%e9%a2%9d%e5%a4%96%e4%bf%a1%e6%81%af%e3%80%82%e5%ae%83%e4%bb%ac%e5%be%88%e8%bd%bb%e9%87%8f%e4%bd%86%e6%98%af%e4%b8%8d%e6%98%af%e7%b1%bb%e5%9e%8b%e5%ae%89%e5%85%a8%e7%9a%84%e3%80%82%0a%e5%a7%94%e6%89%98%e4%bd%bf%e7%94%a8%e6%96%b9%e5%bc%8f%201%2f%2f%20%e5%a3%b0%e6%98%8e%e4%b8%80%e4%b8%aa%e5%a7%94%e6%89%98%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%ae%83%e7%9a%84%e5%ae%9e%e4%be%8b%e5%bc%95%e7%94%a8%e4%b8%80%e4%b8%aa%e6%96%b9%e6%b3%95%202%2f%2f%20%e8%af%a5%e6%96%b9%e6%b3%95%e8%8e%b7%e5%8f%96%e4%b8%80%e4%b8%aaint%e5%8f%82%e6%95%b0%ef%bc%8c%e8%bf%94%e5%9b%9evoid%203public%20delegate%20void%20DelFunc%28int%20value%29%3b%204%205public%20class%20DelClass%20%7b%206%20public%20static%20void%20Func1%28int%20value%29%20%7b%207%20Console.WriteLine%28%26%2334%3bFunc1%20%26%2334%3b%20%2b%20value%29%3b%208%20%7d%209%2010%20public%20static%20void%20Func2%28int%20value%29%20%7b%2011%20Console.WriteLine%28%26%2334%3bFunc2%20%26%2334%3b%20%2b%20value%29%3b%2012%20%7d%2013%2014%20public%20void%20Func3%28int%20value%29%20%7b%2015%20Console.WriteLine%28%26%2334%3bFunc3%20%26%2334%3b%20%2b%20value%29%3b%2016%20%7d%2017%7d%2018%2019DelClass%20dc%20%3d%20new%20DelClass%28%29%3b%2020DelFunc%20df1%20%3d%20new%20DelFunc%28DelClass." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-delegate%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%a7%94%e6%89%98" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  Alaya 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+  
+
+
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>C# 枚举和标志位 - Alaya - Simple Life Simple Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alaya" /><meta name="description" content="枚举的底层逻辑，和枚举相关方法使用" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://sooda.net.cn/post/clrviacsharp-enum/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+  
+
+
+<meta property="og:title" content="C# 枚举和标志位" />
+<meta property="og:description" content="枚举的底层逻辑，和枚举相关方法使用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sooda.net.cn/post/clrviacsharp-enum/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-08-18T10:23:40+08:00" />
+<meta property="article:modified_time" content="2022-08-18T10:23:40+08:00" />
+
+<meta itemprop="name" content="C# 枚举和标志位">
+<meta itemprop="description" content="枚举的底层逻辑，和枚举相关方法使用"><meta itemprop="datePublished" content="2022-08-18T10:23:40+08:00" />
+<meta itemprop="dateModified" content="2022-08-18T10:23:40+08:00" />
+<meta itemprop="wordCount" content="1183">
+<meta itemprop="keywords" content="CLR via CSharp," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C# 枚举和标志位"/>
+<meta name="twitter:description" content="枚举的底层逻辑，和枚举相关方法使用"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Alaya</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Alaya</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">C# 枚举和标志位</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-08-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/"> 阅读提炼 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#枚举类型">枚举类型</a>
+          <ul>
+            <li><a href="#枚举类型的方法">枚举类型的方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#位标志">位标志</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="枚举类型">枚举类型</h2>
+<p>枚举类型定义了一组“符号名称/值”的配对。且是强类型的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">enum</span> <span class="n">Color</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">White</span><span class="p">,</span>  <span class="c1">// 赋值0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Red</span><span class="p">,</span>    <span class="c1">// 赋值1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Green</span><span class="p">,</span>  <span class="c1">// 赋值2</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>每个枚举类型都是从<code>System.Enum</code>派生，后者从<code>System.ValueType</code>派生，而<code>System.ValueType</code>从<code>System.Object</code>派生。所以<strong>枚举是值类型</strong>，但枚举不能定义任何方法、属性或事件。不过<strong>可以利用扩展方法模拟向枚举类型添加方法</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">EnumExtension</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">static</span> <span class="kt">bool</span> <span class="n">Extension</span><span class="p">(</span><span class="k">this</span> <span class="n">Color</span> <span class="n">color</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ...</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编译器编译枚举类型时，把每个符号转换成类型的一个常量字段。类似于如下代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// 伪代码</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">struct</span> <span class="nc">Color</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Enum</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">const</span> <span class="n">Color</span> <span class="n">White</span> <span class="p">=</span> <span class="p">(</span><span class="n">Color</span><span class="p">)</span> <span class="m">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">const</span> <span class="n">Color</span> <span class="n">Red</span> <span class="p">=</span> <span class="p">(</span><span class="n">Color</span><span class="p">)</span> <span class="m">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">const</span> <span class="n">Color</span> <span class="n">Green</span> <span class="p">=</span> <span class="p">(</span><span class="n">Color</span><span class="p">)</span> <span class="m">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 以下是一个公共实例字段，包含Color变量的值，不能写代码来直接引用该字段</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="kt">int</span> <span class="n">value__</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="admonition warning"><p class="admonition-title">注意</p>
+<p>枚举类型定义的符号是常量值。所以当编译器发现代码引用了枚举类型的符号时，会在编译时用数值替换符号，代码不再引用定义了符号的枚举类型。这意味着运行时可能并不需要定义了枚举类型的程序集，编译时才需要</p>
+</div>
+<p>每个枚举类型都有一个基础类型，可以是<code>byte</code>，<code>sbyte</code>，<code>short</code>，<code>ushort</code>，<code>int</code>(默认)，<code>uint</code>，<code>long</code>或<code>ulong</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// 定义一个基础类型位byte的枚举类型</span>
+</span></span><span class="line"><span class="cl"><span class="k">enum</span> <span class="n">Color</span> <span class="p">:</span> <span class="kt">byte</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">White</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Red</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Green</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="枚举类型的方法">枚举类型的方法</h3>
+<p>可用以下方法获取基础类型的<code>Type</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">Type</span> <span class="n">GetUnderlyingType</span><span class="p">(</span><span class="n">Type</span> <span class="n">enumType</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="n">Type</span> <span class="n">GetEnumUnderlyingType</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取枚举中所有的符号名称。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">Array</span> <span class="n">GetValues</span><span class="p">(</span><span class="n">Type</span> <span class="n">enumType</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="n">Array</span> <span class="n">GetEnumValues</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 建议如下编码，保证编译时的类型安全</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">TEnum</span><span class="p">[]</span> <span class="n">GetEnumValues</span><span class="p">&lt;</span><span class="n">TEnum</span><span class="p">&gt;()</span> <span class="k">where</span> <span class="n">TEnum</span> <span class="p">:</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="n">TEnum</span><span class="p">[])</span> <span class="n">Enum</span><span class="p">.</span><span class="n">GetValues</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">TEnum</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取枚举类型的符号String。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// 返回数值的字符串表示</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">String</span> <span class="n">GetName</span><span class="p">(</span><span class="n">Type</span> <span class="n">enumType</span><span class="p">,</span> <span class="n">Object</span> <span class="k">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="n">String</span> <span class="n">GetEnumName</span><span class="p">(</span><span class="n">Object</span> <span class="k">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 返回一个String数组，枚举中每个符号都对应一个String</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">String</span><span class="p">[]</span> <span class="n">GetNames</span><span class="p">(</span><span class="n">Type</span> <span class="n">enumType</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="n">String</span><span class="p">[]</span> <span class="n">GetEnumNames</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用<code>Parse</code>和<code>TryParse</code>方法，将符号转换为枚举类型的实例。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">Object</span> <span class="n">Parse</span><span class="p">(</span><span class="n">Type</span> <span class="n">enumType</span><span class="p">,</span> <span class="n">String</span> <span class="k">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">Object</span> <span class="n">Parse</span><span class="p">(</span><span class="n">Type</span> <span class="n">enumType</span><span class="p">,</span> <span class="n">String</span> <span class="k">value</span><span class="p">,</span> <span class="n">Boolean</span> <span class="n">ignoreCase</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">Boolean</span> <span class="n">TryParse</span><span class="p">&lt;</span><span class="n">TEnum</span><span class="p">&gt;(</span><span class="n">String</span> <span class="k">value</span><span class="p">,</span> <span class="k">out</span> <span class="n">TEnum</span> <span class="n">result</span><span class="p">)</span> <span class="k">where</span> <span class="n">TEnum</span> <span class="p">:</span> <span class="n">struct</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">Boolean</span> <span class="n">TryParse</span><span class="p">&lt;</span><span class="n">TEnum</span><span class="p">&gt;(</span><span class="n">String</span> <span class="k">value</span><span class="p">,</span> <span class="n">Boolean</span> <span class="n">ignoreCase</span><span class="p">,</span> <span class="k">out</span> <span class="n">TEnum</span> <span class="n">result</span><span class="p">)</span> <span class="k">where</span> <span class="n">TEnum</span> <span class="p">:</span> <span class="n">struct</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>IsDefined</code>方法判断数值对于枚举类型是否合法。<strong>此方法执行效率很慢，因为用了反射</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="n">Boolean</span> <span class="n">IsDefined</span><span class="p">(</span><span class="n">Type</span> <span class="n">enumType</span><span class="p">,</span> <span class="n">Object</span> <span class="k">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pulic</span> <span class="n">Boolean</span> <span class="n">IsEnumDefined</span><span class="p">(</span><span class="n">Object</span> <span class="k">value</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="admonition warning"><p class="admonition-title">注意</p>
+<p>C#允许将枚举类型的实例显式转型位不同的枚举类型或数值类型。</p>
+</div>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>枚举类型通常于需要它的类同级。原因很简单，就是减少代码的录入量，是开发的工作变的更轻松。所以除非担心名称冲突，否则你定义的枚举类型应该和需要它的类型同级。</p>
+</div>
+<h2 id="位标志">位标志</h2>
+<p>定义用于标识为标志的枚举类型时，应该显式为每个符号分配一个数值。通常，每个符号都有单独的一个位处于on状态。还可以定义一些符号来代表常见的位组合。<strong><code>Flags</code>特性用于在调用<code>ToString</code>时识别为位组合</strong>。如果数值有一个位不能映射到一个符号，返回的字符串只包含一个代表原始数值的十进制数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="na">[Flags]</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">enum</span> <span class="n">Color</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">White</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Red</span> <span class="p">=</span> <span class="m">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Green</span> <span class="p">=</span> <span class="m">4</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Color</span> <span class="n">colors</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Red</span> <span class="p">|</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">colors</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>   <span class="c1">// &#34;Red, Green&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="admonition warning"><p class="admonition-title">注意</p>
+<p>避免使用<code>HasFlag</code>方法。由于它获取<code>Enum</code>类型的参数会装箱。</p>
+</div>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>不要对位标志枚举类型使用<code>IsDenfined</code>方法。</p>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Alaya</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-08-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/clr-via-csharp/">CLR via CSharp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/clrviacsharp-array/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">C# 数组</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/clrviacsharp-interface/">
+            <span class="next-text nav-default">C# 接口</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/yLong765" class="iconfont icon-github" title="github"></a>
+  <a href="https://sooda.net.cn/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Alaya</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

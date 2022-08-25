@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 《游戏编程算法与技巧》摄像机篇 | Alaya</title>
+  <link rel = 'canonical' href = 'https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/'>
+  <meta name="description" content="Simple Life Simple Coding.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="《游戏编程算法与技巧》摄像机篇" />
+<meta property="og:description" content="摄像机的基础属性 视场 观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰
+如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头
+高宽比 视口的宽度和高度的比率（如4:3、16:9等)
+摄像机的跟随实现 基础跟随 跟随在某个对象后方，保持固定距离，固定的俯视角摄像机
+1// tPos: 目标位置 2// tForward: 目标方向 3// hDist: 水平跟随距离 4// vDist: 垂直跟随距离 5void BasucFollowCamera(GameObject target, float hDist, float vDist) { 6 // 计算相机位置 7 Vector3 pos = target.position - target.forward * hDist &#43; target.up * vDist; 8 // 计算相机朝向 9 Vector3 cameraForward = tPos - pos; 10 // 设置相机位置和朝向 11 //... 12} 弹性跟随相机 实现相机到相机目标位置的逐渐变化，可以理解为真实位置的相机和在基础跟随所要到达的理想位置中间有一个弹簧
+1class SpringCamera { 2 float hDist, vDist; // 水平和垂直跟随距离 3 float springConstant; // 弹性常量：越高弹性越小 4 float dampConstant; // 阻尼常量：由弹性常量决定 5 Vector3 velocity, actualPosition; // 速度和摄像机真实位置 6 GameObject target; // 跟随目标 7 8 void init(GameObject _target, float _springConstant, float _hDist, float vDist) { 9 target = _target; 10 springConstant = _springConstant; 11 hDist = _hDist; 12 vDist = _vDist; 13 // 计算阻尼常量 14 dampConstant = 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-01-14T21:58:45+08:00" />
+<meta property="article:modified_time" content="2022-01-14T21:58:45+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《游戏编程算法与技巧》摄像机篇"/>
+<meta name="twitter:description" content="摄像机的基础属性 视场 观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰
+如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头
+高宽比 视口的宽度和高度的比率（如4:3、16:9等)
+摄像机的跟随实现 基础跟随 跟随在某个对象后方，保持固定距离，固定的俯视角摄像机
+1// tPos: 目标位置 2// tForward: 目标方向 3// hDist: 水平跟随距离 4// vDist: 垂直跟随距离 5void BasucFollowCamera(GameObject target, float hDist, float vDist) { 6 // 计算相机位置 7 Vector3 pos = target.position - target.forward * hDist &#43; target.up * vDist; 8 // 计算相机朝向 9 Vector3 cameraForward = tPos - pos; 10 // 设置相机位置和朝向 11 //... 12} 弹性跟随相机 实现相机到相机目标位置的逐渐变化，可以理解为真实位置的相机和在基础跟随所要到达的理想位置中间有一个弹簧
+1class SpringCamera { 2 float hDist, vDist; // 水平和垂直跟随距离 3 float springConstant; // 弹性常量：越高弹性越小 4 float dampConstant; // 阻尼常量：由弹性常量决定 5 Vector3 velocity, actualPosition; // 速度和摄像机真实位置 6 GameObject target; // 跟随目标 7 8 void init(GameObject _target, float _springConstant, float _hDist, float vDist) { 9 target = _target; 10 springConstant = _springConstant; 11 hDist = _hDist; 12 vDist = _vDist; 13 // 计算阻尼常量 14 dampConstant = 2."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://localhost:1313/css/styles.1e769e967e9c06518a5e0618da426e1be02b65c215ab7586c2b95fa09a2997b516357fd281da2cb1044ec3d691b106662e083110bbda88c3203e884f0485d6b5.css" integrity="sha512-Hnaeln6cBlGKXgYY2kJuG&#43;ArZcIVq3WGwrlfoJopl7UWNX/SgdossQROw9aRsQZmLggxELvaiMMgPohPBIXWtQ=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://localhost:1313/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&text=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&title=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&is_video=false&description=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&title=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&title=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&name=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87&description=%e6%91%84%e5%83%8f%e6%9c%ba%e7%9a%84%e5%9f%ba%e7%a1%80%e5%b1%9e%e6%80%a7%20%e8%a7%86%e5%9c%ba%20%e8%a7%82%e7%9c%8b%e4%b8%96%e7%95%8c%e7%9a%84%e8%a7%92%e5%ba%a6%e5%92%8c%e5%b9%bf%e5%ba%a6%ef%bc%8c%e7%a7%b0%e4%b8%ba%e8%a7%86%e5%9c%ba%28FOV%29%e3%80%82%e4%ba%ba%e5%8f%8c%e7%9b%ae%e5%b9%b6%e8%a7%86%e5%a4%a7%e7%ba%a6%e8%83%bd%e7%9c%8b%e5%88%b0120%c2%b0%e7%9a%84%e8%a7%86%e5%9c%ba%ef%bc%8c%e8%80%8c%e5%89%a9%e4%bd%99%e7%9a%84%e8%a7%86%e5%9c%ba%e5%9c%a8%e8%be%b9%e7%bc%98%e8%83%bd%e5%a4%9f%e5%8f%91%e7%8e%b0%e8%bf%90%e5%8a%a8%ef%bc%8c%e4%bd%86%e4%b8%8d%e6%b8%85%e6%99%b0%0a%e5%a6%82%e6%9e%9c%e8%a7%86%e5%9c%ba%e5%8f%98%e7%9a%84%e5%a4%aa%e5%a4%a7%e5%b0%b1%e4%bc%9a%e6%9c%89%e9%b1%bc%e7%9c%bc%e6%95%88%e6%9e%9c%ef%bc%8c%e5%b1%8f%e5%b9%95%e8%be%b9%e7%bc%98%e4%bc%9a%e5%bc%af%e6%9b%b2%ef%bc%8c%e7%b1%bb%e4%bc%bc%e4%ba%8e%e5%b9%bf%e8%a7%92%e9%95%9c%e5%a4%b4%0a%e9%ab%98%e5%ae%bd%e6%af%94%20%e8%a7%86%e5%8f%a3%e7%9a%84%e5%ae%bd%e5%ba%a6%e5%92%8c%e9%ab%98%e5%ba%a6%e7%9a%84%e6%af%94%e7%8e%87%ef%bc%88%e5%a6%824%3a3%e3%80%8116%3a9%e7%ad%89%29%0a%e6%91%84%e5%83%8f%e6%9c%ba%e7%9a%84%e8%b7%9f%e9%9a%8f%e5%ae%9e%e7%8e%b0%20%e5%9f%ba%e7%a1%80%e8%b7%9f%e9%9a%8f%20%e8%b7%9f%e9%9a%8f%e5%9c%a8%e6%9f%90%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%90%8e%e6%96%b9%ef%bc%8c%e4%bf%9d%e6%8c%81%e5%9b%ba%e5%ae%9a%e8%b7%9d%e7%a6%bb%ef%bc%8c%e5%9b%ba%e5%ae%9a%e7%9a%84%e4%bf%af%e8%a7%86%e8%a7%92%e6%91%84%e5%83%8f%e6%9c%ba%0a1%2f%2f%20tPos%3a%20%e7%9b%ae%e6%a0%87%e4%bd%8d%e7%bd%ae%202%2f%2f%20tForward%3a%20%e7%9b%ae%e6%a0%87%e6%96%b9%e5%90%91%203%2f%2f%20hDist%3a%20%e6%b0%b4%e5%b9%b3%e8%b7%9f%e9%9a%8f%e8%b7%9d%e7%a6%bb%204%2f%2f%20vDist%3a%20%e5%9e%82%e7%9b%b4%e8%b7%9f%e9%9a%8f%e8%b7%9d%e7%a6%bb%205void%20BasucFollowCamera%28GameObject%20target%2c%20float%20hDist%2c%20float%20vDist%29%20%7b%206%20%2f%2f%20%e8%ae%a1%e7%ae%97%e7%9b%b8%e6%9c%ba%e4%bd%8d%e7%bd%ae%207%20Vector3%20pos%20%3d%20target.position%20-%20target.forward%20%2a%20hDist%20%2b%20target.up%20%2a%20vDist%3b%208%20%2f%2f%20%e8%ae%a1%e7%ae%97%e7%9b%b8%e6%9c%ba%e6%9c%9d%e5%90%91%209%20Vector3%20cameraForward%20%3d%20tPos%20-%20pos%3b%2010%20%2f%2f%20%e8%ae%be%e7%bd%ae%e7%9b%b8%e6%9c%ba%e4%bd%8d%e7%bd%ae%e5%92%8c%e6%9c%9d%e5%90%91%2011%20%2f%2f...%2012%7d%20%e5%bc%b9%e6%80%a7%e8%b7%9f%e9%9a%8f%e7%9b%b8%e6%9c%ba%20%e5%ae%9e%e7%8e%b0%e7%9b%b8%e6%9c%ba%e5%88%b0%e7%9b%b8%e6%9c%ba%e7%9b%ae%e6%a0%87%e4%bd%8d%e7%bd%ae%e7%9a%84%e9%80%90%e6%b8%90%e5%8f%98%e5%8c%96%ef%bc%8c%e5%8f%af%e4%bb%a5%e7%90%86%e8%a7%a3%e4%b8%ba%e7%9c%9f%e5%ae%9e%e4%bd%8d%e7%bd%ae%e7%9a%84%e7%9b%b8%e6%9c%ba%e5%92%8c%e5%9c%a8%e5%9f%ba%e7%a1%80%e8%b7%9f%e9%9a%8f%e6%89%80%e8%a6%81%e5%88%b0%e8%be%be%e7%9a%84%e7%90%86%e6%83%b3%e4%bd%8d%e7%bd%ae%e4%b8%ad%e9%97%b4%e6%9c%89%e4%b8%80%e4%b8%aa%e5%bc%b9%e7%b0%a7%0a1class%20SpringCamera%20%7b%202%20float%20hDist%2c%20vDist%3b%20%2f%2f%20%e6%b0%b4%e5%b9%b3%e5%92%8c%e5%9e%82%e7%9b%b4%e8%b7%9f%e9%9a%8f%e8%b7%9d%e7%a6%bb%203%20float%20springConstant%3b%20%2f%2f%20%e5%bc%b9%e6%80%a7%e5%b8%b8%e9%87%8f%ef%bc%9a%e8%b6%8a%e9%ab%98%e5%bc%b9%e6%80%a7%e8%b6%8a%e5%b0%8f%204%20float%20dampConstant%3b%20%2f%2f%20%e9%98%bb%e5%b0%bc%e5%b8%b8%e9%87%8f%ef%bc%9a%e7%94%b1%e5%bc%b9%e6%80%a7%e5%b8%b8%e9%87%8f%e5%86%b3%e5%ae%9a%205%20Vector3%20velocity%2c%20actualPosition%3b%20%2f%2f%20%e9%80%9f%e5%ba%a6%e5%92%8c%e6%91%84%e5%83%8f%e6%9c%ba%e7%9c%9f%e5%ae%9e%e4%bd%8d%e7%bd%ae%206%20GameObject%20target%3b%20%2f%2f%20%e8%b7%9f%e9%9a%8f%e7%9b%ae%e6%a0%87%207%208%20void%20init%28GameObject%20_target%2c%20float%20_springConstant%2c%20float%20_hDist%2c%20float%20vDist%29%20%7b%209%20target%20%3d%20_target%3b%2010%20springConstant%20%3d%20_springConstant%3b%2011%20hDist%20%3d%20_hDist%3b%2012%20vDist%20%3d%20_vDist%3b%2013%20%2f%2f%20%e8%ae%a1%e7%ae%97%e9%98%bb%e5%b0%bc%e5%b8%b8%e9%87%8f%2014%20dampConstant%20%3d%202." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&t=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#视场">视场</a></li>
+    <li><a href="#高宽比">高宽比</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#基础跟随">基础跟随</a></li>
+    <li><a href="#弹性跟随相机">弹性跟随相机</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#catmull-rom样条">Catmull-Rom样条</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#相机碰撞检测">相机碰撞检测</a></li>
+    <li><a href="#拣选鼠标点击从相机发射射线">拣选（鼠标点击从相机发射射线）</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        《游戏编程算法与技巧》摄像机篇
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-01-14 21:58:45 &#43;0800 CST" itemprop="datePublished">2022-01-14</time>
+          
+        </div>
+        
+        
+        
+        <div class="article-category">
+            <i class="fas fa-archive"></i>
+            
+            
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7">《游戏编程算法与技巧》</a>
+            
+        </div>
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h1 id="摄像机的基础属性">摄像机的基础属性</h1>
+<h2 id="视场">视场</h2>
+<p>观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰</p>
+<p>如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头</p>
+<h2 id="高宽比">高宽比</h2>
+<p>视口的宽度和高度的比率（如4:3、16:9等)</p>
+<h1 id="摄像机的跟随实现">摄像机的跟随实现</h1>
+<h2 id="基础跟随">基础跟随</h2>
+<p>跟随在某个对象后方，保持固定距离，固定的俯视角摄像机</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// tPos: 目标位置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#6272a4">// tForward: 目标方向
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#6272a4">// hDist: 水平跟随距离
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#6272a4">// vDist: 垂直跟随距离 
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#6272a4"></span><span style="color:#8be9fd">void</span> <span style="color:#50fa7b">BasucFollowCamera</span>(GameObject target, <span style="color:#8be9fd">float</span> hDist, <span style="color:#8be9fd">float</span> vDist) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#6272a4">// 计算相机位置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#6272a4"></span>    Vector3 pos <span style="color:#ff79c6">=</span> target.position <span style="color:#ff79c6">-</span> target.forward <span style="color:#ff79c6">*</span> hDist <span style="color:#ff79c6">+</span> target.up <span style="color:#ff79c6">*</span> vDist;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#6272a4">// 计算相机朝向
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#6272a4"></span>    Vector3 cameraForward <span style="color:#ff79c6">=</span> tPos <span style="color:#ff79c6">-</span> pos;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#6272a4">// 设置相机位置和朝向
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">//...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#6272a4"></span>}
+</span></span></code></pre></div><h2 id="弹性跟随相机">弹性跟随相机</h2>
+<p>实现相机到相机目标位置的逐渐变化，可以理解为<strong>真实位置的相机</strong>和在基础跟随所要到达的<strong>理想位置</strong>中间有一个弹簧</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">SpringCamera</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#8be9fd">float</span> hDist, vDist;     <span style="color:#6272a4">// 水平和垂直跟随距离
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">float</span> springConstant;   <span style="color:#6272a4">// 弹性常量：越高弹性越小
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">float</span> dampConstant;     <span style="color:#6272a4">// 阻尼常量：由弹性常量决定
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#6272a4"></span>    Vector3 velocity, actualPosition; <span style="color:#6272a4">// 速度和摄像机真实位置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#6272a4"></span>    GameObject target;      <span style="color:#6272a4">// 跟随目标
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">init</span>(GameObject _target, <span style="color:#8be9fd">float</span> _springConstant, <span style="color:#8be9fd">float</span> _hDist, <span style="color:#8be9fd">float</span> vDist) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        target <span style="color:#ff79c6">=</span> _target;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        springConstant <span style="color:#ff79c6">=</span> _springConstant;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        hDist <span style="color:#ff79c6">=</span> _hDist;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        vDist <span style="color:#ff79c6">=</span> _vDist;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#6272a4">// 计算阻尼常量
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#6272a4"></span>        dampConstant <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2.0f</span> <span style="color:#ff79c6">*</span> sqrt(springConstant);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        <span style="color:#6272a4">// 最开始真实位置 = 理想位置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#6272a4"></span>        actualPosition <span style="color:#ff79c6">=</span> target.position <span style="color:#ff79c6">-</span> target.forward <span style="color:#ff79c6">*</span> hDist <span style="color:#ff79c6">+</span> target.up <span style="color:#ff79c6">*</span> vDist;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        <span style="color:#6272a4">// 设置相机位置和朝向
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#6272a4"></span>        <span style="color:#6272a4">//...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#6272a4"></span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">update</span>(<span style="color:#8be9fd">float</span> deltaTime) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        <span style="color:#6272a4">// 计算理想位置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style="color:#6272a4"></span>        Vector3 idealPosition <span style="color:#ff79c6">=</span> target.position <span style="color:#ff79c6">-</span> target.forward <span style="color:#ff79c6">*</span> hDist <span style="color:#ff79c6">+</span> target.up <span style="color:#ff79c6">*</span> vDist;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>        <span style="color:#6272a4">// 计算理想位置到真实位置的向量
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span><span style="color:#6272a4"></span>        Vector3 displacement <span style="color:#ff79c6">=</span> actualPosition <span style="color:#ff79c6">-</span> idealPosition;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>        <span style="color:#6272a4">// 根据弹簧计算加速度，然后积分
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#6272a4"></span>        Vector3 springAccel <span style="color:#ff79c6">=</span> (<span style="color:#ff79c6">-</span>springConstant <span style="color:#ff79c6">*</span> displacement) <span style="color:#ff79c6">-</span> (dampConstant <span style="color:#ff79c6">*</span> velocity);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>        velocity <span style="color:#ff79c6">+=</span> springAccel <span style="color:#ff79c6">*</span> deltaTime;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>        actualPosition <span style="color:#ff79c6">+=</span> velocity <span style="color:#ff79c6">*</span> deltaTime;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>        <span style="color:#6272a4">// 设置相机位置和朝向
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#6272a4"></span>        <span style="color:#6272a4">//...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span><span style="color:#6272a4"></span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>}
+</span></span></code></pre></div><h1 id="样条摄像机">样条摄像机</h1>
+<p>样条可以看作曲线，用线上的点定义的。使用她进行插值能够在整条曲线上得到平滑的效果。</p>
+<h2 id="catmull-rom样条">Catmull-Rom样条</h2>
+<p>邻近点进行插值。需要四个点，两个在前和后的控制点$P_0$和$P_3$，两个在中间的激活点$P_1$和$P_2$。计算t值介于0到1的所有样条公式(需要在控制点均匀的情况下使用)：</p>
+<p>$$
+P(t) = 0.5 \cdot (2 \cdot P_1) + (-P_0 + P_2) \cdot t + \newline
+(2 \cdot P_0 - 5 \cdot P_1 + 4 \cdot P_2 - P_3) \cdot t^2 + \newline
+(-P_0 + 3 \cdot P_1 - 3 \cdot P_2 + P_3) \cdot t^3
+$$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">CRSpline</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    Vector3[] controlPoints; <span style="color:#6272a4">// 样条点的动态数组
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#6272a4"></span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#6272a4">// 计算曲线
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// start: t=0对应的控制点
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#6272a4"></span>    Vector3 <span style="color:#50fa7b">Compute</span>(<span style="color:#8be9fd">int</span> start, <span style="color:#8be9fd">float</span> t) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#6272a4">// 检查start-1，start，start+1和start+2都要存在
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#6272a4"></span>        Vector3 P0 <span style="color:#ff79c6">=</span> controlPoints[start <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        Vector3 P1 <span style="color:#ff79c6">=</span> controlPoints[start];
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        Vector3 P2 <span style="color:#ff79c6">=</span> controlPoints[start <span style="color:#ff79c6">+</span> <span style="color:#bd93f9">1</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        Vector3 P3 <span style="color:#ff79c6">=</span> controlPoints[start <span style="color:#ff79c6">+</span> <span style="color:#bd93f9">2</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        Vector3 position <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0.5</span> <span style="color:#ff79c6">*</span>((<span style="color:#bd93f9">2</span><span style="color:#ff79c6">*</span>P1)<span style="color:#ff79c6">+</span>(<span style="color:#ff79c6">-</span>P0<span style="color:#ff79c6">+</span>P2)<span style="color:#ff79c6">*</span>t<span style="color:#ff79c6">+</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>                            (<span style="color:#bd93f9">2</span><span style="color:#ff79c6">*</span>P0<span style="color:#ff79c6">-</span><span style="color:#bd93f9">5</span><span style="color:#ff79c6">*</span>P1<span style="color:#ff79c6">+</span><span style="color:#bd93f9">4</span><span style="color:#ff79c6">*</span>P2<span style="color:#ff79c6">-</span>P3)<span style="color:#ff79c6">*</span>t<span style="color:#ff79c6">*</span>t<span style="color:#ff79c6">+</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>                            (<span style="color:#ff79c6">-</span>P0<span style="color:#ff79c6">+</span><span style="color:#bd93f9">3</span><span style="color:#ff79c6">*</span>P<span style="color:#ff79c6">-</span><span style="color:#bd93f9">3</span><span style="color:#ff79c6">*</span>P2<span style="color:#ff79c6">+</span>P3)<span style="color:#ff79c6">*</span>t<span style="color:#ff79c6">*</span>t<span style="color:#ff79c6">*</span>t);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        <span style="color:#ff79c6">return</span> position;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
+</span></span></code></pre></div><p>这个公式也可用于计算t介于0到1之间的切线。首先，计算任意的t位置。然后，计算t加很小的增量$\Delta t$的位置。就可以构造一个$p(t)$到$P(t+\Delta t)$的向量并且正规化，从而近似得到切线。为了<strong>表示摄像机的移动方向</strong>。</p>
+<h1 id="相机支持算法">相机支持算法</h1>
+<h2 id="相机碰撞检测">相机碰撞检测</h2>
+<p>为了避免穿墙等问题，最简单的方式就是让从目标位置到相机进行光线检测，碰撞到物体则让相机位置改变到碰撞的物体之前。缺点是变换很突然。也可以用物理的方法做碰撞检测。</p>
+<p>让离相机过近的物体进行消失或者淡出，避免穿模。</p>
+<h2 id="拣选鼠标点击从相机发射射线">拣选（鼠标点击从相机发射射线）</h2>
+<p>鼠标的位置是屏幕空间中的一个2D点。将这个2D点从屏幕空间变换回世界空间去，称之为反投影。反投影为摄像机矩阵乘以投影矩阵的逆矩阵：
+$$
+unprojection = (camera \times projection)^{-1}
+$$
+但2D点不能乘以4x4矩阵，所以要线将2D点转换到齐次坐标系。z分量通常设置为0或1，取决于近平面或远平面。而作为一个点，w分量总为1.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Vector3 <span style="color:#50fa7b">Unproject</span>(Vector4 screenPoint, Matrix camera, Matrix projection) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#6272a4">// 计算逆矩阵
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#6272a4"></span>    Matrix unprojection <span style="color:#ff79c6">=</span> camera <span style="color:#ff79c6">*</span> projection;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    unprojection.Invert();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#ff79c6">return</span> screenPoint <span style="color:#ff79c6">*</span> unprojection;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>}
+</span></span></code></pre></div>
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">Writings</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#视场">视场</a></li>
+    <li><a href="#高宽比">高宽比</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#基础跟随">基础跟随</a></li>
+    <li><a href="#弹性跟随相机">弹性跟随相机</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#catmull-rom样条">Catmull-Rom样条</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#相机碰撞检测">相机碰撞检测</a></li>
+    <li><a href="#拣选鼠标点击从相机发射射线">拣选（鼠标点击从相机发射射线）</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&text=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&title=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&is_video=false&description=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&title=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&title=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&name=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87&description=%e6%91%84%e5%83%8f%e6%9c%ba%e7%9a%84%e5%9f%ba%e7%a1%80%e5%b1%9e%e6%80%a7%20%e8%a7%86%e5%9c%ba%20%e8%a7%82%e7%9c%8b%e4%b8%96%e7%95%8c%e7%9a%84%e8%a7%92%e5%ba%a6%e5%92%8c%e5%b9%bf%e5%ba%a6%ef%bc%8c%e7%a7%b0%e4%b8%ba%e8%a7%86%e5%9c%ba%28FOV%29%e3%80%82%e4%ba%ba%e5%8f%8c%e7%9b%ae%e5%b9%b6%e8%a7%86%e5%a4%a7%e7%ba%a6%e8%83%bd%e7%9c%8b%e5%88%b0120%c2%b0%e7%9a%84%e8%a7%86%e5%9c%ba%ef%bc%8c%e8%80%8c%e5%89%a9%e4%bd%99%e7%9a%84%e8%a7%86%e5%9c%ba%e5%9c%a8%e8%be%b9%e7%bc%98%e8%83%bd%e5%a4%9f%e5%8f%91%e7%8e%b0%e8%bf%90%e5%8a%a8%ef%bc%8c%e4%bd%86%e4%b8%8d%e6%b8%85%e6%99%b0%0a%e5%a6%82%e6%9e%9c%e8%a7%86%e5%9c%ba%e5%8f%98%e7%9a%84%e5%a4%aa%e5%a4%a7%e5%b0%b1%e4%bc%9a%e6%9c%89%e9%b1%bc%e7%9c%bc%e6%95%88%e6%9e%9c%ef%bc%8c%e5%b1%8f%e5%b9%95%e8%be%b9%e7%bc%98%e4%bc%9a%e5%bc%af%e6%9b%b2%ef%bc%8c%e7%b1%bb%e4%bc%bc%e4%ba%8e%e5%b9%bf%e8%a7%92%e9%95%9c%e5%a4%b4%0a%e9%ab%98%e5%ae%bd%e6%af%94%20%e8%a7%86%e5%8f%a3%e7%9a%84%e5%ae%bd%e5%ba%a6%e5%92%8c%e9%ab%98%e5%ba%a6%e7%9a%84%e6%af%94%e7%8e%87%ef%bc%88%e5%a6%824%3a3%e3%80%8116%3a9%e7%ad%89%29%0a%e6%91%84%e5%83%8f%e6%9c%ba%e7%9a%84%e8%b7%9f%e9%9a%8f%e5%ae%9e%e7%8e%b0%20%e5%9f%ba%e7%a1%80%e8%b7%9f%e9%9a%8f%20%e8%b7%9f%e9%9a%8f%e5%9c%a8%e6%9f%90%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%90%8e%e6%96%b9%ef%bc%8c%e4%bf%9d%e6%8c%81%e5%9b%ba%e5%ae%9a%e8%b7%9d%e7%a6%bb%ef%bc%8c%e5%9b%ba%e5%ae%9a%e7%9a%84%e4%bf%af%e8%a7%86%e8%a7%92%e6%91%84%e5%83%8f%e6%9c%ba%0a1%2f%2f%20tPos%3a%20%e7%9b%ae%e6%a0%87%e4%bd%8d%e7%bd%ae%202%2f%2f%20tForward%3a%20%e7%9b%ae%e6%a0%87%e6%96%b9%e5%90%91%203%2f%2f%20hDist%3a%20%e6%b0%b4%e5%b9%b3%e8%b7%9f%e9%9a%8f%e8%b7%9d%e7%a6%bb%204%2f%2f%20vDist%3a%20%e5%9e%82%e7%9b%b4%e8%b7%9f%e9%9a%8f%e8%b7%9d%e7%a6%bb%205void%20BasucFollowCamera%28GameObject%20target%2c%20float%20hDist%2c%20float%20vDist%29%20%7b%206%20%2f%2f%20%e8%ae%a1%e7%ae%97%e7%9b%b8%e6%9c%ba%e4%bd%8d%e7%bd%ae%207%20Vector3%20pos%20%3d%20target.position%20-%20target.forward%20%2a%20hDist%20%2b%20target.up%20%2a%20vDist%3b%208%20%2f%2f%20%e8%ae%a1%e7%ae%97%e7%9b%b8%e6%9c%ba%e6%9c%9d%e5%90%91%209%20Vector3%20cameraForward%20%3d%20tPos%20-%20pos%3b%2010%20%2f%2f%20%e8%ae%be%e7%bd%ae%e7%9b%b8%e6%9c%ba%e4%bd%8d%e7%bd%ae%e5%92%8c%e6%9c%9d%e5%90%91%2011%20%2f%2f...%2012%7d%20%e5%bc%b9%e6%80%a7%e8%b7%9f%e9%9a%8f%e7%9b%b8%e6%9c%ba%20%e5%ae%9e%e7%8e%b0%e7%9b%b8%e6%9c%ba%e5%88%b0%e7%9b%b8%e6%9c%ba%e7%9b%ae%e6%a0%87%e4%bd%8d%e7%bd%ae%e7%9a%84%e9%80%90%e6%b8%90%e5%8f%98%e5%8c%96%ef%bc%8c%e5%8f%af%e4%bb%a5%e7%90%86%e8%a7%a3%e4%b8%ba%e7%9c%9f%e5%ae%9e%e4%bd%8d%e7%bd%ae%e7%9a%84%e7%9b%b8%e6%9c%ba%e5%92%8c%e5%9c%a8%e5%9f%ba%e7%a1%80%e8%b7%9f%e9%9a%8f%e6%89%80%e8%a6%81%e5%88%b0%e8%be%be%e7%9a%84%e7%90%86%e6%83%b3%e4%bd%8d%e7%bd%ae%e4%b8%ad%e9%97%b4%e6%9c%89%e4%b8%80%e4%b8%aa%e5%bc%b9%e7%b0%a7%0a1class%20SpringCamera%20%7b%202%20float%20hDist%2c%20vDist%3b%20%2f%2f%20%e6%b0%b4%e5%b9%b3%e5%92%8c%e5%9e%82%e7%9b%b4%e8%b7%9f%e9%9a%8f%e8%b7%9d%e7%a6%bb%203%20float%20springConstant%3b%20%2f%2f%20%e5%bc%b9%e6%80%a7%e5%b8%b8%e9%87%8f%ef%bc%9a%e8%b6%8a%e9%ab%98%e5%bc%b9%e6%80%a7%e8%b6%8a%e5%b0%8f%204%20float%20dampConstant%3b%20%2f%2f%20%e9%98%bb%e5%b0%bc%e5%b8%b8%e9%87%8f%ef%bc%9a%e7%94%b1%e5%bc%b9%e6%80%a7%e5%b8%b8%e9%87%8f%e5%86%b3%e5%ae%9a%205%20Vector3%20velocity%2c%20actualPosition%3b%20%2f%2f%20%e9%80%9f%e5%ba%a6%e5%92%8c%e6%91%84%e5%83%8f%e6%9c%ba%e7%9c%9f%e5%ae%9e%e4%bd%8d%e7%bd%ae%206%20GameObject%20target%3b%20%2f%2f%20%e8%b7%9f%e9%9a%8f%e7%9b%ae%e6%a0%87%207%208%20void%20init%28GameObject%20_target%2c%20float%20_springConstant%2c%20float%20_hDist%2c%20float%20vDist%29%20%7b%209%20target%20%3d%20_target%3b%2010%20springConstant%20%3d%20_springConstant%3b%2011%20hDist%20%3d%20_hDist%3b%2012%20vDist%20%3d%20_vDist%3b%2013%20%2f%2f%20%e8%ae%a1%e7%ae%97%e9%98%bb%e5%b0%bc%e5%b8%b8%e9%87%8f%2014%20dampConstant%20%3d%202." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2f%25E6%25B8%25B8%25E6%2588%258F%25E7%25BC%2596%25E7%25A8%258B%25E7%25AE%2597%25E6%25B3%2595%25E4%25B8%258E%25E6%258A%2580%25E5%25B7%25A7%25E6%2591%2584%25E5%2583%258F%25E6%259C%25BA%25E7%25AF%2587%2f&t=%e3%80%8a%e6%b8%b8%e6%88%8f%e7%bc%96%e7%a8%8b%e7%ae%97%e6%b3%95%e4%b8%8e%e6%8a%80%e5%b7%a7%e3%80%8b%e6%91%84%e5%83%8f%e6%9c%ba%e7%af%87" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  Alaya 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+  
+
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+</html>

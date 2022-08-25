@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>C# 数组 - Alaya - Simple Life Simple Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alaya" /><meta name="description" content="数组的使用方式，各种数组的性能对比，和一些使用小技巧" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://sooda.net.cn/post/clrviacsharp-array/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+  
+
+
+<meta property="og:title" content="C# 数组" />
+<meta property="og:description" content="数组的使用方式，各种数组的性能对比，和一些使用小技巧" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sooda.net.cn/post/clrviacsharp-array/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-08-18T14:09:37+08:00" />
+<meta property="article:modified_time" content="2022-08-18T14:09:37+08:00" />
+
+<meta itemprop="name" content="C# 数组">
+<meta itemprop="description" content="数组的使用方式，各种数组的性能对比，和一些使用小技巧"><meta itemprop="datePublished" content="2022-08-18T14:09:37+08:00" />
+<meta itemprop="dateModified" content="2022-08-18T14:09:37+08:00" />
+<meta itemprop="wordCount" content="1294">
+<meta itemprop="keywords" content="CLR via CSharp," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C# 数组"/>
+<meta name="twitter:description" content="数组的使用方式，各种数组的性能对比，和一些使用小技巧"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Alaya</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Alaya</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">C# 数组</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-08-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/"> 阅读提炼 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一维数组">一维数组</a></li>
+        <li><a href="#多维数组">多维数组</a></li>
+        <li><a href="#交错数组">交错数组</a></li>
+        <li><a href="#数组初始化">数组初始化</a></li>
+        <li><a href="#数组转型">数组转型</a></li>
+        <li><a href="#数组的隐式继承">数组的隐式继承</a></li>
+        <li><a href="#创建下限非零开始的数组">创建下限非零开始的数组</a></li>
+        <li><a href="#数组的内部工作原理">数组的内部工作原理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>CLR支持一维、多维和交错数组。所有数组都隐式地从<code>System.Array</code>抽象类派生，后者又派生自<code>System.Object</code>。这意味着<strong>数组始终是引用类型</strong>，从托管堆分配。</p>
+<h2 id="一维数组">一维数组</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kt">int</span><span class="p">[]</span> <span class="n">arr</span><span class="p">;</span>          <span class="c1">// 声明一个数组引用</span>
+</span></span><span class="line"><span class="cl"><span class="n">arr</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="m">100</span><span class="p">];</span> <span class="c1">// 创建含有100个int的数组，并全部初始化为0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>实际上，除了数组元素，数组对象占据的内存块还包含一个类型对象指针、一个同步块索引和一些额外的成员。</p>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>应尽可能的使用一维0基数组。因为其性能是最佳的，可以使用一些特殊的IL指令来处理。</p>
+</div>
+<h2 id="多维数组">多维数组</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kt">double</span><span class="p">[,]</span> <span class="n">darr</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">double</span><span class="p">[</span><span class="m">10</span><span class="p">,</span> <span class="m">20</span><span class="p">];</span>    <span class="c1">// 二维数组</span>
+</span></span><span class="line"><span class="cl"><span class="kt">string</span><span class="p">[,,]</span> <span class="n">sarr</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[</span><span class="m">5</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">10</span><span class="p">];</span> <span class="c1">// 三维数组</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="交错数组">交错数组</h2>
+<p>交错数组：<strong>数组构成的数组。0基一维交错数组的性能和普通向量一样好。不过访问交错数组的元素意味着必须进行两次或更多此访问</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kt">int</span><span class="p">[][]</span> <span class="n">arr</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="m">3</span><span class="p">][];</span> <span class="c1">// 创建由多个int数组构成的一维数组</span>
+</span></span><span class="line"><span class="cl"><span class="n">arr</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="m">10</span><span class="p">];</span>       <span class="c1">// arr[0]引用一个含有10个int实例的数组</span>
+</span></span><span class="line"><span class="cl"><span class="n">arr</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="m">20</span><span class="p">];</span>       <span class="c1">// arr[1]引用一个含有20个int实例的数组</span>
+</span></span><span class="line"><span class="cl"><span class="n">arr</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="m">30</span><span class="p">];</span>       <span class="c1">// arr[2]引用一个含有30个int实例的数组</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="数组初始化">数组初始化</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// 大括号中以逗号分隔的数据项称为数组初始化器</span>
+</span></span><span class="line"><span class="cl"><span class="n">String</span><span class="p">[]</span> <span class="n">names</span> <span class="p">=</span> <span class="k">new</span> <span class="n">String</span><span class="p">[]</span> <span class="p">{</span><span class="s">&#34;A&#34;</span><span class="p">,</span> <span class="s">&#34;B&#34;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 隐式类型数组。</span>
+</span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">kids</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span><span class="k">new</span> <span class="p">{</span><span class="n">Name</span><span class="p">=</span><span class="s">&#34;A&#34;</span><span class="p">},</span> <span class="k">new</span> <span class="p">{</span><span class="n">Name</span><span class="p">=</span><span class="s">&#34;B&#34;</span><span class="p">}</span> <span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="数组转型">数组转型</h2>
+<p>CLR不允许将值类型元素的数组转型为其它任何类型。(不过可用<code>Array.Copy</code>方法创建新数组并在其中填充元素来模拟这种效果)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kt">int</span><span class="p">[]</span> <span class="n">iarr</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="m">5</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// object[] oarr = (object[]) iarr; // 编译报错</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建一个新数组，使用Array.Copy将源数组中的每个元素转型为目标数组中的元素类型，并把它们复制过去。(Array.Copy是浅拷贝)</span>
+</span></span><span class="line"><span class="cl"><span class="kt">object</span><span class="p">[]</span> <span class="n">oarr</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">object</span><span class="p">[</span><span class="n">iarr</span><span class="p">.</span><span class="n">Length</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">Array</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">iarr</span><span class="p">,</span> <span class="n">oarr</span><span class="p">,</span> <span class="n">iarr</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="admonition warning"><p class="admonition-title">注意</p>
+<p>可用<code>System.Buffer</code>的<code>BlockCopy</code>方法将元素复制到另一个数组，它比<code>Array.Copy</code>方法块，但只支持基元类型。</p>
+</div>
+<h2 id="数组的隐式继承">数组的隐式继承</h2>
+<ul>
+<li>所有数组都隐式派生自<code>System.Array</code></li>
+<li>所有数组都隐式实现<code>IEnumerable</code>,<code>ICollection</code>,<code>IList</code></li>
+</ul>
+<p>创建一维0基数数组类型时，CLR自动使数组类型实现<code>IEnumerable&lt;T&gt;</code>,<code>ICollection&lt;T&gt;</code>和<code>IList&lt;T&gt;</code>。同时，<strong>还为数组类型的所有基类型实现这三个接口，必须是引用类型</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">class</span> <span class="nc">A</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">class</span> <span class="nc">B</span> <span class="p">:</span> <span class="n">A</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span><span class="p">[]</span> <span class="n">b</span> <span class="p">=</span> <span class="k">new</span> <span class="n">B</span><span class="p">[</span><span class="m">2</span><span class="p">];</span> <span class="c1">// 会为A[]和B[]自动实现其三个接口</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="admonition warning"><p class="admonition-title">注意</p>
+<p>数组作为实参传递给方法时，实际传递的是数组的引用</p>
+</div>
+<h2 id="创建下限非零开始的数组">创建下限非零开始的数组</h2>
+<p>利用数组的静态<code>CreateInstance</code>方法来动态创建数组。<code>CreateInstance</code>为数组分配内存，将参数信息保存到数组的内存块开销部分，然后返回对该数组的引用。如果数组为多维数组。可以把数组引用转型为<code>ElementType[]</code>变量来对数组元素访问。如果只有一维，要求必须用<code>Array.GetValue</code>和<code>Array.SetValue</code>访问数组</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// 创建二维数组[2005...2009][1...4]</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="p">[]</span> <span class="n">lowerBounds</span> <span class="p">=</span> <span class="p">{</span><span class="m">2005</span><span class="p">,</span> <span class="m">1</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="p">[]</span> <span class="n">lengths</span> <span class="p">=</span> <span class="p">{</span><span class="m">5</span><span class="p">,</span> <span class="m">4</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="p">[,]</span> <span class="n">arr</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">[,])</span> <span class="n">Array</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span> <span class="n">lengths</span><span class="p">,</span> <span class="n">lowerBounds</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="数组的内部工作原理">数组的内部工作原理</h2>
+<p>CLR内部实际支持两种不同的数组</p>
+<ul>
+<li>下限从0开始的一维数组。</li>
+<li>下限开始未知的一维或多维数组。</li>
+</ul>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>访问一维0基数组的元素比访问非0基一维或多维数组的元素稍快。如果很关心新能可以用交错数组来代替矩阵数组。</p>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Alaya</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-08-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/clr-via-csharp/">CLR via CSharp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/clrviacsharp-delegate/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">C# 委托</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/clrviacsharp-enum/">
+            <span class="next-text nav-default">C# 枚举和标志位</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/yLong765" class="iconfont icon-github" title="github"></a>
+  <a href="https://sooda.net.cn/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Alaya</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>《游戏编程算法与技巧》 on Sooda</title>
+    <title>游戏编程算法与技巧 on Alaya - Simple Life Simple Coding</title>
     <link>https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/</link>
-    <description>Recent content in 《游戏编程算法与技巧》 on Sooda</description>
+    <description>Recent content in 游戏编程算法与技巧 on Alaya - Simple Life Simple Coding</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>cn</language>
-    <copyright>Copyright © 2022, All Rights Reserved.</copyright>
+    <language>en</language>
     <lastBuildDate>Wed, 19 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》人工智能篇</title>
@@ -14,15 +13,7 @@
       <pubDate>Wed, 19 Jan 2022 21:58:45 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AF%87/</guid>
-      <description>搜索空间的表示 最简单的寻路设计就是将图作为数据结构。图中包含多个节点，连接相邻的点组成边。图有多种表示方式，最简单的是邻接表
-游戏世界用图表示的方式 游戏世界用图来表示，有多种方法，一种简单的方法就是将世界区分为一个个正方形的格子（或者六边形）。如在《文明》策略游戏中的沙盘地图。而在不规则的地图中要么使用路点要么使用导航网格。
-寻路节点 光卡设计师在游戏世界中拜访AI可以到达的位置。这些点被解释为图中的节点（可手动和自动生成）
-缺点：AI只能在节点和边缘的位置移动。会有很多不可移动的位置，AI显得比较生硬
-导航网格 图上的节点实际上就是凸多边形。邻近节点就是简单的任意邻近凸多边形。意味着游戏世界区域可以通过少量的凸多边形表示。
-凸多边形内部任意位置都是可走的。意味着AI有了大量的空间可以行动。可返回更自然的路径
-启发式算法 游戏寻路的启发式算法有很多，启发式用公式$h(x)$表示，理想情况下启发式结果越接近真实越好。如果它的估算总是保证小于等于真实开销，那么这个启发式是可接受的。目前比较流行的启发式算法就是A*算法。不过还有贪婪最佳优先算法，Dijkstra算法等。这里只介绍A*算法
-A*算法 除了启发式 $h(x)$ 需要考虑，A又考虑了路径开销$g(x)$，所以A的节点开销等式为： $$ f(x) = g(x) + h(x) $$
-在当前节点搜索可到达的节点加入开放集合中，并从中选出开销最小的点放入关闭集合，如此往复。而$g(x)$的开销取决于父节点的$g(x)$的开销。这意味着父节点是可选的，$g(x)$的开销是可变得</description>
+      <description>搜索空间的表示 最简单的寻路设计就是将图作为数据结构。图中包含多个节点，连接相邻的点组成边。图有多种表示方式，最简单的是邻接表 游戏世界用图表示</description>
     </item>
     
     <item>
@@ -31,12 +22,7 @@ A*算法 除了启发式 $h(x)$ 需要考虑，A又考虑了路径开销$g(x)$�
       <pubDate>Fri, 14 Jan 2022 21:58:45 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%91%84%E5%83%8F%E6%9C%BA%E7%AF%87/</guid>
-      <description>摄像机的基础属性 视场 观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰
-如果视场变的太大就会有鱼眼效果，屏幕边缘会弯曲，类似于广角镜头
-高宽比 视口的宽度和高度的比率（如4:3、16:9等)
-摄像机的跟随实现 基础跟随 跟随在某个对象后方，保持固定距离，固定的俯视角摄像机
-// tPos: 目标位置 // tForward: 目标方向 // hDist: 水平跟随距离 // vDist: 垂直跟随距离 void BasucFollowCamera(GameObject target, float hDist, float vDist) { // 计算相机位置 Vector3 pos = target.position - target.forward * hDist + target.up * vDist; // 计算相机朝向 Vector3 cameraForward = tPos - pos; // 设置相机位置和朝向 //... } 弹性跟随相机 实现相机到相机目标位置的逐渐变化，可以理解为真实位置的相机和在基础跟随所要到达的理想位置中间有一个弹簧
-class SpringCamera { float hDist, vDist; // 水平和垂直跟随距离 float springConstant; // 弹性常量：越高弹性越小 float dampConstant; // 阻尼常量：由弹性常量决定 Vector3 velocity, actualPosition; // 速度和摄像机真实位置 GameObject target; // 跟随目标 void init(GameObject _target, float _springConstant, float _hDist, float vDist) { target = _target; springConstant = _springConstant; hDist = _hDist; vDist = _vDist; // 计算阻尼常量 dampConstant = 2.</description>
+      <description>摄像机的基础属性 视场 观看世界的角度和广度，称为视场(FOV)。人双目并视大约能看到120°的视场，而剩余的视场在边缘能够发现运动，但不清晰 如</description>
     </item>
     
     <item>
@@ -45,17 +31,7 @@ class SpringCamera { float hDist, vDist; // 水平和垂直跟随距离 float sp
       <pubDate>Tue, 04 Jan 2022 21:58:45 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
-      <description>平面 平面在游戏中倾向的数学定义：
-$$ P \cdot \hat{n} + d = 0 $$
-$P$是平面上任意一点，$\hat{n}$是平面法线，$d$是平面到原点的最小距离
-// 平面的数据结构 struct Plane { Vector3 normal; float d; } 射线和线段 游戏中射线基本就是线段，因为基本不会让射线无限延伸下去。数学定义为：
-$$ R(t) = R_0 + \vec{v}t $$
-$R_0$是起点，$\vec{v}$是射线方向，$t$必须大于等于0。而在代码中的数据结构我们存两个点一个起点(startPoint)，一个终点(endPoint)。则$R_0$就是startPoint，$\vec{v}$就是endPoint-startPoint，而$t$的取值就为0~1了
-struct RayCast { Vector3 startPoint Vector3 endPoint } 碰撞几何体 包围球 通过中心点和半径表示
-class ShpereCollider { Vector3 center; float radius; } 轴对齐包围盒(AABB) 每条边都与x轴或y轴平行的矩形，只能随轴旋转，多用于2D
-class AABB2D { Vector2 min Vector2 max } 朝向包围盒OBB 可以自由旋转的类AABB包围盒，较复杂
-胶囊体 3D中为一个圆柱加上两个半圆，还可看作带半径的线段
-struct Capsule2D { Vector2 startPoint; Vector2 endPoint; float radius; } 凸多边形 简称凸包。凸多边形比其他前几个方式效率低，但是更精准</description>
+      <description>平面 平面在游戏中倾向的数学定义： $$ P \cdot \hat{n} + d = 0 $$ $P$是平面上任意一点，$\hat{n}$是平面法线，$d$是平面到原点的最小距离 1 2 3 4</description>
     </item>
     
     <item>
@@ -64,11 +40,7 @@ struct Capsule2D { Vector2 startPoint; Vector2 endPoint; float radius; } 凸多�
       <pubDate>Fri, 24 Dec 2021 08:55:57 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/</guid>
-      <description>游戏输入 可分为两种：数字与模拟
-数字输入 只用两种状态：“按下”和“没有按”（例如键盘）
-如何实现一直按着的判断？ 同时跟踪上一帧和这一帧的状态，根据这两个状态来判断
-上一帧状态 本帧状态 结论 释放 释放 一直释放 释放 按下 刚刚按下 按下 释放 刚刚释放 按下 按下 一直按下 伪代码：
-enum KeyState { StillReleased, JustPressed, JustReleased, StillPressed } lastState[256]; // 上一帧状态 currentState[256]; // 当前帧状态 // 每帧更新状态 void UpdateKeyboard() { lastState = currentState; currentState = GetKeyboardState(); // 获取当前状态 } // 通过keyCode获取KeyState KeyState GetKeyState(int keyCode) { if (lastState[keyCode]) if (currentState[keyCode]) return StillReleased; else return JustReleased; else if (currentState[keyCode]) return JustPressed; else return StillReleased; } 模拟输入 可返回某个数字的范围（如遥感）。但遥感的数值基本不会归零所以需要输入过滤，来消除偏差值。一般取遥感总值的10%为无效值。</description>
+      <description>游戏输入 可分为两种：数字与模拟 数字输入 只用两种状态：“按下”和“没有按”（例如键盘） 如何实现一直按着的判断？ 同时跟踪上一帧和这一帧的状态，根</description>
     </item>
     
     <item>
@@ -77,25 +49,7 @@ enum KeyState { StillReleased, JustPressed, JustReleased, StillPressed } lastSta
       <pubDate>Wed, 22 Dec 2021 15:57:24 +0800</pubDate>
       
       <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/</guid>
-      <description>闲话 近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏开发的初学者阅读
-此书对于我也是梳理游戏开发知识点的概括好书。对于此书会在重点部分做提炼。
-渲染基础 此部分只做简单的总结，网上已经有很多的好文章了。而此书作者也没有很详细的写这部分。毕竟这块要是讲细了够学一辈子了
-推荐一些好文（有兴趣可以看看我写的软渲染）
-闫令琪老师的GAMES101课程 韦易笑老师的mini3d项目 韦易笑老师的RenderHelp项目 Dmitry V. Sokolov老师的tinyrender项目 双缓冲技术解决渲染撕裂 CRT显示器时代，所谓场消隐期（VBLANK）：喷枪从右下角移动到左上角所花费的时间
-渲染撕裂：显示器在绘制像素缓冲区中的内容时，游戏输出了新的渲染结果到像素缓冲区，导致渲染撕裂
-双缓冲技术：解决屏幕撕裂，用两块像素缓冲区，游戏交替的在这两块缓冲区中绘制
-垂直同步：让交换缓冲区的时机在场消隐期进行
-三缓冲技术：利用3个缓冲区，让画面更加平滑，但增加输入延迟
-画家算法 所有物体按照从后往前的顺序绘制。优点：绘制绝对正确（包括透明物体），缺点：overdraw高，效率慢
-3D渲染 为什么用三角形表示面片？
-仅用3顶点表示的最简单的多边形 三角形总在一个面上 任何3D对象都可以简单地用细分三角面表示 网格：多个三角面组成
-软件光栅化 将3D模型正确渲染到2D颜色缓冲的算法
-3D模型经过4个主要坐标系空间转到最终的2D颜色缓冲中
-模型（局部）坐标系：相对于模型自身的坐标系（角色模型一般为两脚中间） 世界坐标系：所有对象都相对于世界原点偏移 视角（摄像机）坐标系：将世界坐标系的模型变换到相对于摄像机的位置上 投影坐标系：将3D场景平铺到2D平面上得到的坐标系 除了上面的坐标系外，还有一个特殊的坐标系，就是齐次坐标系
-将4D坐标系应用在3D空间中，就被称为齐次坐标系。而第四个分量为w分量。如果w=0，则此齐次坐标是3D向量。而w=1，则表示此齐次坐标是3D的点
-矩阵变换 将模型在各个坐标系中转换所用的矩阵，就是矩阵变换。
-此处和之后所用的都为行向量。（OpenGL为列向量） 模型转世界坐标系 平移 将顶点移动一段距离，只作用在点上
-$$ T(t_x,t_y,t_z) = \begin{bmatrix} 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \newline 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \newline 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \newline t_x &amp;amp; t_y &amp;amp; t_z &amp;amp; 1 \end{bmatrix} $$</description>
+      <description>闲话 近日读完了《游戏编程算法与技巧》这本书。更感觉是《游戏引擎架构》的缩略图。先阅读此书会对游戏开发有一个整体的认识与理解。适合需要了解游戏</description>
     </item>
     
   </channel>

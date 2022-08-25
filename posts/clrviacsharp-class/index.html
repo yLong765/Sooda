@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 《CLR via C#》 class及成员基础 | Alaya</title>
+  <link rel = 'canonical' href = 'https://localhost:1313/posts/clrviacsharp-class/'>
+  <meta name="description" content="Simple Life Simple Coding.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="《CLR via C#》 class及成员基础" />
+<meta property="og:description" content="class System.Object “运行时”所有的类型最终都从System.Object类型派生。
+1// 隐式派生自Object 2class A {} 3 4// 显式派生自Object 5class A : System.Object {} System.Object的public方法
+Equals：比较函数 GetHashCode：对象哈希值 ToString：转换成String类型对象 GetType：返回对象的类型 System.Object的protected方法
+MemberwiseClone：创建类型的新实例，并将新对象的实例字段设置与this对象的实例字段完全一致。返回对新实例的引用 Finalize：垃圾回收阶段实际清理之前会调用此方法。 new操作符都做了什么工作 1A a = new A(&#34;123&#34;); 上面的代码中new操作符所作的事情：
+计算类型机器所有基类型(一直到System.Object)中定义的所有实例字段所需要的字节数。并加上每个对象都需要额外开销的类型对象指针(type object pointer)和同步块索引(sync block index) 。 从托管堆中分配1步骤中所计算的类型的字节数，从而分配对象的内存，分配的所有字节都设置为零(0)。 初始化对象的类型对象指针和同步块索引成员。 调用类型的实例构造器，传递在new调用中指定的实参。编译器会在构造函数(.ctor)中自动生成代码调用基类构造器 。最终都会调用System.Object的构造函数，但它什么都不做，单纯的返回。 返回指向新建对象的一个引用(或指针) 类型转换 CLR允许将对象转换为它的(实际)类型或者它的任何基类型。然而，将对象转换为派生类时，因可能转换失败，所以要求显示转换。
+is 和 as is操作符用于检查是否兼容于指定类型，如果对象引用null则总是返回false
+1Object o = new Object(); 2o is Object; // 返回true 3o is A; // 返回false as操作符用于检查是否兼容于指定类型，并进行转换。如果兼容则返回对于类型，不兼容则返回null。(判断null比检查是否兼容于指定类型快)
+1A a = o as A; 2if (a !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://localhost:1313/posts/clrviacsharp-class/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-06-28T17:09:01+08:00" />
+<meta property="article:modified_time" content="2022-06-28T17:09:01+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《CLR via C#》 class及成员基础"/>
+<meta name="twitter:description" content="class System.Object “运行时”所有的类型最终都从System.Object类型派生。
+1// 隐式派生自Object 2class A {} 3 4// 显式派生自Object 5class A : System.Object {} System.Object的public方法
+Equals：比较函数 GetHashCode：对象哈希值 ToString：转换成String类型对象 GetType：返回对象的类型 System.Object的protected方法
+MemberwiseClone：创建类型的新实例，并将新对象的实例字段设置与this对象的实例字段完全一致。返回对新实例的引用 Finalize：垃圾回收阶段实际清理之前会调用此方法。 new操作符都做了什么工作 1A a = new A(&#34;123&#34;); 上面的代码中new操作符所作的事情：
+计算类型机器所有基类型(一直到System.Object)中定义的所有实例字段所需要的字节数。并加上每个对象都需要额外开销的类型对象指针(type object pointer)和同步块索引(sync block index) 。 从托管堆中分配1步骤中所计算的类型的字节数，从而分配对象的内存，分配的所有字节都设置为零(0)。 初始化对象的类型对象指针和同步块索引成员。 调用类型的实例构造器，传递在new调用中指定的实参。编译器会在构造函数(.ctor)中自动生成代码调用基类构造器 。最终都会调用System.Object的构造函数，但它什么都不做，单纯的返回。 返回指向新建对象的一个引用(或指针) 类型转换 CLR允许将对象转换为它的(实际)类型或者它的任何基类型。然而，将对象转换为派生类时，因可能转换失败，所以要求显示转换。
+is 和 as is操作符用于检查是否兼容于指定类型，如果对象引用null则总是返回false
+1Object o = new Object(); 2o is Object; // 返回true 3o is A; // 返回false as操作符用于检查是否兼容于指定类型，并进行转换。如果兼容则返回对于类型，不兼容则返回null。(判断null比检查是否兼容于指定类型快)
+1A a = o as A; 2if (a !"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://localhost:1313/css/styles.1e769e967e9c06518a5e0618da426e1be02b65c215ab7586c2b95fa09a2997b516357fd281da2cb1044ec3d691b106662e083110bbda88c3203e884f0485d6b5.css" integrity="sha512-Hnaeln6cBlGKXgYY2kJuG&#43;ArZcIVq3WGwrlfoJopl7UWNX/SgdossQROw9aRsQZmLggxELvaiMMgPohPBIXWtQ=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://localhost:1313/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://localhost:1313/posts/clrviacsharp-clr%E5%9F%BA%E7%A1%80/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80&description=class%20System.Object%20%e2%80%9c%e8%bf%90%e8%a1%8c%e6%97%b6%e2%80%9d%e6%89%80%e6%9c%89%e7%9a%84%e7%b1%bb%e5%9e%8b%e6%9c%80%e7%bb%88%e9%83%bd%e4%bb%8eSystem.Object%e7%b1%bb%e5%9e%8b%e6%b4%be%e7%94%9f%e3%80%82%0a1%2f%2f%20%e9%9a%90%e5%bc%8f%e6%b4%be%e7%94%9f%e8%87%aaObject%202class%20A%20%7b%7d%203%204%2f%2f%20%e6%98%be%e5%bc%8f%e6%b4%be%e7%94%9f%e8%87%aaObject%205class%20A%20%3a%20System.Object%20%7b%7d%20System.Object%e7%9a%84public%e6%96%b9%e6%b3%95%0aEquals%ef%bc%9a%e6%af%94%e8%be%83%e5%87%bd%e6%95%b0%20GetHashCode%ef%bc%9a%e5%af%b9%e8%b1%a1%e5%93%88%e5%b8%8c%e5%80%bc%20ToString%ef%bc%9a%e8%bd%ac%e6%8d%a2%e6%88%90String%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%20GetType%ef%bc%9a%e8%bf%94%e5%9b%9e%e5%af%b9%e8%b1%a1%e7%9a%84%e7%b1%bb%e5%9e%8b%20System.Object%e7%9a%84protected%e6%96%b9%e6%b3%95%0aMemberwiseClone%ef%bc%9a%e5%88%9b%e5%bb%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%96%b0%e5%ae%9e%e4%be%8b%ef%bc%8c%e5%b9%b6%e5%b0%86%e6%96%b0%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e8%ae%be%e7%bd%ae%e4%b8%8ethis%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e5%ae%8c%e5%85%a8%e4%b8%80%e8%87%b4%e3%80%82%e8%bf%94%e5%9b%9e%e5%af%b9%e6%96%b0%e5%ae%9e%e4%be%8b%e7%9a%84%e5%bc%95%e7%94%a8%20Finalize%ef%bc%9a%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e9%98%b6%e6%ae%b5%e5%ae%9e%e9%99%85%e6%b8%85%e7%90%86%e4%b9%8b%e5%89%8d%e4%bc%9a%e8%b0%83%e7%94%a8%e6%ad%a4%e6%96%b9%e6%b3%95%e3%80%82%20new%e6%93%8d%e4%bd%9c%e7%ac%a6%e9%83%bd%e5%81%9a%e4%ba%86%e4%bb%80%e4%b9%88%e5%b7%a5%e4%bd%9c%201A%20a%20%3d%20new%20A%28%26%2334%3b123%26%2334%3b%29%3b%20%e4%b8%8a%e9%9d%a2%e7%9a%84%e4%bb%a3%e7%a0%81%e4%b8%adnew%e6%93%8d%e4%bd%9c%e7%ac%a6%e6%89%80%e4%bd%9c%e7%9a%84%e4%ba%8b%e6%83%85%ef%bc%9a%0a%e8%ae%a1%e7%ae%97%e7%b1%bb%e5%9e%8b%e6%9c%ba%e5%99%a8%e6%89%80%e6%9c%89%e5%9f%ba%e7%b1%bb%e5%9e%8b%28%e4%b8%80%e7%9b%b4%e5%88%b0System.Object%29%e4%b8%ad%e5%ae%9a%e4%b9%89%e7%9a%84%e6%89%80%e6%9c%89%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e6%89%80%e9%9c%80%e8%a6%81%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e5%b9%b6%e5%8a%a0%e4%b8%8a%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e9%83%bd%e9%9c%80%e8%a6%81%e9%a2%9d%e5%a4%96%e5%bc%80%e9%94%80%e7%9a%84%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%28type%20object%20pointer%29%e5%92%8c%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%28sync%20block%20index%29%20%e3%80%82%20%e4%bb%8e%e6%89%98%e7%ae%a1%e5%a0%86%e4%b8%ad%e5%88%86%e9%85%8d1%e6%ad%a5%e9%aa%a4%e4%b8%ad%e6%89%80%e8%ae%a1%e7%ae%97%e7%9a%84%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%ef%bc%8c%e4%bb%8e%e8%80%8c%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%e7%9a%84%e5%86%85%e5%ad%98%ef%bc%8c%e5%88%86%e9%85%8d%e7%9a%84%e6%89%80%e6%9c%89%e5%ad%97%e8%8a%82%e9%83%bd%e8%ae%be%e7%bd%ae%e4%b8%ba%e9%9b%b6%280%29%e3%80%82%20%e5%88%9d%e5%a7%8b%e5%8c%96%e5%af%b9%e8%b1%a1%e7%9a%84%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%e5%92%8c%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e6%88%90%e5%91%98%e3%80%82%20%e8%b0%83%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%8c%e4%bc%a0%e9%80%92%e5%9c%a8new%e8%b0%83%e7%94%a8%e4%b8%ad%e6%8c%87%e5%ae%9a%e7%9a%84%e5%ae%9e%e5%8f%82%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e4%bc%9a%e5%9c%a8%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%28.ctor%29%e4%b8%ad%e8%87%aa%e5%8a%a8%e7%94%9f%e6%88%90%e4%bb%a3%e7%a0%81%e8%b0%83%e7%94%a8%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%20%e3%80%82%e6%9c%80%e7%bb%88%e9%83%bd%e4%bc%9a%e8%b0%83%e7%94%a8System.Object%e7%9a%84%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%ef%bc%8c%e4%bd%86%e5%ae%83%e4%bb%80%e4%b9%88%e9%83%bd%e4%b8%8d%e5%81%9a%ef%bc%8c%e5%8d%95%e7%ba%af%e7%9a%84%e8%bf%94%e5%9b%9e%e3%80%82%20%e8%bf%94%e5%9b%9e%e6%8c%87%e5%90%91%e6%96%b0%e5%bb%ba%e5%af%b9%e8%b1%a1%e7%9a%84%e4%b8%80%e4%b8%aa%e5%bc%95%e7%94%a8%28%e6%88%96%e6%8c%87%e9%92%88%29%20%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2%20CLR%e5%85%81%e8%ae%b8%e5%b0%86%e5%af%b9%e8%b1%a1%e8%bd%ac%e6%8d%a2%e4%b8%ba%e5%ae%83%e7%9a%84%28%e5%ae%9e%e9%99%85%29%e7%b1%bb%e5%9e%8b%e6%88%96%e8%80%85%e5%ae%83%e7%9a%84%e4%bb%bb%e4%bd%95%e5%9f%ba%e7%b1%bb%e5%9e%8b%e3%80%82%e7%84%b6%e8%80%8c%ef%bc%8c%e5%b0%86%e5%af%b9%e8%b1%a1%e8%bd%ac%e6%8d%a2%e4%b8%ba%e6%b4%be%e7%94%9f%e7%b1%bb%e6%97%b6%ef%bc%8c%e5%9b%a0%e5%8f%af%e8%83%bd%e8%bd%ac%e6%8d%a2%e5%a4%b1%e8%b4%a5%ef%bc%8c%e6%89%80%e4%bb%a5%e8%a6%81%e6%b1%82%e6%98%be%e7%a4%ba%e8%bd%ac%e6%8d%a2%e3%80%82%0ais%20%e5%92%8c%20as%20is%e6%93%8d%e4%bd%9c%e7%ac%a6%e7%94%a8%e4%ba%8e%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%85%bc%e5%ae%b9%e4%ba%8e%e6%8c%87%e5%ae%9a%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%a6%82%e6%9e%9c%e5%af%b9%e8%b1%a1%e5%bc%95%e7%94%a8null%e5%88%99%e6%80%bb%e6%98%af%e8%bf%94%e5%9b%9efalse%0a1Object%20o%20%3d%20new%20Object%28%29%3b%202o%20is%20Object%3b%20%2f%2f%20%e8%bf%94%e5%9b%9etrue%203o%20is%20A%3b%20%2f%2f%20%e8%bf%94%e5%9b%9efalse%20as%e6%93%8d%e4%bd%9c%e7%ac%a6%e7%94%a8%e4%ba%8e%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%85%bc%e5%ae%b9%e4%ba%8e%e6%8c%87%e5%ae%9a%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%b9%b6%e8%bf%9b%e8%a1%8c%e8%bd%ac%e6%8d%a2%e3%80%82%e5%a6%82%e6%9e%9c%e5%85%bc%e5%ae%b9%e5%88%99%e8%bf%94%e5%9b%9e%e5%af%b9%e4%ba%8e%e7%b1%bb%e5%9e%8b%ef%bc%8c%e4%b8%8d%e5%85%bc%e5%ae%b9%e5%88%99%e8%bf%94%e5%9b%9enull%e3%80%82%28%e5%88%a4%e6%96%adnull%e6%af%94%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%85%bc%e5%ae%b9%e4%ba%8e%e6%8c%87%e5%ae%9a%e7%b1%bb%e5%9e%8b%e5%bf%ab%29%0a1A%20a%20%3d%20o%20as%20A%3b%202if%20%28a%20%21" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#class">class</a>
+      <ul>
+        <li><a href="#systemobject">System.Object</a></li>
+        <li><a href="#new操作符都做了什么工作">new操作符都做了什么工作</a></li>
+        <li><a href="#类型转换">类型转换</a>
+          <ul>
+            <li><a href="#is-和-as">is 和 as</a></li>
+          </ul>
+        </li>
+        <li><a href="#using操作符的作用">using操作符的作用</a></li>
+        <li><a href="#运行时的细节">运行时的细节</a>
+          <ul>
+            <li><a href="#计算机基础的线程栈细节">计算机基础的线程栈细节</a></li>
+            <li><a href="#clr调用时的细节">CLR调用时的细节</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#类型相关">类型相关</a>
+      <ul>
+        <li><a href="#类型可见性">类型可见性</a></li>
+        <li><a href="#静态类">静态类</a></li>
+        <li><a href="#分布类结构和接口">分布类、结构和接口</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        《CLR via C#》 class及成员基础
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-06-28 17:09:01 &#43;0800 CST" itemprop="datePublished">2022-06-28</time>
+          
+        </div>
+        
+        
+        
+        <div class="article-category">
+            <i class="fas fa-archive"></i>
+            
+            
+            <a class="category-link" href="/categories/clr-via-csharp">《CLR via CSharp》</a>
+            
+        </div>
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h2 id="class">class</h2>
+<h3 id="systemobject">System.Object</h3>
+<p>“运行时”所有的类型最终都从System.Object类型派生。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">// 隐式派生自Object</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#6272a4">// 显式派生自Object</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> : System.Object {}
+</span></span></code></pre></div><p>System.Object的public方法</p>
+<ul>
+<li>Equals：比较函数</li>
+<li>GetHashCode：对象哈希值</li>
+<li>ToString：转换成String类型对象</li>
+<li>GetType：返回对象的类型</li>
+</ul>
+<p>System.Object的protected方法</p>
+<ul>
+<li>MemberwiseClone：创建类型的新实例，并将新对象的实例字段设置与this对象的实例字段完全一致。返回对新实例的引用</li>
+<li>Finalize：垃圾回收阶段实际清理之前会调用此方法。</li>
+</ul>
+<h3 id="new操作符都做了什么工作">new操作符都做了什么工作</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>A a = <span style="color:#ff79c6">new</span> A(<span style="color:#f1fa8c">&#34;123&#34;</span>);
+</span></span></code></pre></div><p>上面的代码中new操作符所作的事情：</p>
+<ol>
+<li>计算类型机器所有基类型(一直到System.Object)中定义的所有实例字段所需要的字节数。<strong>并加上每个对象都需要额外开销的类型对象指针(type object pointer)和同步块索引(sync block index)</strong> 。</li>
+<li>从托管堆中分配1步骤中所计算的类型的字节数，从而分配对象的内存，分配的所有字节都设置为零(0)。</li>
+<li>初始化对象的类型对象指针和同步块索引成员。</li>
+<li>调用类型的实例构造器，传递在new调用中指定的实参。<strong>编译器会在构造函数(.ctor)中自动生成代码调用基类构造器</strong> 。最终都会调用System.Object的构造函数，但它什么都不做，单纯的返回。</li>
+<li>返回指向新建对象的一个引用(或指针)</li>
+</ol>
+<h3 id="类型转换">类型转换</h3>
+<p>CLR允许将对象转换为它的(实际)类型或者它的任何基类型。然而，将对象转换为派生类时，因可能转换失败，所以要求显示转换。</p>
+<h4 id="is-和-as">is 和 as</h4>
+<p>is操作符用于检查是否兼容于指定类型，如果对象引用null则总是返回false</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Object o = <span style="color:#ff79c6">new</span> Object();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>o <span style="color:#ff79c6">is</span> Object;    <span style="color:#6272a4">// 返回true</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>o <span style="color:#ff79c6">is</span> A;         <span style="color:#6272a4">// 返回false</span>
+</span></span></code></pre></div><p>as操作符用于检查是否兼容于指定类型，并进行转换。如果兼容则返回对于类型，不兼容则返回null。(判断null比检查是否兼容于指定类型快)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>A a = o <span style="color:#ff79c6">as</span> A;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ff79c6">if</span> (a != <span style="color:#ff79c6">null</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#6272a4">// ...</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
+</span></span></code></pre></div><h3 id="using操作符的作用">using操作符的作用</h3>
+<ul>
+<li>using指令指示编译器尝试为类型名称附加不同的前缀，直到找到匹配项</li>
+<li>允许为类型或命名空间创建别名。如<code>using obj = System.Object;</code></li>
+</ul>
+<h3 id="运行时的细节">运行时的细节</h3>
+<h4 id="计算机基础的线程栈细节">计算机基础的线程栈细节</h4>
+<p>例如我有如下两个方法M1和M2。观察这两个方法执行时线程栈中内存的分配变化。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">void</span> M1() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#8be9fd">string</span> name = <span style="color:#f1fa8c">&#34;Yang&#34;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    M2(name);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ff79c6">void</span> M2(<span style="color:#8be9fd">string</span> s) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    Int32 length = s.Length();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    Int32 tally;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>}
+</span></span></code></pre></div><ol>
+<li>首先我们的程序应该运行在一个Windows进程上。进程可能又会有多个线程。<strong>每个线程创建时会分配到1M的栈空间</strong>。栈空间用于向方法传递实参，方法内部的定义的局部变量也在栈上。<strong>栈从高位内存地址向低位内存地址构建</strong>。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%87%86%E5%A4%87%E8%B0%83%E7%94%A8M1%E6%96%B9%E6%B3%95%E4%B9%8B%E5%89%8D%E7%9A%84%E6%A0%88.png" alt="准备调用M1方法之前的栈"></p>
+<ol>
+<li>方法包含 <strong>“序幕”(prologue)代码</strong>，在方法开始工作之前进行初始化；也包含 <strong>“尾声”(epilogue)代码</strong>，在方法工作完后对其清理，以便返回调用者。M1方法调用时序幕代码在线程栈上分配局部变量name的内存。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%9C%A8%E7%BA%BF%E7%A8%8B%E6%A0%88%E4%B8%8A%E5%88%86%E9%85%8DM1%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F.png" alt="在线程栈上分配M1的局部变量"></p>
+<ol>
+<li>开始正式执行M1。M1调用M2，将局部变量name作为实参传递。造成name被压入栈</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/M1%E8%B0%83%E7%94%A8M2%E6%97%B6%EF%BC%8C%E5%B0%86%E5%AE%9E%E5%8F%82%E5%92%8C%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80%E5%8E%8B%E5%85%A5%E7%BA%BF%E7%A8%8B%E6%A0%88.png" alt="M1调用M2时，将实参和返回地址压入线程栈"></p>
+<ol>
+<li>M2开始执行之前序幕代码为其局部变量length和tally分配内存，然后，M2方法内部代码开始执行。最终，M2抵达return语句，使PC(指令指针)设置成栈中的返回地址，M2的栈帧(stack frame)展开(unwind)，恢复成上一张图的状态。之后继续执行M1的代码。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%9C%A8%E7%BA%BF%E7%A8%8B%E6%A0%88%E5%88%86%E9%85%8DM2%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F.png" alt="在线程栈分配M2的局部变量"></p>
+<h4 id="clr调用时的细节">CLR调用时的细节</h4>
+<p>在上面例子的基础上加入class。有了类型的实例堆就要工作了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#ff79c6">public</span> Int32 GetYears() {}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">virtual</span> String GetProgress() {}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> A Lookup(String name) { <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> B(); }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ff79c6">sealed</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">B</span> : A {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">override</span> String GetProgress() {}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#ff79c6">void</span> M3() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    A a;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    Int32 year;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    a = <span style="color:#ff79c6">new</span> B();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    a = a.Lookup(<span style="color:#f1fa8c">&#34;Yang&#34;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    year = a.GetYears();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    a.GetProgress();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
+</span></span></code></pre></div><p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/CLR%E5%8A%A0%E8%BD%BD%E5%88%B0%E8%BF%9B%E7%A8%8B%E4%B8%AD%EF%BC%8C%E5%A0%86%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%A0%88%E5%B7%B2%E5%88%9B%E5%BB%BA%EF%BC%8C%E9%A9%AC%E4%B8%8A%E8%B0%83%E7%94%A8M3.png" alt="CLR加载到进程中，堆初始化，线程栈已创建，马上调用M3"></p>
+<ol>
+<li>JIT编译器将M3的IL代码转换成本机CPU指令，会扫描M3内部所有的类型引用(A, Int32, B, String)。CLR会确认其类型的所有程序集都已加载。然后利用程序集的元数据中与这些类型有关的信息，来创建数据结构来表示类型本身。<strong>数据结构中会包含两个额外成员：类型对象指针(type object pointer)和同步索引块(sync block index)、还有类型内定义的静态数据字段和方法表(类型定义的每一个方法都有其对应的记录项)</strong></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/A%E5%92%8CB%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1%E5%86%8DM3%E8%B0%83%E7%94%A8%E6%97%B6%E5%88%9B%E5%BB%BA.png" alt="A和B类型对象再M3调用时创建"></p>
+<ol>
+<li>M3的代码编译之后，就允许线程执行M3的本机代码。然后序幕代码开始为局部变量分配内存并将其初始化为null或0。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%9C%A8%E6%A0%88%E4%B8%8A%E5%88%86%E9%85%8DM3%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F.png" alt="在栈上分配M3的局部变量"></p>
+<ol>
+<li>正式开始执行M3。构造了一个A对象a。造成在托管堆中创建A类型的一个实例。a对象也有类型对象指针和同步索引块。还有必要的字节来容纳A类型定义的所有实例数据字段。<strong>CLR自动初始化内部的“类型对象指针”成员来引用对象对应的类型对象</strong>。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%88%86%E9%85%8D%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96B%E5%AF%B9%E8%B1%A1.png" alt="分配并初始化B对象"></p>
+<ol>
+<li>下一行代码调用A的静态方法Lookup。<strong>CLR会定位与定义静态方法的类型对应的类型对象。然后，JIT编译器在类型对象的方法表中查找对应记录项，对方法进行JIT编译(如果需要的话)，再调用JIT编译好的代码</strong>。返回一个A类型的新对象指针赋值给a</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/B%E7%9A%84%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95Lookup%E4%B8%BAString%E5%88%86%E9%85%8D%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96B%E5%AF%B9%E8%B1%A1.png" alt="B的静态方法Lookup为String分配并初始化B对象"></p>
+<ol>
+<li>下一行代码调用A的非虚实例方法GetYears。<strong>JIT编译器会找到发出调用的变量(a)的类型(A)对应的类型对象(A类型对象)。如果此类型没有定义调用的方法，JIT则会回溯类层次结构(一直到Object)，并在沿途的每个类型中查找该方法</strong>。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/B%E7%9A%84%E9%9D%9E%E8%99%9A%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8.png" alt="B的非虚实例方法调用"></p>
+<ol>
+<li>下一行代码调用A的虚实例方法GetProgress。<strong>调用虚实例方法时，JIT编译器要在方法中生成一些额外代码；方法每次调用都会执行这些代码。这些代码首先检查发出调用的变量，并跟随地址来到发出调用的对象</strong>。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/B%E7%9A%84%E8%99%9A%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8.png" alt="B的虚实例方法调用"></p>
+<ol>
+<li><strong>A和B类型对象中的“类型对象指针”都指向System.Type类型。所有的类型对象指针都是System.Type类型的“实例”。GetType返回的是指向对象的类型对象的指针</strong>。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/A%E5%92%8CB%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1%E6%98%AFSystem.Type%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9E%E4%BE%8B.png" alt="A和B类型对象是System.Type类型的实例"></p>
+<h2 id="类型相关">类型相关</h2>
+<h3 id="类型可见性">类型可见性</h3>
+<table>
+<thead>
+<tr>
+<th>CLR术语</th>
+<th>C#术语</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Private</td>
+<td>private</td>
+<td>成员只能由定义类型或任何嵌套类型中的方法访问</td>
+</tr>
+<tr>
+<td>Family</td>
+<td>protected</td>
+<td>成员只能由定义类型、任何嵌套类型或者不管在什么程序集中的派生类型中的方法访问</td>
+</tr>
+<tr>
+<td>Family and Assembly</td>
+<td>(不支持)</td>
+<td>成员只能由定义类型、任何嵌套类型或同一程序集中定义的任何派生类型中的方法访问</td>
+</tr>
+<tr>
+<td>Assembly</td>
+<td>internal</td>
+<td>成员只能由定义程序集中的方法访问</td>
+</tr>
+<tr>
+<td>Family or Assembly</td>
+<td>protected internal</td>
+<td>成员可由任何嵌套类型、任何派生类型(不管在什么程序集)或者定义程序集中的任何方法访问。</td>
+</tr>
+<tr>
+<td>Public</td>
+<td>public</td>
+<td>成员可由任何程序集的任何方法访问</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>CLR要求接口类型的所有成员都为public可访问性。所以C#在接口中禁止显式指定接口成员的可访问性；编译器自动将所有成员的可访问性设为public</p>
+</div>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>C#中派生类重写基类型定义的成员时，要求原始成员和重写成员具有相同的可访问性。在CLR中从基类型派生时，允许放宽但不允许收紧成员的可访问性</p>
+</div>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>友元程序集：A程序集是B程序集的友元程序集，则A程序集可以访问B程序集中的所有internal的方法。</p>
+</div>
+<h3 id="静态类">静态类</h3>
+<p>不需要实例化的类。用static关键字定义，<strong>C#编译器会将static解析为abstract和sealed</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">// 创建静态类</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ff79c6">static</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#6272a4">// 编译后为</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#ff79c6">abstract</span> <span style="color:#ff79c6">sealed</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {}
+</span></span></code></pre></div><p>C#编译器对静态类的限制：</p>
+<ul>
+<li>静态类必须从基类System.Object派生。</li>
+<li>静态类不能实现任何接口，这是因为只有使用类的实例时，才可调用类的接口方法。</li>
+<li>静态类只能定义静态成员。</li>
+<li>静态类不能作为字段、方法参数或局部变量使用。</li>
+</ul>
+<h3 id="分布类结构和接口">分布类、结构和接口</h3>
+<p>partial关键字告诉C#编译器：类、结构或接口的定义源码可能要分散到一个或多个源码文件中。</p>
+<p>编译时会将partial关键字应用的所有文件编译时合并到一起。在最后生成的文件中生成单个类型。</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">Writings</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#class">class</a>
+      <ul>
+        <li><a href="#systemobject">System.Object</a></li>
+        <li><a href="#new操作符都做了什么工作">new操作符都做了什么工作</a></li>
+        <li><a href="#类型转换">类型转换</a>
+          <ul>
+            <li><a href="#is-和-as">is 和 as</a></li>
+          </ul>
+        </li>
+        <li><a href="#using操作符的作用">using操作符的作用</a></li>
+        <li><a href="#运行时的细节">运行时的细节</a>
+          <ul>
+            <li><a href="#计算机基础的线程栈细节">计算机基础的线程栈细节</a></li>
+            <li><a href="#clr调用时的细节">CLR调用时的细节</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#类型相关">类型相关</a>
+      <ul>
+        <li><a href="#类型可见性">类型可见性</a></li>
+        <li><a href="#静态类">静态类</a></li>
+        <li><a href="#分布类结构和接口">分布类、结构和接口</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80&description=class%20System.Object%20%e2%80%9c%e8%bf%90%e8%a1%8c%e6%97%b6%e2%80%9d%e6%89%80%e6%9c%89%e7%9a%84%e7%b1%bb%e5%9e%8b%e6%9c%80%e7%bb%88%e9%83%bd%e4%bb%8eSystem.Object%e7%b1%bb%e5%9e%8b%e6%b4%be%e7%94%9f%e3%80%82%0a1%2f%2f%20%e9%9a%90%e5%bc%8f%e6%b4%be%e7%94%9f%e8%87%aaObject%202class%20A%20%7b%7d%203%204%2f%2f%20%e6%98%be%e5%bc%8f%e6%b4%be%e7%94%9f%e8%87%aaObject%205class%20A%20%3a%20System.Object%20%7b%7d%20System.Object%e7%9a%84public%e6%96%b9%e6%b3%95%0aEquals%ef%bc%9a%e6%af%94%e8%be%83%e5%87%bd%e6%95%b0%20GetHashCode%ef%bc%9a%e5%af%b9%e8%b1%a1%e5%93%88%e5%b8%8c%e5%80%bc%20ToString%ef%bc%9a%e8%bd%ac%e6%8d%a2%e6%88%90String%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%20GetType%ef%bc%9a%e8%bf%94%e5%9b%9e%e5%af%b9%e8%b1%a1%e7%9a%84%e7%b1%bb%e5%9e%8b%20System.Object%e7%9a%84protected%e6%96%b9%e6%b3%95%0aMemberwiseClone%ef%bc%9a%e5%88%9b%e5%bb%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%96%b0%e5%ae%9e%e4%be%8b%ef%bc%8c%e5%b9%b6%e5%b0%86%e6%96%b0%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e8%ae%be%e7%bd%ae%e4%b8%8ethis%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e5%ae%8c%e5%85%a8%e4%b8%80%e8%87%b4%e3%80%82%e8%bf%94%e5%9b%9e%e5%af%b9%e6%96%b0%e5%ae%9e%e4%be%8b%e7%9a%84%e5%bc%95%e7%94%a8%20Finalize%ef%bc%9a%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e9%98%b6%e6%ae%b5%e5%ae%9e%e9%99%85%e6%b8%85%e7%90%86%e4%b9%8b%e5%89%8d%e4%bc%9a%e8%b0%83%e7%94%a8%e6%ad%a4%e6%96%b9%e6%b3%95%e3%80%82%20new%e6%93%8d%e4%bd%9c%e7%ac%a6%e9%83%bd%e5%81%9a%e4%ba%86%e4%bb%80%e4%b9%88%e5%b7%a5%e4%bd%9c%201A%20a%20%3d%20new%20A%28%26%2334%3b123%26%2334%3b%29%3b%20%e4%b8%8a%e9%9d%a2%e7%9a%84%e4%bb%a3%e7%a0%81%e4%b8%adnew%e6%93%8d%e4%bd%9c%e7%ac%a6%e6%89%80%e4%bd%9c%e7%9a%84%e4%ba%8b%e6%83%85%ef%bc%9a%0a%e8%ae%a1%e7%ae%97%e7%b1%bb%e5%9e%8b%e6%9c%ba%e5%99%a8%e6%89%80%e6%9c%89%e5%9f%ba%e7%b1%bb%e5%9e%8b%28%e4%b8%80%e7%9b%b4%e5%88%b0System.Object%29%e4%b8%ad%e5%ae%9a%e4%b9%89%e7%9a%84%e6%89%80%e6%9c%89%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e6%89%80%e9%9c%80%e8%a6%81%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e5%b9%b6%e5%8a%a0%e4%b8%8a%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e9%83%bd%e9%9c%80%e8%a6%81%e9%a2%9d%e5%a4%96%e5%bc%80%e9%94%80%e7%9a%84%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%28type%20object%20pointer%29%e5%92%8c%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%28sync%20block%20index%29%20%e3%80%82%20%e4%bb%8e%e6%89%98%e7%ae%a1%e5%a0%86%e4%b8%ad%e5%88%86%e9%85%8d1%e6%ad%a5%e9%aa%a4%e4%b8%ad%e6%89%80%e8%ae%a1%e7%ae%97%e7%9a%84%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%ef%bc%8c%e4%bb%8e%e8%80%8c%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%e7%9a%84%e5%86%85%e5%ad%98%ef%bc%8c%e5%88%86%e9%85%8d%e7%9a%84%e6%89%80%e6%9c%89%e5%ad%97%e8%8a%82%e9%83%bd%e8%ae%be%e7%bd%ae%e4%b8%ba%e9%9b%b6%280%29%e3%80%82%20%e5%88%9d%e5%a7%8b%e5%8c%96%e5%af%b9%e8%b1%a1%e7%9a%84%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%e5%92%8c%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e6%88%90%e5%91%98%e3%80%82%20%e8%b0%83%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%8c%e4%bc%a0%e9%80%92%e5%9c%a8new%e8%b0%83%e7%94%a8%e4%b8%ad%e6%8c%87%e5%ae%9a%e7%9a%84%e5%ae%9e%e5%8f%82%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e4%bc%9a%e5%9c%a8%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%28.ctor%29%e4%b8%ad%e8%87%aa%e5%8a%a8%e7%94%9f%e6%88%90%e4%bb%a3%e7%a0%81%e8%b0%83%e7%94%a8%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%20%e3%80%82%e6%9c%80%e7%bb%88%e9%83%bd%e4%bc%9a%e8%b0%83%e7%94%a8System.Object%e7%9a%84%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%ef%bc%8c%e4%bd%86%e5%ae%83%e4%bb%80%e4%b9%88%e9%83%bd%e4%b8%8d%e5%81%9a%ef%bc%8c%e5%8d%95%e7%ba%af%e7%9a%84%e8%bf%94%e5%9b%9e%e3%80%82%20%e8%bf%94%e5%9b%9e%e6%8c%87%e5%90%91%e6%96%b0%e5%bb%ba%e5%af%b9%e8%b1%a1%e7%9a%84%e4%b8%80%e4%b8%aa%e5%bc%95%e7%94%a8%28%e6%88%96%e6%8c%87%e9%92%88%29%20%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2%20CLR%e5%85%81%e8%ae%b8%e5%b0%86%e5%af%b9%e8%b1%a1%e8%bd%ac%e6%8d%a2%e4%b8%ba%e5%ae%83%e7%9a%84%28%e5%ae%9e%e9%99%85%29%e7%b1%bb%e5%9e%8b%e6%88%96%e8%80%85%e5%ae%83%e7%9a%84%e4%bb%bb%e4%bd%95%e5%9f%ba%e7%b1%bb%e5%9e%8b%e3%80%82%e7%84%b6%e8%80%8c%ef%bc%8c%e5%b0%86%e5%af%b9%e8%b1%a1%e8%bd%ac%e6%8d%a2%e4%b8%ba%e6%b4%be%e7%94%9f%e7%b1%bb%e6%97%b6%ef%bc%8c%e5%9b%a0%e5%8f%af%e8%83%bd%e8%bd%ac%e6%8d%a2%e5%a4%b1%e8%b4%a5%ef%bc%8c%e6%89%80%e4%bb%a5%e8%a6%81%e6%b1%82%e6%98%be%e7%a4%ba%e8%bd%ac%e6%8d%a2%e3%80%82%0ais%20%e5%92%8c%20as%20is%e6%93%8d%e4%bd%9c%e7%ac%a6%e7%94%a8%e4%ba%8e%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%85%bc%e5%ae%b9%e4%ba%8e%e6%8c%87%e5%ae%9a%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%a6%82%e6%9e%9c%e5%af%b9%e8%b1%a1%e5%bc%95%e7%94%a8null%e5%88%99%e6%80%bb%e6%98%af%e8%bf%94%e5%9b%9efalse%0a1Object%20o%20%3d%20new%20Object%28%29%3b%202o%20is%20Object%3b%20%2f%2f%20%e8%bf%94%e5%9b%9etrue%203o%20is%20A%3b%20%2f%2f%20%e8%bf%94%e5%9b%9efalse%20as%e6%93%8d%e4%bd%9c%e7%ac%a6%e7%94%a8%e4%ba%8e%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%85%bc%e5%ae%b9%e4%ba%8e%e6%8c%87%e5%ae%9a%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%b9%b6%e8%bf%9b%e8%a1%8c%e8%bd%ac%e6%8d%a2%e3%80%82%e5%a6%82%e6%9e%9c%e5%85%bc%e5%ae%b9%e5%88%99%e8%bf%94%e5%9b%9e%e5%af%b9%e4%ba%8e%e7%b1%bb%e5%9e%8b%ef%bc%8c%e4%b8%8d%e5%85%bc%e5%ae%b9%e5%88%99%e8%bf%94%e5%9b%9enull%e3%80%82%28%e5%88%a4%e6%96%adnull%e6%af%94%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%85%bc%e5%ae%b9%e4%ba%8e%e6%8c%87%e5%ae%9a%e7%b1%bb%e5%9e%8b%e5%bf%ab%29%0a1A%20a%20%3d%20o%20as%20A%3b%202if%20%28a%20%21" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20class%e5%8f%8a%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  Alaya 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+  
+
+
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 《CLR via C#》 Class成员 | Alaya</title>
+  <link rel = 'canonical' href = 'https://localhost:1313/posts/clrviacsharp-class%E6%88%90%E5%91%98/'>
+  <meta name="description" content="Simple Life Simple Coding.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="《CLR via C#》 Class成员" />
+<meta property="og:description" content="类型成员基础 常量：数据恒定不变的符号。 字段：只读或可读/可写的数据值。 实例构造器：将新对象的实例字段初始化的特殊方法 类型构造器：将类型的静态字段初始化的特殊方法。 方法：更改或查询类型或对象状态的函数。作用于类型成为静态方法，作用于对象为实例方法。 操作符重载：实际是方法，定义了当操作符作用于对象时，应该如何操作对象。 转换操作符：定义如何隐式或显式将对象从一种类型转型为另一种类型的方法。 属性：设置或查询类型或对象的逻辑状态。作用于类型为静态属性，作用域对象为实例属性。 事件：静态事件允许类型向一个或多个静态或实例方法发送通知。实例事件允许对象向一个或多个静态或实例方法发送通知。 类型：可以定义其他嵌套类型。 常量 定义常量符号时，值必须能在编译时确定。编译器将常量值保存到程序集元数据中。意味着只能定义编译器可识别的基元类型常量。非基元类型的常量变量只能为null。
+编译器会在定义常量的程序集元数据中查找该符号，提取常量值并嵌入IL代码中。所以运行时没有任何额外内存分配，但是不能取常量地址或引用传递常量。
+C#不允许常量设置为static，因为常量总隐式设置为static。
+提示
+如果希望在运行时从一个程序集中提取另一个程序集中的值，那么不应该使用常量，而应该使用readonly字段。
+字段 字段是一种数据成员，容纳了一个值类型的实例或对一个引用类型的引用。
+CLR支持类型(静态)字段和实例(非静态)字段。类型字段所需的动态内存是在类型对象中分配的，而类型对象是在类型加载到一个AppDomain时创建的。类型加载到AppDmain的时机又是在引用该类型的任何方法首次进行JIT编译的时候。实例字段容纳字段数据所需的动态内存是在构造类型的实例时分配的。
+字段修饰符 CLR术语 C#术语 说明 Static static 类型(静态)字段 Instance (默认) 实例(非静态)字段 InitOnly readonly 只能有一个构造方法中的代码写入(但可利用反射修改readonly字段) Volatile volatile 编译器、CLR和硬件不会对访问这种字段的代码执行“线程不安全”的优化措施 提示
+当某个字段时引用类型，并且该字段呗标记为readonly时，不可改变的是引用，而非字段引用的对象。
+方法 实例构造器(引用类型) 实例构造器是初始化类型的实例的特殊方法。构造器方法在“方法定义元数据表”中始终叫做.ctor。创建引用类型的实例时，首先为实例的数据字段分配内存，然后把内存部分归零(保证没有被构造器显式赋值的所有字段都为0或null值)，接着初始化对象的附加字段(类型对象指针和同步索引块)，最后调用类型的实例构造器来设置对象的初始状态。
+注意事项 实例构造器永远不能被继承。所以不能使用:virtual，new，override，sealed，abstract修饰符。 如果没有显式定义构造器，C#编译器则会默认定义一个(无参)构造器。这个构造器只是简单的调用了基类的构造器 1public class A {} 2//等价于： 3public class A { 4 public A() : base() {} 5} 如果类的修饰符为abstract，则编译器生成的默认构造器的可访问性就为protected。否则为public。 如果类的修饰符为static，则编译器不会生成默认构造器。 为了使代码“可验证”，类的实例构造器在访问从基类继承的任何字段之前，必须先调动基类的构造器。如果派生类的构造器没有显式调用一个基类构造器，C#编译器会自动生成对默认的基类构造器的调用。 极少数可以在不调用实例构造器的前提下创建类型的实例。比如Object的MemberwiseClone方法、或反序列化时。 不要在构造函数中调用虚方法。 C#编译器以“内联”(嵌入)方式初始化实例字段。在每个构造器方法开始的位置，包含类字段中直接赋值的代码。在其后会插入对基类构造器的调用。然后再插入构造函数的代码。
+1class B { } 2class A { 3 public int a = 1; 4 public int b = 3; 5 public A() { 6 b = 2; 7 } 8} 9 10// C#编译器编译后的代码为 11class A : B { 12 public int a; 13 public int b; 14 public A() { 15 a = 1; 16 b = 3; 17 // 调用父类构造器 18 b = 2; // b会被重复赋值 19 } 20} 提示" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://localhost:1313/posts/clrviacsharp-class%E6%88%90%E5%91%98/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-27T15:20:36+08:00" />
+<meta property="article:modified_time" content="2022-07-27T15:20:36+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《CLR via C#》 Class成员"/>
+<meta name="twitter:description" content="类型成员基础 常量：数据恒定不变的符号。 字段：只读或可读/可写的数据值。 实例构造器：将新对象的实例字段初始化的特殊方法 类型构造器：将类型的静态字段初始化的特殊方法。 方法：更改或查询类型或对象状态的函数。作用于类型成为静态方法，作用于对象为实例方法。 操作符重载：实际是方法，定义了当操作符作用于对象时，应该如何操作对象。 转换操作符：定义如何隐式或显式将对象从一种类型转型为另一种类型的方法。 属性：设置或查询类型或对象的逻辑状态。作用于类型为静态属性，作用域对象为实例属性。 事件：静态事件允许类型向一个或多个静态或实例方法发送通知。实例事件允许对象向一个或多个静态或实例方法发送通知。 类型：可以定义其他嵌套类型。 常量 定义常量符号时，值必须能在编译时确定。编译器将常量值保存到程序集元数据中。意味着只能定义编译器可识别的基元类型常量。非基元类型的常量变量只能为null。
+编译器会在定义常量的程序集元数据中查找该符号，提取常量值并嵌入IL代码中。所以运行时没有任何额外内存分配，但是不能取常量地址或引用传递常量。
+C#不允许常量设置为static，因为常量总隐式设置为static。
+提示
+如果希望在运行时从一个程序集中提取另一个程序集中的值，那么不应该使用常量，而应该使用readonly字段。
+字段 字段是一种数据成员，容纳了一个值类型的实例或对一个引用类型的引用。
+CLR支持类型(静态)字段和实例(非静态)字段。类型字段所需的动态内存是在类型对象中分配的，而类型对象是在类型加载到一个AppDomain时创建的。类型加载到AppDmain的时机又是在引用该类型的任何方法首次进行JIT编译的时候。实例字段容纳字段数据所需的动态内存是在构造类型的实例时分配的。
+字段修饰符 CLR术语 C#术语 说明 Static static 类型(静态)字段 Instance (默认) 实例(非静态)字段 InitOnly readonly 只能有一个构造方法中的代码写入(但可利用反射修改readonly字段) Volatile volatile 编译器、CLR和硬件不会对访问这种字段的代码执行“线程不安全”的优化措施 提示
+当某个字段时引用类型，并且该字段呗标记为readonly时，不可改变的是引用，而非字段引用的对象。
+方法 实例构造器(引用类型) 实例构造器是初始化类型的实例的特殊方法。构造器方法在“方法定义元数据表”中始终叫做.ctor。创建引用类型的实例时，首先为实例的数据字段分配内存，然后把内存部分归零(保证没有被构造器显式赋值的所有字段都为0或null值)，接着初始化对象的附加字段(类型对象指针和同步索引块)，最后调用类型的实例构造器来设置对象的初始状态。
+注意事项 实例构造器永远不能被继承。所以不能使用:virtual，new，override，sealed，abstract修饰符。 如果没有显式定义构造器，C#编译器则会默认定义一个(无参)构造器。这个构造器只是简单的调用了基类的构造器 1public class A {} 2//等价于： 3public class A { 4 public A() : base() {} 5} 如果类的修饰符为abstract，则编译器生成的默认构造器的可访问性就为protected。否则为public。 如果类的修饰符为static，则编译器不会生成默认构造器。 为了使代码“可验证”，类的实例构造器在访问从基类继承的任何字段之前，必须先调动基类的构造器。如果派生类的构造器没有显式调用一个基类构造器，C#编译器会自动生成对默认的基类构造器的调用。 极少数可以在不调用实例构造器的前提下创建类型的实例。比如Object的MemberwiseClone方法、或反序列化时。 不要在构造函数中调用虚方法。 C#编译器以“内联”(嵌入)方式初始化实例字段。在每个构造器方法开始的位置，包含类字段中直接赋值的代码。在其后会插入对基类构造器的调用。然后再插入构造函数的代码。
+1class B { } 2class A { 3 public int a = 1; 4 public int b = 3; 5 public A() { 6 b = 2; 7 } 8} 9 10// C#编译器编译后的代码为 11class A : B { 12 public int a; 13 public int b; 14 public A() { 15 a = 1; 16 b = 3; 17 // 调用父类构造器 18 b = 2; // b会被重复赋值 19 } 20} 提示"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://localhost:1313/css/styles.1e769e967e9c06518a5e0618da426e1be02b65c215ab7586c2b95fa09a2997b516357fd281da2cb1044ec3d691b106662e083110bbda88c3203e884f0485d6b5.css" integrity="sha512-Hnaeln6cBlGKXgYY2kJuG&#43;ArZcIVq3WGwrlfoJopl7UWNX/SgdossQROw9aRsQZmLggxELvaiMMgPohPBIXWtQ=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://localhost:1313/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://localhost:1313/posts/clrviacsharp-%E6%B3%9B%E5%9E%8B/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98&description=%e7%b1%bb%e5%9e%8b%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80%20%e5%b8%b8%e9%87%8f%ef%bc%9a%e6%95%b0%e6%8d%ae%e6%81%92%e5%ae%9a%e4%b8%8d%e5%8f%98%e7%9a%84%e7%ac%a6%e5%8f%b7%e3%80%82%20%e5%ad%97%e6%ae%b5%ef%bc%9a%e5%8f%aa%e8%af%bb%e6%88%96%e5%8f%af%e8%af%bb%2f%e5%8f%af%e5%86%99%e7%9a%84%e6%95%b0%e6%8d%ae%e5%80%bc%e3%80%82%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%9a%e5%b0%86%e6%96%b0%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e5%88%9d%e5%a7%8b%e5%8c%96%e7%9a%84%e7%89%b9%e6%ae%8a%e6%96%b9%e6%b3%95%20%e7%b1%bb%e5%9e%8b%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%9a%e5%b0%86%e7%b1%bb%e5%9e%8b%e7%9a%84%e9%9d%99%e6%80%81%e5%ad%97%e6%ae%b5%e5%88%9d%e5%a7%8b%e5%8c%96%e7%9a%84%e7%89%b9%e6%ae%8a%e6%96%b9%e6%b3%95%e3%80%82%20%e6%96%b9%e6%b3%95%ef%bc%9a%e6%9b%b4%e6%94%b9%e6%88%96%e6%9f%a5%e8%af%a2%e7%b1%bb%e5%9e%8b%e6%88%96%e5%af%b9%e8%b1%a1%e7%8a%b6%e6%80%81%e7%9a%84%e5%87%bd%e6%95%b0%e3%80%82%e4%bd%9c%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%e6%88%90%e4%b8%ba%e9%9d%99%e6%80%81%e6%96%b9%e6%b3%95%ef%bc%8c%e4%bd%9c%e7%94%a8%e4%ba%8e%e5%af%b9%e8%b1%a1%e4%b8%ba%e5%ae%9e%e4%be%8b%e6%96%b9%e6%b3%95%e3%80%82%20%e6%93%8d%e4%bd%9c%e7%ac%a6%e9%87%8d%e8%bd%bd%ef%bc%9a%e5%ae%9e%e9%99%85%e6%98%af%e6%96%b9%e6%b3%95%ef%bc%8c%e5%ae%9a%e4%b9%89%e4%ba%86%e5%bd%93%e6%93%8d%e4%bd%9c%e7%ac%a6%e4%bd%9c%e7%94%a8%e4%ba%8e%e5%af%b9%e8%b1%a1%e6%97%b6%ef%bc%8c%e5%ba%94%e8%af%a5%e5%a6%82%e4%bd%95%e6%93%8d%e4%bd%9c%e5%af%b9%e8%b1%a1%e3%80%82%20%e8%bd%ac%e6%8d%a2%e6%93%8d%e4%bd%9c%e7%ac%a6%ef%bc%9a%e5%ae%9a%e4%b9%89%e5%a6%82%e4%bd%95%e9%9a%90%e5%bc%8f%e6%88%96%e6%98%be%e5%bc%8f%e5%b0%86%e5%af%b9%e8%b1%a1%e4%bb%8e%e4%b8%80%e7%a7%8d%e7%b1%bb%e5%9e%8b%e8%bd%ac%e5%9e%8b%e4%b8%ba%e5%8f%a6%e4%b8%80%e7%a7%8d%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%96%b9%e6%b3%95%e3%80%82%20%e5%b1%9e%e6%80%a7%ef%bc%9a%e8%ae%be%e7%bd%ae%e6%88%96%e6%9f%a5%e8%af%a2%e7%b1%bb%e5%9e%8b%e6%88%96%e5%af%b9%e8%b1%a1%e7%9a%84%e9%80%bb%e8%be%91%e7%8a%b6%e6%80%81%e3%80%82%e4%bd%9c%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%e4%b8%ba%e9%9d%99%e6%80%81%e5%b1%9e%e6%80%a7%ef%bc%8c%e4%bd%9c%e7%94%a8%e5%9f%9f%e5%af%b9%e8%b1%a1%e4%b8%ba%e5%ae%9e%e4%be%8b%e5%b1%9e%e6%80%a7%e3%80%82%20%e4%ba%8b%e4%bb%b6%ef%bc%9a%e9%9d%99%e6%80%81%e4%ba%8b%e4%bb%b6%e5%85%81%e8%ae%b8%e7%b1%bb%e5%9e%8b%e5%90%91%e4%b8%80%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aa%e9%9d%99%e6%80%81%e6%88%96%e5%ae%9e%e4%be%8b%e6%96%b9%e6%b3%95%e5%8f%91%e9%80%81%e9%80%9a%e7%9f%a5%e3%80%82%e5%ae%9e%e4%be%8b%e4%ba%8b%e4%bb%b6%e5%85%81%e8%ae%b8%e5%af%b9%e8%b1%a1%e5%90%91%e4%b8%80%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aa%e9%9d%99%e6%80%81%e6%88%96%e5%ae%9e%e4%be%8b%e6%96%b9%e6%b3%95%e5%8f%91%e9%80%81%e9%80%9a%e7%9f%a5%e3%80%82%20%e7%b1%bb%e5%9e%8b%ef%bc%9a%e5%8f%af%e4%bb%a5%e5%ae%9a%e4%b9%89%e5%85%b6%e4%bb%96%e5%b5%8c%e5%a5%97%e7%b1%bb%e5%9e%8b%e3%80%82%20%e5%b8%b8%e9%87%8f%20%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f%e7%ac%a6%e5%8f%b7%e6%97%b6%ef%bc%8c%e5%80%bc%e5%bf%85%e9%a1%bb%e8%83%bd%e5%9c%a8%e7%bc%96%e8%af%91%e6%97%b6%e7%a1%ae%e5%ae%9a%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e5%b0%86%e5%b8%b8%e9%87%8f%e5%80%bc%e4%bf%9d%e5%ad%98%e5%88%b0%e7%a8%8b%e5%ba%8f%e9%9b%86%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e3%80%82%e6%84%8f%e5%91%b3%e7%9d%80%e5%8f%aa%e8%83%bd%e5%ae%9a%e4%b9%89%e7%bc%96%e8%af%91%e5%99%a8%e5%8f%af%e8%af%86%e5%88%ab%e7%9a%84%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e5%b8%b8%e9%87%8f%e3%80%82%e9%9d%9e%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%b8%b8%e9%87%8f%e5%8f%98%e9%87%8f%e5%8f%aa%e8%83%bd%e4%b8%banull%e3%80%82%0a%e7%bc%96%e8%af%91%e5%99%a8%e4%bc%9a%e5%9c%a8%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f%e7%9a%84%e7%a8%8b%e5%ba%8f%e9%9b%86%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e6%9f%a5%e6%89%be%e8%af%a5%e7%ac%a6%e5%8f%b7%ef%bc%8c%e6%8f%90%e5%8f%96%e5%b8%b8%e9%87%8f%e5%80%bc%e5%b9%b6%e5%b5%8c%e5%85%a5IL%e4%bb%a3%e7%a0%81%e4%b8%ad%e3%80%82%e6%89%80%e4%bb%a5%e8%bf%90%e8%a1%8c%e6%97%b6%e6%b2%a1%e6%9c%89%e4%bb%bb%e4%bd%95%e9%a2%9d%e5%a4%96%e5%86%85%e5%ad%98%e5%88%86%e9%85%8d%ef%bc%8c%e4%bd%86%e6%98%af%e4%b8%8d%e8%83%bd%e5%8f%96%e5%b8%b8%e9%87%8f%e5%9c%b0%e5%9d%80%e6%88%96%e5%bc%95%e7%94%a8%e4%bc%a0%e9%80%92%e5%b8%b8%e9%87%8f%e3%80%82%0aC%23%e4%b8%8d%e5%85%81%e8%ae%b8%e5%b8%b8%e9%87%8f%e8%ae%be%e7%bd%ae%e4%b8%bastatic%ef%bc%8c%e5%9b%a0%e4%b8%ba%e5%b8%b8%e9%87%8f%e6%80%bb%e9%9a%90%e5%bc%8f%e8%ae%be%e7%bd%ae%e4%b8%bastatic%e3%80%82%0a%e6%8f%90%e7%a4%ba%0a%e5%a6%82%e6%9e%9c%e5%b8%8c%e6%9c%9b%e5%9c%a8%e8%bf%90%e8%a1%8c%e6%97%b6%e4%bb%8e%e4%b8%80%e4%b8%aa%e7%a8%8b%e5%ba%8f%e9%9b%86%e4%b8%ad%e6%8f%90%e5%8f%96%e5%8f%a6%e4%b8%80%e4%b8%aa%e7%a8%8b%e5%ba%8f%e9%9b%86%e4%b8%ad%e7%9a%84%e5%80%bc%ef%bc%8c%e9%82%a3%e4%b9%88%e4%b8%8d%e5%ba%94%e8%af%a5%e4%bd%bf%e7%94%a8%e5%b8%b8%e9%87%8f%ef%bc%8c%e8%80%8c%e5%ba%94%e8%af%a5%e4%bd%bf%e7%94%a8readonly%e5%ad%97%e6%ae%b5%e3%80%82%0a%e5%ad%97%e6%ae%b5%20%e5%ad%97%e6%ae%b5%e6%98%af%e4%b8%80%e7%a7%8d%e6%95%b0%e6%8d%ae%e6%88%90%e5%91%98%ef%bc%8c%e5%ae%b9%e7%ba%b3%e4%ba%86%e4%b8%80%e4%b8%aa%e5%80%bc%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%88%96%e5%af%b9%e4%b8%80%e4%b8%aa%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%bc%95%e7%94%a8%e3%80%82%0aCLR%e6%94%af%e6%8c%81%e7%b1%bb%e5%9e%8b%28%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%e5%92%8c%e5%ae%9e%e4%be%8b%28%e9%9d%9e%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%e3%80%82%e7%b1%bb%e5%9e%8b%e5%ad%97%e6%ae%b5%e6%89%80%e9%9c%80%e7%9a%84%e5%8a%a8%e6%80%81%e5%86%85%e5%ad%98%e6%98%af%e5%9c%a8%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e4%b8%ad%e5%88%86%e9%85%8d%e7%9a%84%ef%bc%8c%e8%80%8c%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%98%af%e5%9c%a8%e7%b1%bb%e5%9e%8b%e5%8a%a0%e8%bd%bd%e5%88%b0%e4%b8%80%e4%b8%aaAppDomain%e6%97%b6%e5%88%9b%e5%bb%ba%e7%9a%84%e3%80%82%e7%b1%bb%e5%9e%8b%e5%8a%a0%e8%bd%bd%e5%88%b0AppDmain%e7%9a%84%e6%97%b6%e6%9c%ba%e5%8f%88%e6%98%af%e5%9c%a8%e5%bc%95%e7%94%a8%e8%af%a5%e7%b1%bb%e5%9e%8b%e7%9a%84%e4%bb%bb%e4%bd%95%e6%96%b9%e6%b3%95%e9%a6%96%e6%ac%a1%e8%bf%9b%e8%a1%8cJIT%e7%bc%96%e8%af%91%e7%9a%84%e6%97%b6%e5%80%99%e3%80%82%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e5%ae%b9%e7%ba%b3%e5%ad%97%e6%ae%b5%e6%95%b0%e6%8d%ae%e6%89%80%e9%9c%80%e7%9a%84%e5%8a%a8%e6%80%81%e5%86%85%e5%ad%98%e6%98%af%e5%9c%a8%e6%9e%84%e9%80%a0%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%97%b6%e5%88%86%e9%85%8d%e7%9a%84%e3%80%82%0a%e5%ad%97%e6%ae%b5%e4%bf%ae%e9%a5%b0%e7%ac%a6%20CLR%e6%9c%af%e8%af%ad%20C%23%e6%9c%af%e8%af%ad%20%e8%af%b4%e6%98%8e%20Static%20static%20%e7%b1%bb%e5%9e%8b%28%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%20Instance%20%28%e9%bb%98%e8%ae%a4%29%20%e5%ae%9e%e4%be%8b%28%e9%9d%9e%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%20InitOnly%20readonly%20%e5%8f%aa%e8%83%bd%e6%9c%89%e4%b8%80%e4%b8%aa%e6%9e%84%e9%80%a0%e6%96%b9%e6%b3%95%e4%b8%ad%e7%9a%84%e4%bb%a3%e7%a0%81%e5%86%99%e5%85%a5%28%e4%bd%86%e5%8f%af%e5%88%a9%e7%94%a8%e5%8f%8d%e5%b0%84%e4%bf%ae%e6%94%b9readonly%e5%ad%97%e6%ae%b5%29%20Volatile%20volatile%20%e7%bc%96%e8%af%91%e5%99%a8%e3%80%81CLR%e5%92%8c%e7%a1%ac%e4%bb%b6%e4%b8%8d%e4%bc%9a%e5%af%b9%e8%ae%bf%e9%97%ae%e8%bf%99%e7%a7%8d%e5%ad%97%e6%ae%b5%e7%9a%84%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c%e2%80%9c%e7%ba%bf%e7%a8%8b%e4%b8%8d%e5%ae%89%e5%85%a8%e2%80%9d%e7%9a%84%e4%bc%98%e5%8c%96%e6%8e%aa%e6%96%bd%20%e6%8f%90%e7%a4%ba%0a%e5%bd%93%e6%9f%90%e4%b8%aa%e5%ad%97%e6%ae%b5%e6%97%b6%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%b9%b6%e4%b8%94%e8%af%a5%e5%ad%97%e6%ae%b5%e5%91%97%e6%a0%87%e8%ae%b0%e4%b8%bareadonly%e6%97%b6%ef%bc%8c%e4%b8%8d%e5%8f%af%e6%94%b9%e5%8f%98%e7%9a%84%e6%98%af%e5%bc%95%e7%94%a8%ef%bc%8c%e8%80%8c%e9%9d%9e%e5%ad%97%e6%ae%b5%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%0a%e6%96%b9%e6%b3%95%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%28%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%29%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e6%98%af%e5%88%9d%e5%a7%8b%e5%8c%96%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e7%9a%84%e7%89%b9%e6%ae%8a%e6%96%b9%e6%b3%95%e3%80%82%e6%9e%84%e9%80%a0%e5%99%a8%e6%96%b9%e6%b3%95%e5%9c%a8%e2%80%9c%e6%96%b9%e6%b3%95%e5%ae%9a%e4%b9%89%e5%85%83%e6%95%b0%e6%8d%ae%e8%a1%a8%e2%80%9d%e4%b8%ad%e5%a7%8b%e7%bb%88%e5%8f%ab%e5%81%9a.ctor%e3%80%82%e5%88%9b%e5%bb%ba%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%97%b6%ef%bc%8c%e9%a6%96%e5%85%88%e4%b8%ba%e5%ae%9e%e4%be%8b%e7%9a%84%e6%95%b0%e6%8d%ae%e5%ad%97%e6%ae%b5%e5%88%86%e9%85%8d%e5%86%85%e5%ad%98%ef%bc%8c%e7%84%b6%e5%90%8e%e6%8a%8a%e5%86%85%e5%ad%98%e9%83%a8%e5%88%86%e5%bd%92%e9%9b%b6%28%e4%bf%9d%e8%af%81%e6%b2%a1%e6%9c%89%e8%a2%ab%e6%9e%84%e9%80%a0%e5%99%a8%e6%98%be%e5%bc%8f%e8%b5%8b%e5%80%bc%e7%9a%84%e6%89%80%e6%9c%89%e5%ad%97%e6%ae%b5%e9%83%bd%e4%b8%ba0%e6%88%96null%e5%80%bc%29%ef%bc%8c%e6%8e%a5%e7%9d%80%e5%88%9d%e5%a7%8b%e5%8c%96%e5%af%b9%e8%b1%a1%e7%9a%84%e9%99%84%e5%8a%a0%e5%ad%97%e6%ae%b5%28%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%e5%92%8c%e5%90%8c%e6%ad%a5%e7%b4%a2%e5%bc%95%e5%9d%97%29%ef%bc%8c%e6%9c%80%e5%90%8e%e8%b0%83%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e6%9d%a5%e8%ae%be%e7%bd%ae%e5%af%b9%e8%b1%a1%e7%9a%84%e5%88%9d%e5%a7%8b%e7%8a%b6%e6%80%81%e3%80%82%0a%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e6%b0%b8%e8%bf%9c%e4%b8%8d%e8%83%bd%e8%a2%ab%e7%bb%a7%e6%89%bf%e3%80%82%e6%89%80%e4%bb%a5%e4%b8%8d%e8%83%bd%e4%bd%bf%e7%94%a8%3avirtual%ef%bc%8cnew%ef%bc%8coverride%ef%bc%8csealed%ef%bc%8cabstract%e4%bf%ae%e9%a5%b0%e7%ac%a6%e3%80%82%20%e5%a6%82%e6%9e%9c%e6%b2%a1%e6%9c%89%e6%98%be%e5%bc%8f%e5%ae%9a%e4%b9%89%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%8cC%23%e7%bc%96%e8%af%91%e5%99%a8%e5%88%99%e4%bc%9a%e9%bb%98%e8%ae%a4%e5%ae%9a%e4%b9%89%e4%b8%80%e4%b8%aa%28%e6%97%a0%e5%8f%82%29%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%e8%bf%99%e4%b8%aa%e6%9e%84%e9%80%a0%e5%99%a8%e5%8f%aa%e6%98%af%e7%ae%80%e5%8d%95%e7%9a%84%e8%b0%83%e7%94%a8%e4%ba%86%e5%9f%ba%e7%b1%bb%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%201public%20class%20A%20%7b%7d%202%2f%2f%e7%ad%89%e4%bb%b7%e4%ba%8e%ef%bc%9a%203public%20class%20A%20%7b%204%20public%20A%28%29%20%3a%20base%28%29%20%7b%7d%205%7d%20%e5%a6%82%e6%9e%9c%e7%b1%bb%e7%9a%84%e4%bf%ae%e9%a5%b0%e7%ac%a6%e4%b8%baabstract%ef%bc%8c%e5%88%99%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84%e9%bb%98%e8%ae%a4%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e5%8f%af%e8%ae%bf%e9%97%ae%e6%80%a7%e5%b0%b1%e4%b8%baprotected%e3%80%82%e5%90%a6%e5%88%99%e4%b8%bapublic%e3%80%82%20%e5%a6%82%e6%9e%9c%e7%b1%bb%e7%9a%84%e4%bf%ae%e9%a5%b0%e7%ac%a6%e4%b8%bastatic%ef%bc%8c%e5%88%99%e7%bc%96%e8%af%91%e5%99%a8%e4%b8%8d%e4%bc%9a%e7%94%9f%e6%88%90%e9%bb%98%e8%ae%a4%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%20%e4%b8%ba%e4%ba%86%e4%bd%bf%e4%bb%a3%e7%a0%81%e2%80%9c%e5%8f%af%e9%aa%8c%e8%af%81%e2%80%9d%ef%bc%8c%e7%b1%bb%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e5%9c%a8%e8%ae%bf%e9%97%ae%e4%bb%8e%e5%9f%ba%e7%b1%bb%e7%bb%a7%e6%89%bf%e7%9a%84%e4%bb%bb%e4%bd%95%e5%ad%97%e6%ae%b5%e4%b9%8b%e5%89%8d%ef%bc%8c%e5%bf%85%e9%a1%bb%e5%85%88%e8%b0%83%e5%8a%a8%e5%9f%ba%e7%b1%bb%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%e5%a6%82%e6%9e%9c%e6%b4%be%e7%94%9f%e7%b1%bb%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%e6%b2%a1%e6%9c%89%e6%98%be%e5%bc%8f%e8%b0%83%e7%94%a8%e4%b8%80%e4%b8%aa%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%8cC%23%e7%bc%96%e8%af%91%e5%99%a8%e4%bc%9a%e8%87%aa%e5%8a%a8%e7%94%9f%e6%88%90%e5%af%b9%e9%bb%98%e8%ae%a4%e7%9a%84%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e8%b0%83%e7%94%a8%e3%80%82%20%e6%9e%81%e5%b0%91%e6%95%b0%e5%8f%af%e4%bb%a5%e5%9c%a8%e4%b8%8d%e8%b0%83%e7%94%a8%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e5%89%8d%e6%8f%90%e4%b8%8b%e5%88%9b%e5%bb%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e3%80%82%e6%af%94%e5%a6%82Object%e7%9a%84MemberwiseClone%e6%96%b9%e6%b3%95%e3%80%81%e6%88%96%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%97%b6%e3%80%82%20%e4%b8%8d%e8%a6%81%e5%9c%a8%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%e4%b8%ad%e8%b0%83%e7%94%a8%e8%99%9a%e6%96%b9%e6%b3%95%e3%80%82%20C%23%e7%bc%96%e8%af%91%e5%99%a8%e4%bb%a5%e2%80%9c%e5%86%85%e8%81%94%e2%80%9d%28%e5%b5%8c%e5%85%a5%29%e6%96%b9%e5%bc%8f%e5%88%9d%e5%a7%8b%e5%8c%96%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e3%80%82%e5%9c%a8%e6%af%8f%e4%b8%aa%e6%9e%84%e9%80%a0%e5%99%a8%e6%96%b9%e6%b3%95%e5%bc%80%e5%a7%8b%e7%9a%84%e4%bd%8d%e7%bd%ae%ef%bc%8c%e5%8c%85%e5%90%ab%e7%b1%bb%e5%ad%97%e6%ae%b5%e4%b8%ad%e7%9b%b4%e6%8e%a5%e8%b5%8b%e5%80%bc%e7%9a%84%e4%bb%a3%e7%a0%81%e3%80%82%e5%9c%a8%e5%85%b6%e5%90%8e%e4%bc%9a%e6%8f%92%e5%85%a5%e5%af%b9%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e8%b0%83%e7%94%a8%e3%80%82%e7%84%b6%e5%90%8e%e5%86%8d%e6%8f%92%e5%85%a5%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%e7%9a%84%e4%bb%a3%e7%a0%81%e3%80%82%0a1class%20B%20%7b%20%7d%202class%20A%20%7b%203%20public%20int%20a%20%3d%201%3b%204%20public%20int%20b%20%3d%203%3b%205%20public%20A%28%29%20%7b%206%20b%20%3d%202%3b%207%20%7d%208%7d%209%2010%2f%2f%20C%23%e7%bc%96%e8%af%91%e5%99%a8%e7%bc%96%e8%af%91%e5%90%8e%e7%9a%84%e4%bb%a3%e7%a0%81%e4%b8%ba%2011class%20A%20%3a%20B%20%7b%2012%20public%20int%20a%3b%2013%20public%20int%20b%3b%2014%20public%20A%28%29%20%7b%2015%20a%20%3d%201%3b%2016%20b%20%3d%203%3b%2017%20%2f%2f%20%e8%b0%83%e7%94%a8%e7%88%b6%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%2018%20b%20%3d%202%3b%20%2f%2f%20b%e4%bc%9a%e8%a2%ab%e9%87%8d%e5%a4%8d%e8%b5%8b%e5%80%bc%2019%20%7d%2020%7d%20%e6%8f%90%e7%a4%ba" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#类型成员基础">类型成员基础</a>
+      <ul>
+        <li><a href="#常量">常量</a></li>
+        <li><a href="#字段">字段</a>
+          <ul>
+            <li><a href="#字段修饰符">字段修饰符</a></li>
+          </ul>
+        </li>
+        <li><a href="#方法">方法</a>
+          <ul>
+            <li><a href="#实例构造器引用类型">实例构造器(引用类型)</a></li>
+            <li><a href="#实例构造器值类型">实例构造器(值类型)</a></li>
+            <li><a href="#类型构造器">类型构造器</a></li>
+            <li><a href="#操作符重载方法">操作符重载方法</a></li>
+            <li><a href="#转换操作符方法">转换操作符方法</a></li>
+            <li><a href="#扩展方法">扩展方法</a></li>
+            <li><a href="#分部方法">分部方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#参数">参数</a>
+          <ul>
+            <li><a href="#规则与原则">规则与原则</a></li>
+            <li><a href="#引用传参out和ref">引用传参(out和ref)</a></li>
+            <li><a href="#参数和返回值的设计规范">参数和返回值的设计规范</a></li>
+          </ul>
+        </li>
+        <li><a href="#属性">属性</a>
+          <ul>
+            <li><a href="#无参属性">无参属性</a></li>
+            <li><a href="#有参属性">有参属性</a></li>
+            <li><a href="#属性访问器的性能">属性访问器的性能</a></li>
+          </ul>
+        </li>
+        <li><a href="#事件">事件</a>
+          <ul>
+            <li><a href="#event在c编译器编译时转换的代码为">event在C#编译器编译时转换的代码为：</a></li>
+            <li><a href="#登记并监听事件">登记并监听事件</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        《CLR via C#》 Class成员
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-07-27 15:20:36 &#43;0800 CST" itemprop="datePublished">2022-07-27</time>
+          
+        </div>
+        
+        
+        
+        <div class="article-category">
+            <i class="fas fa-archive"></i>
+            
+            
+            <a class="category-link" href="/categories/clr-via-csharp">《CLR via CSharp》</a>
+            
+        </div>
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h2 id="类型成员基础">类型成员基础</h2>
+<ul>
+<li>常量：数据恒定不变的符号。</li>
+<li>字段：只读或可读/可写的数据值。</li>
+<li>实例构造器：将新<strong>对象</strong>的实例字段初始化的特殊方法</li>
+<li>类型构造器：将<strong>类型</strong>的静态字段初始化的特殊方法。</li>
+<li>方法：更改或查询类型或对象状态的函数。<strong>作用于类型成为静态方法，作用于对象为实例方法</strong>。</li>
+<li>操作符重载：实际是方法，定义了当操作符作用于对象时，应该如何操作对象。</li>
+<li>转换操作符：定义如何隐式或显式将对象从一种类型转型为另一种类型的方法。</li>
+<li>属性：设置或查询类型或对象的逻辑状态。<strong>作用于类型为静态属性，作用域对象为实例属性</strong>。</li>
+<li>事件：静态事件允许<strong>类型</strong>向一个或多个静态或实例方法发送通知。实例事件允许<strong>对象</strong>向一个或多个静态或实例方法发送通知。</li>
+<li>类型：可以定义其他嵌套类型。</li>
+</ul>
+<h3 id="常量">常量</h3>
+<p>定义常量符号时，值必须能在编译时确定。编译器将常量值保存到程序集元数据中。意味着只能定义编译器可识别的基元类型常量。非基元类型的常量变量只能为null。</p>
+<p>编译器会在定义常量的程序集元数据中查找该符号，提取常量值并嵌入IL代码中。所以<strong>运行时没有任何额外内存分配，但是不能取常量地址或引用传递常量</strong>。</p>
+<p><strong>C#不允许常量设置为static，因为常量总隐式设置为static</strong>。</p>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>如果希望在运行时从一个程序集中提取另一个程序集中的值，那么不应该使用常量，而应该使用<strong>readonly</strong>字段。</p>
+</div>
+<h3 id="字段">字段</h3>
+<p>字段是一种数据成员，容纳了一个值类型的实例或对一个引用类型的引用。</p>
+<p>CLR支持<strong>类型(静态)字段</strong>和<strong>实例(非静态)字段</strong>。类型字段所需的动态内存是在类型对象中分配的，而<strong>类型对象是在类型加载到一个AppDomain时创建的</strong>。<strong>类型加载到AppDmain的时机又是在引用该类型的任何方法首次进行JIT编译的时候</strong>。实例字段容纳字段数据所需的动态内存是在构造类型的实例时分配的。</p>
+<h4 id="字段修饰符">字段修饰符</h4>
+<table>
+<thead>
+<tr>
+<th>CLR术语</th>
+<th>C#术语</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static</td>
+<td>static</td>
+<td>类型(静态)字段</td>
+</tr>
+<tr>
+<td>Instance</td>
+<td>(默认)</td>
+<td>实例(非静态)字段</td>
+</tr>
+<tr>
+<td>InitOnly</td>
+<td>readonly</td>
+<td>只能有一个构造方法中的代码写入(但可利用反射修改readonly字段)</td>
+</tr>
+<tr>
+<td>Volatile</td>
+<td>volatile</td>
+<td>编译器、CLR和硬件不会对访问这种字段的代码执行“线程不安全”的优化措施</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>当某个字段时引用类型，并且该字段呗标记为readonly时，不可改变的是引用，而非字段引用的对象。</p>
+</div>
+<h3 id="方法">方法</h3>
+<h4 id="实例构造器引用类型">实例构造器(引用类型)</h4>
+<p>实例构造器是初始化类型的实例的特殊方法。构造器方法在“方法定义元数据表”中始终叫做.ctor。<strong>创建引用类型的实例时，首先为实例的数据字段分配内存，然后把内存部分归零(保证没有被构造器显式赋值的所有字段都为0或null值)，接着初始化对象的附加字段(类型对象指针和同步索引块)，最后调用类型的实例构造器来设置对象的初始状态</strong>。</p>
+<h5 id="注意事项">注意事项</h5>
+<ul>
+<li>实例构造器永远不能被继承。所以不能使用:virtual，new，override，sealed，abstract修饰符。</li>
+<li>如果没有显式定义构造器，C#编译器则会默认定义一个(无参)构造器。这个构造器只是简单的调用了基类的构造器
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#6272a4">//等价于：</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#ff79c6">public</span> A() : <span style="color:#ff79c6">base</span>() {}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
+</span></span></code></pre></div></li>
+<li>如果类的修饰符为abstract，则编译器生成的默认构造器的可访问性就为protected。否则为public。</li>
+<li>如果类的修饰符为static，则编译器不会生成默认构造器。</li>
+<li>为了使代码“可验证”，类的实例构造器在访问从基类继承的任何字段之前，必须先调动基类的构造器。如果派生类的构造器没有显式调用一个基类构造器，C#编译器会自动生成对默认的基类构造器的调用。</li>
+<li>极少数可以在不调用实例构造器的前提下创建类型的实例。比如Object的MemberwiseClone方法、或反序列化时。</li>
+<li><strong>不要在构造函数中调用虚方法</strong>。</li>
+</ul>
+<p><strong>C#编译器以“内联”(嵌入)方式初始化实例字段。在每个构造器方法开始的位置，包含类字段中直接赋值的代码。在其后会插入对基类构造器的调用。然后再插入构造函数的代码</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">B</span> { }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> a = <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> b = <span style="color:#bd93f9">3</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#ff79c6">public</span> A() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        b = <span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#6272a4">// C#编译器编译后的代码为</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> : B {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> a;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> b;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#ff79c6">public</span> A() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        a = <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        b = <span style="color:#bd93f9">3</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        <span style="color:#6272a4">// 调用父类构造器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        b = <span style="color:#bd93f9">2</span>; <span style="color:#6272a4">// b会被重复赋值</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>}
+</span></span></code></pre></div><div class="admonition tip"><p class="admonition-title">提示</p>
+<p>优化：在声明字段是就赋值会导致再每个构造器中都会加入初始化代码。可以不在声明字段时赋值。用一个构造函数初始化，并在其他构造函数中调用那个构造函数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#ff79c6">private</span> <span style="color:#8be9fd">int</span> a;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">private</span> <span style="color:#8be9fd">int</span> b;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">public</span> A() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        a = <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#ff79c6">public</span> A(<span style="color:#8be9fd">int</span> b) : <span style="color:#ff79c6">this</span>() { <span style="color:#6272a4">// 调用空参构造函数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#ff79c6">this</span>.b = b;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>}
+</span></span></code></pre></div></div>
+<h4 id="实例构造器值类型">实例构造器(值类型)</h4>
+<p>CLR总允许创建值类型的实例，并且没有办法阻止值类型的实例化。所以值类型其实并不需要定义构造器，C#编译器根本不会为值类型内联(嵌入)默认的构造器。</p>
+<p>CLR不会为包含在引用类型中的每个值类型字段都主动调用构造器。但是，值类型的字段会初始化为0或null。</p>
+<p>CLR允许为值类型定义构造器，但<strong>必须显式调用</strong>才会执行。</p>
+<p><strong>C#编译器不允许值类型定义无参构造函数</strong>。但CLR允许。</p>
+<p>值类型的任何构造器都<strong>必须初始化值类型的全部字段</strong>。</p>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>注意：当值类型嵌套到引用类型中时，才保证初始化为0或null。基于栈的值类型字段则无此保证。但任何基于栈的值类型字段都必须在读取之前赋值。</p>
+</div>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>注意：在值类型的构造器中，this代码值类型本身的一个实例，用new创建的值类型的一个实例可以赋给this。在new的过程中，会将所有字段置为0或null。而在引用类型的构造器中，this被认为是只读的，不可赋值。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#8be9fd">int</span> x;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#ff79c6">public</span> A(<span style="color:#8be9fd">int</span> x) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>        <span style="color:#ff79c6">this</span> = <span style="color:#ff79c6">new</span> A();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>        <span style="color:#ff79c6">this</span>.x = x;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
+</span></span></code></pre></div></div>
+<h4 id="类型构造器">类型构造器</h4>
+<p>类型构造器可用于接口(C#编译器不允许)、引用类型和值类型。类型构造器是设置类型的初始状态。类型<strong>默认没有定义类型构造器</strong>。<strong>只能定义一个</strong>。<strong>不能有参数</strong>。<strong>必须标记为static</strong>。<strong>总是私有</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#ff79c6">static</span> A() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#6272a4">// A被首次访问时，执行这里的代码</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">B</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#ff79c6">static</span> B() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#6272a4">// B被首次访问时，执行这里的代码</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>}
+</span></span></code></pre></div><h5 id="类型构造器的调用">类型构造器的调用</h5>
+<p>JIT编译一个方法时，会查看代码中都引用了哪些类型。任何一个类型定义了类型构造器，JIT编译器都会检查针对当前AppDomain，是否已经执行了这个类型构造器。如果未执行，JIT编译器会在它生成的本机代码中添加对类型构造器的调用。如果已执行，JIT编译器就不添加对它的调用。</p>
+<p>在调用类型构造器时，为了保证类型构造器只执行一次。调用线程需要获取互斥线程同步锁。如果多个线程试图同时调用某个类型的静态构造器则只有一个线程可以获得锁，其他线程会被阻塞(blocked)。当线程执行完毕后等待的线程被唤起发现类型构造器已经执行过。因此不会在执行，直接返回。</p>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>可以在值类型中定义类型构造器，但是不要那么做，因为CLR有时不会调用值类型的类型构造器。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#ff79c6">static</span> A() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;这行代码不会被执行&#34;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> x;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>A[] a = <span style="color:#ff79c6">new</span> A[<span style="color:#bd93f9">10</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>a[<span style="color:#bd93f9">0</span>].x = <span style="color:#bd93f9">123</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>Console.WriteLine(a[<span style="color:#bd93f9">0</span>].x);
+</span></span></code></pre></div></div>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>因为类型构造器是线程安全级的，所以非常适合在类型构造器中初始化单例对象。</p>
+</div>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>类型构造器中只能访问类型的静态字段</p>
+</div>
+<h4 id="操作符重载方法">操作符重载方法</h4>
+<p>CLR规范操作符重载方法必须是<strong>public</strong>和<strong>static</strong>方法。C#要求操作符重载方法至少有一个参数类型与当前定义这个方法的类型相同。为了更快的找到要使用哪个操作符方法。</p>
+<p>编译器看到源码中出现一个操作符时，会检查是否有一个操作数的类型定义了名为操作符对应特殊方法名的方法，而且该方法的参数兼容于操作数的类型。如果存在则调用，不存在则报错。</p>
+<h4 id="转换操作符方法">转换操作符方法</h4>
+<p>如果源类型或目标类型不是基元类型，编译器会生成强制转换代码，检查源对象的类型和目标类型(或者从目标类型派生的其他类型)是不是相同。转换操作符是将一种类型转换成另一种类型的方法。CLR规范转换操作符重载方法必须是public和static方法。C#要求器参数和返回类型二者必有一个与定义转换方法的类型相同。</p>
+<p>implicit关键字告诉编译器为了生成代码来调用方法，不需要再源代码中进行显式转型。explicit关键字告诉编译器只有发现了显式转型时，才调用方法。</p>
+<h4 id="扩展方法">扩展方法</h4>
+<p>扩展方法允许定义一个静态方法，并用实例方法的语法来调用。</p>
+<h5 id="扩展方法的调用过程">扩展方法的调用过程</h5>
+<p>如下代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>StringBuilder sb = <span style="color:#ff79c6">new</span> StringBuilder();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#8be9fd">int</span> index = sb.IndexOf(<span style="color:#f1fa8c">&#39;X&#39;</span>);
+</span></span></code></pre></div><p>首先检查StringBuilder类或者它的任何基类是否提供了获取单个Char参数、名为IndexOf的实例方法。如果有，就生成IL代码来调用，否则继续<strong>检查是否有任何静态类定义的名为IndexOf的静态方法，方法的第一个参数类型与当前调用方法的哪个表达式的类型匹配，而且该类型必须用this关键字标识</strong>。</p>
+<h5 id="规则和原则">规则和原则</h5>
+<ul>
+<li>可以为接口类型、委托类型和枚举类型定义扩展方法。</li>
+<li>C#只支持扩展方法，不支持扩展属性、事件、操作符等。</li>
+<li>扩展方法必须在非泛型的静态类中声明。而且，类名没有限制，但是扩展方法必须要有一个参数，而且只第一个参数使用this关键字。</li>
+<li>C#编译器在静态类中查找扩展方法时，要求静态类本身必须具有文件作用域(不能嵌套在某个类中)。</li>
+<li>由于静态类可以取任何名字，所以C#编译器要花一定时间来寻找扩展方法，它<strong>必须检查文件作用域中的所有静态类，并扫描所有静态方法来查找一个匹配</strong>。为了增强性能，C#编译器要求“导入”扩展方法。</li>
+<li>多个静态类可以定义相同的方法。如果编译器发现会报错。</li>
+<li><strong>扩展方法扩展一个类型时，同时也扩展了派生类型</strong>。</li>
+<li><strong>会存在覆盖问题，如果一个类原本没有实例方法，并定义了一个扩展方法，未来加入了同名的实例方法则会直接调用实例方法。并且没有报错</strong>。</li>
+</ul>
+<h5 id="extensionattribute">ExtensionAttribute</h5>
+<p>如果用this关键字标记的某个静态方法的第一个参数，编译器就会在内部想该方法应用一个ExtensionAttribute特性。该特性会生成到文件的元数据中持久的保存下来。相当于一个搜索表。</p>
+<h4 id="分部方法">分部方法</h4>
+<p>利用partial关键字，可以将类或方法的实现分为两个文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">partial</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#ff79c6">partial</span> <span style="color:#ff79c6">void</span> Func();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#6272a4">// 另一个文件中的代码</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#ff79c6">partial</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">A</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#ff79c6">partial</span> <span style="color:#ff79c6">void</span> Func() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#6272a4">// 具体代码</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>}
+</span></span></code></pre></div><h5 id="规则和原则-1">规则和原则</h5>
+<ul>
+<li>如果没有实现分部方法，编译器不会生成任何代表分部方法的元数据。</li>
+<li>只能在分部类或结构中声明。</li>
+<li>分部方法的返回类型始终为void，任何参数都不能用out标记。因为方法在运行时可能不存在，所以不能将变量初始化为方法也许会返回的东西。但可以用ref，可以是泛型方法，可以时实例或静态方法。也可以标记unsafe。</li>
+<li>分部方法的声明和实现必须具有完全一致的签名。如果两者都定制了特性，则会合并特性。应用于参数的任何特性也会合并。</li>
+<li>分部方法总为private。</li>
+</ul>
+<h3 id="参数">参数</h3>
+<h4 id="规则与原则">规则与原则</h4>
+<ul>
+<li>向方法传递实参时，编译器从左到右的顺序对实参进行求值。</li>
+<li>有默认值的参数必须放在没有默认值的所有参数之后。但参数数组必须放在所有参数(包括有默认值的参数)之后，而且数组不能有默认值。</li>
+<li>默认值必须是编译时能确认的常量。包括基元类型、枚举类型，以及能设为null的任何引用类型。可用default或new关键字来表达默认值。这两种关键字会生成完全一样的IL代码。</li>
+<li>ref或out关键字的标识不能设置默认值。</li>
+<li>实参可以按照任意顺序传递，但命名实参只能出现在实参列表的尾部。</li>
+<li>可按名称将实参传给没有默认值的参数，但所有必须的实参都必须传递。</li>
+<li>C#不允许省略逗号之间的实参。例如<code>Func(1, ,2)</code>。</li>
+</ul>
+<h4 id="引用传参out和ref">引用传参(out和ref)</h4>
+<p>CLR不区分out和ref，但C#编译器区分。</p>
+<p>参数用out标记，表明不指望调用者在调用方法前就初始化了对象。</p>
+<p>参数用ref标记，表示调用者必须在调用方法前初始化对象。</p>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>两个重载方法只有out和ref的区别规则不合法，因为对于CLR他们是一样的。</p>
+</div>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>对于以传引用的方式给方法的变量，他的类型必须与方法签名中声明的类型相同(不能向上转型)。</p>
+</div>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>可变参数方法对性能会有所影响(除非显式传递null)。因为数组对象需要在堆上分配，元素必须初始化，而且需要垃圾回收。</p>
+</div>
+<h4 id="参数和返回值的设计规范">参数和返回值的设计规范</h4>
+<ul>
+<li>声明方法的参数类型时，应尽量指定最弱的类型，宁愿要接口也不要基类型。因为弱类型适合更广泛的情形。</li>
+<li>声明方法的返回类型时，应尽量指定最强的类型。</li>
+<li>如果想保持一定的灵活性，在将来更改方法返回的东西，可以选择一个较弱的返回类型。</li>
+</ul>
+<p>总结：其实就是看情况而定。不确定就偏弱类型。</p>
+<h3 id="属性">属性</h3>
+<p>允许源代码用简化的语法来调用方法。CLR支持两种属性：无参属性和有参属性(C#中的索引器)。<strong>属性本质就是调用一个方法</strong>。</p>
+<h4 id="无参属性">无参属性</h4>
+<p>CLR<strong>支持静态、实例、抽象和虚属性</strong>。属性<strong>可用任意“可访问性”修饰符来标记</strong>。而且<strong>可以在接口中定义</strong>。</p>
+<p>每个属性都有名称和类型(类型不能为void)。属性不能重载，即不能定义名称相同、类型不同的两个属性。</p>
+<p>get访问器对应的方法仅在定义了get访问器方法的时候生成。set同理。</p>
+<p>属性与字段的区别：</p>
+<ul>
+<li>属性方法可能抛出异常；字段访问永远不会。</li>
+<li>属性不能作为out或ref参数传给方法；字段可以。</li>
+<li>属性方法可能花费较长的时间执行；字段总是立即完成。</li>
+<li>连续多次调用，属性可能返回不同的值；字段则每次都相同。</li>
+<li>属性可造成副作用(会造成对象的改变等)；字段不会。</li>
+<li>属性可能需要额外的额内存；字段不会。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">private</span> String m_Name;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">public</span> String Name {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">get</span> { <span style="color:#ff79c6">return</span> m_Name; }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">set</span> { m_Name = <span style="color:#ff79c6">value</span>; } <span style="color:#6272a4">// 关键字value总是代表新值</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#6272a4">// C#编译器编译后等同于以下代码</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#ff79c6">private</span> String m_Name;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#ff79c6">public</span> String get_Name() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#ff79c6">return</span> m_Name;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> set_Name() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    m_Name = <span style="color:#ff79c6">value</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
+</span></span></code></pre></div><h5 id="自动实现属性aip">自动实现属性(AIP)</h5>
+<p>C#自动生成对应的get，set方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> String Name { <span style="color:#ff79c6">get</span>; <span style="color:#ff79c6">set</span>; } <span style="color:#6272a4">// 自动实现属性</span>
+</span></span></code></pre></div><p>不建议使用AIP的原因：</p>
+<ul>
+<li>没有办法简单的初始化AIP字段。必须在构造函数中初始化。</li>
+<li>AIP字段名称由编译器决定，每次重新编译可能会改变这个名称。所以<strong>不支持序列化</strong>。</li>
+<li>调试不能在get，set上加断点。</li>
+</ul>
+<h4 id="有参属性">有参属性</h4>
+<p>get访问器接受一个或多个参数，set访问器接受两个或多个参数。</p>
+<p>C#使用数组风格的语法来公开有参属性(索引器)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">sealed</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">BitArray</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#ff79c6">private</span> Byte[] _byteArray;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">private</span> <span style="color:#8be9fd">int</span> _numBits;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#ff79c6">public</span> BitArray(<span style="color:#8be9fd">int</span> numBits) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#ff79c6">if</span> (numBits &lt;= <span style="color:#bd93f9">0</span>) <span style="color:#ff79c6">throw</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        _numBits = numBits;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        _byteArray = <span style="color:#ff79c6">new</span> Byte[(numBits + <span style="color:#bd93f9">7</span>) / <span style="color:#bd93f9">8</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#6272a4">// 有参属性</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#ff79c6">public</span> Boolean <span style="color:#ff79c6">this</span>[<span style="color:#8be9fd">int</span> pos] {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#6272a4">// 索引器的get访问器方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        <span style="color:#ff79c6">get</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>            <span style="color:#ff79c6">if</span> (pos &lt; <span style="color:#bd93f9">0</span> || pos &gt;= _numBits) <span style="color:#ff79c6">throw</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>            <span style="color:#ff79c6">return</span> (_byteArray[pos / <span style="color:#bd93f9">8</span>] &amp; (<span style="color:#bd93f9">1</span> &lt;&lt; (pos % <span style="color:#bd93f9">8</span>))) != <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        <span style="color:#6272a4">// 索引器的set访问器方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>        <span style="color:#ff79c6">set</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>            <span style="color:#ff79c6">if</span> (pos &lt; <span style="color:#bd93f9">0</span> || pos &gt;= _numBits) <span style="color:#ff79c6">throw</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>            <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>                <span style="color:#6272a4">// 将索引位置设置为true</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>                _byteArray[pos / <span style="color:#bd93f9">8</span>] = (Byte) (_byteArray[pos / <span style="color:#bd93f9">8</span>] | (<span style="color:#bd93f9">1</span> &lt;&lt; (pos % <span style="color:#bd93f9">8</span>)));
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>            } <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>                <span style="color:#6272a4">// 将索引位置设置为false</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>                _byteArray[pos / <span style="color:#bd93f9">8</span>] = (Byte) (_byteArray[pos / <span style="color:#bd93f9">8</span>] &amp; ~(<span style="color:#bd93f9">1</span> &lt;&lt; (pos % <span style="color:#bd93f9">8</span>)));
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>            }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>        }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>}
+</span></span></code></pre></div><div class="admonition warning"><p class="admonition-title">注意</p>
+<ul>
+<li>C#不支持定义静态索引器属性。CLR支持。</li>
+<li>C#允许一个类型定义多个索引器，只要索引器的参数集不同。</li>
+<li>C#将索引器看成对[]操作符的重载。</li>
+</ul>
+</div>
+<h4 id="属性访问器的性能">属性访问器的性能</h4>
+<p>对于简单的get和set访问器，JIT编译器会将代码内联(inline)。使之基本没有性能损失。代价就是使编译好的方法变的更大。缺点在上方“属性与字段的区别”中有所列出。</p>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>JIT编译器在调试模式不会内联属性方法，因为会变的难以调试。</p>
+</div>
+<h3 id="事件">事件</h3>
+<p>定义了事件成员的类型允许类型(或类型的实例)通知其他对象发生了特定的事情。</p>
+<p>CLR事件模型以<strong>委托</strong>为基础。委托是调用回调方法的一种类型安全的方式。</p>
+<p>事件成员使用C#关键字event定义。每个事件成员都要指定以下内容：</p>
+<ul>
+<li>可访问性标识符(几乎是public)。</li>
+<li>委托类型，指出要调用的方法的原型。</li>
+<li>名称。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// 定义一个类型来容纳所有应发送给事件通知者的附加信息</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">TestEventArgs</span> : EventArgs {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">private</span> <span style="color:#ff79c6">readonly</span> <span style="color:#8be9fd">string</span> _message;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">public</span> TestEventArgs(<span style="color:#8be9fd">string</span> message) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        _message = message;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">string</span> Message { <span style="color:#ff79c6">get</span> { <span style="color:#ff79c6">return</span> _message; } }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">TestEventManager</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#6272a4">// 定义事件成员</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#6272a4">// 泛型System.EventHandler委托类型的定义为：</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#6272a4">// public delegate void EventHandler&lt;TEventArgs&gt;(Object sender, TEventArgs e);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#6272a4">// 则方法的原型必须为以下格式：</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#6272a4">// void MethodName(Object sender, TestEventArgs e);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">event</span> EventHandler&lt;TestEventArgs&gt; TestEvent;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#6272a4">// 负责引发事件来通知登记的对象。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#ff79c6">protected</span> <span style="color:#ff79c6">virtual</span> <span style="color:#ff79c6">void</span> OnTestEvent(TestEvnetARgs e) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>        <span style="color:#6272a4">// 出于线程安全的考虑，将委托字段的引用复制到一个临时变量中。避免在通过!=null的判断后被置空。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>        <span style="color:#6272a4">// Volatile.Read来保证让编辑器复制值，关闭编辑器的优化操作。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        EventHandler&lt;TestEventArgs&gt; temp = Volatile.Read(<span style="color:#ff79c6">ref</span> TestEvent);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>        <span style="color:#ff79c6">if</span> (temp != <span style="color:#ff79c6">null</span>) temp(<span style="color:#ff79c6">this</span>, e);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>    <span style="color:#6272a4">// 真正外部调用发送消息的方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> SendMessage(<span style="color:#8be9fd">string</span> message) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>        <span style="color:#6272a4">// 构造一个对象来容纳数据</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>        TestEventArgs e = <span style="color:#ff79c6">new</span> TestEventArgs(message);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>        OnTestEvent(e);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>}
+</span></span></code></pre></div><h4 id="event在c编译器编译时转换的代码为">event在C#编译器编译时转换的代码为：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// 一个被初始化为null的私有委托字段</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">private</span> EventHandler&lt;TestEventArgs&gt; TestEvent = <span style="color:#ff79c6">null</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#6272a4">// 一个公共add_xxx方法。允许方法登记对事件的关注</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> add_TestEvent(EventHandler&lt;TestEventArgs&gt; <span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#6272a4">// 通过循环和对CompareExchange的调用，可以以一种线程安全的方式向事件添加委托</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    EventHandler&lt;TestEventArgs&gt; prevHandler;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    EventHandler&lt;TestEventArgs&gt; newTestEvent = <span style="color:#ff79c6">this</span>.TestEvent;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#ff79c6">do</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        prevHandler = newTestEvent;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#6272a4">// 将委托实例添加到委托列表中，返回新的列表头(地址)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        EventHandler&lt;TestEventArgs&gt; newHandler = (EventHandler&lt;TestEventArgs&gt;) Delegate.Combine(prevHandler, <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#6272a4">// 将这个地址存回字段</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        newTestEvent = Interlocked.CompareExchange&lt;EventHandler&lt;TestEventArgs&gt;&gt;(<span style="color:#ff79c6">ref</span> <span style="color:#ff79c6">this</span>.TestEvent, newHandler, prevHandler);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    } <span style="color:#ff79c6">while</span> (newTestEvent != prevHandler);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#6272a4">// 一个公共remove_xxx方法。允许方法注销对事件的关注</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> add_TestEvent(EventHandler&lt;TestEventArgs&gt; <span style="color:#ff79c6">value</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    <span style="color:#6272a4">// 通过循环和对CompareExchange的调用，可以以一种线程安全的方式向事件移除委托</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    EventHandler&lt;TestEventArgs&gt; prevHandler;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>    EventHandler&lt;TestEventArgs&gt; newTestEvent = <span style="color:#ff79c6">this</span>.TestEvent;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    <span style="color:#ff79c6">do</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>        prevHandler = newTestEvent;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>        <span style="color:#6272a4">// 将委托实例从委托列表中删除，返回新的列表头(地址)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>        EventHandler&lt;TestEventArgs&gt; newHandler = (EventHandler&lt;TestEventArgs&gt;) Delegate.Remove(prevHandler, <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>        <span style="color:#6272a4">// 将这个地址存回字段</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>        newTestEvent = Interlocked.CompareExchange&lt;EventHandler&lt;TestEventArgs&gt;&gt;(<span style="color:#ff79c6">ref</span> <span style="color:#ff79c6">this</span>.TestEvent, newHandler, prevHandler);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>    } <span style="color:#ff79c6">while</span> (newTestEvent != prevHandler);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>}
+</span></span></code></pre></div><div class="admonition warning"><p class="admonition-title">注意</p>
+<p>即时事件字段定义为public，委托字段本身也是private。</p>
+</div>
+<h4 id="登记并监听事件">登记并监听事件</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">Fax</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#6272a4">// 登记</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">public</span> Fax(TestEventManager tem) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        tem.TestEvent += FaxMsg;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#6272a4">// 注销登记</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> Unregister(TestEventManager tem) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        tem.TestEvent -= FaxMsg;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#6272a4">// 消息接收</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#ff79c6">private</span> <span style="color:#ff79c6">void</span> FaxMsg(Object sender, TestEventArgs e) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;message: &#34;</span> + e.Message);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
+</span></span></code></pre></div><div class="admonition warning"><p class="admonition-title">注意</p>
+<p>对象只要登记了一个方法，就不能被垃圾回收。</p>
+</div>
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">Writings</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#类型成员基础">类型成员基础</a>
+      <ul>
+        <li><a href="#常量">常量</a></li>
+        <li><a href="#字段">字段</a>
+          <ul>
+            <li><a href="#字段修饰符">字段修饰符</a></li>
+          </ul>
+        </li>
+        <li><a href="#方法">方法</a>
+          <ul>
+            <li><a href="#实例构造器引用类型">实例构造器(引用类型)</a></li>
+            <li><a href="#实例构造器值类型">实例构造器(值类型)</a></li>
+            <li><a href="#类型构造器">类型构造器</a></li>
+            <li><a href="#操作符重载方法">操作符重载方法</a></li>
+            <li><a href="#转换操作符方法">转换操作符方法</a></li>
+            <li><a href="#扩展方法">扩展方法</a></li>
+            <li><a href="#分部方法">分部方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#参数">参数</a>
+          <ul>
+            <li><a href="#规则与原则">规则与原则</a></li>
+            <li><a href="#引用传参out和ref">引用传参(out和ref)</a></li>
+            <li><a href="#参数和返回值的设计规范">参数和返回值的设计规范</a></li>
+          </ul>
+        </li>
+        <li><a href="#属性">属性</a>
+          <ul>
+            <li><a href="#无参属性">无参属性</a></li>
+            <li><a href="#有参属性">有参属性</a></li>
+            <li><a href="#属性访问器的性能">属性访问器的性能</a></li>
+          </ul>
+        </li>
+        <li><a href="#事件">事件</a>
+          <ul>
+            <li><a href="#event在c编译器编译时转换的代码为">event在C#编译器编译时转换的代码为：</a></li>
+            <li><a href="#登记并监听事件">登记并监听事件</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98&description=%e7%b1%bb%e5%9e%8b%e6%88%90%e5%91%98%e5%9f%ba%e7%a1%80%20%e5%b8%b8%e9%87%8f%ef%bc%9a%e6%95%b0%e6%8d%ae%e6%81%92%e5%ae%9a%e4%b8%8d%e5%8f%98%e7%9a%84%e7%ac%a6%e5%8f%b7%e3%80%82%20%e5%ad%97%e6%ae%b5%ef%bc%9a%e5%8f%aa%e8%af%bb%e6%88%96%e5%8f%af%e8%af%bb%2f%e5%8f%af%e5%86%99%e7%9a%84%e6%95%b0%e6%8d%ae%e5%80%bc%e3%80%82%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%9a%e5%b0%86%e6%96%b0%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e5%88%9d%e5%a7%8b%e5%8c%96%e7%9a%84%e7%89%b9%e6%ae%8a%e6%96%b9%e6%b3%95%20%e7%b1%bb%e5%9e%8b%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%9a%e5%b0%86%e7%b1%bb%e5%9e%8b%e7%9a%84%e9%9d%99%e6%80%81%e5%ad%97%e6%ae%b5%e5%88%9d%e5%a7%8b%e5%8c%96%e7%9a%84%e7%89%b9%e6%ae%8a%e6%96%b9%e6%b3%95%e3%80%82%20%e6%96%b9%e6%b3%95%ef%bc%9a%e6%9b%b4%e6%94%b9%e6%88%96%e6%9f%a5%e8%af%a2%e7%b1%bb%e5%9e%8b%e6%88%96%e5%af%b9%e8%b1%a1%e7%8a%b6%e6%80%81%e7%9a%84%e5%87%bd%e6%95%b0%e3%80%82%e4%bd%9c%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%e6%88%90%e4%b8%ba%e9%9d%99%e6%80%81%e6%96%b9%e6%b3%95%ef%bc%8c%e4%bd%9c%e7%94%a8%e4%ba%8e%e5%af%b9%e8%b1%a1%e4%b8%ba%e5%ae%9e%e4%be%8b%e6%96%b9%e6%b3%95%e3%80%82%20%e6%93%8d%e4%bd%9c%e7%ac%a6%e9%87%8d%e8%bd%bd%ef%bc%9a%e5%ae%9e%e9%99%85%e6%98%af%e6%96%b9%e6%b3%95%ef%bc%8c%e5%ae%9a%e4%b9%89%e4%ba%86%e5%bd%93%e6%93%8d%e4%bd%9c%e7%ac%a6%e4%bd%9c%e7%94%a8%e4%ba%8e%e5%af%b9%e8%b1%a1%e6%97%b6%ef%bc%8c%e5%ba%94%e8%af%a5%e5%a6%82%e4%bd%95%e6%93%8d%e4%bd%9c%e5%af%b9%e8%b1%a1%e3%80%82%20%e8%bd%ac%e6%8d%a2%e6%93%8d%e4%bd%9c%e7%ac%a6%ef%bc%9a%e5%ae%9a%e4%b9%89%e5%a6%82%e4%bd%95%e9%9a%90%e5%bc%8f%e6%88%96%e6%98%be%e5%bc%8f%e5%b0%86%e5%af%b9%e8%b1%a1%e4%bb%8e%e4%b8%80%e7%a7%8d%e7%b1%bb%e5%9e%8b%e8%bd%ac%e5%9e%8b%e4%b8%ba%e5%8f%a6%e4%b8%80%e7%a7%8d%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%96%b9%e6%b3%95%e3%80%82%20%e5%b1%9e%e6%80%a7%ef%bc%9a%e8%ae%be%e7%bd%ae%e6%88%96%e6%9f%a5%e8%af%a2%e7%b1%bb%e5%9e%8b%e6%88%96%e5%af%b9%e8%b1%a1%e7%9a%84%e9%80%bb%e8%be%91%e7%8a%b6%e6%80%81%e3%80%82%e4%bd%9c%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%e4%b8%ba%e9%9d%99%e6%80%81%e5%b1%9e%e6%80%a7%ef%bc%8c%e4%bd%9c%e7%94%a8%e5%9f%9f%e5%af%b9%e8%b1%a1%e4%b8%ba%e5%ae%9e%e4%be%8b%e5%b1%9e%e6%80%a7%e3%80%82%20%e4%ba%8b%e4%bb%b6%ef%bc%9a%e9%9d%99%e6%80%81%e4%ba%8b%e4%bb%b6%e5%85%81%e8%ae%b8%e7%b1%bb%e5%9e%8b%e5%90%91%e4%b8%80%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aa%e9%9d%99%e6%80%81%e6%88%96%e5%ae%9e%e4%be%8b%e6%96%b9%e6%b3%95%e5%8f%91%e9%80%81%e9%80%9a%e7%9f%a5%e3%80%82%e5%ae%9e%e4%be%8b%e4%ba%8b%e4%bb%b6%e5%85%81%e8%ae%b8%e5%af%b9%e8%b1%a1%e5%90%91%e4%b8%80%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aa%e9%9d%99%e6%80%81%e6%88%96%e5%ae%9e%e4%be%8b%e6%96%b9%e6%b3%95%e5%8f%91%e9%80%81%e9%80%9a%e7%9f%a5%e3%80%82%20%e7%b1%bb%e5%9e%8b%ef%bc%9a%e5%8f%af%e4%bb%a5%e5%ae%9a%e4%b9%89%e5%85%b6%e4%bb%96%e5%b5%8c%e5%a5%97%e7%b1%bb%e5%9e%8b%e3%80%82%20%e5%b8%b8%e9%87%8f%20%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f%e7%ac%a6%e5%8f%b7%e6%97%b6%ef%bc%8c%e5%80%bc%e5%bf%85%e9%a1%bb%e8%83%bd%e5%9c%a8%e7%bc%96%e8%af%91%e6%97%b6%e7%a1%ae%e5%ae%9a%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e5%b0%86%e5%b8%b8%e9%87%8f%e5%80%bc%e4%bf%9d%e5%ad%98%e5%88%b0%e7%a8%8b%e5%ba%8f%e9%9b%86%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e3%80%82%e6%84%8f%e5%91%b3%e7%9d%80%e5%8f%aa%e8%83%bd%e5%ae%9a%e4%b9%89%e7%bc%96%e8%af%91%e5%99%a8%e5%8f%af%e8%af%86%e5%88%ab%e7%9a%84%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e5%b8%b8%e9%87%8f%e3%80%82%e9%9d%9e%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%b8%b8%e9%87%8f%e5%8f%98%e9%87%8f%e5%8f%aa%e8%83%bd%e4%b8%banull%e3%80%82%0a%e7%bc%96%e8%af%91%e5%99%a8%e4%bc%9a%e5%9c%a8%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f%e7%9a%84%e7%a8%8b%e5%ba%8f%e9%9b%86%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e6%9f%a5%e6%89%be%e8%af%a5%e7%ac%a6%e5%8f%b7%ef%bc%8c%e6%8f%90%e5%8f%96%e5%b8%b8%e9%87%8f%e5%80%bc%e5%b9%b6%e5%b5%8c%e5%85%a5IL%e4%bb%a3%e7%a0%81%e4%b8%ad%e3%80%82%e6%89%80%e4%bb%a5%e8%bf%90%e8%a1%8c%e6%97%b6%e6%b2%a1%e6%9c%89%e4%bb%bb%e4%bd%95%e9%a2%9d%e5%a4%96%e5%86%85%e5%ad%98%e5%88%86%e9%85%8d%ef%bc%8c%e4%bd%86%e6%98%af%e4%b8%8d%e8%83%bd%e5%8f%96%e5%b8%b8%e9%87%8f%e5%9c%b0%e5%9d%80%e6%88%96%e5%bc%95%e7%94%a8%e4%bc%a0%e9%80%92%e5%b8%b8%e9%87%8f%e3%80%82%0aC%23%e4%b8%8d%e5%85%81%e8%ae%b8%e5%b8%b8%e9%87%8f%e8%ae%be%e7%bd%ae%e4%b8%bastatic%ef%bc%8c%e5%9b%a0%e4%b8%ba%e5%b8%b8%e9%87%8f%e6%80%bb%e9%9a%90%e5%bc%8f%e8%ae%be%e7%bd%ae%e4%b8%bastatic%e3%80%82%0a%e6%8f%90%e7%a4%ba%0a%e5%a6%82%e6%9e%9c%e5%b8%8c%e6%9c%9b%e5%9c%a8%e8%bf%90%e8%a1%8c%e6%97%b6%e4%bb%8e%e4%b8%80%e4%b8%aa%e7%a8%8b%e5%ba%8f%e9%9b%86%e4%b8%ad%e6%8f%90%e5%8f%96%e5%8f%a6%e4%b8%80%e4%b8%aa%e7%a8%8b%e5%ba%8f%e9%9b%86%e4%b8%ad%e7%9a%84%e5%80%bc%ef%bc%8c%e9%82%a3%e4%b9%88%e4%b8%8d%e5%ba%94%e8%af%a5%e4%bd%bf%e7%94%a8%e5%b8%b8%e9%87%8f%ef%bc%8c%e8%80%8c%e5%ba%94%e8%af%a5%e4%bd%bf%e7%94%a8readonly%e5%ad%97%e6%ae%b5%e3%80%82%0a%e5%ad%97%e6%ae%b5%20%e5%ad%97%e6%ae%b5%e6%98%af%e4%b8%80%e7%a7%8d%e6%95%b0%e6%8d%ae%e6%88%90%e5%91%98%ef%bc%8c%e5%ae%b9%e7%ba%b3%e4%ba%86%e4%b8%80%e4%b8%aa%e5%80%bc%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%88%96%e5%af%b9%e4%b8%80%e4%b8%aa%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%bc%95%e7%94%a8%e3%80%82%0aCLR%e6%94%af%e6%8c%81%e7%b1%bb%e5%9e%8b%28%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%e5%92%8c%e5%ae%9e%e4%be%8b%28%e9%9d%9e%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%e3%80%82%e7%b1%bb%e5%9e%8b%e5%ad%97%e6%ae%b5%e6%89%80%e9%9c%80%e7%9a%84%e5%8a%a8%e6%80%81%e5%86%85%e5%ad%98%e6%98%af%e5%9c%a8%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e4%b8%ad%e5%88%86%e9%85%8d%e7%9a%84%ef%bc%8c%e8%80%8c%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%98%af%e5%9c%a8%e7%b1%bb%e5%9e%8b%e5%8a%a0%e8%bd%bd%e5%88%b0%e4%b8%80%e4%b8%aaAppDomain%e6%97%b6%e5%88%9b%e5%bb%ba%e7%9a%84%e3%80%82%e7%b1%bb%e5%9e%8b%e5%8a%a0%e8%bd%bd%e5%88%b0AppDmain%e7%9a%84%e6%97%b6%e6%9c%ba%e5%8f%88%e6%98%af%e5%9c%a8%e5%bc%95%e7%94%a8%e8%af%a5%e7%b1%bb%e5%9e%8b%e7%9a%84%e4%bb%bb%e4%bd%95%e6%96%b9%e6%b3%95%e9%a6%96%e6%ac%a1%e8%bf%9b%e8%a1%8cJIT%e7%bc%96%e8%af%91%e7%9a%84%e6%97%b6%e5%80%99%e3%80%82%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e5%ae%b9%e7%ba%b3%e5%ad%97%e6%ae%b5%e6%95%b0%e6%8d%ae%e6%89%80%e9%9c%80%e7%9a%84%e5%8a%a8%e6%80%81%e5%86%85%e5%ad%98%e6%98%af%e5%9c%a8%e6%9e%84%e9%80%a0%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%97%b6%e5%88%86%e9%85%8d%e7%9a%84%e3%80%82%0a%e5%ad%97%e6%ae%b5%e4%bf%ae%e9%a5%b0%e7%ac%a6%20CLR%e6%9c%af%e8%af%ad%20C%23%e6%9c%af%e8%af%ad%20%e8%af%b4%e6%98%8e%20Static%20static%20%e7%b1%bb%e5%9e%8b%28%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%20Instance%20%28%e9%bb%98%e8%ae%a4%29%20%e5%ae%9e%e4%be%8b%28%e9%9d%9e%e9%9d%99%e6%80%81%29%e5%ad%97%e6%ae%b5%20InitOnly%20readonly%20%e5%8f%aa%e8%83%bd%e6%9c%89%e4%b8%80%e4%b8%aa%e6%9e%84%e9%80%a0%e6%96%b9%e6%b3%95%e4%b8%ad%e7%9a%84%e4%bb%a3%e7%a0%81%e5%86%99%e5%85%a5%28%e4%bd%86%e5%8f%af%e5%88%a9%e7%94%a8%e5%8f%8d%e5%b0%84%e4%bf%ae%e6%94%b9readonly%e5%ad%97%e6%ae%b5%29%20Volatile%20volatile%20%e7%bc%96%e8%af%91%e5%99%a8%e3%80%81CLR%e5%92%8c%e7%a1%ac%e4%bb%b6%e4%b8%8d%e4%bc%9a%e5%af%b9%e8%ae%bf%e9%97%ae%e8%bf%99%e7%a7%8d%e5%ad%97%e6%ae%b5%e7%9a%84%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c%e2%80%9c%e7%ba%bf%e7%a8%8b%e4%b8%8d%e5%ae%89%e5%85%a8%e2%80%9d%e7%9a%84%e4%bc%98%e5%8c%96%e6%8e%aa%e6%96%bd%20%e6%8f%90%e7%a4%ba%0a%e5%bd%93%e6%9f%90%e4%b8%aa%e5%ad%97%e6%ae%b5%e6%97%b6%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%ef%bc%8c%e5%b9%b6%e4%b8%94%e8%af%a5%e5%ad%97%e6%ae%b5%e5%91%97%e6%a0%87%e8%ae%b0%e4%b8%bareadonly%e6%97%b6%ef%bc%8c%e4%b8%8d%e5%8f%af%e6%94%b9%e5%8f%98%e7%9a%84%e6%98%af%e5%bc%95%e7%94%a8%ef%bc%8c%e8%80%8c%e9%9d%9e%e5%ad%97%e6%ae%b5%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%0a%e6%96%b9%e6%b3%95%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%28%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%29%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e6%98%af%e5%88%9d%e5%a7%8b%e5%8c%96%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e7%9a%84%e7%89%b9%e6%ae%8a%e6%96%b9%e6%b3%95%e3%80%82%e6%9e%84%e9%80%a0%e5%99%a8%e6%96%b9%e6%b3%95%e5%9c%a8%e2%80%9c%e6%96%b9%e6%b3%95%e5%ae%9a%e4%b9%89%e5%85%83%e6%95%b0%e6%8d%ae%e8%a1%a8%e2%80%9d%e4%b8%ad%e5%a7%8b%e7%bb%88%e5%8f%ab%e5%81%9a.ctor%e3%80%82%e5%88%9b%e5%bb%ba%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%97%b6%ef%bc%8c%e9%a6%96%e5%85%88%e4%b8%ba%e5%ae%9e%e4%be%8b%e7%9a%84%e6%95%b0%e6%8d%ae%e5%ad%97%e6%ae%b5%e5%88%86%e9%85%8d%e5%86%85%e5%ad%98%ef%bc%8c%e7%84%b6%e5%90%8e%e6%8a%8a%e5%86%85%e5%ad%98%e9%83%a8%e5%88%86%e5%bd%92%e9%9b%b6%28%e4%bf%9d%e8%af%81%e6%b2%a1%e6%9c%89%e8%a2%ab%e6%9e%84%e9%80%a0%e5%99%a8%e6%98%be%e5%bc%8f%e8%b5%8b%e5%80%bc%e7%9a%84%e6%89%80%e6%9c%89%e5%ad%97%e6%ae%b5%e9%83%bd%e4%b8%ba0%e6%88%96null%e5%80%bc%29%ef%bc%8c%e6%8e%a5%e7%9d%80%e5%88%9d%e5%a7%8b%e5%8c%96%e5%af%b9%e8%b1%a1%e7%9a%84%e9%99%84%e5%8a%a0%e5%ad%97%e6%ae%b5%28%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%e5%92%8c%e5%90%8c%e6%ad%a5%e7%b4%a2%e5%bc%95%e5%9d%97%29%ef%bc%8c%e6%9c%80%e5%90%8e%e8%b0%83%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e6%9d%a5%e8%ae%be%e7%bd%ae%e5%af%b9%e8%b1%a1%e7%9a%84%e5%88%9d%e5%a7%8b%e7%8a%b6%e6%80%81%e3%80%82%0a%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9%20%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e6%b0%b8%e8%bf%9c%e4%b8%8d%e8%83%bd%e8%a2%ab%e7%bb%a7%e6%89%bf%e3%80%82%e6%89%80%e4%bb%a5%e4%b8%8d%e8%83%bd%e4%bd%bf%e7%94%a8%3avirtual%ef%bc%8cnew%ef%bc%8coverride%ef%bc%8csealed%ef%bc%8cabstract%e4%bf%ae%e9%a5%b0%e7%ac%a6%e3%80%82%20%e5%a6%82%e6%9e%9c%e6%b2%a1%e6%9c%89%e6%98%be%e5%bc%8f%e5%ae%9a%e4%b9%89%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%8cC%23%e7%bc%96%e8%af%91%e5%99%a8%e5%88%99%e4%bc%9a%e9%bb%98%e8%ae%a4%e5%ae%9a%e4%b9%89%e4%b8%80%e4%b8%aa%28%e6%97%a0%e5%8f%82%29%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%e8%bf%99%e4%b8%aa%e6%9e%84%e9%80%a0%e5%99%a8%e5%8f%aa%e6%98%af%e7%ae%80%e5%8d%95%e7%9a%84%e8%b0%83%e7%94%a8%e4%ba%86%e5%9f%ba%e7%b1%bb%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%201public%20class%20A%20%7b%7d%202%2f%2f%e7%ad%89%e4%bb%b7%e4%ba%8e%ef%bc%9a%203public%20class%20A%20%7b%204%20public%20A%28%29%20%3a%20base%28%29%20%7b%7d%205%7d%20%e5%a6%82%e6%9e%9c%e7%b1%bb%e7%9a%84%e4%bf%ae%e9%a5%b0%e7%ac%a6%e4%b8%baabstract%ef%bc%8c%e5%88%99%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84%e9%bb%98%e8%ae%a4%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e5%8f%af%e8%ae%bf%e9%97%ae%e6%80%a7%e5%b0%b1%e4%b8%baprotected%e3%80%82%e5%90%a6%e5%88%99%e4%b8%bapublic%e3%80%82%20%e5%a6%82%e6%9e%9c%e7%b1%bb%e7%9a%84%e4%bf%ae%e9%a5%b0%e7%ac%a6%e4%b8%bastatic%ef%bc%8c%e5%88%99%e7%bc%96%e8%af%91%e5%99%a8%e4%b8%8d%e4%bc%9a%e7%94%9f%e6%88%90%e9%bb%98%e8%ae%a4%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%20%e4%b8%ba%e4%ba%86%e4%bd%bf%e4%bb%a3%e7%a0%81%e2%80%9c%e5%8f%af%e9%aa%8c%e8%af%81%e2%80%9d%ef%bc%8c%e7%b1%bb%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e5%9c%a8%e8%ae%bf%e9%97%ae%e4%bb%8e%e5%9f%ba%e7%b1%bb%e7%bb%a7%e6%89%bf%e7%9a%84%e4%bb%bb%e4%bd%95%e5%ad%97%e6%ae%b5%e4%b9%8b%e5%89%8d%ef%bc%8c%e5%bf%85%e9%a1%bb%e5%85%88%e8%b0%83%e5%8a%a8%e5%9f%ba%e7%b1%bb%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%e5%a6%82%e6%9e%9c%e6%b4%be%e7%94%9f%e7%b1%bb%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%e6%b2%a1%e6%9c%89%e6%98%be%e5%bc%8f%e8%b0%83%e7%94%a8%e4%b8%80%e4%b8%aa%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%ef%bc%8cC%23%e7%bc%96%e8%af%91%e5%99%a8%e4%bc%9a%e8%87%aa%e5%8a%a8%e7%94%9f%e6%88%90%e5%af%b9%e9%bb%98%e8%ae%a4%e7%9a%84%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e8%b0%83%e7%94%a8%e3%80%82%20%e6%9e%81%e5%b0%91%e6%95%b0%e5%8f%af%e4%bb%a5%e5%9c%a8%e4%b8%8d%e8%b0%83%e7%94%a8%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e5%89%8d%e6%8f%90%e4%b8%8b%e5%88%9b%e5%bb%ba%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e3%80%82%e6%af%94%e5%a6%82Object%e7%9a%84MemberwiseClone%e6%96%b9%e6%b3%95%e3%80%81%e6%88%96%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%97%b6%e3%80%82%20%e4%b8%8d%e8%a6%81%e5%9c%a8%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%e4%b8%ad%e8%b0%83%e7%94%a8%e8%99%9a%e6%96%b9%e6%b3%95%e3%80%82%20C%23%e7%bc%96%e8%af%91%e5%99%a8%e4%bb%a5%e2%80%9c%e5%86%85%e8%81%94%e2%80%9d%28%e5%b5%8c%e5%85%a5%29%e6%96%b9%e5%bc%8f%e5%88%9d%e5%a7%8b%e5%8c%96%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%e3%80%82%e5%9c%a8%e6%af%8f%e4%b8%aa%e6%9e%84%e9%80%a0%e5%99%a8%e6%96%b9%e6%b3%95%e5%bc%80%e5%a7%8b%e7%9a%84%e4%bd%8d%e7%bd%ae%ef%bc%8c%e5%8c%85%e5%90%ab%e7%b1%bb%e5%ad%97%e6%ae%b5%e4%b8%ad%e7%9b%b4%e6%8e%a5%e8%b5%8b%e5%80%bc%e7%9a%84%e4%bb%a3%e7%a0%81%e3%80%82%e5%9c%a8%e5%85%b6%e5%90%8e%e4%bc%9a%e6%8f%92%e5%85%a5%e5%af%b9%e5%9f%ba%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e8%b0%83%e7%94%a8%e3%80%82%e7%84%b6%e5%90%8e%e5%86%8d%e6%8f%92%e5%85%a5%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%e7%9a%84%e4%bb%a3%e7%a0%81%e3%80%82%0a1class%20B%20%7b%20%7d%202class%20A%20%7b%203%20public%20int%20a%20%3d%201%3b%204%20public%20int%20b%20%3d%203%3b%205%20public%20A%28%29%20%7b%206%20b%20%3d%202%3b%207%20%7d%208%7d%209%2010%2f%2f%20C%23%e7%bc%96%e8%af%91%e5%99%a8%e7%bc%96%e8%af%91%e5%90%8e%e7%9a%84%e4%bb%a3%e7%a0%81%e4%b8%ba%2011class%20A%20%3a%20B%20%7b%2012%20public%20int%20a%3b%2013%20public%20int%20b%3b%2014%20public%20A%28%29%20%7b%2015%20a%20%3d%201%3b%2016%20b%20%3d%203%3b%2017%20%2f%2f%20%e8%b0%83%e7%94%a8%e7%88%b6%e7%b1%bb%e6%9e%84%e9%80%a0%e5%99%a8%2018%20b%20%3d%202%3b%20%2f%2f%20b%e4%bc%9a%e8%a2%ab%e9%87%8d%e5%a4%8d%e8%b5%8b%e5%80%bc%2019%20%7d%2020%7d%20%e6%8f%90%e7%a4%ba" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-class%25E6%2588%2590%25E5%2591%2598%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20Class%e6%88%90%e5%91%98" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  Alaya 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+  
+
+
+</html>

@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>物理 on Sooda</title>
-    <link>https://sooda.net.cn/tags/%E7%89%A9%E7%90%86/</link>
-    <description>Recent content in 物理 on Sooda</description>
+    <title>物理 on Alaya</title>
+    <link>https://localhost:1313/tags/%E7%89%A9%E7%90%86/</link>
+    <description>Recent content in 物理 on Alaya</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>cn</language>
-    <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 04 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E7%89%A9%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <copyright>Alaya</copyright>
+    <lastBuildDate>Tue, 04 Jan 2022 21:58:45 +0800</lastBuildDate><atom:link href="https://localhost:1313/tags/%E7%89%A9%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏编程算法与技巧》物理篇</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</link>
+      <link>https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</link>
       <pubDate>Tue, 04 Jan 2022 21:58:45 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
+      <guid>https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/</guid>
       <description>平面 平面在游戏中倾向的数学定义：
 $$ P \cdot \hat{n} + d = 0 $$
 $P$是平面上任意一点，$\hat{n}$是平面法线，$d$是平面到原点的最小距离
-// 平面的数据结构 struct Plane { Vector3 normal; float d; } 射线和线段 游戏中射线基本就是线段，因为基本不会让射线无限延伸下去。数学定义为：
+1// 平面的数据结构 2struct Plane { 3 Vector3 normal; 4 float d; 5} 射线和线段 游戏中射线基本就是线段，因为基本不会让射线无限延伸下去。数学定义为：
 $$ R(t) = R_0 + \vec{v}t $$
 $R_0$是起点，$\vec{v}$是射线方向，$t$必须大于等于0。而在代码中的数据结构我们存两个点一个起点(startPoint)，一个终点(endPoint)。则$R_0$就是startPoint，$\vec{v}$就是endPoint-startPoint，而$t$的取值就为0~1了
-struct RayCast { Vector3 startPoint Vector3 endPoint } 碰撞几何体 包围球 通过中心点和半径表示
-class ShpereCollider { Vector3 center; float radius; } 轴对齐包围盒(AABB) 每条边都与x轴或y轴平行的矩形，只能随轴旋转，多用于2D
-class AABB2D { Vector2 min Vector2 max } 朝向包围盒OBB 可以自由旋转的类AABB包围盒，较复杂
-胶囊体 3D中为一个圆柱加上两个半圆，还可看作带半径的线段
-struct Capsule2D { Vector2 startPoint; Vector2 endPoint; float radius; } 凸多边形 简称凸包。凸多边形比其他前几个方式效率低，但是更精准</description>
+1struct RayCast { 2 Vector3 startPoint 3 Vector3 endPoint 4} 碰撞几何体 包围球 通过中心点和半径表示
+1class ShpereCollider { 2 Vector3 center; 3 float radius; 4} 轴对齐包围盒(AABB) 每条边都与x轴或y轴平行的矩形，只能随轴旋转，多用于2D
+1class AABB2D { 2 Vector2 min 3 Vector2 max 4} 朝向包围盒OBB 可以自由旋转的类AABB包围盒，较复杂</description>
     </item>
     
   </channel>

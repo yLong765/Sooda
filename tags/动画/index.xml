@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>动画 on Sooda</title>
-    <link>https://sooda.net.cn/tags/%E5%8A%A8%E7%94%BB/</link>
-    <description>Recent content in 动画 on Sooda</description>
+    <title>动画 on Alaya</title>
+    <link>https://localhost:1313/tags/%E5%8A%A8%E7%94%BB/</link>
+    <description>Recent content in 动画 on Alaya</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>cn</language>
-    <copyright>Copyright © 2022, All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 07 Nov 2021 17:14:24 +0800</lastBuildDate><atom:link href="https://sooda.net.cn/tags/%E5%8A%A8%E7%94%BB/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <copyright>Alaya</copyright>
+    <lastBuildDate>Sun, 07 Nov 2021 17:14:24 +0800</lastBuildDate><atom:link href="https://localhost:1313/tags/%E5%8A%A8%E7%94%BB/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《游戏引擎架构》动画的基本构成</title>
-      <link>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</link>
+      <link>https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</link>
       <pubDate>Sun, 07 Nov 2021 17:14:24 +0800</pubDate>
       
-      <guid>https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</guid>
+      <guid>https://localhost:1313/posts/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%E5%8A%A8%E7%94%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E6%88%90/</guid>
       <description>闲话 近日读完了《游戏引擎架构》这本书，以前感觉读不完，但是每天慢慢的磨完了。闲下来时间提炼一下其中自我觉得比较关键的部分。因本人是做Unity开发的，所以会把书中所讲部分结合Unity引擎来总结。闲话不多说开始吧
 动画的基本构成 Unity的动画系统封装的已经非常好了，所以我们对其中的细节了解的少之又少。本文章着重在单个动画，骨骼，姿势，蒙皮的内存存储结构和应用方式
 角色动画的类型 在Unity中比较常用的动画为蒙皮/骨骼动画（三维）和精灵动画（二维）
 赛璐璐动画（精灵动画）：用一张细小的位图，叠在全屏的背景影响之上而不会扰乱背景。常用于二维游戏动画（Unity中的Sprite贴图） 动画纹理：面向摄像机的四边形，并用一连串的位图连续播放。现今用于远景活低分辨率的物体 刚性阶层动画：将角色通过部位进行拆分建模并以层级进行约束。但问题是在关节处会出现裂缝 每顶点动画：移动每个顶点以产生更自然的动作（蛮力技术，数据量非常大。通常用于老式的离线渲染） 变形目标动画：每顶点动画的变种，也是制作每个顶点的位置。但制作少量的固定极端姿势在运行时将其混合（线性插值混合）。通常用于面部动画 蒙皮/骨骼动画： 骨骼：隐藏的刚性关节层阶结构（树结构）所构成 皮肤：绑定于骨骼上的圆滑三角形网格，顶点会按权重绑定至多个关节。当关节移动时，蒙皮可以自然的拉伸 为什么选择蒙皮/骨骼动画？ 以更少的数据量来达到更好的效果。通过加入约束：相对大量的顶点只能跟随相对少量的骨骼关节移动。来压缩顶点动画
 骨骼在内存中的表示 通常使用关节索引引用关节，子关节索引引用父关节。蒙皮三角形网格中，每个顶点索引引用其绑定关节
-// 关节数据的信息 struct Joint { Matrix4x3 inv_bind_pose; // 绑定姿势（蒙皮网格顶点绑定至骨骼时，关节的位置，定向及缩放）的逆变换 const char* name; // 关节名字（字符串或32位字符串散列表标识符） U8 parent; // 父索引(0xFF代表根关节) }; struct Skeletion { U32 joint_count; // 关节数目 Joint* joint; // 关节数组 }; 姿势 把角色摆出一连串离散，静止的姿势，并以通常30或60个姿势每秒的速率显示，已产生动感。实际游戏会以相邻姿势进行插值
+1// 关节数据的信息 2struct Joint { 3 Matrix4x3 inv_bind_pose; // 绑定姿势（蒙皮网格顶点绑定至骨骼时，关节的位置，定向及缩放）的逆变换 4 const char* name; // 关节名字（字符串或32位字符串散列表标识符） 5 U8 parent; // 父索引(0xFF代表根关节) 6}; 7 8struct Skeletion { 9 U32 joint_count; // 关节数目 10 Joint* joint; // 关节数组 11}; 姿势 把角色摆出一连串离散，静止的姿势，并以通常30或60个姿势每秒的速率显示，已产生动感。实际游戏会以相邻姿势进行插值
 绑定姿势：又称为T姿势。因此姿势四肢远离身体，较容易把顶点绑定至关节
 局部姿势 相对于父关节指定的，其仿射变换相对于父节点空间
 关节姿势：数学上就是一个仿射变换。4x4仿射变换矩阵$P_j$，此矩阵由平移矢量$T_j$，3x3对角缩放矩阵$S_j$，及3x3旋转矩阵$R_j$构成
-$$ p_j = \begin{bmatrix} S_jR_j &amp;amp; 0 \newline T_j &amp;amp; 1 \end{bmatrix} $$
-整个骨骼的姿势：
-$$ P^{skel} = { P_j } |_{j=0}^{N-1} $$</description>
+$$ p_j = \begin{bmatrix} S_jR_j &amp;amp; 0 \newline T_j &amp;amp; 1 \end{bmatrix} $$</description>
     </item>
     
   </channel>

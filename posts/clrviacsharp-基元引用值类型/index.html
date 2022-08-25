@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 《CLR via C#》 基元类型、引用类型和值类型 | Alaya</title>
+  <link rel = 'canonical' href = 'https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/'>
+  <meta name="description" content="Simple Life Simple Coding.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="《CLR via C#》 基元类型、引用类型和值类型" />
+<meta property="og:description" content="Type基础 C#中有三种类型分别是基元类型、引用类型和值类型
+基元类型 编辑器直接支持的数据类型称为基元类型(primitive type)。基元类型直接映射到Framework类库(FCL)中存在的类型。
+C#基元类型 FCL类型 符合公共语言规范(CLS) 说明 sbyte System.SByte 否 有符号8位 byte System.Byte 是 无符号8位 short System.Int16 是 有符号16位 ushort System.UInt16 否 无符号16位 int System.Int32 是 有符号32位 uint System.UInt32 否 无符号32位 long System.Int64 是 有符号64位 ulong System.UInt64 否 无符号64位 char System.Char 是 16位Unicode字符 float System.Single 是 IEEE 32位浮点值 double System.Double 是 IEEE 64位浮点值 bool System.Boolean 是 true/false decimal System.Decimal 是 128位高精度浮点值，常用于不容许误差的金融计算 string System.String 是 字符数组 object System.Object 是 所有类型的基类 dynamic System." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-12T17:49:41+08:00" />
+<meta property="article:modified_time" content="2022-07-12T17:49:41+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《CLR via C#》 基元类型、引用类型和值类型"/>
+<meta name="twitter:description" content="Type基础 C#中有三种类型分别是基元类型、引用类型和值类型
+基元类型 编辑器直接支持的数据类型称为基元类型(primitive type)。基元类型直接映射到Framework类库(FCL)中存在的类型。
+C#基元类型 FCL类型 符合公共语言规范(CLS) 说明 sbyte System.SByte 否 有符号8位 byte System.Byte 是 无符号8位 short System.Int16 是 有符号16位 ushort System.UInt16 否 无符号16位 int System.Int32 是 有符号32位 uint System.UInt32 否 无符号32位 long System.Int64 是 有符号64位 ulong System.UInt64 否 无符号64位 char System.Char 是 16位Unicode字符 float System.Single 是 IEEE 32位浮点值 double System.Double 是 IEEE 64位浮点值 bool System.Boolean 是 true/false decimal System.Decimal 是 128位高精度浮点值，常用于不容许误差的金融计算 string System.String 是 字符数组 object System.Object 是 所有类型的基类 dynamic System."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://localhost:1313/css/styles.1e769e967e9c06518a5e0618da426e1be02b65c215ab7586c2b95fa09a2997b516357fd281da2cb1044ec3d691b106662e083110bbda88c3203e884f0485d6b5.css" integrity="sha512-Hnaeln6cBlGKXgYY2kJuG&#43;ArZcIVq3WGwrlfoJopl7UWNX/SgdossQROw9aRsQZmLggxELvaiMMgPohPBIXWtQ=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://localhost:1313/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://localhost:1313/posts/clrviacsharp-class/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://localhost:1313/posts/clrviacsharp-class%E6%88%90%E5%91%98/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b&description=Type%e5%9f%ba%e7%a1%80%20C%23%e4%b8%ad%e6%9c%89%e4%b8%89%e7%a7%8d%e7%b1%bb%e5%9e%8b%e5%88%86%e5%88%ab%e6%98%af%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b%0a%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%20%e7%bc%96%e8%be%91%e5%99%a8%e7%9b%b4%e6%8e%a5%e6%94%af%e6%8c%81%e7%9a%84%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b%e7%a7%b0%e4%b8%ba%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%28primitive%20type%29%e3%80%82%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e7%9b%b4%e6%8e%a5%e6%98%a0%e5%b0%84%e5%88%b0Framework%e7%b1%bb%e5%ba%93%28FCL%29%e4%b8%ad%e5%ad%98%e5%9c%a8%e7%9a%84%e7%b1%bb%e5%9e%8b%e3%80%82%0aC%23%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%20FCL%e7%b1%bb%e5%9e%8b%20%e7%ac%a6%e5%90%88%e5%85%ac%e5%85%b1%e8%af%ad%e8%a8%80%e8%a7%84%e8%8c%83%28CLS%29%20%e8%af%b4%e6%98%8e%20sbyte%20System.SByte%20%e5%90%a6%20%e6%9c%89%e7%ac%a6%e5%8f%b78%e4%bd%8d%20byte%20System.Byte%20%e6%98%af%20%e6%97%a0%e7%ac%a6%e5%8f%b78%e4%bd%8d%20short%20System.Int16%20%e6%98%af%20%e6%9c%89%e7%ac%a6%e5%8f%b716%e4%bd%8d%20ushort%20System.UInt16%20%e5%90%a6%20%e6%97%a0%e7%ac%a6%e5%8f%b716%e4%bd%8d%20int%20System.Int32%20%e6%98%af%20%e6%9c%89%e7%ac%a6%e5%8f%b732%e4%bd%8d%20uint%20System.UInt32%20%e5%90%a6%20%e6%97%a0%e7%ac%a6%e5%8f%b732%e4%bd%8d%20long%20System.Int64%20%e6%98%af%20%e6%9c%89%e7%ac%a6%e5%8f%b764%e4%bd%8d%20ulong%20System.UInt64%20%e5%90%a6%20%e6%97%a0%e7%ac%a6%e5%8f%b764%e4%bd%8d%20char%20System.Char%20%e6%98%af%2016%e4%bd%8dUnicode%e5%ad%97%e7%ac%a6%20float%20System.Single%20%e6%98%af%20IEEE%2032%e4%bd%8d%e6%b5%ae%e7%82%b9%e5%80%bc%20double%20System.Double%20%e6%98%af%20IEEE%2064%e4%bd%8d%e6%b5%ae%e7%82%b9%e5%80%bc%20bool%20System.Boolean%20%e6%98%af%20true%2ffalse%20decimal%20System.Decimal%20%e6%98%af%20128%e4%bd%8d%e9%ab%98%e7%b2%be%e5%ba%a6%e6%b5%ae%e7%82%b9%e5%80%bc%ef%bc%8c%e5%b8%b8%e7%94%a8%e4%ba%8e%e4%b8%8d%e5%ae%b9%e8%ae%b8%e8%af%af%e5%b7%ae%e7%9a%84%e9%87%91%e8%9e%8d%e8%ae%a1%e7%ae%97%20string%20System.String%20%e6%98%af%20%e5%ad%97%e7%ac%a6%e6%95%b0%e7%bb%84%20object%20System.Object%20%e6%98%af%20%e6%89%80%e6%9c%89%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%9f%ba%e7%b1%bb%20dynamic%20System." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#type基础">Type基础</a>
+      <ul>
+        <li><a href="#基元类型">基元类型</a>
+          <ul>
+            <li><a href="#checked和unchecked基元类型操作">checked和unchecked基元类型操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#引用类型">引用类型</a></li>
+        <li><a href="#值类型">值类型</a>
+          <ul>
+            <li><a href="#装箱和拆箱">装箱和拆箱</a></li>
+          </ul>
+        </li>
+        <li><a href="#值类型和引用类型的区别">值类型和引用类型的区别</a></li>
+        <li><a href="#c模拟union">C#模拟Union</a></li>
+        <li><a href="#equals函数的同一性identity或相等性equality判断">Equals函数的同一性(identity)或相等性(equality)判断</a></li>
+        <li><a href="#dynamic基元类型">dynamic基元类型</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        《CLR via C#》 基元类型、引用类型和值类型
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-07-12 17:49:41 &#43;0800 CST" itemprop="datePublished">2022-07-12</time>
+          
+        </div>
+        
+        
+        
+        <div class="article-category">
+            <i class="fas fa-archive"></i>
+            
+            
+            <a class="category-link" href="/categories/clr-via-csharp">《CLR via CSharp》</a>
+            
+        </div>
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h2 id="type基础">Type基础</h2>
+<p>C#中有三种类型分别是基元类型、引用类型和值类型</p>
+<h3 id="基元类型">基元类型</h3>
+<p>编辑器直接支持的数据类型称为<strong>基元类型(primitive type)</strong>。基元类型直接映射到Framework类库(FCL)中存在的类型。</p>
+<table>
+<thead>
+<tr>
+<th>C#基元类型</th>
+<th>FCL类型</th>
+<th>符合公共语言规范(CLS)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sbyte</td>
+<td>System.SByte</td>
+<td>否</td>
+<td>有符号8位</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>System.Byte</td>
+<td>是</td>
+<td>无符号8位</td>
+</tr>
+<tr>
+<td>short</td>
+<td>System.Int16</td>
+<td>是</td>
+<td>有符号16位</td>
+</tr>
+<tr>
+<td>ushort</td>
+<td>System.UInt16</td>
+<td>否</td>
+<td>无符号16位</td>
+</tr>
+<tr>
+<td>int</td>
+<td>System.Int32</td>
+<td>是</td>
+<td>有符号32位</td>
+</tr>
+<tr>
+<td>uint</td>
+<td>System.UInt32</td>
+<td>否</td>
+<td>无符号32位</td>
+</tr>
+<tr>
+<td>long</td>
+<td>System.Int64</td>
+<td>是</td>
+<td>有符号64位</td>
+</tr>
+<tr>
+<td>ulong</td>
+<td>System.UInt64</td>
+<td>否</td>
+<td>无符号64位</td>
+</tr>
+<tr>
+<td>char</td>
+<td>System.Char</td>
+<td>是</td>
+<td>16位Unicode字符</td>
+</tr>
+<tr>
+<td>float</td>
+<td>System.Single</td>
+<td>是</td>
+<td>IEEE 32位浮点值</td>
+</tr>
+<tr>
+<td>double</td>
+<td>System.Double</td>
+<td>是</td>
+<td>IEEE 64位浮点值</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>System.Boolean</td>
+<td>是</td>
+<td>true/false</td>
+</tr>
+<tr>
+<td>decimal</td>
+<td>System.Decimal</td>
+<td>是</td>
+<td>128位高精度浮点值，常用于不容许误差的金融计算</td>
+</tr>
+<tr>
+<td>string</td>
+<td>System.String</td>
+<td>是</td>
+<td>字符数组</td>
+</tr>
+<tr>
+<td>object</td>
+<td>System.Object</td>
+<td>是</td>
+<td>所有类型的基类</td>
+</tr>
+<tr>
+<td>dynamic</td>
+<td>System.Object</td>
+<td>是</td>
+<td>对于CLR，dynamic和object完全一致。但C#编译器允许使用简单的语法让dynamic变量参与动态调度</td>
+</tr>
+</tbody>
+</table>
+<p>C#编译器非常熟悉基元类型，会在编译代码的时候引用自己的规则。</p>
+<ul>
+<li>编译器能执行基元类型之间的隐式或显示转型。<strong>但是只有在数据不会发生丢失的时候，C#才允许隐式转换。</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Int32 i = <span style="color:#bd93f9">5</span>;            <span style="color:#6272a4">// 整数字面值默认解释为Int32</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Int64 l = i;            <span style="color:#6272a4">// Int32隐式转为Int64</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Single s = i;           <span style="color:#6272a4">// Int32隐式转为Single</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Byte b = (Byte) i;      <span style="color:#6272a4">// Int32显示转为Byte</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>Int16 v = (Int16) s;    <span style="color:#6272a4">// Single显示转为Int16</span>
+</span></span></code></pre></div></li>
+<li>浮点值转证书C#编译器总是对浮点值进行接端，不向上取整。</li>
+<li>基元类型也可写成字面值(literal)。字面值被看成是类型本身的实例。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#bd93f9">123.</span>ToString();
+</span></span></code></pre></div></li>
+<li>表达式由字面值构成，编译器则可在编译期间就完成表达式求值。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Boolean found = <span style="color:#ff79c6">false</span>;  <span style="color:#6272a4">// 生成的代码将found设为0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Int32 x = <span style="color:#bd93f9">100</span> + <span style="color:#bd93f9">20</span> + <span style="color:#bd93f9">3</span>; <span style="color:#6272a4">// 生成的代码将x设为123</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>String s = <span style="color:#f1fa8c">&#34;a &#34;</span> + <span style="color:#f1fa8c">&#34;bc&#34;</span>; <span style="color:#6272a4">// 生成的代码将s设为&#34;a bc&#34;</span>
+</span></span></code></pre></div></li>
+</ul>
+<h4 id="checked和unchecked基元类型操作">checked和unchecked基元类型操作</h4>
+<p>C#允许程序员自己决定是否开启处理溢出检查。溢出检查默认关闭。可以通过/checked+编译器开关来全局替换是否生成检查版本的指令。如果想在特定代码区域控制溢出检查，则可用checked和unchecked操作符或语句</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Byte b = <span style="color:#bd93f9">100</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>b = <span style="color:#ff79c6">checked</span>((Byte) (b + <span style="color:#bd93f9">200</span>)); <span style="color:#6272a4">// 抛出OverflowException异常</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#ff79c6">checked</span> {                   <span style="color:#6272a4">// 开始checked块</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    Byte b = <span style="color:#bd93f9">100</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    b = (Byte) (b + <span style="color:#bd93f9">200</span>);   <span style="color:#6272a4">// 抛出OverflowException异常</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}                           <span style="color:#6272a4">// 结束checked块</span>
+</span></span></code></pre></div><h3 id="引用类型">引用类型</h3>
+<p><strong>引用类型总是从托管堆分配</strong>，C#的new操作符返回对象内存地址——即指向对象数据的内存地址。</p>
+<ol>
+<li>内存必须从托管堆分配。</li>
+<li>堆上分配的每个对象都有一些额外成员，这些成员必须初始化。</li>
+<li>对象中的其他字节(为字段而设)总是设为零。</li>
+<li>从托管堆分配对象时，可能强制执行一次垃圾回收。</li>
+</ol>
+<p><strong>用class声明的都是引用类型</strong></p>
+<h3 id="值类型">值类型</h3>
+<p><strong>值类型的实例一般在线程栈上分配(也可作为字段嵌入引用类型的对象中)</strong>。值类型实例在线程栈中，所以不受垃圾回收器控制。</p>
+<p>所有结构都是抽象类型System.ValueType的直接派生类。而后者从System.Object派生。所有枚举都从System.Enum派生，而后者从System.ValueType派生。所有值类型都隐式密封，防止将值类型用作其他引用类型或值类型的基类型。</p>
+<p><strong>用struct声明的都是值类型</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">vector2</span> { <span style="color:#8be9fd">int</span> x, y; }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>vector2 v1 = <span style="color:#ff79c6">new</span> vector2(); <span style="color:#6272a4">// 在线程栈中分配一个vector2的实例，并确保其中所有字段被初始化为零</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>vector2 v2;                 <span style="color:#6272a4">// 跟上方一样，但C#不认为所有字段被初始化为零</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#8be9fd">int</span> a = v1.x;               <span style="color:#6272a4">// 无问题</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#8be9fd">int</span> b = v2.x;               <span style="color:#6272a4">// 报错 error CS0170: 使用了可能未赋值的字段&#34;x&#34;</span>
+</span></span></code></pre></div><h4 id="装箱和拆箱">装箱和拆箱</h4>
+<p>将值类型转换为引用类型需要用装箱机制。其装箱的流程为：</p>
+<ol>
+<li>在托管堆中分配内存。分配的内存量是值类型各个字段所需的内存量，还要加上两个额外成员(类型对象指针和同步索引块)。</li>
+<li>值类型的字段复制到新分配的堆内存</li>
+<li>返回对象地址。</li>
+</ol>
+<p>将引用类型转换为值类型需要用拆箱机制。其拆箱的流程为：</p>
+<ol>
+<li>如果包含“对已装箱值类型实例的引用”的变量为null，抛出NullReferenceException异常。</li>
+<li>如果引用的对象不是所需值类型的已装箱实例，抛出InvalidCastException异常。</li>
+<li>获取已装箱对象中的各个字段的地址。这部叫做拆箱(unboxing)。</li>
+<li>将字段包含的值从堆复制到基于栈的值类型实例中。</li>
+</ol>
+<p>拆箱的代价比装箱低很多。少了堆内存请求分配和字段复制。</p>
+<h5 id="注意">注意</h5>
+<ul>
+<li>值类型重写虚方法(例如Equals, GetHashCode或ToString)如果在其中调用的基类型的实现，则会在调用时进行装箱。以便能够通过this指针将对一个堆对象的引用传给基方法。</li>
+<li>调用非虚的、继承的方法时(如GetType或MemberwiseClone)，无论如何都有对类型进行装箱。因为这些方法由System.Object定义，要求this实参是指向对对象的指针。</li>
+<li>将值类型的未装箱实例转换为类型的某个接口时要对实例进行装箱。这是因为接口变量必须包含对堆对象的引用。</li>
+<li>C#一般无法修改已装箱值类型中的字段。有一种例外就是利用接口来修改。(尽量还是不要使用，破坏C#值类型的不可变&quot;immutable&quot;性)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">interface</span> <span style="color:#50fa7b">IChange</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#ff79c6">void</span> Change(<span style="color:#8be9fd">int</span> x, <span style="color:#8be9fd">int</span> y);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Point</span> : IChange {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> x, y;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> Change(<span style="color:#8be9fd">int</span> x, <span style="color:#8be9fd">int</span> y) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#ff79c6">this</span>.x = x;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#ff79c6">this</span>.y = y;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Mian() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    Point p = <span style="color:#ff79c6">new</span> Point();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    p.x = <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    p.y = <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#6272a4">// 一次装箱</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    Object o = p;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#6272a4">// 一次拆箱。Change修改的是拆箱后的临时值类型。o内部的值类型还是(1,1)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>    ((Point) o).Change(<span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">2</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>    <span style="color:#6272a4">// 一次装箱。Change修改的是装箱后临时的引用类型。然后丢弃它。不影响p。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>    ((IChange) p).Change(<span style="color:#bd93f9">3</span>, <span style="color:#bd93f9">3</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    <span style="color:#6272a4">// o内部的值类型字段x和y被修改为(4,4)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>    ((IChange) o).Chage(<span style="color:#bd93f9">4</span>, <span style="color:#bd93f9">4</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>}
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="值类型和引用类型的区别">值类型和引用类型的区别</h3>
+<ul>
+<li>值类型对象有两种表示形式：未装箱和已装箱。而引用类型总是已装箱。</li>
+<li>由于不能将值类型作为基类型来定义新的值类型或引用类型，所以不应该在值类型中引入任何虚方法。所有的方法也不能时抽象的，所有的方法都隐式密封(不可重写)。</li>
+<li>引用类型的变量包含堆中对象的地址。引用类型的变量创建时默认初始化为null。而值类型的变量总是包含其基础类型的一个值，而值类型的所有成员变量都初始化为0。</li>
+<li>将值类型变量赋值给另一个值类型变量会逐字段复制。而引用类型只会复制内存地址。</li>
+</ul>
+<h3 id="c模拟union">C#模拟Union</h3>
+<p>特性<code>[StructLayout(LayoutKind.Explicit)]</code>用于告知编辑器此struct显示指定每个字段的偏移量。</p>
+<p>特性<code>FieldOffset(Int32 val)</code>用于指出字段距离实例启始出的偏移量(字节为单位)</p>
+<p><strong>注意：引用类型与值类型互相重叠是不合法的</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">// 此struct中m_b与m_x互相重叠</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#50fa7b">[StructLayout(LayoutKind.Explicit)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">ValType</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#50fa7b">    [FieldOffset(0)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#ff79c6">private</span> <span style="color:#ff79c6">readonly</span> Byte m_b;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#50fa7b">    [FieldOffset(0)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#ff79c6">private</span> <span style="color:#ff79c6">readonly</span> Int16 m_x;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>}
+</span></span></code></pre></div><h3 id="equals函数的同一性identity或相等性equality判断">Equals函数的同一性(identity)或相等性(equality)判断</h3>
+<p>同一性指两个引用是否指向同一个对象，最好调用&rsquo;ReferenceEquals&rsquo;来判断，或先把两个操作数转为Object在调用==操作符。</p>
+<p>相等性指两个实际的值是否相同，或引用的对象的值是否相同。</p>
+<h3 id="dynamic基元类型">dynamic基元类型</h3>
+<p>代码使用dynamic表达式或变量调用成员时，编译器生成特殊IL代码来描述所需的操作。这种特殊的代码称为payload(有效载荷)。在运行时，payload代码根据dynamic表达式或变量引用的对象的实际来决定具体执行的操作。</p>
+<p>如果字段、方法参数或方法返回值的类型是dynamic，编译器会将该类型装欢为System.Object，并在元数据中向字段、参数或返回类型应用System.Runtime.CompilerServices.DynamicAttribute的实例。如果局部变量被指定为dynamic，则变量类型也会成为Object,但不会向局部变量应用DynamicAttribute，因为它限制在方法内部受用。dynamic其实就是Object。</p>
+<p><strong>值类型赋值给dynamic需要装箱，因为dynamic本质就是Object</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8be9fd">dynamic</span> d = <span style="color:#bd93f9">123</span>;    <span style="color:#6272a4">// Int32隐式转换到dynamic(装箱)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Int32 i = d;        <span style="color:#6272a4">// dynamic隐式转换到Int32(拆箱)</span>
+</span></span></code></pre></div><p>不能定义对dynamic进行扩展的扩展方法。不能将lambda表达式或匿名方法作为实参传给dynamic方法调用，因为编译器推断不了要使用的类型。</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">Writings</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#type基础">Type基础</a>
+      <ul>
+        <li><a href="#基元类型">基元类型</a>
+          <ul>
+            <li><a href="#checked和unchecked基元类型操作">checked和unchecked基元类型操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#引用类型">引用类型</a></li>
+        <li><a href="#值类型">值类型</a>
+          <ul>
+            <li><a href="#装箱和拆箱">装箱和拆箱</a></li>
+          </ul>
+        </li>
+        <li><a href="#值类型和引用类型的区别">值类型和引用类型的区别</a></li>
+        <li><a href="#c模拟union">C#模拟Union</a></li>
+        <li><a href="#equals函数的同一性identity或相等性equality判断">Equals函数的同一性(identity)或相等性(equality)判断</a></li>
+        <li><a href="#dynamic基元类型">dynamic基元类型</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b&body=Check out this article: https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b&description=Type%e5%9f%ba%e7%a1%80%20C%23%e4%b8%ad%e6%9c%89%e4%b8%89%e7%a7%8d%e7%b1%bb%e5%9e%8b%e5%88%86%e5%88%ab%e6%98%af%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b%0a%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%20%e7%bc%96%e8%be%91%e5%99%a8%e7%9b%b4%e6%8e%a5%e6%94%af%e6%8c%81%e7%9a%84%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b%e7%a7%b0%e4%b8%ba%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%28primitive%20type%29%e3%80%82%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e7%9b%b4%e6%8e%a5%e6%98%a0%e5%b0%84%e5%88%b0Framework%e7%b1%bb%e5%ba%93%28FCL%29%e4%b8%ad%e5%ad%98%e5%9c%a8%e7%9a%84%e7%b1%bb%e5%9e%8b%e3%80%82%0aC%23%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%20FCL%e7%b1%bb%e5%9e%8b%20%e7%ac%a6%e5%90%88%e5%85%ac%e5%85%b1%e8%af%ad%e8%a8%80%e8%a7%84%e8%8c%83%28CLS%29%20%e8%af%b4%e6%98%8e%20sbyte%20System.SByte%20%e5%90%a6%20%e6%9c%89%e7%ac%a6%e5%8f%b78%e4%bd%8d%20byte%20System.Byte%20%e6%98%af%20%e6%97%a0%e7%ac%a6%e5%8f%b78%e4%bd%8d%20short%20System.Int16%20%e6%98%af%20%e6%9c%89%e7%ac%a6%e5%8f%b716%e4%bd%8d%20ushort%20System.UInt16%20%e5%90%a6%20%e6%97%a0%e7%ac%a6%e5%8f%b716%e4%bd%8d%20int%20System.Int32%20%e6%98%af%20%e6%9c%89%e7%ac%a6%e5%8f%b732%e4%bd%8d%20uint%20System.UInt32%20%e5%90%a6%20%e6%97%a0%e7%ac%a6%e5%8f%b732%e4%bd%8d%20long%20System.Int64%20%e6%98%af%20%e6%9c%89%e7%ac%a6%e5%8f%b764%e4%bd%8d%20ulong%20System.UInt64%20%e5%90%a6%20%e6%97%a0%e7%ac%a6%e5%8f%b764%e4%bd%8d%20char%20System.Char%20%e6%98%af%2016%e4%bd%8dUnicode%e5%ad%97%e7%ac%a6%20float%20System.Single%20%e6%98%af%20IEEE%2032%e4%bd%8d%e6%b5%ae%e7%82%b9%e5%80%bc%20double%20System.Double%20%e6%98%af%20IEEE%2064%e4%bd%8d%e6%b5%ae%e7%82%b9%e5%80%bc%20bool%20System.Boolean%20%e6%98%af%20true%2ffalse%20decimal%20System.Decimal%20%e6%98%af%20128%e4%bd%8d%e9%ab%98%e7%b2%be%e5%ba%a6%e6%b5%ae%e7%82%b9%e5%80%bc%ef%bc%8c%e5%b8%b8%e7%94%a8%e4%ba%8e%e4%b8%8d%e5%ae%b9%e8%ae%b8%e8%af%af%e5%b7%ae%e7%9a%84%e9%87%91%e8%9e%8d%e8%ae%a1%e7%ae%97%20string%20System.String%20%e6%98%af%20%e5%ad%97%e7%ac%a6%e6%95%b0%e7%bb%84%20object%20System.Object%20%e6%98%af%20%e6%89%80%e6%9c%89%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%9f%ba%e7%b1%bb%20dynamic%20System." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2flocalhost%3a1313%2fposts%2fclrviacsharp-%25E5%259F%25BA%25E5%2585%2583%25E5%25BC%2595%25E7%2594%25A8%25E5%2580%25BC%25E7%25B1%25BB%25E5%259E%258B%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%9f%ba%e5%85%83%e7%b1%bb%e5%9e%8b%e3%80%81%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%80%bc%e7%b1%bb%e5%9e%8b" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  Alaya 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+  
+
+
+</html>

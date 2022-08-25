@@ -1,29 +1,47 @@
 <!DOCTYPE html>
-<html lang="cn">
-
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>《游戏编程算法与技巧》输入和声音篇 - Alaya - Simple Life Simple Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-<link rel="stylesheet" href="https://cdn.bootcss.com/KaTeX/0.16.0/katex.min.css">
-<script defer src = "https://cdn.bootcss.com/KaTeX/0.16.0/katex.min.js"></script>
-<script>
-	var katex_config = {
-		delimiters:[
-			{left: "$$", right: "$$", display: true},
-			{left: "$", right: "$", display: false}
-		]
-	};
-</script>
-<script defer src="https://cdn.bootcss.com/KaTeX/0.16.0/contrib/auto-render.min.js" onload="renderMathInElement(document.body, katex_config)"></script>
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta charset="utf-8" />
-<meta name="author" content="Alaya" />
-<meta name="description" content="简简单单生活，安安静静编程" />
-<meta name="keywords" content="" />
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.100.2" />
+<meta name="author" content="Alaya" /><meta name="description" content="此篇主要模拟输入和数字输入的区别和在游戏中声音需要注意的问题" /><meta name="keywords" content="Hugo, theme, even" />
 
-<link rel="canonical" href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/">
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://sooda.net.cn/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E8%BE%93%E5%85%A5%E5%92%8C%E5%A3%B0%E9%9F%B3%E7%AF%87/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+  
+
+
 <meta property="og:title" content="《游戏编程算法与技巧》输入和声音篇" />
 <meta property="og:description" content="此篇主要模拟输入和数字输入的区别和在游戏中声音需要注意的问题" />
 <meta property="og:type" content="article" />
@@ -31,67 +49,130 @@
 <meta property="article:published_time" content="2021-12-24T08:55:57+08:00" />
 <meta property="article:modified_time" content="2021-12-24T08:55:57+08:00" />
 
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="《游戏编程算法与技巧》输入和声音篇"/>
-<meta name="twitter:description" content="此篇主要模拟输入和数字输入的区别和在游戏中声音需要注意的问题"/>
-
 <meta itemprop="name" content="《游戏编程算法与技巧》输入和声音篇">
 <meta itemprop="description" content="此篇主要模拟输入和数字输入的区别和在游戏中声音需要注意的问题"><meta itemprop="datePublished" content="2021-12-24T08:55:57+08:00" />
 <meta itemprop="dateModified" content="2021-12-24T08:55:57+08:00" />
-<meta itemprop="wordCount" content="194">
-<meta itemprop="keywords" content="《游戏编程算法与技巧》," />
+<meta itemprop="wordCount" content="1647">
+<meta itemprop="keywords" content="游戏编程算法与技巧," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《游戏编程算法与技巧》输入和声音篇"/>
+<meta name="twitter:description" content="此篇主要模拟输入和数字输入的区别和在游戏中声音需要注意的问题"/>
 
-<link rel="stylesheet" href="https://sooda.net.cn/css/layout.css" />
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
 
-
-<link rel="stylesheet" href="https://sooda.net.cn/css/default-dark.css" />
-
-
-
-
-<title>
-
-
-     《游戏编程算法与技巧》输入和声音篇 
-
-</title>
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
 </head>
-
-
 <body>
-<div class="main">
-<header>
-
-<div class="header-bar">
-
-  <nav>
-    <div class="siteTitle">
-      <a href="https://sooda.net.cn">Sooda</a>
-    </div> 
-
-    
-    
-    <a class="nav-item" href="https://sooda.net.cn/categories/"><div class="nav-item-title">Categories</div></a>
-    
-    <a class="nav-item" href="https://sooda.net.cn/tags/"><div class="nav-item-title">Tags</div></a>
-    
-  </nav>
-  <div class="font">
-    简简单单生活，安安静静编程
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Alaya</a>
   </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+
   
 
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Alaya</a>
 </div>
 
 
-</header>
 
 
-<article class="post">
-    <h1 class="title"> 《游戏编程算法与技巧》输入和声音篇 </h1>
-    <div class="content"> <h1 id="游戏输入">游戏输入</h1>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">《游戏编程算法与技巧》输入和声音篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-24 </span>
+        <div class="post-category">
+            <a href="/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC/"> 阅读提炼 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#游戏输入">游戏输入</a>
+      <ul>
+        <li><a href="#数字输入">数字输入</a></li>
+        <li><a href="#模拟输入">模拟输入</a></li>
+        <li><a href="#移动设备输入">移动设备输入</a>
+          <ul>
+            <li><a href="#触摸和手势">触摸和手势</a></li>
+            <li><a href="#加速器">加速器</a></li>
+            <li><a href="#陀螺仪">陀螺仪</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#声音">声音</a>
+      <ul>
+        <li><a href="#原始数据">原始数据</a></li>
+        <li><a href="#播放场景">播放场景</a></li>
+        <li><a href="#3d声音">3D声音</a>
+          <ul>
+            <li><a href="#对于3d声音监听者的摆放位置">对于3D声音监听者的摆放位置</a></li>
+          </ul>
+        </li>
+        <li><a href="#数字信号处理">数字信号处理</a>
+          <ul>
+            <li><a href="#数字信号处理效果">数字信号处理效果</a></li>
+            <li><a href="#多普勒效应">多普勒效应</a></li>
+            <li><a href="#声音遮挡">声音遮挡</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="游戏输入">游戏输入</h1>
 <p>可分为两种：<strong>数字</strong>与<strong>模拟</strong></p>
 <h2 id="数字输入">数字输入</h2>
 <p>只用两种状态：“按下”和“没有按”（例如键盘）</p>
@@ -129,61 +210,124 @@
 </tbody>
 </table>
 <p>伪代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">KeyState</span> {
-</span></span><span style="display:flex;"><span>    StillReleased,
-</span></span><span style="display:flex;"><span>    JustPressed,
-</span></span><span style="display:flex;"><span>    JustReleased,
-</span></span><span style="display:flex;"><span>    StillPressed
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>lastState[<span style="color:#ae81ff">256</span>];      <span style="color:#75715e">// 上一帧状态
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>currentState[<span style="color:#ae81ff">256</span>];   <span style="color:#75715e">// 当前帧状态
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 每帧更新状态
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">UpdateKeyboard</span>() {
-</span></span><span style="display:flex;"><span>    lastState <span style="color:#f92672">=</span> currentState;
-</span></span><span style="display:flex;"><span>    currentState <span style="color:#f92672">=</span> GetKeyboardState();  <span style="color:#75715e">// 获取当前状态
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 通过keyCode获取KeyState
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>KeyState <span style="color:#a6e22e">GetKeyState</span>(<span style="color:#66d9ef">int</span> keyCode) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (lastState[keyCode])
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (currentState[keyCode])
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> StillReleased;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> JustReleased;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (currentState[keyCode])
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> JustPressed;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> StillReleased;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="模拟输入">模拟输入</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">enum</span> <span class="nc">KeyState</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">StillReleased</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JustPressed</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JustReleased</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">StillPressed</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">lastState</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>      <span class="c1">// 上一帧状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">currentState</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>   <span class="c1">// 当前帧状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 每帧更新状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">UpdateKeyboard</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">lastState</span> <span class="o">=</span> <span class="n">currentState</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">currentState</span> <span class="o">=</span> <span class="n">GetKeyboardState</span><span class="p">();</span>  <span class="c1">// 获取当前状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 通过keyCode获取KeyState
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">KeyState</span> <span class="nf">GetKeyState</span><span class="p">(</span><span class="kt">int</span> <span class="n">keyCode</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">lastState</span><span class="p">[</span><span class="n">keyCode</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">currentState</span><span class="p">[</span><span class="n">keyCode</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">StillReleased</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">JustReleased</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">currentState</span><span class="p">[</span><span class="n">keyCode</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">JustPressed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">StillReleased</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="模拟输入">模拟输入</h2>
 <p>可返回某个数字的范围（如遥感）。但遥感的数值基本不会归零所以需要输入过滤，来消除偏差值。一般取遥感总值的10%为无效值。</p>
 <p>遥感的范围为-32768 ~ 32768。最终遥感映射到0 ~ 1的伪代码为：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> deadZone <span style="color:#f92672">=</span> <span style="color:#ae81ff">3000</span>   <span style="color:#75715e">// 无效值
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">float</span> maxValue <span style="color:#f92672">=</span> <span style="color:#ae81ff">32677</span>  <span style="color:#75715e">// 最大值
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>Vector2 GetJoy() {
-</span></span><span style="display:flex;"><span>    Vector2 joy <span style="color:#f92672">=</span> GetJoystickInput() <span style="color:#75715e">// 获取遥感的输入
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span> length <span style="color:#f92672">=</span> joy.length() <span style="color:#75715e">// 当前值长度
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 小于无效区域则没有输入
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (length <span style="color:#f92672">&lt;</span> deadZone) {
-</span></span><span style="display:flex;"><span>        joy.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>        joy.y <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 计算无效区到最大值之间的百分比
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">float</span> pct <span style="color:#f92672">=</span> (length <span style="color:#f92672">-</span> deadZone) <span style="color:#f92672">/</span> (maxValue <span style="color:#f92672">-</span> deadZone);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 正规化向量
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        joy <span style="color:#f92672">=</span> joy <span style="color:#f92672">/</span> length;
-</span></span><span style="display:flex;"><span>        joy <span style="color:#f92672">=</span> joy <span style="color:#f92672">*</span> maxValue <span style="color:#f92672">*</span> pct;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> joy
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="移动设备输入">移动设备输入</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">deadZone</span> <span class="o">=</span> <span class="mi">3000</span>   <span class="c1">// 无效值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">float</span> <span class="n">maxValue</span> <span class="o">=</span> <span class="mi">32677</span>  <span class="c1">// 最大值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">Vector2</span> <span class="n">GetJoy</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Vector2</span> <span class="n">joy</span> <span class="o">=</span> <span class="n">GetJoystickInput</span><span class="p">()</span> <span class="c1">// 获取遥感的输入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">float</span> <span class="n">length</span> <span class="o">=</span> <span class="n">joy</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="c1">// 当前值长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 小于无效区域则没有输入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o">&lt;</span> <span class="n">deadZone</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">joy</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="n">joy</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 计算无效区到最大值之间的百分比
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">float</span> <span class="n">pct</span> <span class="o">=</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="n">deadZone</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">maxValue</span> <span class="o">-</span> <span class="n">deadZone</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 正规化向量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">joy</span> <span class="o">=</span> <span class="n">joy</span> <span class="o">/</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">joy</span> <span class="o">=</span> <span class="n">joy</span> <span class="o">*</span> <span class="n">maxValue</span> <span class="o">*</span> <span class="n">pct</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">joy</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="移动设备输入">移动设备输入</h2>
 <h3 id="触摸和手势">触摸和手势</h3>
 <p>大多数移动游戏都是通过多点触摸来实现虚拟手柄。还有一些游戏利用手势操作。自定义手势会比较难实现。Rubine算法就是一种流行的实现自定义手势检测的算法</p>
 <h3 id="加速器">加速器</h3>
@@ -233,82 +377,97 @@
 <p>声音遮挡在声音不是直接由发射者传递到监听者的时候发生。声音遮挡主要就是低通滤波的结果，意味着高频率的声音的音量被移除了。这是因为低频率的音波比高频率的音波更容易传播。但是，声音遮挡的另一个输出就是整体音量的降低</p>
 <p>相似但是不同的想法就是声音衍射。通过声音衍射，声音可能不再是直线传播的了，但是还是有可能穿透障碍物</p>
 <p>检测遮挡和衍射的方法就是为发射者构造一系列指向监听者附近的弧形。如果没有一个能量到达，则就是遮挡。如果有一些能到达就是衍射。如果全部能到达就都不是。这个方法称之为<strong>Fresenl声学衍射</strong></p>
- </div>
-    <footer class="post-footer">
 
-  <div class="post-footer-data">
-            
-<div class="tags">
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Alaya</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-12-24
+        
+    </span>
+  </p>
   
-    
-      <div class="tag">
-        <a href="https://sooda.net.cn/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7">#《游戏编程算法与技巧》</a>
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7/">游戏编程算法与技巧</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E7%89%A9%E7%90%86%E7%AF%87/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">《游戏编程算法与技巧》物理篇</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E7%AE%97%E6%B3%95%E4%B8%8E%E6%8A%80%E5%B7%A7%E6%B8%B2%E6%9F%93%E7%AF%87/">
+            <span class="next-text nav-default">《游戏编程算法与技巧》渲染篇</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
       </div>
-    
-  
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/yLong765" class="iconfont icon-github" title="github"></a>
+  <a href="https://sooda.net.cn/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
-    <div class="date"> 2021-12-24 </div>
-    
-    <hr>
-            
-<div class="categories">
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
   
-  Published in:
-    
-      <div class="category">
-        <a href="https://sooda.net.cn/categories/%E9%98%85%E8%AF%BB%E6%8F%90%E7%82%BC">阅读提炼</a>
-      </div>
-    
-  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Alaya</span>
+  </span>
 </div>
 
-            
-<div class="series">
-  
-</div>
+    </footer>
 
-    
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
   </div>
-</footer>
-
-
   
-  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
 
 
 
-</article>
-
-  <footer>
-
-  <div class="social-links-footer">
-
-  
-
-  
-  <a href="https://github.com/yLong765" target="_blank"><div class="social-link">GitHub</div></a>
-  
-
-  
-
-  
-
-  
-
-  
-
-</div>
+<script type="text/javascript" src="/js/main.min.191509a5c8442abdb6eb5020a332fd59bdd83a7e78a2d2241108df9113504292.js"></script>
 
 
-  <div class="copyright"> Copyright © 2022, All Rights Reserved. </div>
 
-  
 
-  </footer>
 
-</div> 
+
+
 
 </body>
 </html>
-

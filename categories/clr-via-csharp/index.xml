@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>《CLR via CSharp》 on Alaya</title>
+    <link>https://localhost:1313/categories/clr-via-csharp/</link>
+    <description>Recent content in 《CLR via CSharp》 on Alaya</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Alaya</copyright>
+    <lastBuildDate>Mon, 22 Aug 2022 16:25:27 +0800</lastBuildDate><atom:link href="https://localhost:1313/categories/clr-via-csharp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>《CLR via C#》 特性</title>
+      <link>https://localhost:1313/posts/clrviacsharp-attribute/</link>
+      <pubDate>Mon, 22 Aug 2022 16:25:27 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-attribute/</guid>
+      <description>定制特性 自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 委托</title>
+      <link>https://localhost:1313/posts/clrviacsharp-delegate/</link>
+      <pubDate>Thu, 18 Aug 2022 16:55:54 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-delegate/</guid>
+      <description>在非委托C/C++中，非成员函数的地址只是一个内存地址。这个地址不携带任何额外信息。它们很轻量但是不是类型安全的。
+委托使用方式 1// 声明一个委托类型，它的实例引用一个方法 2// 该方法获取一个int参数，返回void 3public delegate void DelFunc(int value); 4 5public class DelClass { 6 public static void Func1(int value) { 7 Console.WriteLine(&amp;#34;Func1 &amp;#34; + value); 8 } 9 10 public static void Func2(int value) { 11 Console.WriteLine(&amp;#34;Func2 &amp;#34; + value); 12 } 13 14 public void Func3(int value) { 15 Console.WriteLine(&amp;#34;Func3 &amp;#34; + value); 16 } 17} 18 19DelClass dc = new DelClass(); 20DelFunc df1 = new DelFunc(DelClass.</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 数组</title>
+      <link>https://localhost:1313/posts/clrviacsharp-array/</link>
+      <pubDate>Thu, 18 Aug 2022 14:09:37 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-array/</guid>
+      <description>CLR支持一维、多维和交错数组。所有数组都隐式地从System.Array抽象类派生，后者又派生自System.Object。这意味着数组始终是引用类型，从托管堆分配。
+一维数组 1int[] arr; // 声明一个数组引用 2arr = new int[100]; // 创建含有100个int的数组，并全部初始化为0 实际上，除了数组元素，数组对象占据的内存块还包含一个类型对象指针、一个同步块索引和一些额外的成员。
+注意
+应尽可能的使用一维0基数组。因为其性能是最佳的，可以使用一些特殊的IL指令来处理。
+多维数组 1double[,] darr = new double[10, 20]; // 二维数组 2string[,,] sarr = new string[5, 3, 10]; // 三维数组 交错数组 交错数组：数组构成的数组。0基一维交错数组的性能和普通向量一样好。不过访问交错数组的元素意味着必须进行两次或更多此访问。
+1int[][] arr = new int[3][]; // 创建由多个int数组构成的一维数组 2arr[0] = new int[10]; // arr[0]引用一个含有10个int实例的数组 3arr[1] = new int[20]; // arr[1]引用一个含有20个int实例的数组 4arr[2] = new int[30]; // arr[2]引用一个含有30个int实例的数组 数组初始化 1// 大括号中以逗号分隔的数据项称为数组初始化器 2String[] names = new String[] {&amp;#34;A&amp;#34;, &amp;#34;B&amp;#34;}; 3// 隐式类型数组。 4var kids = new[] {new {Name=&amp;#34;A&amp;#34;}, new {Name=&amp;#34;B&amp;#34;} }; 数组转型 CLR不允许将值类型元素的数组转型为其它任何类型。(不过可用Array.</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 枚举和标志位</title>
+      <link>https://localhost:1313/posts/clrviacsharp-enum/</link>
+      <pubDate>Thu, 18 Aug 2022 10:23:40 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-enum/</guid>
+      <description>枚举类型 枚举类型定义了一组“符号名称/值”的配对。且是强类型的。
+1enum Color { 2 White, // 赋值0 3 Red, // 赋值1 4 Green, // 赋值2 5} 每个枚举类型都是从System.Enum派生，后者从System.ValueType派生，而System.ValueType从System.Object派生。所以枚举是值类型，但枚举不能定义任何方法、属性或事件。不过可以利用扩展方法模拟向枚举类型添加方法。
+1public static class EnumExtension { 2 public static bool Extension(this Color color) { 3 // ... 4 } 5} 编译器编译枚举类型时，把每个符号转换成类型的一个常量字段。类似于如下代码
+1// 伪代码 2public struct Color : System.Enum { 3 public const Color White = (Color) 0; 4 public const Color Red = (Color) 1; 5 public const Color Green = (Color) 2; 6 // 以下是一个公共实例字段，包含Color变量的值，不能写代码来直接引用该字段 7 public int value__; 8} 注意</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 字符、字符串和文本处理</title>
+      <link>https://localhost:1313/posts/clrviacsharp-string/</link>
+      <pubDate>Tue, 16 Aug 2022 15:57:16 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-string/</guid>
+      <description>字符 字符总是表示成16位Unicode代码值，每个字符都是System.Char接口(值类型)的实例。
+Sytem.Char 方法 方法名 说明 GetUnicodeCategory 返回UnicodeCategory枚举，表明该字符是由Unicode标准定义的控制字符、货币符号、小写字母、大写字母、标点符号还是其他字符。 ToLowerInvariant 忽略语言文化将字符转换位小写 ToLower 转换小写，但会使用与调用线程关联的语言文化信息(System.Threading.Thread的静态属性CurrentCulture) Equals 两个Char实例代表同一个16位Unicode码位的前提下返回true CompareTo 两个Char实例忽略语言文化的比较结果 GetNumericValue 返回字符的数值形式 Char实例的相互转换 转型(强制类型转换)：是效率最高的，因为编译器会生成中间语言指令来执行转换，而且不必调用方法。 使用Convert类：System.Convert提供了几个静态方法来实现Char和数值类型的转换。所有转换都以checked方式执行，发现转换将造成数据丢失就会抛出OverflowException异常。 使用IConvertible接口：效率最差，因为再值类型上调用接口方法会装箱。而且很多是显式实现的接口。 System.String 字符串构造 C#将String视为基元类型，也就是允许再源代码中直接使用字面值(literal)字符串。编译器将这些字符串放到模块的元数据中，并在运行时加载和引用它们。
+逐字字符串(verbatim string)：用@来声明字符串，其字符串中所有的字符都视为一部分。下面的代码在元数据中生成同样的字符串，但是逐字字符串可读性更好。
+1string file = &amp;#34;C:\\Windows\\System32\\Notepad.exe&amp;#34;; 2string file = @&amp;#34;C:\Windows\System32\Notepad.exe&amp;#34;; 字符串是不可变的 字符串一经创建便不能更改。使字符串不可变有几点好处
+允许对字符串进行操作，但不实际更改字符串。 在操纵或访问字符串时不会发生线程同步问题。 可通过一个String对象共享多个一致的String内容，从而节省内存——字符串留用(string interning)。 比较字符串 判断字符串相等性方法：
+Equals Compare StartsWith EndsWith 出于变成目的比较字符串时，应该用StringComparsion.Ordinal或者StringComparison.OrdinalIgnoreCase。忽略语言文化比较最快。
+要以语言文化来比较字符串，就应该用StringComparsion.CurrentCulture或者StringComparison.CurrentCultureIgnoreCase。
+注意
+应该用String.ToUpperInvariant来进行正规化(normalizing)。因为编译器对执行大写比较的代码有优化
+注意
+CompareTo默认执行对语言文化敏感的比较，而Equals执行普通的序号比较
+语言文化的字符串比较 System.Globalization.CultureInfo类表示一个“语言/国家”对。在CLR中每个线程都关联了两个特殊属性，每个属性都引用一个CultureInfo对象。
+CurrentUICulture属性：获取要向用户显式的资源。多用于GUI或Web窗体中。 CurrentCulture属性：不适合CurrentUICulture属性的场合就使用该属性。 字符串留用 CLR初始化时会创建一个内部哈希表。键是字符串，而值是对托管堆中String对象的引用。
+String类提供了两个方法，便于你访问这个哈希表
+Intern方法获取一个String，获得它的哈希码。并在内部检查是否有匹配。有就返回当前引用，无则创建字符串副本，并将副本添加到哈希表中，返回对其的引用。 IsIntern方法获取一个String，获得它的哈希码。如果哈希表中没有匹配则返回null。 字符串池 编译器只在模块的元数据中只将字面值字符串写入一次。引用该字符串的所有代码都被修改成引用元数据中同一个字符串。编译器也将当个字符串的多个实例合并成一个实例，显著减少模块大小。
+利用StringBuilder高效率构造字符串 StringBuilder对象包含一个字段，该字段引用了由Char结构构成的数组。可利用StringBuilder的成员来高效率的操纵该数组。如果字符串变大，超过了预先分配的大小，则会自动分配一个新的、更大的数组，复制字符，并开始使用新数组，前一个数组会被垃圾回收。
+ToString方法 System.Object定义了一个public、virtual、无参的ToString方法。这个方法代表对象当前值的字符串，而且应该根据语言文化进行格式化。
+调试器中变量上方出现的数据提示的文本就是通过调用对象的ToString方法来获取的。
+编码 UTF-16(Unicode)：将每16位字符编码成2个字节。不对字符产生影响，也不发生压缩————性能出色。 UTF-8：值在0x0080之下的字符压缩成1字节，0x0080~0x07FF转换成2字节。0x0800以上位4字节。代理项对表示成4字节。0x0800以上效率不如UTF-16。 UTF-32：使用4字节来编码所有字符。 ASCII：将16位字符编码范围只有0x00~0x7F </description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 接口</title>
+      <link>https://localhost:1313/posts/clrviacsharp-interface/</link>
+      <pubDate>Mon, 08 Aug 2022 17:28:55 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-interface/</guid>
+      <description>接口实际只是对一组方法签名进行了统一命名。这些方法不提供任何实现。类通过指定接口名称来继承接口，而且必须显式实现接口方法，否则CLR会认为此类型定义无效。
+定义接口 接口可以定义事件、无参属性和有参属性。但接口不能定义任何构造器方法，也布恩那个定义任何实例字段。
+提示
+CLR允许接口定义静态方法、静态字段、常量和静态构造器，但C#不允许。
+注意
+对于CLR来说接口定义就是类型定义。
+继承接口 C#编译器要求将实现接口的方法(接口方法)标记为public。CLR要求将接口方法标记为virtual。不将方法标记为virtual，编译器会将他们标记为virtual和sealed；这会阻止派生类重写接口方法。将方法显式标记为virtual，编译器就会将该方法标记为virtual(并保持他的非密封状态)，使派生类能重写它。
+派生类不能重写sealed接口方法。但派生类可以重新继承同一个接口，并为接口方法提供自己的实现。在对象上调用接口方法时，调用的是该方法在该对象的类型中的实现。
+1// 这个类派生自Object，它实现了IDisposable 2internal class Base : IDisposable { 3 // 这个方法隐式密封，不能被重写 4 public void Dispose() { 5 Console.WriteLine(&amp;#34;Base&amp;#39;s Dispose&amp;#34;); 6 } 7} 8 9// 这个类派生自Base，它重新实现了IDisposable 10internal class Derived : Base, IDisposable { 11 // 这个方法不能重写Base的Dispose，&amp;#39;new&amp;#39;表明该方法重新实现了IDisposable的Dispose方法 12 new public void Dispose() { 13 Console.WriteLine(&amp;#34;Derived&amp;#39;s Dispose&amp;#34;); 14 // 调用基类的实现 15 base.Dispose(); 16 } 17} 18 19Base b = new Base(); 20b.Dispose(); // 显示 &amp;#34;Base&amp;#39;s Dispose&amp;#34; 21((IDisposable)b).</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 泛型</title>
+      <link>https://localhost:1313/posts/clrviacsharp-%E6%B3%9B%E5%9E%8B/</link>
+      <pubDate>Sun, 07 Aug 2022 15:38:51 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-%E6%B3%9B%E5%9E%8B/</guid>
+      <description>泛型(generic)是CLR和变成语言提供的一种特殊机制，它支持另一种形式的代码重用，即“算法重用”。
+CLR允许创建泛型引用类型和泛型值类型，但不允许创建泛型枚举类型。CLR还允许创建泛型接口和泛型委托。
+类型实参(type argument)：使用泛型类型或方法时指定的具体数据类型。
+泛型的优势：
+源代码保护：开发人员不需访问算法的源代码，而C++模板则必须要将源码提供给开发人员。 类型安全：保证只有与指定数据兼容的对象才能用于算法。 更清晰的代码：减少了源代码中必须进行强制类型转换次数，使代码容易编写和维护。 更佳的性能：值类型的实例能以传值方式传递，不需要装箱。由于不需要进行强制类型转换，所以CLR无需验证转型是否正确，提高效率。 提示
+运算性能计时代码
+1sealed class OperationTimer : IDisposable { 2 private Stopwatch _stopwatch; 3 private String _text; 4 private int _collectionCount; 5 6 public OperationTimer(String text) { 7 PrepareForOperation(); 8 _text = text; 9 _collectionCount = GC.CollectionCount(0); 10 // 此语句应是方法中的最后一句，从而保证计时准确性 11 _stopwatch = Stopwatch.StartNew(); 12 } 13 14 public void Dispose() { 15 Console.WriteLine(&amp;#34;{0} (GCs={1,3}) {2}&amp;#34;, _stopwatch.Elapsed, GC.CollectionCount(0) - _collectionCount, _text); 16 } 17 18 private static void PrepareForOperation() { 19 GC.</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 Class成员</title>
+      <link>https://localhost:1313/posts/clrviacsharp-class%E6%88%90%E5%91%98/</link>
+      <pubDate>Wed, 27 Jul 2022 15:20:36 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-class%E6%88%90%E5%91%98/</guid>
+      <description>类型成员基础 常量：数据恒定不变的符号。 字段：只读或可读/可写的数据值。 实例构造器：将新对象的实例字段初始化的特殊方法 类型构造器：将类型的静态字段初始化的特殊方法。 方法：更改或查询类型或对象状态的函数。作用于类型成为静态方法，作用于对象为实例方法。 操作符重载：实际是方法，定义了当操作符作用于对象时，应该如何操作对象。 转换操作符：定义如何隐式或显式将对象从一种类型转型为另一种类型的方法。 属性：设置或查询类型或对象的逻辑状态。作用于类型为静态属性，作用域对象为实例属性。 事件：静态事件允许类型向一个或多个静态或实例方法发送通知。实例事件允许对象向一个或多个静态或实例方法发送通知。 类型：可以定义其他嵌套类型。 常量 定义常量符号时，值必须能在编译时确定。编译器将常量值保存到程序集元数据中。意味着只能定义编译器可识别的基元类型常量。非基元类型的常量变量只能为null。
+编译器会在定义常量的程序集元数据中查找该符号，提取常量值并嵌入IL代码中。所以运行时没有任何额外内存分配，但是不能取常量地址或引用传递常量。
+C#不允许常量设置为static，因为常量总隐式设置为static。
+提示
+如果希望在运行时从一个程序集中提取另一个程序集中的值，那么不应该使用常量，而应该使用readonly字段。
+字段 字段是一种数据成员，容纳了一个值类型的实例或对一个引用类型的引用。
+CLR支持类型(静态)字段和实例(非静态)字段。类型字段所需的动态内存是在类型对象中分配的，而类型对象是在类型加载到一个AppDomain时创建的。类型加载到AppDmain的时机又是在引用该类型的任何方法首次进行JIT编译的时候。实例字段容纳字段数据所需的动态内存是在构造类型的实例时分配的。
+字段修饰符 CLR术语 C#术语 说明 Static static 类型(静态)字段 Instance (默认) 实例(非静态)字段 InitOnly readonly 只能有一个构造方法中的代码写入(但可利用反射修改readonly字段) Volatile volatile 编译器、CLR和硬件不会对访问这种字段的代码执行“线程不安全”的优化措施 提示
+当某个字段时引用类型，并且该字段呗标记为readonly时，不可改变的是引用，而非字段引用的对象。
+方法 实例构造器(引用类型) 实例构造器是初始化类型的实例的特殊方法。构造器方法在“方法定义元数据表”中始终叫做.ctor。创建引用类型的实例时，首先为实例的数据字段分配内存，然后把内存部分归零(保证没有被构造器显式赋值的所有字段都为0或null值)，接着初始化对象的附加字段(类型对象指针和同步索引块)，最后调用类型的实例构造器来设置对象的初始状态。
+注意事项 实例构造器永远不能被继承。所以不能使用:virtual，new，override，sealed，abstract修饰符。 如果没有显式定义构造器，C#编译器则会默认定义一个(无参)构造器。这个构造器只是简单的调用了基类的构造器 1public class A {} 2//等价于： 3public class A { 4 public A() : base() {} 5} 如果类的修饰符为abstract，则编译器生成的默认构造器的可访问性就为protected。否则为public。 如果类的修饰符为static，则编译器不会生成默认构造器。 为了使代码“可验证”，类的实例构造器在访问从基类继承的任何字段之前，必须先调动基类的构造器。如果派生类的构造器没有显式调用一个基类构造器，C#编译器会自动生成对默认的基类构造器的调用。 极少数可以在不调用实例构造器的前提下创建类型的实例。比如Object的MemberwiseClone方法、或反序列化时。 不要在构造函数中调用虚方法。 C#编译器以“内联”(嵌入)方式初始化实例字段。在每个构造器方法开始的位置，包含类字段中直接赋值的代码。在其后会插入对基类构造器的调用。然后再插入构造函数的代码。
+1class B { } 2class A { 3 public int a = 1; 4 public int b = 3; 5 public A() { 6 b = 2; 7 } 8} 9 10// C#编译器编译后的代码为 11class A : B { 12 public int a; 13 public int b; 14 public A() { 15 a = 1; 16 b = 3; 17 // 调用父类构造器 18 b = 2; // b会被重复赋值 19 } 20} 提示</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 基元类型、引用类型和值类型</title>
+      <link>https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Tue, 12 Jul 2022 17:49:41 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-%E5%9F%BA%E5%85%83%E5%BC%95%E7%94%A8%E5%80%BC%E7%B1%BB%E5%9E%8B/</guid>
+      <description>Type基础 C#中有三种类型分别是基元类型、引用类型和值类型
+基元类型 编辑器直接支持的数据类型称为基元类型(primitive type)。基元类型直接映射到Framework类库(FCL)中存在的类型。
+C#基元类型 FCL类型 符合公共语言规范(CLS) 说明 sbyte System.SByte 否 有符号8位 byte System.Byte 是 无符号8位 short System.Int16 是 有符号16位 ushort System.UInt16 否 无符号16位 int System.Int32 是 有符号32位 uint System.UInt32 否 无符号32位 long System.Int64 是 有符号64位 ulong System.UInt64 否 无符号64位 char System.Char 是 16位Unicode字符 float System.Single 是 IEEE 32位浮点值 double System.Double 是 IEEE 64位浮点值 bool System.Boolean 是 true/false decimal System.Decimal 是 128位高精度浮点值，常用于不容许误差的金融计算 string System.String 是 字符数组 object System.Object 是 所有类型的基类 dynamic System.</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 class及成员基础</title>
+      <link>https://localhost:1313/posts/clrviacsharp-class/</link>
+      <pubDate>Tue, 28 Jun 2022 17:09:01 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-class/</guid>
+      <description>class System.Object “运行时”所有的类型最终都从System.Object类型派生。
+1// 隐式派生自Object 2class A {} 3 4// 显式派生自Object 5class A : System.Object {} System.Object的public方法
+Equals：比较函数 GetHashCode：对象哈希值 ToString：转换成String类型对象 GetType：返回对象的类型 System.Object的protected方法
+MemberwiseClone：创建类型的新实例，并将新对象的实例字段设置与this对象的实例字段完全一致。返回对新实例的引用 Finalize：垃圾回收阶段实际清理之前会调用此方法。 new操作符都做了什么工作 1A a = new A(&amp;#34;123&amp;#34;); 上面的代码中new操作符所作的事情：
+计算类型机器所有基类型(一直到System.Object)中定义的所有实例字段所需要的字节数。并加上每个对象都需要额外开销的类型对象指针(type object pointer)和同步块索引(sync block index) 。 从托管堆中分配1步骤中所计算的类型的字节数，从而分配对象的内存，分配的所有字节都设置为零(0)。 初始化对象的类型对象指针和同步块索引成员。 调用类型的实例构造器，传递在new调用中指定的实参。编译器会在构造函数(.ctor)中自动生成代码调用基类构造器 。最终都会调用System.Object的构造函数，但它什么都不做，单纯的返回。 返回指向新建对象的一个引用(或指针) 类型转换 CLR允许将对象转换为它的(实际)类型或者它的任何基类型。然而，将对象转换为派生类时，因可能转换失败，所以要求显示转换。
+is 和 as is操作符用于检查是否兼容于指定类型，如果对象引用null则总是返回false
+1Object o = new Object(); 2o is Object; // 返回true 3o is A; // 返回false as操作符用于检查是否兼容于指定类型，并进行转换。如果兼容则返回对于类型，不兼容则返回null。(判断null比检查是否兼容于指定类型快)
+1A a = o as A; 2if (a !</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 CLR基础</title>
+      <link>https://localhost:1313/posts/clrviacsharp-clr%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Thu, 16 Jun 2022 11:16:04 +0800</pubDate>
+      
+      <guid>https://localhost:1313/posts/clrviacsharp-clr%E5%9F%BA%E7%A1%80/</guid>
+      <description>CLR的执行模型 公共语言运行时(Common Language Runtime, CLR)是一个可由多种编程语言使用的“运行时”。CLR的核心功能(比如内存管理、程序集加载、安全性、异常处理和线程同步)可由面向CLR的所有语言使用。
+不同编程语言的意义？可将编译器视为语法检查器和“正确代码”分析器。它们检查代码，确定写的一切都有意义，并输出对其意图进行描述的代码。但是无论任何用哪个编译器，最终编译的结果都是托管模块(managed module)。托管模块是标准的32位Microsoft Windows可移植执行(Portable Executable, PE32)或64位(PE32+)文件。
+高级语言(例如C#、F#等)通常只公开的CLR全部功能的一个子集。然而，IL汇编语言允许开发人员访问CLR的全部功能。
+托管模块的组成部分 PE32或PE32+头部：标准Windows PE文件头，类似于“公共对象文件格式”(Common Oject File Format, COFF)。 CLR头部：包含使这个模块成为托管模块的信息(可由CLR和一些实用程序进行解释)。包含要求的CLR版本，一些标志(flag)，托管模块入口方法(Main方法)的MethodDef元数据token以及模块的元数据、资源、强名称、一些标志及其他不太重要的数据项的位置/大小。 元数据：每个托管模块都包含元数据表。主要由两种表：一种描述源代码中定义的类型和成员，另一种描述源代码引用的类型和成员。 用途： 避免编译时对原生C/C++头和库文件的需求，因为在实现类型或成员的IL代码文件中，已包含有关引用类型或成员的全部信息。编译器直接从托管模块读取元数据。 “智能感知”(IntelliSense)技术会解析元数据，告诉你一个类型提供了哪些方法、属性、事件和字段。对于方法，还能告诉其参数。 CLR的代码验证过程使用元数据确保代码只执行“类型安全”的操作。 允许将对象的字段序列化和反序列化。 允许垃圾回收器跟踪对象生存期。 IL(中间语言)代码：编译器编译源代码时生成的代码。在运行时，CLR用本机代码编译器(native code compolers)将IL编译成面向本机特定CPU架构的指令代码。 IL指令是一种基于栈的指令集（跟Lua一样）。操作压入栈，并从让结果从栈弹出。 IL指令还是无类型(typeless)的。 将托管模块组合成程序集 程序集(assembly) 是一个或多个模块或资源文件的逻辑性分组。程序集是重用、安全性以及版本控制的最小单元。CLR实际与程序集一起工作，程序集相当于它的“组件”。
+清单(manifest) 是元数据表的集合。这些表描述构成程序集的文件、程序集中的文件所实现的public类型以及与程序集关联的资源或数据文件。
+程序集的自描述(self-describing) 利用程序集模块中包含的引用程序集有关的信息(版本号)，CLR能判断为了执行程序集中的代码，程序集的直接依赖对象(immediate dependency)。
+托管程序集总是利用Windows的数据执行保护(Data Execution Prevention, DEP)和地址空间布局随机化(Address Space Layout Randomization, ASLR)来增强系统安全性。
+如果只有一个托管模块而且无资源(或数据)生成的程序集就是托管模块本身，生成无需额步骤。但如果希望将一组文件合并到程序集中，就必须用AL(程序集连接器)等工具生成。
+程序集的执行 分析以下程序的执行
+1static void Main() { 2 Console.WriteLine(&amp;#34;Hello World!&amp;#34;); 3 Console.WriteLine(&amp;#34;Goodbye!&amp;#34;); 4} 在Main方法执行之前，CLR会检测出Main方法的代码引用的所有类型(本例为Console)。并分配一个内部数据结构来管理对引用类型的访问。内部数据结构中对类型定义的每个方法都有一个对应的记录项。每个记录项都含有一个地址，根据此地址即可找到方法的实现。对这个结构初始化时，CLR将每个记录项的指针都指向包含在CLR内部的一个未编档函数(本书定义为JITCompiler)。 第一次执行Console.WriteLine方法时，JITCompiler函数会被调用。它负责将方法的IL代码编译成本机CPU指令。由于IL是“即时”(just in time)编译的，所有通常将CLR的这个组件叫做JIT编译器。JITCompiler函数的执行方式如下： 在负责实现类型(Console)的程序集的元数据中查找被调用的方法(WriteLine)。 从元数据中获取该方法的IL代码。并验证 动态分配内存块。 将IL代码编译成本机CPU指令然后将本机代码存储到步骤3分配的内存中。 在Type表(Main函数指向Console.WriteLine的记录项)中修改与方法对应的条目，使它指向步骤3分配的内存块。 跳转到内存块中的本机代码，并执行。 执行完后返回到Main方法中继续执行。 当第二次执行Console.</description>
+    </item>
+    
+  </channel>
+</rss>
