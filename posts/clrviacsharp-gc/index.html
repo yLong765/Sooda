@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.1.0/style.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-tc-webfont@1.0.0/style.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+  <style>
+    body {
+      font-family: "LXGW WenKai", sans-serif;
+       
+      font-family: "LXGW WenKai Lite", sans-serif;
+       
+      font-family: "LXGW WenKai TC", sans-serif;
+       
+      font-family: "LXGW WenKai Screen", sans-serif;
+    }
+  </style>
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 《CLR via C#》 托管堆和垃圾回收 | Alaya</title>
+  <link rel = 'canonical' href = 'https://www.sooda.net.cn/posts/clrviacsharp-gc/'>
+  <meta name="description" content="Simple Life Simple Coding.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="《CLR via C#》 托管堆和垃圾回收" />
+<meta property="og:description" content="托管堆基础 访问一个资源所需要的步骤：
+调用IL指定newobj，为代表资源的类型分配内存(一般用C#new操作符来完成)。 初始化内存，设置资源的初始状态并使资源可用。类型的实例构造器负责设置初始化状态。 访问类型的成员来使用资源(有必要可以重复)。 摧毁资源的状态以进行清理。 释放内存。垃圾回收器独自负责这一步骤。 提示
+只要是写可验证的、类型安全的代码(不使用C#unsafe)，应用程序就不可能会出现内存被破坏的情况。但内存仍有可能泄露，但不像C/C&#43;&#43;那样是默认行为。现在内存泄漏一般是因为在集合中存储了对象，但不需要对象的时候一直不删除。
+从托管堆中分配资源 CLR要求所有对象都从托管堆分配。进程初始化时，CLR划出一个地址空间区域作为托管堆。CLR还要维护一个指针NextObjPtr，该指针指向下一个对象在堆中的分配位置。刚开始的时候NextObjPtr设为地址空间区域的基地址。
+一个区域被非垃圾对象填满后，CLR会分配更到的区域。这个过程一直重复，直至整个进程地址空间都被填满。所以，应用程序的内存受进程的虚拟地址空间的限制。32位进程最多分配1.5GB，64位进程最多分配8TB。
+new操作符的执行细节：
+计算类型的字段(以及从基类型继承的字段)所需的字节数。 加上对象的开销所需的字节数。每个对象都有两个开销字段：类型对象指针和同步块索引。 CLR检查区域中是否有分配对象所需的字节数。如果托管堆有足够的空间，就在NextObjPtr指针指向的地址处放入对象，为对象分配的字节没被清零。接着调用类型的构造器(为this参数传递NextObjPtr)，new操作符返回对象引用。在返回引用前，NextObjPtr指针的值会加上对象占用的字节数来得到一个新值，即下个对象放入托管堆时的地址。 托管堆的优点
+对于托管堆，分配对象只需要在指针上加一个值(速度非常快)。在许多应用程序中，差不多同时分配的对象彼此间有较强的联系，而且经常差不多在同一时间访问。由于托管堆在内存中连续分配对象，所以因为引用“局部化”(locality)而获得性能上的提升。具体来说，这意味着工作集会非常小，应用程序只需要使用很少的内存，从而提高了速度。还意味着代码使用的对象可以全部驻留在CPU的缓存中。结果是应用程序能以非常快的速度访问这些对象，因为CPU在执行大多数操作时，不会因为“缓存未命中”(cache miss)而被迫访问较慢的RAM。
+发挥此优点的前提是内存无限，但内存不可能无限，所以CLR用“垃圾回收”(GC)的技术“删除”堆中应用程序不再需要的对象。
+垃圾回收算法 应用程序调用new操作符创建对象时，可能没有足够的空间来分配该对象。发现空间不够，CLR就执行垃圾回收(实际上，垃圾回收是在第0代满的时候发生的)。
+引用计数算法 在引用计数算法中，堆上的每个对象都维护着一个内存字段来统计程序中有多少正在使用的对象。随着每一个对象到达代码中某个不再需要对象的地方，就递减对象的计数字段。计数字段变成0，对象就可以从内存中删除了。引用计数系统最大的问题就是处理不好循环引用。
+引用跟踪算法 引用跟踪算法只关心引用类型的变量，因为只有这种变量才能引用堆上的对象；值类型变量直接包含值类型实例。引用类型变量可以在许多场合使用，包括类的静态和实例字段，或者方法的参数和局部变量。将所有引用类型的变量都称为根。
+引用跟踪算法步骤：
+CLR开始GC时，首先暂停进程中所有线程(防止线程在CLR检查期间修改对象的状态)。 CLR进入GC的标记阶段。CLR遍历堆中的所有对象，将同步块索引字段中的一位设为0，这编码所有对象都应删除。 CLR检查所有活动根，查看它们引用了哪些对象。如果一个根包含null，CLR忽略这个根并继续检查下一个根。任何根如果引用了堆上的对象，CLR都会标记那个对象，也就是将该对象的同步块索引中的位设置为1.一个对象被标记后，CLR会检查那个对象中的跟，标记它们引用的对象。如果发现对象已经标记，就不重新检查对象的字段。这就避免了应为循环引用而产生的死循环。 图1 回收之前的托管堆 图2 标记过后的托管堆 检查完毕后，堆中的对象要么已标记，要么未标记。已标记的对象不能被垃圾回收，因为至少有一个根在引用它。这种状态被称为可达的(reachable)。未标记的对象是不可达(unreachable)的。 CLR进入GC的压缩(compact)接端。这个接端，CLR对堆中已标记的对象进行移动，压缩幸存的对象，使它们占用连续的内存空间。但根所引用的位置还未改变，所以CLR需要从每个根减去所引用的对象在内存中偏移的字节数。这样就能保证每个根还是引用和之前一样的对象；只是对象在内存中变化了位置。 压缩的好处
+首先，所有幸存对象在内存中紧挨在一起，恢复了引用的“局部化”，减小了应用程序的工作集，从而提升了将来访问这些对象时的性能。其次，可用空间也全部时连续的，允许其他东西进驻。最后，压缩意味着托管堆解决了本机(原生)堆的空间碎片化问题。
+6. 压缩好内存后，托管堆的`NextObjPtr`指针指向最后一个幸存对象之后的位置。 图3 垃圾回收后的托管堆 注意
+如果CLR在一个GC之后回收不了内存，而且进程中没有空间来分配新的GC区域，就说明进程的内存已耗尽。此时，试图分配更多的内存的new操作符就会抛出OutOfMemoryException。
+注意
+静态字段引用的对象一直存在，直到用于加载类型的AppDomain卸载为止。内存泄漏的一个常见原因就是让静态字段引用某个合集对象。静态对象会使合集对象一直存存活，而合集对象使所有的数据项一直存活。从而导致内存泄漏。
+代：提升性能 CLR的GC是基于代的垃圾回收器(generational garbage collector)，它对代码做出了几点假设。
+对象越新，生存期越短。 对象越老，生存期越长。 回收堆的一部分，速度快于回收整个堆。 托管堆在初始化时不包含对象。添加到堆的对象称为第0代对象。简单地说，第0代对象就是那些新构造的对象，垃圾回收器从未检查过它们。
+图4 新初始化的堆，所有对象都是第0代，垃圾回收尚未发生 CLR初始化时为第0代对象选择一个预算容量(KB单位)。如果分配一个新对象造成第0代超过预算，就必须启动一次垃圾回收。假设上图A到E正好使用完第0代空间，分配对象F时就必须启动垃圾回收。垃圾回收器会判断对象C和E时垃圾，所以会压缩D，使之与对象B相邻。在垃圾回收中存活的对象(A,B和D)现在称为第1代对象。第1代对象已经经历了一个垃圾回收器的检查。
+图5 经历一次垃圾回收，第0代的幸存者被提升至第1代 一次垃圾回收后，第0代就不包含任何对象了。和之前一样，新对象会分配到第0代中。
+图5 第0代分配了新对象；第1代又垃圾产生 假定分配新对象L会造成第0代超出预算，造成垃圾回收。CLR需要决定检查哪些代。CLR初始化时不仅会给第0代对象选择预算，第1代对象也得又预算。假如开启垃圾回收时，第1代占用内存少于预算，垃圾回收只检查第0代对象。由于忽略了第1代对象，所以加快了垃圾回收速度。
+性能的优势和对应的问题
+显然，忽略第1代对象能提升性能。对性能提升的部分更主要是不必变量托管堆中的每个对象。如果根或对象引用了第1代的某个对象，垃圾回收器就会忽略老对象内部的所有引用，能更短的构造好可达对象图。当然，老对象字段也有可能引用新对象。为了确保对老对象的已更新字段进行检查，垃圾回收器利用了JIT编译器内部的一个机制。这个机制在对象的引用字段发生变化时，会设置一个对应的位标志。这样，垃圾回收器就知道自上一次垃圾回收以来，哪些老对象已被写入。只有字段发生变化的老对象才需要检查是否引用了第0代中的任何新对象。
+基于对象越老，生存期越长的假设。第1代对象在应用中很可能是继续可达的。因此对第1代垃圾回收很可能是浪费时间。如果有垃圾在第1代中，那就留在那里。
+图6 经过两次垃圾回收后，第0代的幸存者被提升到第1代(第1代的大小增加)；第0代又空出来了 图7 多次第0代回收后，第1代超出预算。两代一起进行垃圾回收 图8 第1代幸存者提升至第2代，第0代幸存者提升至第1代，第0代空出 注意" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.sooda.net.cn/posts/clrviacsharp-gc/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-08-31T10:24:40+08:00" />
+<meta property="article:modified_time" content="2022-08-31T10:24:40+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《CLR via C#》 托管堆和垃圾回收"/>
+<meta name="twitter:description" content="托管堆基础 访问一个资源所需要的步骤：
+调用IL指定newobj，为代表资源的类型分配内存(一般用C#new操作符来完成)。 初始化内存，设置资源的初始状态并使资源可用。类型的实例构造器负责设置初始化状态。 访问类型的成员来使用资源(有必要可以重复)。 摧毁资源的状态以进行清理。 释放内存。垃圾回收器独自负责这一步骤。 提示
+只要是写可验证的、类型安全的代码(不使用C#unsafe)，应用程序就不可能会出现内存被破坏的情况。但内存仍有可能泄露，但不像C/C&#43;&#43;那样是默认行为。现在内存泄漏一般是因为在集合中存储了对象，但不需要对象的时候一直不删除。
+从托管堆中分配资源 CLR要求所有对象都从托管堆分配。进程初始化时，CLR划出一个地址空间区域作为托管堆。CLR还要维护一个指针NextObjPtr，该指针指向下一个对象在堆中的分配位置。刚开始的时候NextObjPtr设为地址空间区域的基地址。
+一个区域被非垃圾对象填满后，CLR会分配更到的区域。这个过程一直重复，直至整个进程地址空间都被填满。所以，应用程序的内存受进程的虚拟地址空间的限制。32位进程最多分配1.5GB，64位进程最多分配8TB。
+new操作符的执行细节：
+计算类型的字段(以及从基类型继承的字段)所需的字节数。 加上对象的开销所需的字节数。每个对象都有两个开销字段：类型对象指针和同步块索引。 CLR检查区域中是否有分配对象所需的字节数。如果托管堆有足够的空间，就在NextObjPtr指针指向的地址处放入对象，为对象分配的字节没被清零。接着调用类型的构造器(为this参数传递NextObjPtr)，new操作符返回对象引用。在返回引用前，NextObjPtr指针的值会加上对象占用的字节数来得到一个新值，即下个对象放入托管堆时的地址。 托管堆的优点
+对于托管堆，分配对象只需要在指针上加一个值(速度非常快)。在许多应用程序中，差不多同时分配的对象彼此间有较强的联系，而且经常差不多在同一时间访问。由于托管堆在内存中连续分配对象，所以因为引用“局部化”(locality)而获得性能上的提升。具体来说，这意味着工作集会非常小，应用程序只需要使用很少的内存，从而提高了速度。还意味着代码使用的对象可以全部驻留在CPU的缓存中。结果是应用程序能以非常快的速度访问这些对象，因为CPU在执行大多数操作时，不会因为“缓存未命中”(cache miss)而被迫访问较慢的RAM。
+发挥此优点的前提是内存无限，但内存不可能无限，所以CLR用“垃圾回收”(GC)的技术“删除”堆中应用程序不再需要的对象。
+垃圾回收算法 应用程序调用new操作符创建对象时，可能没有足够的空间来分配该对象。发现空间不够，CLR就执行垃圾回收(实际上，垃圾回收是在第0代满的时候发生的)。
+引用计数算法 在引用计数算法中，堆上的每个对象都维护着一个内存字段来统计程序中有多少正在使用的对象。随着每一个对象到达代码中某个不再需要对象的地方，就递减对象的计数字段。计数字段变成0，对象就可以从内存中删除了。引用计数系统最大的问题就是处理不好循环引用。
+引用跟踪算法 引用跟踪算法只关心引用类型的变量，因为只有这种变量才能引用堆上的对象；值类型变量直接包含值类型实例。引用类型变量可以在许多场合使用，包括类的静态和实例字段，或者方法的参数和局部变量。将所有引用类型的变量都称为根。
+引用跟踪算法步骤：
+CLR开始GC时，首先暂停进程中所有线程(防止线程在CLR检查期间修改对象的状态)。 CLR进入GC的标记阶段。CLR遍历堆中的所有对象，将同步块索引字段中的一位设为0，这编码所有对象都应删除。 CLR检查所有活动根，查看它们引用了哪些对象。如果一个根包含null，CLR忽略这个根并继续检查下一个根。任何根如果引用了堆上的对象，CLR都会标记那个对象，也就是将该对象的同步块索引中的位设置为1.一个对象被标记后，CLR会检查那个对象中的跟，标记它们引用的对象。如果发现对象已经标记，就不重新检查对象的字段。这就避免了应为循环引用而产生的死循环。 图1 回收之前的托管堆 图2 标记过后的托管堆 检查完毕后，堆中的对象要么已标记，要么未标记。已标记的对象不能被垃圾回收，因为至少有一个根在引用它。这种状态被称为可达的(reachable)。未标记的对象是不可达(unreachable)的。 CLR进入GC的压缩(compact)接端。这个接端，CLR对堆中已标记的对象进行移动，压缩幸存的对象，使它们占用连续的内存空间。但根所引用的位置还未改变，所以CLR需要从每个根减去所引用的对象在内存中偏移的字节数。这样就能保证每个根还是引用和之前一样的对象；只是对象在内存中变化了位置。 压缩的好处
+首先，所有幸存对象在内存中紧挨在一起，恢复了引用的“局部化”，减小了应用程序的工作集，从而提升了将来访问这些对象时的性能。其次，可用空间也全部时连续的，允许其他东西进驻。最后，压缩意味着托管堆解决了本机(原生)堆的空间碎片化问题。
+6. 压缩好内存后，托管堆的`NextObjPtr`指针指向最后一个幸存对象之后的位置。 图3 垃圾回收后的托管堆 注意
+如果CLR在一个GC之后回收不了内存，而且进程中没有空间来分配新的GC区域，就说明进程的内存已耗尽。此时，试图分配更多的内存的new操作符就会抛出OutOfMemoryException。
+注意
+静态字段引用的对象一直存在，直到用于加载类型的AppDomain卸载为止。内存泄漏的一个常见原因就是让静态字段引用某个合集对象。静态对象会使合集对象一直存存活，而合集对象使所有的数据项一直存活。从而导致内存泄漏。
+代：提升性能 CLR的GC是基于代的垃圾回收器(generational garbage collector)，它对代码做出了几点假设。
+对象越新，生存期越短。 对象越老，生存期越长。 回收堆的一部分，速度快于回收整个堆。 托管堆在初始化时不包含对象。添加到堆的对象称为第0代对象。简单地说，第0代对象就是那些新构造的对象，垃圾回收器从未检查过它们。
+图4 新初始化的堆，所有对象都是第0代，垃圾回收尚未发生 CLR初始化时为第0代对象选择一个预算容量(KB单位)。如果分配一个新对象造成第0代超过预算，就必须启动一次垃圾回收。假设上图A到E正好使用完第0代空间，分配对象F时就必须启动垃圾回收。垃圾回收器会判断对象C和E时垃圾，所以会压缩D，使之与对象B相邻。在垃圾回收中存活的对象(A,B和D)现在称为第1代对象。第1代对象已经经历了一个垃圾回收器的检查。
+图5 经历一次垃圾回收，第0代的幸存者被提升至第1代 一次垃圾回收后，第0代就不包含任何对象了。和之前一样，新对象会分配到第0代中。
+图5 第0代分配了新对象；第1代又垃圾产生 假定分配新对象L会造成第0代超出预算，造成垃圾回收。CLR需要决定检查哪些代。CLR初始化时不仅会给第0代对象选择预算，第1代对象也得又预算。假如开启垃圾回收时，第1代占用内存少于预算，垃圾回收只检查第0代对象。由于忽略了第1代对象，所以加快了垃圾回收速度。
+性能的优势和对应的问题
+显然，忽略第1代对象能提升性能。对性能提升的部分更主要是不必变量托管堆中的每个对象。如果根或对象引用了第1代的某个对象，垃圾回收器就会忽略老对象内部的所有引用，能更短的构造好可达对象图。当然，老对象字段也有可能引用新对象。为了确保对老对象的已更新字段进行检查，垃圾回收器利用了JIT编译器内部的一个机制。这个机制在对象的引用字段发生变化时，会设置一个对应的位标志。这样，垃圾回收器就知道自上一次垃圾回收以来，哪些老对象已被写入。只有字段发生变化的老对象才需要检查是否引用了第0代中的任何新对象。
+基于对象越老，生存期越长的假设。第1代对象在应用中很可能是继续可达的。因此对第1代垃圾回收很可能是浪费时间。如果有垃圾在第1代中，那就留在那里。
+图6 经过两次垃圾回收后，第0代的幸存者被提升到第1代(第1代的大小增加)；第0代又空出来了 图7 多次第0代回收后，第1代超出预算。两代一起进行垃圾回收 图8 第1代幸存者提升至第2代，第0代幸存者提升至第1代，第0代空出 注意"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://www.sooda.net.cn/css/styles.166db686fda6f9c6a78da384702e8843f300f1bb91f7a773ad821803d8351c8e7e9e1eea1f977be1888e367f25d0a78d1d9c403ad3255e62df88b0a84b4b24c9.css" integrity="sha512-Fm22hv2m&#43;canjaOEcC6IQ/MA8buR96dzrYIYA9g1HI5&#43;nh7qH5d74YiONn8l0KeNHZxAOtMlXmLfiLCoS0skyQ=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://www.sooda.net.cn/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://www.sooda.net.cn/posts/clrviacsharp-exception/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6&body=Check out this article: https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6&description=%e6%89%98%e7%ae%a1%e5%a0%86%e5%9f%ba%e7%a1%80%20%e8%ae%bf%e9%97%ae%e4%b8%80%e4%b8%aa%e8%b5%84%e6%ba%90%e6%89%80%e9%9c%80%e8%a6%81%e7%9a%84%e6%ad%a5%e9%aa%a4%ef%bc%9a%0a%e8%b0%83%e7%94%a8IL%e6%8c%87%e5%ae%9anewobj%ef%bc%8c%e4%b8%ba%e4%bb%a3%e8%a1%a8%e8%b5%84%e6%ba%90%e7%9a%84%e7%b1%bb%e5%9e%8b%e5%88%86%e9%85%8d%e5%86%85%e5%ad%98%28%e4%b8%80%e8%88%ac%e7%94%a8C%23new%e6%93%8d%e4%bd%9c%e7%ac%a6%e6%9d%a5%e5%ae%8c%e6%88%90%29%e3%80%82%20%e5%88%9d%e5%a7%8b%e5%8c%96%e5%86%85%e5%ad%98%ef%bc%8c%e8%ae%be%e7%bd%ae%e8%b5%84%e6%ba%90%e7%9a%84%e5%88%9d%e5%a7%8b%e7%8a%b6%e6%80%81%e5%b9%b6%e4%bd%bf%e8%b5%84%e6%ba%90%e5%8f%af%e7%94%a8%e3%80%82%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e8%b4%9f%e8%b4%a3%e8%ae%be%e7%bd%ae%e5%88%9d%e5%a7%8b%e5%8c%96%e7%8a%b6%e6%80%81%e3%80%82%20%e8%ae%bf%e9%97%ae%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%88%90%e5%91%98%e6%9d%a5%e4%bd%bf%e7%94%a8%e8%b5%84%e6%ba%90%28%e6%9c%89%e5%bf%85%e8%a6%81%e5%8f%af%e4%bb%a5%e9%87%8d%e5%a4%8d%29%e3%80%82%20%e6%91%a7%e6%af%81%e8%b5%84%e6%ba%90%e7%9a%84%e7%8a%b6%e6%80%81%e4%bb%a5%e8%bf%9b%e8%a1%8c%e6%b8%85%e7%90%86%e3%80%82%20%e9%87%8a%e6%94%be%e5%86%85%e5%ad%98%e3%80%82%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e7%8b%ac%e8%87%aa%e8%b4%9f%e8%b4%a3%e8%bf%99%e4%b8%80%e6%ad%a5%e9%aa%a4%e3%80%82%20%e6%8f%90%e7%a4%ba%0a%e5%8f%aa%e8%a6%81%e6%98%af%e5%86%99%e5%8f%af%e9%aa%8c%e8%af%81%e7%9a%84%e3%80%81%e7%b1%bb%e5%9e%8b%e5%ae%89%e5%85%a8%e7%9a%84%e4%bb%a3%e7%a0%81%28%e4%b8%8d%e4%bd%bf%e7%94%a8C%23unsafe%29%ef%bc%8c%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e5%b0%b1%e4%b8%8d%e5%8f%af%e8%83%bd%e4%bc%9a%e5%87%ba%e7%8e%b0%e5%86%85%e5%ad%98%e8%a2%ab%e7%a0%b4%e5%9d%8f%e7%9a%84%e6%83%85%e5%86%b5%e3%80%82%e4%bd%86%e5%86%85%e5%ad%98%e4%bb%8d%e6%9c%89%e5%8f%af%e8%83%bd%e6%b3%84%e9%9c%b2%ef%bc%8c%e4%bd%86%e4%b8%8d%e5%83%8fC%2fC%2b%2b%e9%82%a3%e6%a0%b7%e6%98%af%e9%bb%98%e8%ae%a4%e8%a1%8c%e4%b8%ba%e3%80%82%e7%8e%b0%e5%9c%a8%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e4%b8%80%e8%88%ac%e6%98%af%e5%9b%a0%e4%b8%ba%e5%9c%a8%e9%9b%86%e5%90%88%e4%b8%ad%e5%ad%98%e5%82%a8%e4%ba%86%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%bd%86%e4%b8%8d%e9%9c%80%e8%a6%81%e5%af%b9%e8%b1%a1%e7%9a%84%e6%97%b6%e5%80%99%e4%b8%80%e7%9b%b4%e4%b8%8d%e5%88%a0%e9%99%a4%e3%80%82%0a%e4%bb%8e%e6%89%98%e7%ae%a1%e5%a0%86%e4%b8%ad%e5%88%86%e9%85%8d%e8%b5%84%e6%ba%90%20CLR%e8%a6%81%e6%b1%82%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%e9%83%bd%e4%bb%8e%e6%89%98%e7%ae%a1%e5%a0%86%e5%88%86%e9%85%8d%e3%80%82%e8%bf%9b%e7%a8%8b%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%ef%bc%8cCLR%e5%88%92%e5%87%ba%e4%b8%80%e4%b8%aa%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e5%8c%ba%e5%9f%9f%e4%bd%9c%e4%b8%ba%e6%89%98%e7%ae%a1%e5%a0%86%e3%80%82CLR%e8%bf%98%e8%a6%81%e7%bb%b4%e6%8a%a4%e4%b8%80%e4%b8%aa%e6%8c%87%e9%92%88NextObjPtr%ef%bc%8c%e8%af%a5%e6%8c%87%e9%92%88%e6%8c%87%e5%90%91%e4%b8%8b%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%a0%86%e4%b8%ad%e7%9a%84%e5%88%86%e9%85%8d%e4%bd%8d%e7%bd%ae%e3%80%82%e5%88%9a%e5%bc%80%e5%a7%8b%e7%9a%84%e6%97%b6%e5%80%99NextObjPtr%e8%ae%be%e4%b8%ba%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e5%8c%ba%e5%9f%9f%e7%9a%84%e5%9f%ba%e5%9c%b0%e5%9d%80%e3%80%82%0a%e4%b8%80%e4%b8%aa%e5%8c%ba%e5%9f%9f%e8%a2%ab%e9%9d%9e%e5%9e%83%e5%9c%be%e5%af%b9%e8%b1%a1%e5%a1%ab%e6%bb%a1%e5%90%8e%ef%bc%8cCLR%e4%bc%9a%e5%88%86%e9%85%8d%e6%9b%b4%e5%88%b0%e7%9a%84%e5%8c%ba%e5%9f%9f%e3%80%82%e8%bf%99%e4%b8%aa%e8%bf%87%e7%a8%8b%e4%b8%80%e7%9b%b4%e9%87%8d%e5%a4%8d%ef%bc%8c%e7%9b%b4%e8%87%b3%e6%95%b4%e4%b8%aa%e8%bf%9b%e7%a8%8b%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e9%83%bd%e8%a2%ab%e5%a1%ab%e6%bb%a1%e3%80%82%e6%89%80%e4%bb%a5%ef%bc%8c%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e7%9a%84%e5%86%85%e5%ad%98%e5%8f%97%e8%bf%9b%e7%a8%8b%e7%9a%84%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e7%9a%84%e9%99%90%e5%88%b6%e3%80%8232%e4%bd%8d%e8%bf%9b%e7%a8%8b%e6%9c%80%e5%a4%9a%e5%88%86%e9%85%8d1.5GB%ef%bc%8c64%e4%bd%8d%e8%bf%9b%e7%a8%8b%e6%9c%80%e5%a4%9a%e5%88%86%e9%85%8d8TB%e3%80%82%0anew%e6%93%8d%e4%bd%9c%e7%ac%a6%e7%9a%84%e6%89%a7%e8%a1%8c%e7%bb%86%e8%8a%82%ef%bc%9a%0a%e8%ae%a1%e7%ae%97%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ad%97%e6%ae%b5%28%e4%bb%a5%e5%8f%8a%e4%bb%8e%e5%9f%ba%e7%b1%bb%e5%9e%8b%e7%bb%a7%e6%89%bf%e7%9a%84%e5%ad%97%e6%ae%b5%29%e6%89%80%e9%9c%80%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%20%e5%8a%a0%e4%b8%8a%e5%af%b9%e8%b1%a1%e7%9a%84%e5%bc%80%e9%94%80%e6%89%80%e9%9c%80%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e9%83%bd%e6%9c%89%e4%b8%a4%e4%b8%aa%e5%bc%80%e9%94%80%e5%ad%97%e6%ae%b5%ef%bc%9a%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%e5%92%8c%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e3%80%82%20CLR%e6%a3%80%e6%9f%a5%e5%8c%ba%e5%9f%9f%e4%b8%ad%e6%98%af%e5%90%a6%e6%9c%89%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%e6%89%80%e9%9c%80%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e5%a6%82%e6%9e%9c%e6%89%98%e7%ae%a1%e5%a0%86%e6%9c%89%e8%b6%b3%e5%a4%9f%e7%9a%84%e7%a9%ba%e9%97%b4%ef%bc%8c%e5%b0%b1%e5%9c%a8NextObjPtr%e6%8c%87%e9%92%88%e6%8c%87%e5%90%91%e7%9a%84%e5%9c%b0%e5%9d%80%e5%a4%84%e6%94%be%e5%85%a5%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%b8%ba%e5%af%b9%e8%b1%a1%e5%88%86%e9%85%8d%e7%9a%84%e5%ad%97%e8%8a%82%e6%b2%a1%e8%a2%ab%e6%b8%85%e9%9b%b6%e3%80%82%e6%8e%a5%e7%9d%80%e8%b0%83%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%28%e4%b8%bathis%e5%8f%82%e6%95%b0%e4%bc%a0%e9%80%92NextObjPtr%29%ef%bc%8cnew%e6%93%8d%e4%bd%9c%e7%ac%a6%e8%bf%94%e5%9b%9e%e5%af%b9%e8%b1%a1%e5%bc%95%e7%94%a8%e3%80%82%e5%9c%a8%e8%bf%94%e5%9b%9e%e5%bc%95%e7%94%a8%e5%89%8d%ef%bc%8cNextObjPtr%e6%8c%87%e9%92%88%e7%9a%84%e5%80%bc%e4%bc%9a%e5%8a%a0%e4%b8%8a%e5%af%b9%e8%b1%a1%e5%8d%a0%e7%94%a8%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e6%9d%a5%e5%be%97%e5%88%b0%e4%b8%80%e4%b8%aa%e6%96%b0%e5%80%bc%ef%bc%8c%e5%8d%b3%e4%b8%8b%e4%b8%aa%e5%af%b9%e8%b1%a1%e6%94%be%e5%85%a5%e6%89%98%e7%ae%a1%e5%a0%86%e6%97%b6%e7%9a%84%e5%9c%b0%e5%9d%80%e3%80%82%20%e6%89%98%e7%ae%a1%e5%a0%86%e7%9a%84%e4%bc%98%e7%82%b9%0a%e5%af%b9%e4%ba%8e%e6%89%98%e7%ae%a1%e5%a0%86%ef%bc%8c%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%e5%8f%aa%e9%9c%80%e8%a6%81%e5%9c%a8%e6%8c%87%e9%92%88%e4%b8%8a%e5%8a%a0%e4%b8%80%e4%b8%aa%e5%80%bc%28%e9%80%9f%e5%ba%a6%e9%9d%9e%e5%b8%b8%e5%bf%ab%29%e3%80%82%e5%9c%a8%e8%ae%b8%e5%a4%9a%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e4%b8%ad%ef%bc%8c%e5%b7%ae%e4%b8%8d%e5%a4%9a%e5%90%8c%e6%97%b6%e5%88%86%e9%85%8d%e7%9a%84%e5%af%b9%e8%b1%a1%e5%bd%bc%e6%ad%a4%e9%97%b4%e6%9c%89%e8%be%83%e5%bc%ba%e7%9a%84%e8%81%94%e7%b3%bb%ef%bc%8c%e8%80%8c%e4%b8%94%e7%bb%8f%e5%b8%b8%e5%b7%ae%e4%b8%8d%e5%a4%9a%e5%9c%a8%e5%90%8c%e4%b8%80%e6%97%b6%e9%97%b4%e8%ae%bf%e9%97%ae%e3%80%82%e7%94%b1%e4%ba%8e%e6%89%98%e7%ae%a1%e5%a0%86%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e8%bf%9e%e7%bb%ad%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%ef%bc%8c%e6%89%80%e4%bb%a5%e5%9b%a0%e4%b8%ba%e5%bc%95%e7%94%a8%e2%80%9c%e5%b1%80%e9%83%a8%e5%8c%96%e2%80%9d%28locality%29%e8%80%8c%e8%8e%b7%e5%be%97%e6%80%a7%e8%83%bd%e4%b8%8a%e7%9a%84%e6%8f%90%e5%8d%87%e3%80%82%e5%85%b7%e4%bd%93%e6%9d%a5%e8%af%b4%ef%bc%8c%e8%bf%99%e6%84%8f%e5%91%b3%e7%9d%80%e5%b7%a5%e4%bd%9c%e9%9b%86%e4%bc%9a%e9%9d%9e%e5%b8%b8%e5%b0%8f%ef%bc%8c%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e5%8f%aa%e9%9c%80%e8%a6%81%e4%bd%bf%e7%94%a8%e5%be%88%e5%b0%91%e7%9a%84%e5%86%85%e5%ad%98%ef%bc%8c%e4%bb%8e%e8%80%8c%e6%8f%90%e9%ab%98%e4%ba%86%e9%80%9f%e5%ba%a6%e3%80%82%e8%bf%98%e6%84%8f%e5%91%b3%e7%9d%80%e4%bb%a3%e7%a0%81%e4%bd%bf%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e5%8f%af%e4%bb%a5%e5%85%a8%e9%83%a8%e9%a9%bb%e7%95%99%e5%9c%a8CPU%e7%9a%84%e7%bc%93%e5%ad%98%e4%b8%ad%e3%80%82%e7%bb%93%e6%9e%9c%e6%98%af%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e8%83%bd%e4%bb%a5%e9%9d%9e%e5%b8%b8%e5%bf%ab%e7%9a%84%e9%80%9f%e5%ba%a6%e8%ae%bf%e9%97%ae%e8%bf%99%e4%ba%9b%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%9b%a0%e4%b8%baCPU%e5%9c%a8%e6%89%a7%e8%a1%8c%e5%a4%a7%e5%a4%9a%e6%95%b0%e6%93%8d%e4%bd%9c%e6%97%b6%ef%bc%8c%e4%b8%8d%e4%bc%9a%e5%9b%a0%e4%b8%ba%e2%80%9c%e7%bc%93%e5%ad%98%e6%9c%aa%e5%91%bd%e4%b8%ad%e2%80%9d%28cache%20miss%29%e8%80%8c%e8%a2%ab%e8%bf%ab%e8%ae%bf%e9%97%ae%e8%be%83%e6%85%a2%e7%9a%84RAM%e3%80%82%0a%e5%8f%91%e6%8c%a5%e6%ad%a4%e4%bc%98%e7%82%b9%e7%9a%84%e5%89%8d%e6%8f%90%e6%98%af%e5%86%85%e5%ad%98%e6%97%a0%e9%99%90%ef%bc%8c%e4%bd%86%e5%86%85%e5%ad%98%e4%b8%8d%e5%8f%af%e8%83%bd%e6%97%a0%e9%99%90%ef%bc%8c%e6%89%80%e4%bb%a5CLR%e7%94%a8%e2%80%9c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e2%80%9d%28GC%29%e7%9a%84%e6%8a%80%e6%9c%af%e2%80%9c%e5%88%a0%e9%99%a4%e2%80%9d%e5%a0%86%e4%b8%ad%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e4%b8%8d%e5%86%8d%e9%9c%80%e8%a6%81%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%0a%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e7%ae%97%e6%b3%95%20%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e8%b0%83%e7%94%a8new%e6%93%8d%e4%bd%9c%e7%ac%a6%e5%88%9b%e5%bb%ba%e5%af%b9%e8%b1%a1%e6%97%b6%ef%bc%8c%e5%8f%af%e8%83%bd%e6%b2%a1%e6%9c%89%e8%b6%b3%e5%a4%9f%e7%9a%84%e7%a9%ba%e9%97%b4%e6%9d%a5%e5%88%86%e9%85%8d%e8%af%a5%e5%af%b9%e8%b1%a1%e3%80%82%e5%8f%91%e7%8e%b0%e7%a9%ba%e9%97%b4%e4%b8%8d%e5%a4%9f%ef%bc%8cCLR%e5%b0%b1%e6%89%a7%e8%a1%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%28%e5%ae%9e%e9%99%85%e4%b8%8a%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%98%af%e5%9c%a8%e7%ac%ac0%e4%bb%a3%e6%bb%a1%e7%9a%84%e6%97%b6%e5%80%99%e5%8f%91%e7%94%9f%e7%9a%84%29%e3%80%82%0a%e5%bc%95%e7%94%a8%e8%ae%a1%e6%95%b0%e7%ae%97%e6%b3%95%20%e5%9c%a8%e5%bc%95%e7%94%a8%e8%ae%a1%e6%95%b0%e7%ae%97%e6%b3%95%e4%b8%ad%ef%bc%8c%e5%a0%86%e4%b8%8a%e7%9a%84%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e9%83%bd%e7%bb%b4%e6%8a%a4%e7%9d%80%e4%b8%80%e4%b8%aa%e5%86%85%e5%ad%98%e5%ad%97%e6%ae%b5%e6%9d%a5%e7%bb%9f%e8%ae%a1%e7%a8%8b%e5%ba%8f%e4%b8%ad%e6%9c%89%e5%a4%9a%e5%b0%91%e6%ad%a3%e5%9c%a8%e4%bd%bf%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%e9%9a%8f%e7%9d%80%e6%af%8f%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%88%b0%e8%be%be%e4%bb%a3%e7%a0%81%e4%b8%ad%e6%9f%90%e4%b8%aa%e4%b8%8d%e5%86%8d%e9%9c%80%e8%a6%81%e5%af%b9%e8%b1%a1%e7%9a%84%e5%9c%b0%e6%96%b9%ef%bc%8c%e5%b0%b1%e9%80%92%e5%87%8f%e5%af%b9%e8%b1%a1%e7%9a%84%e8%ae%a1%e6%95%b0%e5%ad%97%e6%ae%b5%e3%80%82%e8%ae%a1%e6%95%b0%e5%ad%97%e6%ae%b5%e5%8f%98%e6%88%900%ef%bc%8c%e5%af%b9%e8%b1%a1%e5%b0%b1%e5%8f%af%e4%bb%a5%e4%bb%8e%e5%86%85%e5%ad%98%e4%b8%ad%e5%88%a0%e9%99%a4%e4%ba%86%e3%80%82%e5%bc%95%e7%94%a8%e8%ae%a1%e6%95%b0%e7%b3%bb%e7%bb%9f%e6%9c%80%e5%a4%a7%e7%9a%84%e9%97%ae%e9%a2%98%e5%b0%b1%e6%98%af%e5%a4%84%e7%90%86%e4%b8%8d%e5%a5%bd%e5%be%aa%e7%8e%af%e5%bc%95%e7%94%a8%e3%80%82%0a%e5%bc%95%e7%94%a8%e8%b7%9f%e8%b8%aa%e7%ae%97%e6%b3%95%20%e5%bc%95%e7%94%a8%e8%b7%9f%e8%b8%aa%e7%ae%97%e6%b3%95%e5%8f%aa%e5%85%b3%e5%bf%83%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%8f%98%e9%87%8f%ef%bc%8c%e5%9b%a0%e4%b8%ba%e5%8f%aa%e6%9c%89%e8%bf%99%e7%a7%8d%e5%8f%98%e9%87%8f%e6%89%8d%e8%83%bd%e5%bc%95%e7%94%a8%e5%a0%86%e4%b8%8a%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%9b%e5%80%bc%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%e7%9b%b4%e6%8e%a5%e5%8c%85%e5%90%ab%e5%80%bc%e7%b1%bb%e5%9e%8b%e5%ae%9e%e4%be%8b%e3%80%82%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%e5%8f%af%e4%bb%a5%e5%9c%a8%e8%ae%b8%e5%a4%9a%e5%9c%ba%e5%90%88%e4%bd%bf%e7%94%a8%ef%bc%8c%e5%8c%85%e6%8b%ac%e7%b1%bb%e7%9a%84%e9%9d%99%e6%80%81%e5%92%8c%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%ef%bc%8c%e6%88%96%e8%80%85%e6%96%b9%e6%b3%95%e7%9a%84%e5%8f%82%e6%95%b0%e5%92%8c%e5%b1%80%e9%83%a8%e5%8f%98%e9%87%8f%e3%80%82%e5%b0%86%e6%89%80%e6%9c%89%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%8f%98%e9%87%8f%e9%83%bd%e7%a7%b0%e4%b8%ba%e6%a0%b9%e3%80%82%0a%e5%bc%95%e7%94%a8%e8%b7%9f%e8%b8%aa%e7%ae%97%e6%b3%95%e6%ad%a5%e9%aa%a4%ef%bc%9a%0aCLR%e5%bc%80%e5%a7%8bGC%e6%97%b6%ef%bc%8c%e9%a6%96%e5%85%88%e6%9a%82%e5%81%9c%e8%bf%9b%e7%a8%8b%e4%b8%ad%e6%89%80%e6%9c%89%e7%ba%bf%e7%a8%8b%28%e9%98%b2%e6%ad%a2%e7%ba%bf%e7%a8%8b%e5%9c%a8CLR%e6%a3%80%e6%9f%a5%e6%9c%9f%e9%97%b4%e4%bf%ae%e6%94%b9%e5%af%b9%e8%b1%a1%e7%9a%84%e7%8a%b6%e6%80%81%29%e3%80%82%20CLR%e8%bf%9b%e5%85%a5GC%e7%9a%84%e6%a0%87%e8%ae%b0%e9%98%b6%e6%ae%b5%e3%80%82CLR%e9%81%8d%e5%8e%86%e5%a0%86%e4%b8%ad%e7%9a%84%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%b0%86%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e5%ad%97%e6%ae%b5%e4%b8%ad%e7%9a%84%e4%b8%80%e4%bd%8d%e8%ae%be%e4%b8%ba0%ef%bc%8c%e8%bf%99%e7%bc%96%e7%a0%81%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%e9%83%bd%e5%ba%94%e5%88%a0%e9%99%a4%e3%80%82%20CLR%e6%a3%80%e6%9f%a5%e6%89%80%e6%9c%89%e6%b4%bb%e5%8a%a8%e6%a0%b9%ef%bc%8c%e6%9f%a5%e7%9c%8b%e5%ae%83%e4%bb%ac%e5%bc%95%e7%94%a8%e4%ba%86%e5%93%aa%e4%ba%9b%e5%af%b9%e8%b1%a1%e3%80%82%e5%a6%82%e6%9e%9c%e4%b8%80%e4%b8%aa%e6%a0%b9%e5%8c%85%e5%90%abnull%ef%bc%8cCLR%e5%bf%bd%e7%95%a5%e8%bf%99%e4%b8%aa%e6%a0%b9%e5%b9%b6%e7%bb%a7%e7%bb%ad%e6%a3%80%e6%9f%a5%e4%b8%8b%e4%b8%80%e4%b8%aa%e6%a0%b9%e3%80%82%e4%bb%bb%e4%bd%95%e6%a0%b9%e5%a6%82%e6%9e%9c%e5%bc%95%e7%94%a8%e4%ba%86%e5%a0%86%e4%b8%8a%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%8cCLR%e9%83%bd%e4%bc%9a%e6%a0%87%e8%ae%b0%e9%82%a3%e4%b8%aa%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%b9%9f%e5%b0%b1%e6%98%af%e5%b0%86%e8%af%a5%e5%af%b9%e8%b1%a1%e7%9a%84%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e4%b8%ad%e7%9a%84%e4%bd%8d%e8%ae%be%e7%bd%ae%e4%b8%ba1.%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e8%a2%ab%e6%a0%87%e8%ae%b0%e5%90%8e%ef%bc%8cCLR%e4%bc%9a%e6%a3%80%e6%9f%a5%e9%82%a3%e4%b8%aa%e5%af%b9%e8%b1%a1%e4%b8%ad%e7%9a%84%e8%b7%9f%ef%bc%8c%e6%a0%87%e8%ae%b0%e5%ae%83%e4%bb%ac%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%e5%a6%82%e6%9e%9c%e5%8f%91%e7%8e%b0%e5%af%b9%e8%b1%a1%e5%b7%b2%e7%bb%8f%e6%a0%87%e8%ae%b0%ef%bc%8c%e5%b0%b1%e4%b8%8d%e9%87%8d%e6%96%b0%e6%a3%80%e6%9f%a5%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ad%97%e6%ae%b5%e3%80%82%e8%bf%99%e5%b0%b1%e9%81%bf%e5%85%8d%e4%ba%86%e5%ba%94%e4%b8%ba%e5%be%aa%e7%8e%af%e5%bc%95%e7%94%a8%e8%80%8c%e4%ba%a7%e7%94%9f%e7%9a%84%e6%ad%bb%e5%be%aa%e7%8e%af%e3%80%82%20%e5%9b%be1%20%e5%9b%9e%e6%94%b6%e4%b9%8b%e5%89%8d%e7%9a%84%e6%89%98%e7%ae%a1%e5%a0%86%20%e5%9b%be2%20%e6%a0%87%e8%ae%b0%e8%bf%87%e5%90%8e%e7%9a%84%e6%89%98%e7%ae%a1%e5%a0%86%20%e6%a3%80%e6%9f%a5%e5%ae%8c%e6%af%95%e5%90%8e%ef%bc%8c%e5%a0%86%e4%b8%ad%e7%9a%84%e5%af%b9%e8%b1%a1%e8%a6%81%e4%b9%88%e5%b7%b2%e6%a0%87%e8%ae%b0%ef%bc%8c%e8%a6%81%e4%b9%88%e6%9c%aa%e6%a0%87%e8%ae%b0%e3%80%82%e5%b7%b2%e6%a0%87%e8%ae%b0%e7%9a%84%e5%af%b9%e8%b1%a1%e4%b8%8d%e8%83%bd%e8%a2%ab%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%ef%bc%8c%e5%9b%a0%e4%b8%ba%e8%87%b3%e5%b0%91%e6%9c%89%e4%b8%80%e4%b8%aa%e6%a0%b9%e5%9c%a8%e5%bc%95%e7%94%a8%e5%ae%83%e3%80%82%e8%bf%99%e7%a7%8d%e7%8a%b6%e6%80%81%e8%a2%ab%e7%a7%b0%e4%b8%ba%e5%8f%af%e8%be%be%e7%9a%84%28reachable%29%e3%80%82%e6%9c%aa%e6%a0%87%e8%ae%b0%e7%9a%84%e5%af%b9%e8%b1%a1%e6%98%af%e4%b8%8d%e5%8f%af%e8%be%be%28unreachable%29%e7%9a%84%e3%80%82%20CLR%e8%bf%9b%e5%85%a5GC%e7%9a%84%e5%8e%8b%e7%bc%a9%28compact%29%e6%8e%a5%e7%ab%af%e3%80%82%e8%bf%99%e4%b8%aa%e6%8e%a5%e7%ab%af%ef%bc%8cCLR%e5%af%b9%e5%a0%86%e4%b8%ad%e5%b7%b2%e6%a0%87%e8%ae%b0%e7%9a%84%e5%af%b9%e8%b1%a1%e8%bf%9b%e8%a1%8c%e7%a7%bb%e5%8a%a8%ef%bc%8c%e5%8e%8b%e7%bc%a9%e5%b9%b8%e5%ad%98%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%bd%bf%e5%ae%83%e4%bb%ac%e5%8d%a0%e7%94%a8%e8%bf%9e%e7%bb%ad%e7%9a%84%e5%86%85%e5%ad%98%e7%a9%ba%e9%97%b4%e3%80%82%e4%bd%86%e6%a0%b9%e6%89%80%e5%bc%95%e7%94%a8%e7%9a%84%e4%bd%8d%e7%bd%ae%e8%bf%98%e6%9c%aa%e6%94%b9%e5%8f%98%ef%bc%8c%e6%89%80%e4%bb%a5CLR%e9%9c%80%e8%a6%81%e4%bb%8e%e6%af%8f%e4%b8%aa%e6%a0%b9%e5%87%8f%e5%8e%bb%e6%89%80%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e5%81%8f%e7%a7%bb%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e8%bf%99%e6%a0%b7%e5%b0%b1%e8%83%bd%e4%bf%9d%e8%af%81%e6%af%8f%e4%b8%aa%e6%a0%b9%e8%bf%98%e6%98%af%e5%bc%95%e7%94%a8%e5%92%8c%e4%b9%8b%e5%89%8d%e4%b8%80%e6%a0%b7%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%9b%e5%8f%aa%e6%98%af%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e5%8f%98%e5%8c%96%e4%ba%86%e4%bd%8d%e7%bd%ae%e3%80%82%20%e5%8e%8b%e7%bc%a9%e7%9a%84%e5%a5%bd%e5%a4%84%0a%e9%a6%96%e5%85%88%ef%bc%8c%e6%89%80%e6%9c%89%e5%b9%b8%e5%ad%98%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e7%b4%a7%e6%8c%a8%e5%9c%a8%e4%b8%80%e8%b5%b7%ef%bc%8c%e6%81%a2%e5%a4%8d%e4%ba%86%e5%bc%95%e7%94%a8%e7%9a%84%e2%80%9c%e5%b1%80%e9%83%a8%e5%8c%96%e2%80%9d%ef%bc%8c%e5%87%8f%e5%b0%8f%e4%ba%86%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e7%9a%84%e5%b7%a5%e4%bd%9c%e9%9b%86%ef%bc%8c%e4%bb%8e%e8%80%8c%e6%8f%90%e5%8d%87%e4%ba%86%e5%b0%86%e6%9d%a5%e8%ae%bf%e9%97%ae%e8%bf%99%e4%ba%9b%e5%af%b9%e8%b1%a1%e6%97%b6%e7%9a%84%e6%80%a7%e8%83%bd%e3%80%82%e5%85%b6%e6%ac%a1%ef%bc%8c%e5%8f%af%e7%94%a8%e7%a9%ba%e9%97%b4%e4%b9%9f%e5%85%a8%e9%83%a8%e6%97%b6%e8%bf%9e%e7%bb%ad%e7%9a%84%ef%bc%8c%e5%85%81%e8%ae%b8%e5%85%b6%e4%bb%96%e4%b8%9c%e8%a5%bf%e8%bf%9b%e9%a9%bb%e3%80%82%e6%9c%80%e5%90%8e%ef%bc%8c%e5%8e%8b%e7%bc%a9%e6%84%8f%e5%91%b3%e7%9d%80%e6%89%98%e7%ae%a1%e5%a0%86%e8%a7%a3%e5%86%b3%e4%ba%86%e6%9c%ac%e6%9c%ba%28%e5%8e%9f%e7%94%9f%29%e5%a0%86%e7%9a%84%e7%a9%ba%e9%97%b4%e7%a2%8e%e7%89%87%e5%8c%96%e9%97%ae%e9%a2%98%e3%80%82%0a6.%20%e5%8e%8b%e7%bc%a9%e5%a5%bd%e5%86%85%e5%ad%98%e5%90%8e%ef%bc%8c%e6%89%98%e7%ae%a1%e5%a0%86%e7%9a%84%60NextObjPtr%60%e6%8c%87%e9%92%88%e6%8c%87%e5%90%91%e6%9c%80%e5%90%8e%e4%b8%80%e4%b8%aa%e5%b9%b8%e5%ad%98%e5%af%b9%e8%b1%a1%e4%b9%8b%e5%90%8e%e7%9a%84%e4%bd%8d%e7%bd%ae%e3%80%82%20%e5%9b%be3%20%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%90%8e%e7%9a%84%e6%89%98%e7%ae%a1%e5%a0%86%20%e6%b3%a8%e6%84%8f%0a%e5%a6%82%e6%9e%9cCLR%e5%9c%a8%e4%b8%80%e4%b8%aaGC%e4%b9%8b%e5%90%8e%e5%9b%9e%e6%94%b6%e4%b8%8d%e4%ba%86%e5%86%85%e5%ad%98%ef%bc%8c%e8%80%8c%e4%b8%94%e8%bf%9b%e7%a8%8b%e4%b8%ad%e6%b2%a1%e6%9c%89%e7%a9%ba%e9%97%b4%e6%9d%a5%e5%88%86%e9%85%8d%e6%96%b0%e7%9a%84GC%e5%8c%ba%e5%9f%9f%ef%bc%8c%e5%b0%b1%e8%af%b4%e6%98%8e%e8%bf%9b%e7%a8%8b%e7%9a%84%e5%86%85%e5%ad%98%e5%b7%b2%e8%80%97%e5%b0%bd%e3%80%82%e6%ad%a4%e6%97%b6%ef%bc%8c%e8%af%95%e5%9b%be%e5%88%86%e9%85%8d%e6%9b%b4%e5%a4%9a%e7%9a%84%e5%86%85%e5%ad%98%e7%9a%84new%e6%93%8d%e4%bd%9c%e7%ac%a6%e5%b0%b1%e4%bc%9a%e6%8a%9b%e5%87%baOutOfMemoryException%e3%80%82%0a%e6%b3%a8%e6%84%8f%0a%e9%9d%99%e6%80%81%e5%ad%97%e6%ae%b5%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e4%b8%80%e7%9b%b4%e5%ad%98%e5%9c%a8%ef%bc%8c%e7%9b%b4%e5%88%b0%e7%94%a8%e4%ba%8e%e5%8a%a0%e8%bd%bd%e7%b1%bb%e5%9e%8b%e7%9a%84AppDomain%e5%8d%b8%e8%bd%bd%e4%b8%ba%e6%ad%a2%e3%80%82%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e7%9a%84%e4%b8%80%e4%b8%aa%e5%b8%b8%e8%a7%81%e5%8e%9f%e5%9b%a0%e5%b0%b1%e6%98%af%e8%ae%a9%e9%9d%99%e6%80%81%e5%ad%97%e6%ae%b5%e5%bc%95%e7%94%a8%e6%9f%90%e4%b8%aa%e5%90%88%e9%9b%86%e5%af%b9%e8%b1%a1%e3%80%82%e9%9d%99%e6%80%81%e5%af%b9%e8%b1%a1%e4%bc%9a%e4%bd%bf%e5%90%88%e9%9b%86%e5%af%b9%e8%b1%a1%e4%b8%80%e7%9b%b4%e5%ad%98%e5%ad%98%e6%b4%bb%ef%bc%8c%e8%80%8c%e5%90%88%e9%9b%86%e5%af%b9%e8%b1%a1%e4%bd%bf%e6%89%80%e6%9c%89%e7%9a%84%e6%95%b0%e6%8d%ae%e9%a1%b9%e4%b8%80%e7%9b%b4%e5%ad%98%e6%b4%bb%e3%80%82%e4%bb%8e%e8%80%8c%e5%af%bc%e8%87%b4%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e3%80%82%0a%e4%bb%a3%ef%bc%9a%e6%8f%90%e5%8d%87%e6%80%a7%e8%83%bd%20CLR%e7%9a%84GC%e6%98%af%e5%9f%ba%e4%ba%8e%e4%bb%a3%e7%9a%84%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%28generational%20garbage%20collector%29%ef%bc%8c%e5%ae%83%e5%af%b9%e4%bb%a3%e7%a0%81%e5%81%9a%e5%87%ba%e4%ba%86%e5%87%a0%e7%82%b9%e5%81%87%e8%ae%be%e3%80%82%0a%e5%af%b9%e8%b1%a1%e8%b6%8a%e6%96%b0%ef%bc%8c%e7%94%9f%e5%ad%98%e6%9c%9f%e8%b6%8a%e7%9f%ad%e3%80%82%20%e5%af%b9%e8%b1%a1%e8%b6%8a%e8%80%81%ef%bc%8c%e7%94%9f%e5%ad%98%e6%9c%9f%e8%b6%8a%e9%95%bf%e3%80%82%20%e5%9b%9e%e6%94%b6%e5%a0%86%e7%9a%84%e4%b8%80%e9%83%a8%e5%88%86%ef%bc%8c%e9%80%9f%e5%ba%a6%e5%bf%ab%e4%ba%8e%e5%9b%9e%e6%94%b6%e6%95%b4%e4%b8%aa%e5%a0%86%e3%80%82%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%9c%a8%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%e4%b8%8d%e5%8c%85%e5%90%ab%e5%af%b9%e8%b1%a1%e3%80%82%e6%b7%bb%e5%8a%a0%e5%88%b0%e5%a0%86%e7%9a%84%e5%af%b9%e8%b1%a1%e7%a7%b0%e4%b8%ba%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e3%80%82%e7%ae%80%e5%8d%95%e5%9c%b0%e8%af%b4%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e5%b0%b1%e6%98%af%e9%82%a3%e4%ba%9b%e6%96%b0%e6%9e%84%e9%80%a0%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e4%bb%8e%e6%9c%aa%e6%a3%80%e6%9f%a5%e8%bf%87%e5%ae%83%e4%bb%ac%e3%80%82%0a%e5%9b%be4%20%e6%96%b0%e5%88%9d%e5%a7%8b%e5%8c%96%e7%9a%84%e5%a0%86%ef%bc%8c%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%e9%83%bd%e6%98%af%e7%ac%ac0%e4%bb%a3%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%b0%9a%e6%9c%aa%e5%8f%91%e7%94%9f%20CLR%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%e4%b8%ba%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e9%80%89%e6%8b%a9%e4%b8%80%e4%b8%aa%e9%a2%84%e7%ae%97%e5%ae%b9%e9%87%8f%28KB%e5%8d%95%e4%bd%8d%29%e3%80%82%e5%a6%82%e6%9e%9c%e5%88%86%e9%85%8d%e4%b8%80%e4%b8%aa%e6%96%b0%e5%af%b9%e8%b1%a1%e9%80%a0%e6%88%90%e7%ac%ac0%e4%bb%a3%e8%b6%85%e8%bf%87%e9%a2%84%e7%ae%97%ef%bc%8c%e5%b0%b1%e5%bf%85%e9%a1%bb%e5%90%af%e5%8a%a8%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e3%80%82%e5%81%87%e8%ae%be%e4%b8%8a%e5%9b%beA%e5%88%b0E%e6%ad%a3%e5%a5%bd%e4%bd%bf%e7%94%a8%e5%ae%8c%e7%ac%ac0%e4%bb%a3%e7%a9%ba%e9%97%b4%ef%bc%8c%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1F%e6%97%b6%e5%b0%b1%e5%bf%85%e9%a1%bb%e5%90%af%e5%8a%a8%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e3%80%82%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e4%bc%9a%e5%88%a4%e6%96%ad%e5%af%b9%e8%b1%a1C%e5%92%8cE%e6%97%b6%e5%9e%83%e5%9c%be%ef%bc%8c%e6%89%80%e4%bb%a5%e4%bc%9a%e5%8e%8b%e7%bc%a9D%ef%bc%8c%e4%bd%bf%e4%b9%8b%e4%b8%8e%e5%af%b9%e8%b1%a1B%e7%9b%b8%e9%82%bb%e3%80%82%e5%9c%a8%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e4%b8%ad%e5%ad%98%e6%b4%bb%e7%9a%84%e5%af%b9%e8%b1%a1%28A%2cB%e5%92%8cD%29%e7%8e%b0%e5%9c%a8%e7%a7%b0%e4%b8%ba%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e3%80%82%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e5%b7%b2%e7%bb%8f%e7%bb%8f%e5%8e%86%e4%ba%86%e4%b8%80%e4%b8%aa%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e7%9a%84%e6%a3%80%e6%9f%a5%e3%80%82%0a%e5%9b%be5%20%e7%bb%8f%e5%8e%86%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e7%9a%84%e5%b9%b8%e5%ad%98%e8%80%85%e8%a2%ab%e6%8f%90%e5%8d%87%e8%87%b3%e7%ac%ac1%e4%bb%a3%20%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%90%8e%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e5%b0%b1%e4%b8%8d%e5%8c%85%e5%90%ab%e4%bb%bb%e4%bd%95%e5%af%b9%e8%b1%a1%e4%ba%86%e3%80%82%e5%92%8c%e4%b9%8b%e5%89%8d%e4%b8%80%e6%a0%b7%ef%bc%8c%e6%96%b0%e5%af%b9%e8%b1%a1%e4%bc%9a%e5%88%86%e9%85%8d%e5%88%b0%e7%ac%ac0%e4%bb%a3%e4%b8%ad%e3%80%82%0a%e5%9b%be5%20%e7%ac%ac0%e4%bb%a3%e5%88%86%e9%85%8d%e4%ba%86%e6%96%b0%e5%af%b9%e8%b1%a1%ef%bc%9b%e7%ac%ac1%e4%bb%a3%e5%8f%88%e5%9e%83%e5%9c%be%e4%ba%a7%e7%94%9f%20%e5%81%87%e5%ae%9a%e5%88%86%e9%85%8d%e6%96%b0%e5%af%b9%e8%b1%a1L%e4%bc%9a%e9%80%a0%e6%88%90%e7%ac%ac0%e4%bb%a3%e8%b6%85%e5%87%ba%e9%a2%84%e7%ae%97%ef%bc%8c%e9%80%a0%e6%88%90%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e3%80%82CLR%e9%9c%80%e8%a6%81%e5%86%b3%e5%ae%9a%e6%a3%80%e6%9f%a5%e5%93%aa%e4%ba%9b%e4%bb%a3%e3%80%82CLR%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%e4%b8%8d%e4%bb%85%e4%bc%9a%e7%bb%99%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e9%80%89%e6%8b%a9%e9%a2%84%e7%ae%97%ef%bc%8c%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e4%b9%9f%e5%be%97%e5%8f%88%e9%a2%84%e7%ae%97%e3%80%82%e5%81%87%e5%a6%82%e5%bc%80%e5%90%af%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%97%b6%ef%bc%8c%e7%ac%ac1%e4%bb%a3%e5%8d%a0%e7%94%a8%e5%86%85%e5%ad%98%e5%b0%91%e4%ba%8e%e9%a2%84%e7%ae%97%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%8f%aa%e6%a3%80%e6%9f%a5%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e3%80%82%e7%94%b1%e4%ba%8e%e5%bf%bd%e7%95%a5%e4%ba%86%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%ef%bc%8c%e6%89%80%e4%bb%a5%e5%8a%a0%e5%bf%ab%e4%ba%86%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e9%80%9f%e5%ba%a6%e3%80%82%0a%e6%80%a7%e8%83%bd%e7%9a%84%e4%bc%98%e5%8a%bf%e5%92%8c%e5%af%b9%e5%ba%94%e7%9a%84%e9%97%ae%e9%a2%98%0a%e6%98%be%e7%84%b6%ef%bc%8c%e5%bf%bd%e7%95%a5%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e8%83%bd%e6%8f%90%e5%8d%87%e6%80%a7%e8%83%bd%e3%80%82%e5%af%b9%e6%80%a7%e8%83%bd%e6%8f%90%e5%8d%87%e7%9a%84%e9%83%a8%e5%88%86%e6%9b%b4%e4%b8%bb%e8%a6%81%e6%98%af%e4%b8%8d%e5%bf%85%e5%8f%98%e9%87%8f%e6%89%98%e7%ae%a1%e5%a0%86%e4%b8%ad%e7%9a%84%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e3%80%82%e5%a6%82%e6%9e%9c%e6%a0%b9%e6%88%96%e5%af%b9%e8%b1%a1%e5%bc%95%e7%94%a8%e4%ba%86%e7%ac%ac1%e4%bb%a3%e7%9a%84%e6%9f%90%e4%b8%aa%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e5%b0%b1%e4%bc%9a%e5%bf%bd%e7%95%a5%e8%80%81%e5%af%b9%e8%b1%a1%e5%86%85%e9%83%a8%e7%9a%84%e6%89%80%e6%9c%89%e5%bc%95%e7%94%a8%ef%bc%8c%e8%83%bd%e6%9b%b4%e7%9f%ad%e7%9a%84%e6%9e%84%e9%80%a0%e5%a5%bd%e5%8f%af%e8%be%be%e5%af%b9%e8%b1%a1%e5%9b%be%e3%80%82%e5%bd%93%e7%84%b6%ef%bc%8c%e8%80%81%e5%af%b9%e8%b1%a1%e5%ad%97%e6%ae%b5%e4%b9%9f%e6%9c%89%e5%8f%af%e8%83%bd%e5%bc%95%e7%94%a8%e6%96%b0%e5%af%b9%e8%b1%a1%e3%80%82%e4%b8%ba%e4%ba%86%e7%a1%ae%e4%bf%9d%e5%af%b9%e8%80%81%e5%af%b9%e8%b1%a1%e7%9a%84%e5%b7%b2%e6%9b%b4%e6%96%b0%e5%ad%97%e6%ae%b5%e8%bf%9b%e8%a1%8c%e6%a3%80%e6%9f%a5%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e5%88%a9%e7%94%a8%e4%ba%86JIT%e7%bc%96%e8%af%91%e5%99%a8%e5%86%85%e9%83%a8%e7%9a%84%e4%b8%80%e4%b8%aa%e6%9c%ba%e5%88%b6%e3%80%82%e8%bf%99%e4%b8%aa%e6%9c%ba%e5%88%b6%e5%9c%a8%e5%af%b9%e8%b1%a1%e7%9a%84%e5%bc%95%e7%94%a8%e5%ad%97%e6%ae%b5%e5%8f%91%e7%94%9f%e5%8f%98%e5%8c%96%e6%97%b6%ef%bc%8c%e4%bc%9a%e8%ae%be%e7%bd%ae%e4%b8%80%e4%b8%aa%e5%af%b9%e5%ba%94%e7%9a%84%e4%bd%8d%e6%a0%87%e5%bf%97%e3%80%82%e8%bf%99%e6%a0%b7%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e5%b0%b1%e7%9f%a5%e9%81%93%e8%87%aa%e4%b8%8a%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e4%bb%a5%e6%9d%a5%ef%bc%8c%e5%93%aa%e4%ba%9b%e8%80%81%e5%af%b9%e8%b1%a1%e5%b7%b2%e8%a2%ab%e5%86%99%e5%85%a5%e3%80%82%e5%8f%aa%e6%9c%89%e5%ad%97%e6%ae%b5%e5%8f%91%e7%94%9f%e5%8f%98%e5%8c%96%e7%9a%84%e8%80%81%e5%af%b9%e8%b1%a1%e6%89%8d%e9%9c%80%e8%a6%81%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%bc%95%e7%94%a8%e4%ba%86%e7%ac%ac0%e4%bb%a3%e4%b8%ad%e7%9a%84%e4%bb%bb%e4%bd%95%e6%96%b0%e5%af%b9%e8%b1%a1%e3%80%82%0a%e5%9f%ba%e4%ba%8e%e5%af%b9%e8%b1%a1%e8%b6%8a%e8%80%81%ef%bc%8c%e7%94%9f%e5%ad%98%e6%9c%9f%e8%b6%8a%e9%95%bf%e7%9a%84%e5%81%87%e8%ae%be%e3%80%82%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%ba%94%e7%94%a8%e4%b8%ad%e5%be%88%e5%8f%af%e8%83%bd%e6%98%af%e7%bb%a7%e7%bb%ad%e5%8f%af%e8%be%be%e7%9a%84%e3%80%82%e5%9b%a0%e6%ad%a4%e5%af%b9%e7%ac%ac1%e4%bb%a3%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%be%88%e5%8f%af%e8%83%bd%e6%98%af%e6%b5%aa%e8%b4%b9%e6%97%b6%e9%97%b4%e3%80%82%e5%a6%82%e6%9e%9c%e6%9c%89%e5%9e%83%e5%9c%be%e5%9c%a8%e7%ac%ac1%e4%bb%a3%e4%b8%ad%ef%bc%8c%e9%82%a3%e5%b0%b1%e7%95%99%e5%9c%a8%e9%82%a3%e9%87%8c%e3%80%82%0a%e5%9b%be6%20%e7%bb%8f%e8%bf%87%e4%b8%a4%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%90%8e%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e7%9a%84%e5%b9%b8%e5%ad%98%e8%80%85%e8%a2%ab%e6%8f%90%e5%8d%87%e5%88%b0%e7%ac%ac1%e4%bb%a3%28%e7%ac%ac1%e4%bb%a3%e7%9a%84%e5%a4%a7%e5%b0%8f%e5%a2%9e%e5%8a%a0%29%ef%bc%9b%e7%ac%ac0%e4%bb%a3%e5%8f%88%e7%a9%ba%e5%87%ba%e6%9d%a5%e4%ba%86%20%e5%9b%be7%20%e5%a4%9a%e6%ac%a1%e7%ac%ac0%e4%bb%a3%e5%9b%9e%e6%94%b6%e5%90%8e%ef%bc%8c%e7%ac%ac1%e4%bb%a3%e8%b6%85%e5%87%ba%e9%a2%84%e7%ae%97%e3%80%82%e4%b8%a4%e4%bb%a3%e4%b8%80%e8%b5%b7%e8%bf%9b%e8%a1%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%20%e5%9b%be8%20%e7%ac%ac1%e4%bb%a3%e5%b9%b8%e5%ad%98%e8%80%85%e6%8f%90%e5%8d%87%e8%87%b3%e7%ac%ac2%e4%bb%a3%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e5%b9%b8%e5%ad%98%e8%80%85%e6%8f%90%e5%8d%87%e8%87%b3%e7%ac%ac1%e4%bb%a3%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e7%a9%ba%e5%87%ba%20%e6%b3%a8%e6%84%8f" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#托管堆基础">托管堆基础</a>
+      <ul>
+        <li><a href="#从托管堆中分配资源">从托管堆中分配资源</a></li>
+        <li><a href="#垃圾回收算法">垃圾回收算法</a>
+          <ul>
+            <li><a href="#引用计数算法">引用计数算法</a></li>
+            <li><a href="#引用跟踪算法">引用跟踪算法</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#代提升性能">代：提升性能</a>
+      <ul>
+        <li><a href="#垃圾回收的触发条件">垃圾回收的触发条件</a></li>
+        <li><a href="#大对象">大对象</a></li>
+        <li><a href="#垃圾回收模式">垃圾回收模式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        《CLR via C#》 托管堆和垃圾回收
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-08-31 10:24:40 &#43;0800 CST" itemprop="datePublished">2022-08-31</time>
+          
+        </div>
+        
+        
+        
+        <div class="article-category">
+            <i class="fas fa-archive"></i>
+            
+            
+            <a class="category-link" href="/categories/clr-via-csharp">《CLR via CSharp》</a>
+            
+        </div>
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h2 id="托管堆基础">托管堆基础</h2>
+<p>访问一个资源所需要的步骤：</p>
+<ol>
+<li>调用IL指定<code>newobj</code>，为代表资源的类型分配内存(一般用C#<code>new</code>操作符来完成)。</li>
+<li>初始化内存，设置资源的初始状态并使资源可用。类型的实例构造器负责设置初始化状态。</li>
+<li>访问类型的成员来使用资源(有必要可以重复)。</li>
+<li>摧毁资源的状态以进行清理。</li>
+<li>释放内存。垃圾回收器独自负责这一步骤。</li>
+</ol>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>只要是写可验证的、类型安全的代码(不使用C#<code>unsafe</code>)，应用程序就不可能会出现内存被破坏的情况。但内存仍有可能泄露，但不像C/C++那样是默认行为。<strong>现在内存泄漏一般是因为在集合中存储了对象，但不需要对象的时候一直不删除</strong>。</p>
+</div>
+<h3 id="从托管堆中分配资源">从托管堆中分配资源</h3>
+<p>CLR要求所有对象都从<strong>托管堆</strong>分配。进程初始化时，CLR划出一个地址空间区域作为托管堆。CLR还要维护一个指针<code>NextObjPtr</code>，该指针指向下一个对象在堆中的分配位置。刚开始的时候<code>NextObjPtr</code>设为地址空间区域的基地址。</p>
+<p>一个区域被非垃圾对象填满后，CLR会分配更到的区域。这个过程一直重复，直至整个进程地址空间都被填满。所以，应用程序的内存受进程的虚拟地址空间的限制。32位进程最多分配1.5GB，64位进程最多分配8TB。</p>
+<p>new操作符的执行细节：</p>
+<ol>
+<li>计算类型的字段(以及从基类型继承的字段)所需的字节数。</li>
+<li>加上对象的开销所需的字节数。每个对象都有两个开销字段：类型对象指针和同步块索引。</li>
+<li>CLR检查区域中是否有分配对象所需的字节数。如果托管堆有足够的空间，就在<code>NextObjPtr</code>指针指向的地址处放入对象，为对象分配的字节没被清零。接着调用类型的构造器(为<code>this</code>参数传递<code>NextObjPtr</code>)，<code>new</code>操作符返回对象引用。在返回引用前，<code>NextObjPtr</code>指针的值会加上对象占用的字节数来得到一个新值，即下个对象放入托管堆时的地址。</li>
+</ol>
+<div class="admonition tip"><p class="admonition-title">托管堆的优点</p>
+<p>对于托管堆，分配对象只需要在指针上加一个值(速度非常快)。在许多应用程序中，差不多同时分配的对象彼此间有较强的联系，而且经常差不多在同一时间访问。由于托管堆在内存中连续分配对象，所以因为引用“局部化”(locality)而获得性能上的提升。具体来说，这意味着工作集会非常小，应用程序只需要使用很少的内存，从而提高了速度。还意味着代码使用的对象可以全部驻留在CPU的缓存中。结果是应用程序能以非常快的速度访问这些对象，因为CPU在执行大多数操作时，不会因为“缓存未命中”(cache miss)而被迫访问较慢的RAM。</p>
+<p>发挥此优点的前提是内存无限，但内存不可能无限，所以CLR用“垃圾回收”(GC)的技术“删除”堆中应用程序不再需要的对象。</p>
+</div>
+<h3 id="垃圾回收算法">垃圾回收算法</h3>
+<p>应用程序调用<code>new</code>操作符创建对象时，可能没有足够的空间来分配该对象。发现空间不够，CLR就执行垃圾回收(实际上，垃圾回收是在第0代满的时候发生的)。</p>
+<h4 id="引用计数算法">引用计数算法</h4>
+<p>在引用计数算法中，堆上的每个对象都维护着一个内存字段来统计程序中有多少正在使用的对象。随着每一个对象到达代码中某个不再需要对象的地方，就递减对象的计数字段。计数字段变成0，对象就可以从内存中删除了。<strong>引用计数系统最大的问题就是处理不好循环引用</strong>。</p>
+<h4 id="引用跟踪算法">引用跟踪算法</h4>
+<p>引用跟踪算法只关心引用类型的变量，因为只有这种变量才能引用堆上的对象；值类型变量直接包含值类型实例。引用类型变量可以在许多场合使用，包括类的静态和实例字段，或者方法的参数和局部变量。将所有引用类型的变量都称为<strong>根</strong>。</p>
+<p>引用跟踪算法步骤：</p>
+<ol>
+<li>CLR开始GC时，首先暂停进程中所有线程(防止线程在CLR检查期间修改对象的状态)。</li>
+<li>CLR进入GC的<strong>标记</strong>阶段。CLR遍历堆中的所有对象，将同步块索引字段中的一位设为0，这编码所有对象都应删除。</li>
+<li>CLR检查所有活动根，查看它们引用了哪些对象。如果一个根包含<code>null</code>，CLR忽略这个根并继续检查下一个根。任何根如果引用了堆上的对象，CLR都会标记那个对象，也就是将该对象的同步块索引中的位设置为1.一个对象被标记后，CLR会检查那个对象中的跟，标记它们引用的对象。如果发现对象已经标记，就不重新检查对象的字段。这就避免了应为循环引用而产生的死循环。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%9B%9E%E6%94%B6%E4%B9%8B%E5%89%8D%E7%9A%84%E6%89%98%E7%AE%A1%E5%A0%86.png" alt="回收之前的托管堆" title="回收之前的托管堆"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图1 回收之前的托管堆</center>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E6%A0%87%E8%AE%B0%E8%BF%87%E5%90%8E%E7%9A%84%E6%89%98%E7%AE%A1%E5%A0%86.png" alt="标记过后的托管堆" title="标记过后的托管堆"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图2 标记过后的托管堆</center>
+<ol start="4">
+<li>检查完毕后，堆中的对象要么已标记，要么未标记。已标记的对象不能被垃圾回收，因为至少有一个根在引用它。这种状态被称为<strong>可达的</strong>(reachable)。未标记的对象是<strong>不可达</strong>(unreachable)的。</li>
+<li>CLR进入GC的<strong>压缩</strong>(compact)接端。这个接端，CLR对堆中已标记的对象进行移动，压缩幸存的对象，使它们占用连续的内存空间。但根所引用的位置还未改变，所以CLR需要从每个根减去所引用的对象在内存中偏移的字节数。这样就能保证每个根还是引用和之前一样的对象；只是对象在内存中变化了位置。</li>
+</ol>
+<div class="admonition tip"><p class="admonition-title">压缩的好处</p>
+<p>首先，所有幸存对象在内存中紧挨在一起，恢复了引用的“局部化”，减小了应用程序的工作集，从而提升了将来访问这些对象时的性能。其次，可用空间也全部时连续的，允许其他东西进驻。最后，压缩意味着托管堆解决了本机(原生)堆的空间碎片化问题。</p>
+</div>
+6. 压缩好内存后，托管堆的`NextObjPtr`指针指向最后一个幸存对象之后的位置。
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%90%8E%E7%9A%84%E6%89%98%E7%AE%A1%E5%A0%86.png" alt="垃圾回收后的托管堆" title="垃圾回收后的托管堆"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图3 垃圾回收后的托管堆</center>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>如果CLR在一个GC之后回收不了内存，而且进程中没有空间来分配新的GC区域，就说明进程的内存已耗尽。此时，试图分配更多的内存的<code>new</code>操作符就会抛出<code>OutOfMemoryException</code>。</p>
+</div>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>静态字段引用的对象一直存在，直到用于加载类型的AppDomain卸载为止。内存泄漏的一个常见原因就是让静态字段引用某个合集对象。静态对象会使合集对象一直存存活，而合集对象使所有的数据项一直存活。从而导致内存泄漏。</p>
+</div>
+<h2 id="代提升性能">代：提升性能</h2>
+<p>CLR的GC是<strong>基于代的垃圾回收器</strong>(generational garbage collector)，它对代码做出了几点假设。</p>
+<ul>
+<li>对象越新，生存期越短。</li>
+<li>对象越老，生存期越长。</li>
+<li>回收堆的一部分，速度快于回收整个堆。</li>
+</ul>
+<p>托管堆在初始化时不包含对象。添加到堆的对象称为第0代对象。简单地说，第0代对象就是那些新构造的对象，垃圾回收器从未检查过它们。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E6%96%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%A0%86%EF%BC%8C%E6%89%80%E6%9C%89%E5%AF%B9%E8%B1%A1%E9%83%BD%E6%98%AF%E7%AC%AC0%E4%BB%A3%EF%BC%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%B0%9A%E6%9C%AA%E5%8F%91%E7%94%9F.png" alt="新初始化的堆，所有对象都是第0代，垃圾回收尚未发生" title="新初始化的堆，所有对象都是第0代，垃圾回收尚未发生"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图4 新初始化的堆，所有对象都是第0代，垃圾回收尚未发生</center>
+<p>CLR初始化时为第0代对象选择一个预算容量(KB单位)。如果分配一个新对象造成第0代超过预算，就必须启动一次垃圾回收。假设上图A到E正好使用完第0代空间，分配对象F时就必须启动垃圾回收。垃圾回收器会判断对象C和E时垃圾，所以会压缩D，使之与对象B相邻。在垃圾回收中存活的对象(A,B和D)现在称为第1代对象。第1代对象已经经历了一个垃圾回收器的检查。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E7%BB%8F%E5%8E%86%E4%B8%80%E6%AC%A1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%EF%BC%8C%E7%AC%AC0%E4%BB%A3%E7%9A%84%E5%B9%B8%E5%AD%98%E8%80%85%E8%A2%AB%E6%8F%90%E5%8D%87%E8%87%B3%E7%AC%AC1%E4%BB%A3.png" alt="经历一次垃圾回收，第0代的幸存者被提升至第1代" title="经历一次垃圾回收，第0代的幸存者被提升至第1代"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图5 经历一次垃圾回收，第0代的幸存者被提升至第1代</center>
+<p>一次垃圾回收后，第0代就不包含任何对象了。和之前一样，新对象会分配到第0代中。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E7%AC%AC0%E4%BB%A3%E5%88%86%E9%85%8D%E4%BA%86%E6%96%B0%E5%AF%B9%E8%B1%A1%EF%BC%9B%E7%AC%AC1%E4%BB%A3%E5%8F%88%E5%9E%83%E5%9C%BE%E4%BA%A7%E7%94%9F.png" alt="第0代分配了新对象；第1代又垃圾产生" title="第0代分配了新对象；第1代又垃圾产生"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图5 第0代分配了新对象；第1代又垃圾产生</center>
+<p>假定分配新对象L会造成第0代超出预算，造成垃圾回收。CLR需要决定检查哪些代。CLR初始化时不仅会给第0代对象选择预算，第1代对象也得又预算。假如开启垃圾回收时，第1代占用内存少于预算，垃圾回收只检查第0代对象。由于忽略了第1代对象，所以加快了垃圾回收速度。</p>
+<div class="admonition warning"><p class="admonition-title">性能的优势和对应的问题</p>
+<p>显然，忽略第1代对象能提升性能。对性能提升的部分更主要是不必变量托管堆中的每个对象。如果根或对象引用了第1代的某个对象，垃圾回收器就会忽略老对象内部的所有引用，能更短的构造好可达对象图。当然，老对象字段也有可能引用新对象。为了确保对老对象的已更新字段进行检查，垃圾回收器利用了JIT编译器内部的一个机制。<strong>这个机制在对象的引用字段发生变化时，会设置一个对应的位标志。这样，垃圾回收器就知道自上一次垃圾回收以来，哪些老对象已被写入。只有字段发生变化的老对象才需要检查是否引用了第0代中的任何新对象</strong>。</p>
+</div>
+<p>基于对象越老，生存期越长的假设。第1代对象在应用中很可能是继续可达的。因此对第1代垃圾回收很可能是浪费时间。如果有垃圾在第1代中，那就留在那里。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E7%BB%8F%E8%BF%87%E4%B8%A4%E6%AC%A1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%90%8E%EF%BC%8C%E7%AC%AC0%E4%BB%A3%E7%9A%84%E5%B9%B8%E5%AD%98%E8%80%85%E8%A2%AB%E6%8F%90%E5%8D%87%E5%88%B0%E7%AC%AC1%E4%BB%A3(%E7%AC%AC1%E4%BB%A3%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%A2%9E%E5%8A%A0)%EF%BC%9B%E7%AC%AC0%E4%BB%A3%E5%8F%88%E7%A9%BA%E5%87%BA%E6%9D%A5%E4%BA%86.png" alt="经过两次垃圾回收后，第0代的幸存者被提升到第1代(第1代的大小增加)；第0代又空出来了" title="经过两次垃圾回收后，第0代的幸存者被提升到第1代(第1代的大小增加)；第0代又空出来了"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图6 经过两次垃圾回收后，第0代的幸存者被提升到第1代(第1代的大小增加)；第0代又空出来了</center>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%A4%9A%E6%AC%A1%E7%AC%AC0%E4%BB%A3%E5%9B%9E%E6%94%B6%E5%90%8E%EF%BC%8C%E7%AC%AC1%E4%BB%A3%E8%B6%85%E5%87%BA%E9%A2%84%E7%AE%97%E3%80%82%E4%B8%A4%E4%BB%A3%E4%B8%80%E8%B5%B7%E8%BF%9B%E8%A1%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6.png" alt="多次第0代回收后，第1代超出预算。两代一起进行垃圾回收" title="多次第0代回收后，第1代超出预算。两代一起进行垃圾回收"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图7 多次第0代回收后，第1代超出预算。两代一起进行垃圾回收</center>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E7%AC%AC1%E4%BB%A3%E5%B9%B8%E5%AD%98%E8%80%85%E6%8F%90%E5%8D%87%E8%87%B3%E7%AC%AC2%E4%BB%A3%EF%BC%8C%E7%AC%AC0%E4%BB%A3%E5%B9%B8%E5%AD%98%E8%80%85%E6%8F%90%E5%8D%87%E8%87%B3%E7%AC%AC1%E4%BB%A3%EF%BC%8C%E7%AC%AC0%E4%BB%A3%E7%A9%BA%E5%87%BA.png" alt="第1代幸存者提升至第2代，第0代幸存者提升至第1代，第0代空出" title="第1代幸存者提升至第2代，第0代幸存者提升至第1代，第0代空出"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图8 第1代幸存者提升至第2代，第0代幸存者提升至第1代，第0代空出</center>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>托管堆只支持三代。CLR初始化时会为每一代选择预算。然而，CLR的垃圾回收器是自调节的。这意味着垃圾回收器会在执行垃圾回收过程中了解应用程序的行为。对预算做响应调整。</p>
+</div>
+<h3 id="垃圾回收的触发条件">垃圾回收的触发条件</h3>
+<ul>
+<li>代码显式调用<code>System.GC</code>的静态<code>Collect</code>方法。</li>
+<li>Windows报告低内存情况</li>
+<li>CLR正在卸载AppDomain</li>
+<li>CLR正在关闭</li>
+</ul>
+<h3 id="大对象">大对象</h3>
+<p>CLR将对象分为大对象和小对象。大于85000字节的对象是大对象。</p>
+<ul>
+<li>大对象根小对象不在一起分配。</li>
+<li>GC不压缩大对象，因为移动代价过高。</li>
+<li>大对象总是第2代，只能为需要长时间存活的资源创建大对象。分配短时间存活的大对象会导致第2代被更频繁的回收，影响性能。</li>
+</ul>
+<h3 id="垃圾回收模式">垃圾回收模式</h3>
+<p>CLR启动时会选择一个GC模式，进程终止前该模式不会改变。基本有两个GC模式。</p>
+<ul>
+<li>工作站：对客户端程序进行GC优化。GC延迟低，挂起时间短，避免用户感到焦虑。GC假定机器上运行的其他程序都不会消耗太多CPU资源</li>
+<li>服务器：针对服务器进行GC优化。被优化的主要时吞吐量和资源利用率。GC加油机器上没有运行其他应用程序。该模式造成托管堆拆分成几个区域，每个CPU一个。开始垃圾回收时，垃圾回收器在每个CPU上都运行一个特殊线程；每个线程和其他线程并发回收它自己的区域。</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">Writings</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#托管堆基础">托管堆基础</a>
+      <ul>
+        <li><a href="#从托管堆中分配资源">从托管堆中分配资源</a></li>
+        <li><a href="#垃圾回收算法">垃圾回收算法</a>
+          <ul>
+            <li><a href="#引用计数算法">引用计数算法</a></li>
+            <li><a href="#引用跟踪算法">引用跟踪算法</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#代提升性能">代：提升性能</a>
+      <ul>
+        <li><a href="#垃圾回收的触发条件">垃圾回收的触发条件</a></li>
+        <li><a href="#大对象">大对象</a></li>
+        <li><a href="#垃圾回收模式">垃圾回收模式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6&body=Check out this article: https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6&description=%e6%89%98%e7%ae%a1%e5%a0%86%e5%9f%ba%e7%a1%80%20%e8%ae%bf%e9%97%ae%e4%b8%80%e4%b8%aa%e8%b5%84%e6%ba%90%e6%89%80%e9%9c%80%e8%a6%81%e7%9a%84%e6%ad%a5%e9%aa%a4%ef%bc%9a%0a%e8%b0%83%e7%94%a8IL%e6%8c%87%e5%ae%9anewobj%ef%bc%8c%e4%b8%ba%e4%bb%a3%e8%a1%a8%e8%b5%84%e6%ba%90%e7%9a%84%e7%b1%bb%e5%9e%8b%e5%88%86%e9%85%8d%e5%86%85%e5%ad%98%28%e4%b8%80%e8%88%ac%e7%94%a8C%23new%e6%93%8d%e4%bd%9c%e7%ac%a6%e6%9d%a5%e5%ae%8c%e6%88%90%29%e3%80%82%20%e5%88%9d%e5%a7%8b%e5%8c%96%e5%86%85%e5%ad%98%ef%bc%8c%e8%ae%be%e7%bd%ae%e8%b5%84%e6%ba%90%e7%9a%84%e5%88%9d%e5%a7%8b%e7%8a%b6%e6%80%81%e5%b9%b6%e4%bd%bf%e8%b5%84%e6%ba%90%e5%8f%af%e7%94%a8%e3%80%82%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e8%b4%9f%e8%b4%a3%e8%ae%be%e7%bd%ae%e5%88%9d%e5%a7%8b%e5%8c%96%e7%8a%b6%e6%80%81%e3%80%82%20%e8%ae%bf%e9%97%ae%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%88%90%e5%91%98%e6%9d%a5%e4%bd%bf%e7%94%a8%e8%b5%84%e6%ba%90%28%e6%9c%89%e5%bf%85%e8%a6%81%e5%8f%af%e4%bb%a5%e9%87%8d%e5%a4%8d%29%e3%80%82%20%e6%91%a7%e6%af%81%e8%b5%84%e6%ba%90%e7%9a%84%e7%8a%b6%e6%80%81%e4%bb%a5%e8%bf%9b%e8%a1%8c%e6%b8%85%e7%90%86%e3%80%82%20%e9%87%8a%e6%94%be%e5%86%85%e5%ad%98%e3%80%82%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e7%8b%ac%e8%87%aa%e8%b4%9f%e8%b4%a3%e8%bf%99%e4%b8%80%e6%ad%a5%e9%aa%a4%e3%80%82%20%e6%8f%90%e7%a4%ba%0a%e5%8f%aa%e8%a6%81%e6%98%af%e5%86%99%e5%8f%af%e9%aa%8c%e8%af%81%e7%9a%84%e3%80%81%e7%b1%bb%e5%9e%8b%e5%ae%89%e5%85%a8%e7%9a%84%e4%bb%a3%e7%a0%81%28%e4%b8%8d%e4%bd%bf%e7%94%a8C%23unsafe%29%ef%bc%8c%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e5%b0%b1%e4%b8%8d%e5%8f%af%e8%83%bd%e4%bc%9a%e5%87%ba%e7%8e%b0%e5%86%85%e5%ad%98%e8%a2%ab%e7%a0%b4%e5%9d%8f%e7%9a%84%e6%83%85%e5%86%b5%e3%80%82%e4%bd%86%e5%86%85%e5%ad%98%e4%bb%8d%e6%9c%89%e5%8f%af%e8%83%bd%e6%b3%84%e9%9c%b2%ef%bc%8c%e4%bd%86%e4%b8%8d%e5%83%8fC%2fC%2b%2b%e9%82%a3%e6%a0%b7%e6%98%af%e9%bb%98%e8%ae%a4%e8%a1%8c%e4%b8%ba%e3%80%82%e7%8e%b0%e5%9c%a8%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e4%b8%80%e8%88%ac%e6%98%af%e5%9b%a0%e4%b8%ba%e5%9c%a8%e9%9b%86%e5%90%88%e4%b8%ad%e5%ad%98%e5%82%a8%e4%ba%86%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%bd%86%e4%b8%8d%e9%9c%80%e8%a6%81%e5%af%b9%e8%b1%a1%e7%9a%84%e6%97%b6%e5%80%99%e4%b8%80%e7%9b%b4%e4%b8%8d%e5%88%a0%e9%99%a4%e3%80%82%0a%e4%bb%8e%e6%89%98%e7%ae%a1%e5%a0%86%e4%b8%ad%e5%88%86%e9%85%8d%e8%b5%84%e6%ba%90%20CLR%e8%a6%81%e6%b1%82%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%e9%83%bd%e4%bb%8e%e6%89%98%e7%ae%a1%e5%a0%86%e5%88%86%e9%85%8d%e3%80%82%e8%bf%9b%e7%a8%8b%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%ef%bc%8cCLR%e5%88%92%e5%87%ba%e4%b8%80%e4%b8%aa%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e5%8c%ba%e5%9f%9f%e4%bd%9c%e4%b8%ba%e6%89%98%e7%ae%a1%e5%a0%86%e3%80%82CLR%e8%bf%98%e8%a6%81%e7%bb%b4%e6%8a%a4%e4%b8%80%e4%b8%aa%e6%8c%87%e9%92%88NextObjPtr%ef%bc%8c%e8%af%a5%e6%8c%87%e9%92%88%e6%8c%87%e5%90%91%e4%b8%8b%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%a0%86%e4%b8%ad%e7%9a%84%e5%88%86%e9%85%8d%e4%bd%8d%e7%bd%ae%e3%80%82%e5%88%9a%e5%bc%80%e5%a7%8b%e7%9a%84%e6%97%b6%e5%80%99NextObjPtr%e8%ae%be%e4%b8%ba%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e5%8c%ba%e5%9f%9f%e7%9a%84%e5%9f%ba%e5%9c%b0%e5%9d%80%e3%80%82%0a%e4%b8%80%e4%b8%aa%e5%8c%ba%e5%9f%9f%e8%a2%ab%e9%9d%9e%e5%9e%83%e5%9c%be%e5%af%b9%e8%b1%a1%e5%a1%ab%e6%bb%a1%e5%90%8e%ef%bc%8cCLR%e4%bc%9a%e5%88%86%e9%85%8d%e6%9b%b4%e5%88%b0%e7%9a%84%e5%8c%ba%e5%9f%9f%e3%80%82%e8%bf%99%e4%b8%aa%e8%bf%87%e7%a8%8b%e4%b8%80%e7%9b%b4%e9%87%8d%e5%a4%8d%ef%bc%8c%e7%9b%b4%e8%87%b3%e6%95%b4%e4%b8%aa%e8%bf%9b%e7%a8%8b%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e9%83%bd%e8%a2%ab%e5%a1%ab%e6%bb%a1%e3%80%82%e6%89%80%e4%bb%a5%ef%bc%8c%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e7%9a%84%e5%86%85%e5%ad%98%e5%8f%97%e8%bf%9b%e7%a8%8b%e7%9a%84%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e7%9a%84%e9%99%90%e5%88%b6%e3%80%8232%e4%bd%8d%e8%bf%9b%e7%a8%8b%e6%9c%80%e5%a4%9a%e5%88%86%e9%85%8d1.5GB%ef%bc%8c64%e4%bd%8d%e8%bf%9b%e7%a8%8b%e6%9c%80%e5%a4%9a%e5%88%86%e9%85%8d8TB%e3%80%82%0anew%e6%93%8d%e4%bd%9c%e7%ac%a6%e7%9a%84%e6%89%a7%e8%a1%8c%e7%bb%86%e8%8a%82%ef%bc%9a%0a%e8%ae%a1%e7%ae%97%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ad%97%e6%ae%b5%28%e4%bb%a5%e5%8f%8a%e4%bb%8e%e5%9f%ba%e7%b1%bb%e5%9e%8b%e7%bb%a7%e6%89%bf%e7%9a%84%e5%ad%97%e6%ae%b5%29%e6%89%80%e9%9c%80%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%20%e5%8a%a0%e4%b8%8a%e5%af%b9%e8%b1%a1%e7%9a%84%e5%bc%80%e9%94%80%e6%89%80%e9%9c%80%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e9%83%bd%e6%9c%89%e4%b8%a4%e4%b8%aa%e5%bc%80%e9%94%80%e5%ad%97%e6%ae%b5%ef%bc%9a%e7%b1%bb%e5%9e%8b%e5%af%b9%e8%b1%a1%e6%8c%87%e9%92%88%e5%92%8c%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e3%80%82%20CLR%e6%a3%80%e6%9f%a5%e5%8c%ba%e5%9f%9f%e4%b8%ad%e6%98%af%e5%90%a6%e6%9c%89%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%e6%89%80%e9%9c%80%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e5%a6%82%e6%9e%9c%e6%89%98%e7%ae%a1%e5%a0%86%e6%9c%89%e8%b6%b3%e5%a4%9f%e7%9a%84%e7%a9%ba%e9%97%b4%ef%bc%8c%e5%b0%b1%e5%9c%a8NextObjPtr%e6%8c%87%e9%92%88%e6%8c%87%e5%90%91%e7%9a%84%e5%9c%b0%e5%9d%80%e5%a4%84%e6%94%be%e5%85%a5%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%b8%ba%e5%af%b9%e8%b1%a1%e5%88%86%e9%85%8d%e7%9a%84%e5%ad%97%e8%8a%82%e6%b2%a1%e8%a2%ab%e6%b8%85%e9%9b%b6%e3%80%82%e6%8e%a5%e7%9d%80%e8%b0%83%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%9e%84%e9%80%a0%e5%99%a8%28%e4%b8%bathis%e5%8f%82%e6%95%b0%e4%bc%a0%e9%80%92NextObjPtr%29%ef%bc%8cnew%e6%93%8d%e4%bd%9c%e7%ac%a6%e8%bf%94%e5%9b%9e%e5%af%b9%e8%b1%a1%e5%bc%95%e7%94%a8%e3%80%82%e5%9c%a8%e8%bf%94%e5%9b%9e%e5%bc%95%e7%94%a8%e5%89%8d%ef%bc%8cNextObjPtr%e6%8c%87%e9%92%88%e7%9a%84%e5%80%bc%e4%bc%9a%e5%8a%a0%e4%b8%8a%e5%af%b9%e8%b1%a1%e5%8d%a0%e7%94%a8%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e6%9d%a5%e5%be%97%e5%88%b0%e4%b8%80%e4%b8%aa%e6%96%b0%e5%80%bc%ef%bc%8c%e5%8d%b3%e4%b8%8b%e4%b8%aa%e5%af%b9%e8%b1%a1%e6%94%be%e5%85%a5%e6%89%98%e7%ae%a1%e5%a0%86%e6%97%b6%e7%9a%84%e5%9c%b0%e5%9d%80%e3%80%82%20%e6%89%98%e7%ae%a1%e5%a0%86%e7%9a%84%e4%bc%98%e7%82%b9%0a%e5%af%b9%e4%ba%8e%e6%89%98%e7%ae%a1%e5%a0%86%ef%bc%8c%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%e5%8f%aa%e9%9c%80%e8%a6%81%e5%9c%a8%e6%8c%87%e9%92%88%e4%b8%8a%e5%8a%a0%e4%b8%80%e4%b8%aa%e5%80%bc%28%e9%80%9f%e5%ba%a6%e9%9d%9e%e5%b8%b8%e5%bf%ab%29%e3%80%82%e5%9c%a8%e8%ae%b8%e5%a4%9a%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e4%b8%ad%ef%bc%8c%e5%b7%ae%e4%b8%8d%e5%a4%9a%e5%90%8c%e6%97%b6%e5%88%86%e9%85%8d%e7%9a%84%e5%af%b9%e8%b1%a1%e5%bd%bc%e6%ad%a4%e9%97%b4%e6%9c%89%e8%be%83%e5%bc%ba%e7%9a%84%e8%81%94%e7%b3%bb%ef%bc%8c%e8%80%8c%e4%b8%94%e7%bb%8f%e5%b8%b8%e5%b7%ae%e4%b8%8d%e5%a4%9a%e5%9c%a8%e5%90%8c%e4%b8%80%e6%97%b6%e9%97%b4%e8%ae%bf%e9%97%ae%e3%80%82%e7%94%b1%e4%ba%8e%e6%89%98%e7%ae%a1%e5%a0%86%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e8%bf%9e%e7%bb%ad%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1%ef%bc%8c%e6%89%80%e4%bb%a5%e5%9b%a0%e4%b8%ba%e5%bc%95%e7%94%a8%e2%80%9c%e5%b1%80%e9%83%a8%e5%8c%96%e2%80%9d%28locality%29%e8%80%8c%e8%8e%b7%e5%be%97%e6%80%a7%e8%83%bd%e4%b8%8a%e7%9a%84%e6%8f%90%e5%8d%87%e3%80%82%e5%85%b7%e4%bd%93%e6%9d%a5%e8%af%b4%ef%bc%8c%e8%bf%99%e6%84%8f%e5%91%b3%e7%9d%80%e5%b7%a5%e4%bd%9c%e9%9b%86%e4%bc%9a%e9%9d%9e%e5%b8%b8%e5%b0%8f%ef%bc%8c%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e5%8f%aa%e9%9c%80%e8%a6%81%e4%bd%bf%e7%94%a8%e5%be%88%e5%b0%91%e7%9a%84%e5%86%85%e5%ad%98%ef%bc%8c%e4%bb%8e%e8%80%8c%e6%8f%90%e9%ab%98%e4%ba%86%e9%80%9f%e5%ba%a6%e3%80%82%e8%bf%98%e6%84%8f%e5%91%b3%e7%9d%80%e4%bb%a3%e7%a0%81%e4%bd%bf%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e5%8f%af%e4%bb%a5%e5%85%a8%e9%83%a8%e9%a9%bb%e7%95%99%e5%9c%a8CPU%e7%9a%84%e7%bc%93%e5%ad%98%e4%b8%ad%e3%80%82%e7%bb%93%e6%9e%9c%e6%98%af%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e8%83%bd%e4%bb%a5%e9%9d%9e%e5%b8%b8%e5%bf%ab%e7%9a%84%e9%80%9f%e5%ba%a6%e8%ae%bf%e9%97%ae%e8%bf%99%e4%ba%9b%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%9b%a0%e4%b8%baCPU%e5%9c%a8%e6%89%a7%e8%a1%8c%e5%a4%a7%e5%a4%9a%e6%95%b0%e6%93%8d%e4%bd%9c%e6%97%b6%ef%bc%8c%e4%b8%8d%e4%bc%9a%e5%9b%a0%e4%b8%ba%e2%80%9c%e7%bc%93%e5%ad%98%e6%9c%aa%e5%91%bd%e4%b8%ad%e2%80%9d%28cache%20miss%29%e8%80%8c%e8%a2%ab%e8%bf%ab%e8%ae%bf%e9%97%ae%e8%be%83%e6%85%a2%e7%9a%84RAM%e3%80%82%0a%e5%8f%91%e6%8c%a5%e6%ad%a4%e4%bc%98%e7%82%b9%e7%9a%84%e5%89%8d%e6%8f%90%e6%98%af%e5%86%85%e5%ad%98%e6%97%a0%e9%99%90%ef%bc%8c%e4%bd%86%e5%86%85%e5%ad%98%e4%b8%8d%e5%8f%af%e8%83%bd%e6%97%a0%e9%99%90%ef%bc%8c%e6%89%80%e4%bb%a5CLR%e7%94%a8%e2%80%9c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e2%80%9d%28GC%29%e7%9a%84%e6%8a%80%e6%9c%af%e2%80%9c%e5%88%a0%e9%99%a4%e2%80%9d%e5%a0%86%e4%b8%ad%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e4%b8%8d%e5%86%8d%e9%9c%80%e8%a6%81%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%0a%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e7%ae%97%e6%b3%95%20%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e8%b0%83%e7%94%a8new%e6%93%8d%e4%bd%9c%e7%ac%a6%e5%88%9b%e5%bb%ba%e5%af%b9%e8%b1%a1%e6%97%b6%ef%bc%8c%e5%8f%af%e8%83%bd%e6%b2%a1%e6%9c%89%e8%b6%b3%e5%a4%9f%e7%9a%84%e7%a9%ba%e9%97%b4%e6%9d%a5%e5%88%86%e9%85%8d%e8%af%a5%e5%af%b9%e8%b1%a1%e3%80%82%e5%8f%91%e7%8e%b0%e7%a9%ba%e9%97%b4%e4%b8%8d%e5%a4%9f%ef%bc%8cCLR%e5%b0%b1%e6%89%a7%e8%a1%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%28%e5%ae%9e%e9%99%85%e4%b8%8a%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%98%af%e5%9c%a8%e7%ac%ac0%e4%bb%a3%e6%bb%a1%e7%9a%84%e6%97%b6%e5%80%99%e5%8f%91%e7%94%9f%e7%9a%84%29%e3%80%82%0a%e5%bc%95%e7%94%a8%e8%ae%a1%e6%95%b0%e7%ae%97%e6%b3%95%20%e5%9c%a8%e5%bc%95%e7%94%a8%e8%ae%a1%e6%95%b0%e7%ae%97%e6%b3%95%e4%b8%ad%ef%bc%8c%e5%a0%86%e4%b8%8a%e7%9a%84%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e9%83%bd%e7%bb%b4%e6%8a%a4%e7%9d%80%e4%b8%80%e4%b8%aa%e5%86%85%e5%ad%98%e5%ad%97%e6%ae%b5%e6%9d%a5%e7%bb%9f%e8%ae%a1%e7%a8%8b%e5%ba%8f%e4%b8%ad%e6%9c%89%e5%a4%9a%e5%b0%91%e6%ad%a3%e5%9c%a8%e4%bd%bf%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%e9%9a%8f%e7%9d%80%e6%af%8f%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%88%b0%e8%be%be%e4%bb%a3%e7%a0%81%e4%b8%ad%e6%9f%90%e4%b8%aa%e4%b8%8d%e5%86%8d%e9%9c%80%e8%a6%81%e5%af%b9%e8%b1%a1%e7%9a%84%e5%9c%b0%e6%96%b9%ef%bc%8c%e5%b0%b1%e9%80%92%e5%87%8f%e5%af%b9%e8%b1%a1%e7%9a%84%e8%ae%a1%e6%95%b0%e5%ad%97%e6%ae%b5%e3%80%82%e8%ae%a1%e6%95%b0%e5%ad%97%e6%ae%b5%e5%8f%98%e6%88%900%ef%bc%8c%e5%af%b9%e8%b1%a1%e5%b0%b1%e5%8f%af%e4%bb%a5%e4%bb%8e%e5%86%85%e5%ad%98%e4%b8%ad%e5%88%a0%e9%99%a4%e4%ba%86%e3%80%82%e5%bc%95%e7%94%a8%e8%ae%a1%e6%95%b0%e7%b3%bb%e7%bb%9f%e6%9c%80%e5%a4%a7%e7%9a%84%e9%97%ae%e9%a2%98%e5%b0%b1%e6%98%af%e5%a4%84%e7%90%86%e4%b8%8d%e5%a5%bd%e5%be%aa%e7%8e%af%e5%bc%95%e7%94%a8%e3%80%82%0a%e5%bc%95%e7%94%a8%e8%b7%9f%e8%b8%aa%e7%ae%97%e6%b3%95%20%e5%bc%95%e7%94%a8%e8%b7%9f%e8%b8%aa%e7%ae%97%e6%b3%95%e5%8f%aa%e5%85%b3%e5%bf%83%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%8f%98%e9%87%8f%ef%bc%8c%e5%9b%a0%e4%b8%ba%e5%8f%aa%e6%9c%89%e8%bf%99%e7%a7%8d%e5%8f%98%e9%87%8f%e6%89%8d%e8%83%bd%e5%bc%95%e7%94%a8%e5%a0%86%e4%b8%8a%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%9b%e5%80%bc%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%e7%9b%b4%e6%8e%a5%e5%8c%85%e5%90%ab%e5%80%bc%e7%b1%bb%e5%9e%8b%e5%ae%9e%e4%be%8b%e3%80%82%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%e5%8f%af%e4%bb%a5%e5%9c%a8%e8%ae%b8%e5%a4%9a%e5%9c%ba%e5%90%88%e4%bd%bf%e7%94%a8%ef%bc%8c%e5%8c%85%e6%8b%ac%e7%b1%bb%e7%9a%84%e9%9d%99%e6%80%81%e5%92%8c%e5%ae%9e%e4%be%8b%e5%ad%97%e6%ae%b5%ef%bc%8c%e6%88%96%e8%80%85%e6%96%b9%e6%b3%95%e7%9a%84%e5%8f%82%e6%95%b0%e5%92%8c%e5%b1%80%e9%83%a8%e5%8f%98%e9%87%8f%e3%80%82%e5%b0%86%e6%89%80%e6%9c%89%e5%bc%95%e7%94%a8%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%8f%98%e9%87%8f%e9%83%bd%e7%a7%b0%e4%b8%ba%e6%a0%b9%e3%80%82%0a%e5%bc%95%e7%94%a8%e8%b7%9f%e8%b8%aa%e7%ae%97%e6%b3%95%e6%ad%a5%e9%aa%a4%ef%bc%9a%0aCLR%e5%bc%80%e5%a7%8bGC%e6%97%b6%ef%bc%8c%e9%a6%96%e5%85%88%e6%9a%82%e5%81%9c%e8%bf%9b%e7%a8%8b%e4%b8%ad%e6%89%80%e6%9c%89%e7%ba%bf%e7%a8%8b%28%e9%98%b2%e6%ad%a2%e7%ba%bf%e7%a8%8b%e5%9c%a8CLR%e6%a3%80%e6%9f%a5%e6%9c%9f%e9%97%b4%e4%bf%ae%e6%94%b9%e5%af%b9%e8%b1%a1%e7%9a%84%e7%8a%b6%e6%80%81%29%e3%80%82%20CLR%e8%bf%9b%e5%85%a5GC%e7%9a%84%e6%a0%87%e8%ae%b0%e9%98%b6%e6%ae%b5%e3%80%82CLR%e9%81%8d%e5%8e%86%e5%a0%86%e4%b8%ad%e7%9a%84%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%b0%86%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e5%ad%97%e6%ae%b5%e4%b8%ad%e7%9a%84%e4%b8%80%e4%bd%8d%e8%ae%be%e4%b8%ba0%ef%bc%8c%e8%bf%99%e7%bc%96%e7%a0%81%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%e9%83%bd%e5%ba%94%e5%88%a0%e9%99%a4%e3%80%82%20CLR%e6%a3%80%e6%9f%a5%e6%89%80%e6%9c%89%e6%b4%bb%e5%8a%a8%e6%a0%b9%ef%bc%8c%e6%9f%a5%e7%9c%8b%e5%ae%83%e4%bb%ac%e5%bc%95%e7%94%a8%e4%ba%86%e5%93%aa%e4%ba%9b%e5%af%b9%e8%b1%a1%e3%80%82%e5%a6%82%e6%9e%9c%e4%b8%80%e4%b8%aa%e6%a0%b9%e5%8c%85%e5%90%abnull%ef%bc%8cCLR%e5%bf%bd%e7%95%a5%e8%bf%99%e4%b8%aa%e6%a0%b9%e5%b9%b6%e7%bb%a7%e7%bb%ad%e6%a3%80%e6%9f%a5%e4%b8%8b%e4%b8%80%e4%b8%aa%e6%a0%b9%e3%80%82%e4%bb%bb%e4%bd%95%e6%a0%b9%e5%a6%82%e6%9e%9c%e5%bc%95%e7%94%a8%e4%ba%86%e5%a0%86%e4%b8%8a%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%8cCLR%e9%83%bd%e4%bc%9a%e6%a0%87%e8%ae%b0%e9%82%a3%e4%b8%aa%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%b9%9f%e5%b0%b1%e6%98%af%e5%b0%86%e8%af%a5%e5%af%b9%e8%b1%a1%e7%9a%84%e5%90%8c%e6%ad%a5%e5%9d%97%e7%b4%a2%e5%bc%95%e4%b8%ad%e7%9a%84%e4%bd%8d%e8%ae%be%e7%bd%ae%e4%b8%ba1.%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e8%a2%ab%e6%a0%87%e8%ae%b0%e5%90%8e%ef%bc%8cCLR%e4%bc%9a%e6%a3%80%e6%9f%a5%e9%82%a3%e4%b8%aa%e5%af%b9%e8%b1%a1%e4%b8%ad%e7%9a%84%e8%b7%9f%ef%bc%8c%e6%a0%87%e8%ae%b0%e5%ae%83%e4%bb%ac%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e3%80%82%e5%a6%82%e6%9e%9c%e5%8f%91%e7%8e%b0%e5%af%b9%e8%b1%a1%e5%b7%b2%e7%bb%8f%e6%a0%87%e8%ae%b0%ef%bc%8c%e5%b0%b1%e4%b8%8d%e9%87%8d%e6%96%b0%e6%a3%80%e6%9f%a5%e5%af%b9%e8%b1%a1%e7%9a%84%e5%ad%97%e6%ae%b5%e3%80%82%e8%bf%99%e5%b0%b1%e9%81%bf%e5%85%8d%e4%ba%86%e5%ba%94%e4%b8%ba%e5%be%aa%e7%8e%af%e5%bc%95%e7%94%a8%e8%80%8c%e4%ba%a7%e7%94%9f%e7%9a%84%e6%ad%bb%e5%be%aa%e7%8e%af%e3%80%82%20%e5%9b%be1%20%e5%9b%9e%e6%94%b6%e4%b9%8b%e5%89%8d%e7%9a%84%e6%89%98%e7%ae%a1%e5%a0%86%20%e5%9b%be2%20%e6%a0%87%e8%ae%b0%e8%bf%87%e5%90%8e%e7%9a%84%e6%89%98%e7%ae%a1%e5%a0%86%20%e6%a3%80%e6%9f%a5%e5%ae%8c%e6%af%95%e5%90%8e%ef%bc%8c%e5%a0%86%e4%b8%ad%e7%9a%84%e5%af%b9%e8%b1%a1%e8%a6%81%e4%b9%88%e5%b7%b2%e6%a0%87%e8%ae%b0%ef%bc%8c%e8%a6%81%e4%b9%88%e6%9c%aa%e6%a0%87%e8%ae%b0%e3%80%82%e5%b7%b2%e6%a0%87%e8%ae%b0%e7%9a%84%e5%af%b9%e8%b1%a1%e4%b8%8d%e8%83%bd%e8%a2%ab%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%ef%bc%8c%e5%9b%a0%e4%b8%ba%e8%87%b3%e5%b0%91%e6%9c%89%e4%b8%80%e4%b8%aa%e6%a0%b9%e5%9c%a8%e5%bc%95%e7%94%a8%e5%ae%83%e3%80%82%e8%bf%99%e7%a7%8d%e7%8a%b6%e6%80%81%e8%a2%ab%e7%a7%b0%e4%b8%ba%e5%8f%af%e8%be%be%e7%9a%84%28reachable%29%e3%80%82%e6%9c%aa%e6%a0%87%e8%ae%b0%e7%9a%84%e5%af%b9%e8%b1%a1%e6%98%af%e4%b8%8d%e5%8f%af%e8%be%be%28unreachable%29%e7%9a%84%e3%80%82%20CLR%e8%bf%9b%e5%85%a5GC%e7%9a%84%e5%8e%8b%e7%bc%a9%28compact%29%e6%8e%a5%e7%ab%af%e3%80%82%e8%bf%99%e4%b8%aa%e6%8e%a5%e7%ab%af%ef%bc%8cCLR%e5%af%b9%e5%a0%86%e4%b8%ad%e5%b7%b2%e6%a0%87%e8%ae%b0%e7%9a%84%e5%af%b9%e8%b1%a1%e8%bf%9b%e8%a1%8c%e7%a7%bb%e5%8a%a8%ef%bc%8c%e5%8e%8b%e7%bc%a9%e5%b9%b8%e5%ad%98%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%8c%e4%bd%bf%e5%ae%83%e4%bb%ac%e5%8d%a0%e7%94%a8%e8%bf%9e%e7%bb%ad%e7%9a%84%e5%86%85%e5%ad%98%e7%a9%ba%e9%97%b4%e3%80%82%e4%bd%86%e6%a0%b9%e6%89%80%e5%bc%95%e7%94%a8%e7%9a%84%e4%bd%8d%e7%bd%ae%e8%bf%98%e6%9c%aa%e6%94%b9%e5%8f%98%ef%bc%8c%e6%89%80%e4%bb%a5CLR%e9%9c%80%e8%a6%81%e4%bb%8e%e6%af%8f%e4%b8%aa%e6%a0%b9%e5%87%8f%e5%8e%bb%e6%89%80%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e5%81%8f%e7%a7%bb%e7%9a%84%e5%ad%97%e8%8a%82%e6%95%b0%e3%80%82%e8%bf%99%e6%a0%b7%e5%b0%b1%e8%83%bd%e4%bf%9d%e8%af%81%e6%af%8f%e4%b8%aa%e6%a0%b9%e8%bf%98%e6%98%af%e5%bc%95%e7%94%a8%e5%92%8c%e4%b9%8b%e5%89%8d%e4%b8%80%e6%a0%b7%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%9b%e5%8f%aa%e6%98%af%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e5%8f%98%e5%8c%96%e4%ba%86%e4%bd%8d%e7%bd%ae%e3%80%82%20%e5%8e%8b%e7%bc%a9%e7%9a%84%e5%a5%bd%e5%a4%84%0a%e9%a6%96%e5%85%88%ef%bc%8c%e6%89%80%e6%9c%89%e5%b9%b8%e5%ad%98%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e7%b4%a7%e6%8c%a8%e5%9c%a8%e4%b8%80%e8%b5%b7%ef%bc%8c%e6%81%a2%e5%a4%8d%e4%ba%86%e5%bc%95%e7%94%a8%e7%9a%84%e2%80%9c%e5%b1%80%e9%83%a8%e5%8c%96%e2%80%9d%ef%bc%8c%e5%87%8f%e5%b0%8f%e4%ba%86%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e7%9a%84%e5%b7%a5%e4%bd%9c%e9%9b%86%ef%bc%8c%e4%bb%8e%e8%80%8c%e6%8f%90%e5%8d%87%e4%ba%86%e5%b0%86%e6%9d%a5%e8%ae%bf%e9%97%ae%e8%bf%99%e4%ba%9b%e5%af%b9%e8%b1%a1%e6%97%b6%e7%9a%84%e6%80%a7%e8%83%bd%e3%80%82%e5%85%b6%e6%ac%a1%ef%bc%8c%e5%8f%af%e7%94%a8%e7%a9%ba%e9%97%b4%e4%b9%9f%e5%85%a8%e9%83%a8%e6%97%b6%e8%bf%9e%e7%bb%ad%e7%9a%84%ef%bc%8c%e5%85%81%e8%ae%b8%e5%85%b6%e4%bb%96%e4%b8%9c%e8%a5%bf%e8%bf%9b%e9%a9%bb%e3%80%82%e6%9c%80%e5%90%8e%ef%bc%8c%e5%8e%8b%e7%bc%a9%e6%84%8f%e5%91%b3%e7%9d%80%e6%89%98%e7%ae%a1%e5%a0%86%e8%a7%a3%e5%86%b3%e4%ba%86%e6%9c%ac%e6%9c%ba%28%e5%8e%9f%e7%94%9f%29%e5%a0%86%e7%9a%84%e7%a9%ba%e9%97%b4%e7%a2%8e%e7%89%87%e5%8c%96%e9%97%ae%e9%a2%98%e3%80%82%0a6.%20%e5%8e%8b%e7%bc%a9%e5%a5%bd%e5%86%85%e5%ad%98%e5%90%8e%ef%bc%8c%e6%89%98%e7%ae%a1%e5%a0%86%e7%9a%84%60NextObjPtr%60%e6%8c%87%e9%92%88%e6%8c%87%e5%90%91%e6%9c%80%e5%90%8e%e4%b8%80%e4%b8%aa%e5%b9%b8%e5%ad%98%e5%af%b9%e8%b1%a1%e4%b9%8b%e5%90%8e%e7%9a%84%e4%bd%8d%e7%bd%ae%e3%80%82%20%e5%9b%be3%20%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%90%8e%e7%9a%84%e6%89%98%e7%ae%a1%e5%a0%86%20%e6%b3%a8%e6%84%8f%0a%e5%a6%82%e6%9e%9cCLR%e5%9c%a8%e4%b8%80%e4%b8%aaGC%e4%b9%8b%e5%90%8e%e5%9b%9e%e6%94%b6%e4%b8%8d%e4%ba%86%e5%86%85%e5%ad%98%ef%bc%8c%e8%80%8c%e4%b8%94%e8%bf%9b%e7%a8%8b%e4%b8%ad%e6%b2%a1%e6%9c%89%e7%a9%ba%e9%97%b4%e6%9d%a5%e5%88%86%e9%85%8d%e6%96%b0%e7%9a%84GC%e5%8c%ba%e5%9f%9f%ef%bc%8c%e5%b0%b1%e8%af%b4%e6%98%8e%e8%bf%9b%e7%a8%8b%e7%9a%84%e5%86%85%e5%ad%98%e5%b7%b2%e8%80%97%e5%b0%bd%e3%80%82%e6%ad%a4%e6%97%b6%ef%bc%8c%e8%af%95%e5%9b%be%e5%88%86%e9%85%8d%e6%9b%b4%e5%a4%9a%e7%9a%84%e5%86%85%e5%ad%98%e7%9a%84new%e6%93%8d%e4%bd%9c%e7%ac%a6%e5%b0%b1%e4%bc%9a%e6%8a%9b%e5%87%baOutOfMemoryException%e3%80%82%0a%e6%b3%a8%e6%84%8f%0a%e9%9d%99%e6%80%81%e5%ad%97%e6%ae%b5%e5%bc%95%e7%94%a8%e7%9a%84%e5%af%b9%e8%b1%a1%e4%b8%80%e7%9b%b4%e5%ad%98%e5%9c%a8%ef%bc%8c%e7%9b%b4%e5%88%b0%e7%94%a8%e4%ba%8e%e5%8a%a0%e8%bd%bd%e7%b1%bb%e5%9e%8b%e7%9a%84AppDomain%e5%8d%b8%e8%bd%bd%e4%b8%ba%e6%ad%a2%e3%80%82%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e7%9a%84%e4%b8%80%e4%b8%aa%e5%b8%b8%e8%a7%81%e5%8e%9f%e5%9b%a0%e5%b0%b1%e6%98%af%e8%ae%a9%e9%9d%99%e6%80%81%e5%ad%97%e6%ae%b5%e5%bc%95%e7%94%a8%e6%9f%90%e4%b8%aa%e5%90%88%e9%9b%86%e5%af%b9%e8%b1%a1%e3%80%82%e9%9d%99%e6%80%81%e5%af%b9%e8%b1%a1%e4%bc%9a%e4%bd%bf%e5%90%88%e9%9b%86%e5%af%b9%e8%b1%a1%e4%b8%80%e7%9b%b4%e5%ad%98%e5%ad%98%e6%b4%bb%ef%bc%8c%e8%80%8c%e5%90%88%e9%9b%86%e5%af%b9%e8%b1%a1%e4%bd%bf%e6%89%80%e6%9c%89%e7%9a%84%e6%95%b0%e6%8d%ae%e9%a1%b9%e4%b8%80%e7%9b%b4%e5%ad%98%e6%b4%bb%e3%80%82%e4%bb%8e%e8%80%8c%e5%af%bc%e8%87%b4%e5%86%85%e5%ad%98%e6%b3%84%e6%bc%8f%e3%80%82%0a%e4%bb%a3%ef%bc%9a%e6%8f%90%e5%8d%87%e6%80%a7%e8%83%bd%20CLR%e7%9a%84GC%e6%98%af%e5%9f%ba%e4%ba%8e%e4%bb%a3%e7%9a%84%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%28generational%20garbage%20collector%29%ef%bc%8c%e5%ae%83%e5%af%b9%e4%bb%a3%e7%a0%81%e5%81%9a%e5%87%ba%e4%ba%86%e5%87%a0%e7%82%b9%e5%81%87%e8%ae%be%e3%80%82%0a%e5%af%b9%e8%b1%a1%e8%b6%8a%e6%96%b0%ef%bc%8c%e7%94%9f%e5%ad%98%e6%9c%9f%e8%b6%8a%e7%9f%ad%e3%80%82%20%e5%af%b9%e8%b1%a1%e8%b6%8a%e8%80%81%ef%bc%8c%e7%94%9f%e5%ad%98%e6%9c%9f%e8%b6%8a%e9%95%bf%e3%80%82%20%e5%9b%9e%e6%94%b6%e5%a0%86%e7%9a%84%e4%b8%80%e9%83%a8%e5%88%86%ef%bc%8c%e9%80%9f%e5%ba%a6%e5%bf%ab%e4%ba%8e%e5%9b%9e%e6%94%b6%e6%95%b4%e4%b8%aa%e5%a0%86%e3%80%82%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%9c%a8%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%e4%b8%8d%e5%8c%85%e5%90%ab%e5%af%b9%e8%b1%a1%e3%80%82%e6%b7%bb%e5%8a%a0%e5%88%b0%e5%a0%86%e7%9a%84%e5%af%b9%e8%b1%a1%e7%a7%b0%e4%b8%ba%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e3%80%82%e7%ae%80%e5%8d%95%e5%9c%b0%e8%af%b4%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e5%b0%b1%e6%98%af%e9%82%a3%e4%ba%9b%e6%96%b0%e6%9e%84%e9%80%a0%e7%9a%84%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e4%bb%8e%e6%9c%aa%e6%a3%80%e6%9f%a5%e8%bf%87%e5%ae%83%e4%bb%ac%e3%80%82%0a%e5%9b%be4%20%e6%96%b0%e5%88%9d%e5%a7%8b%e5%8c%96%e7%9a%84%e5%a0%86%ef%bc%8c%e6%89%80%e6%9c%89%e5%af%b9%e8%b1%a1%e9%83%bd%e6%98%af%e7%ac%ac0%e4%bb%a3%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%b0%9a%e6%9c%aa%e5%8f%91%e7%94%9f%20CLR%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%e4%b8%ba%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e9%80%89%e6%8b%a9%e4%b8%80%e4%b8%aa%e9%a2%84%e7%ae%97%e5%ae%b9%e9%87%8f%28KB%e5%8d%95%e4%bd%8d%29%e3%80%82%e5%a6%82%e6%9e%9c%e5%88%86%e9%85%8d%e4%b8%80%e4%b8%aa%e6%96%b0%e5%af%b9%e8%b1%a1%e9%80%a0%e6%88%90%e7%ac%ac0%e4%bb%a3%e8%b6%85%e8%bf%87%e9%a2%84%e7%ae%97%ef%bc%8c%e5%b0%b1%e5%bf%85%e9%a1%bb%e5%90%af%e5%8a%a8%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e3%80%82%e5%81%87%e8%ae%be%e4%b8%8a%e5%9b%beA%e5%88%b0E%e6%ad%a3%e5%a5%bd%e4%bd%bf%e7%94%a8%e5%ae%8c%e7%ac%ac0%e4%bb%a3%e7%a9%ba%e9%97%b4%ef%bc%8c%e5%88%86%e9%85%8d%e5%af%b9%e8%b1%a1F%e6%97%b6%e5%b0%b1%e5%bf%85%e9%a1%bb%e5%90%af%e5%8a%a8%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e3%80%82%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e4%bc%9a%e5%88%a4%e6%96%ad%e5%af%b9%e8%b1%a1C%e5%92%8cE%e6%97%b6%e5%9e%83%e5%9c%be%ef%bc%8c%e6%89%80%e4%bb%a5%e4%bc%9a%e5%8e%8b%e7%bc%a9D%ef%bc%8c%e4%bd%bf%e4%b9%8b%e4%b8%8e%e5%af%b9%e8%b1%a1B%e7%9b%b8%e9%82%bb%e3%80%82%e5%9c%a8%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e4%b8%ad%e5%ad%98%e6%b4%bb%e7%9a%84%e5%af%b9%e8%b1%a1%28A%2cB%e5%92%8cD%29%e7%8e%b0%e5%9c%a8%e7%a7%b0%e4%b8%ba%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e3%80%82%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e5%b7%b2%e7%bb%8f%e7%bb%8f%e5%8e%86%e4%ba%86%e4%b8%80%e4%b8%aa%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e7%9a%84%e6%a3%80%e6%9f%a5%e3%80%82%0a%e5%9b%be5%20%e7%bb%8f%e5%8e%86%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e7%9a%84%e5%b9%b8%e5%ad%98%e8%80%85%e8%a2%ab%e6%8f%90%e5%8d%87%e8%87%b3%e7%ac%ac1%e4%bb%a3%20%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%90%8e%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e5%b0%b1%e4%b8%8d%e5%8c%85%e5%90%ab%e4%bb%bb%e4%bd%95%e5%af%b9%e8%b1%a1%e4%ba%86%e3%80%82%e5%92%8c%e4%b9%8b%e5%89%8d%e4%b8%80%e6%a0%b7%ef%bc%8c%e6%96%b0%e5%af%b9%e8%b1%a1%e4%bc%9a%e5%88%86%e9%85%8d%e5%88%b0%e7%ac%ac0%e4%bb%a3%e4%b8%ad%e3%80%82%0a%e5%9b%be5%20%e7%ac%ac0%e4%bb%a3%e5%88%86%e9%85%8d%e4%ba%86%e6%96%b0%e5%af%b9%e8%b1%a1%ef%bc%9b%e7%ac%ac1%e4%bb%a3%e5%8f%88%e5%9e%83%e5%9c%be%e4%ba%a7%e7%94%9f%20%e5%81%87%e5%ae%9a%e5%88%86%e9%85%8d%e6%96%b0%e5%af%b9%e8%b1%a1L%e4%bc%9a%e9%80%a0%e6%88%90%e7%ac%ac0%e4%bb%a3%e8%b6%85%e5%87%ba%e9%a2%84%e7%ae%97%ef%bc%8c%e9%80%a0%e6%88%90%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e3%80%82CLR%e9%9c%80%e8%a6%81%e5%86%b3%e5%ae%9a%e6%a3%80%e6%9f%a5%e5%93%aa%e4%ba%9b%e4%bb%a3%e3%80%82CLR%e5%88%9d%e5%a7%8b%e5%8c%96%e6%97%b6%e4%b8%8d%e4%bb%85%e4%bc%9a%e7%bb%99%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e9%80%89%e6%8b%a9%e9%a2%84%e7%ae%97%ef%bc%8c%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e4%b9%9f%e5%be%97%e5%8f%88%e9%a2%84%e7%ae%97%e3%80%82%e5%81%87%e5%a6%82%e5%bc%80%e5%90%af%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%97%b6%ef%bc%8c%e7%ac%ac1%e4%bb%a3%e5%8d%a0%e7%94%a8%e5%86%85%e5%ad%98%e5%b0%91%e4%ba%8e%e9%a2%84%e7%ae%97%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%8f%aa%e6%a3%80%e6%9f%a5%e7%ac%ac0%e4%bb%a3%e5%af%b9%e8%b1%a1%e3%80%82%e7%94%b1%e4%ba%8e%e5%bf%bd%e7%95%a5%e4%ba%86%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%ef%bc%8c%e6%89%80%e4%bb%a5%e5%8a%a0%e5%bf%ab%e4%ba%86%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e9%80%9f%e5%ba%a6%e3%80%82%0a%e6%80%a7%e8%83%bd%e7%9a%84%e4%bc%98%e5%8a%bf%e5%92%8c%e5%af%b9%e5%ba%94%e7%9a%84%e9%97%ae%e9%a2%98%0a%e6%98%be%e7%84%b6%ef%bc%8c%e5%bf%bd%e7%95%a5%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e8%83%bd%e6%8f%90%e5%8d%87%e6%80%a7%e8%83%bd%e3%80%82%e5%af%b9%e6%80%a7%e8%83%bd%e6%8f%90%e5%8d%87%e7%9a%84%e9%83%a8%e5%88%86%e6%9b%b4%e4%b8%bb%e8%a6%81%e6%98%af%e4%b8%8d%e5%bf%85%e5%8f%98%e9%87%8f%e6%89%98%e7%ae%a1%e5%a0%86%e4%b8%ad%e7%9a%84%e6%af%8f%e4%b8%aa%e5%af%b9%e8%b1%a1%e3%80%82%e5%a6%82%e6%9e%9c%e6%a0%b9%e6%88%96%e5%af%b9%e8%b1%a1%e5%bc%95%e7%94%a8%e4%ba%86%e7%ac%ac1%e4%bb%a3%e7%9a%84%e6%9f%90%e4%b8%aa%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e5%b0%b1%e4%bc%9a%e5%bf%bd%e7%95%a5%e8%80%81%e5%af%b9%e8%b1%a1%e5%86%85%e9%83%a8%e7%9a%84%e6%89%80%e6%9c%89%e5%bc%95%e7%94%a8%ef%bc%8c%e8%83%bd%e6%9b%b4%e7%9f%ad%e7%9a%84%e6%9e%84%e9%80%a0%e5%a5%bd%e5%8f%af%e8%be%be%e5%af%b9%e8%b1%a1%e5%9b%be%e3%80%82%e5%bd%93%e7%84%b6%ef%bc%8c%e8%80%81%e5%af%b9%e8%b1%a1%e5%ad%97%e6%ae%b5%e4%b9%9f%e6%9c%89%e5%8f%af%e8%83%bd%e5%bc%95%e7%94%a8%e6%96%b0%e5%af%b9%e8%b1%a1%e3%80%82%e4%b8%ba%e4%ba%86%e7%a1%ae%e4%bf%9d%e5%af%b9%e8%80%81%e5%af%b9%e8%b1%a1%e7%9a%84%e5%b7%b2%e6%9b%b4%e6%96%b0%e5%ad%97%e6%ae%b5%e8%bf%9b%e8%a1%8c%e6%a3%80%e6%9f%a5%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e5%88%a9%e7%94%a8%e4%ba%86JIT%e7%bc%96%e8%af%91%e5%99%a8%e5%86%85%e9%83%a8%e7%9a%84%e4%b8%80%e4%b8%aa%e6%9c%ba%e5%88%b6%e3%80%82%e8%bf%99%e4%b8%aa%e6%9c%ba%e5%88%b6%e5%9c%a8%e5%af%b9%e8%b1%a1%e7%9a%84%e5%bc%95%e7%94%a8%e5%ad%97%e6%ae%b5%e5%8f%91%e7%94%9f%e5%8f%98%e5%8c%96%e6%97%b6%ef%bc%8c%e4%bc%9a%e8%ae%be%e7%bd%ae%e4%b8%80%e4%b8%aa%e5%af%b9%e5%ba%94%e7%9a%84%e4%bd%8d%e6%a0%87%e5%bf%97%e3%80%82%e8%bf%99%e6%a0%b7%ef%bc%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8%e5%b0%b1%e7%9f%a5%e9%81%93%e8%87%aa%e4%b8%8a%e4%b8%80%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e4%bb%a5%e6%9d%a5%ef%bc%8c%e5%93%aa%e4%ba%9b%e8%80%81%e5%af%b9%e8%b1%a1%e5%b7%b2%e8%a2%ab%e5%86%99%e5%85%a5%e3%80%82%e5%8f%aa%e6%9c%89%e5%ad%97%e6%ae%b5%e5%8f%91%e7%94%9f%e5%8f%98%e5%8c%96%e7%9a%84%e8%80%81%e5%af%b9%e8%b1%a1%e6%89%8d%e9%9c%80%e8%a6%81%e6%a3%80%e6%9f%a5%e6%98%af%e5%90%a6%e5%bc%95%e7%94%a8%e4%ba%86%e7%ac%ac0%e4%bb%a3%e4%b8%ad%e7%9a%84%e4%bb%bb%e4%bd%95%e6%96%b0%e5%af%b9%e8%b1%a1%e3%80%82%0a%e5%9f%ba%e4%ba%8e%e5%af%b9%e8%b1%a1%e8%b6%8a%e8%80%81%ef%bc%8c%e7%94%9f%e5%ad%98%e6%9c%9f%e8%b6%8a%e9%95%bf%e7%9a%84%e5%81%87%e8%ae%be%e3%80%82%e7%ac%ac1%e4%bb%a3%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%ba%94%e7%94%a8%e4%b8%ad%e5%be%88%e5%8f%af%e8%83%bd%e6%98%af%e7%bb%a7%e7%bb%ad%e5%8f%af%e8%be%be%e7%9a%84%e3%80%82%e5%9b%a0%e6%ad%a4%e5%af%b9%e7%ac%ac1%e4%bb%a3%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%be%88%e5%8f%af%e8%83%bd%e6%98%af%e6%b5%aa%e8%b4%b9%e6%97%b6%e9%97%b4%e3%80%82%e5%a6%82%e6%9e%9c%e6%9c%89%e5%9e%83%e5%9c%be%e5%9c%a8%e7%ac%ac1%e4%bb%a3%e4%b8%ad%ef%bc%8c%e9%82%a3%e5%b0%b1%e7%95%99%e5%9c%a8%e9%82%a3%e9%87%8c%e3%80%82%0a%e5%9b%be6%20%e7%bb%8f%e8%bf%87%e4%b8%a4%e6%ac%a1%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%90%8e%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e7%9a%84%e5%b9%b8%e5%ad%98%e8%80%85%e8%a2%ab%e6%8f%90%e5%8d%87%e5%88%b0%e7%ac%ac1%e4%bb%a3%28%e7%ac%ac1%e4%bb%a3%e7%9a%84%e5%a4%a7%e5%b0%8f%e5%a2%9e%e5%8a%a0%29%ef%bc%9b%e7%ac%ac0%e4%bb%a3%e5%8f%88%e7%a9%ba%e5%87%ba%e6%9d%a5%e4%ba%86%20%e5%9b%be7%20%e5%a4%9a%e6%ac%a1%e7%ac%ac0%e4%bb%a3%e5%9b%9e%e6%94%b6%e5%90%8e%ef%bc%8c%e7%ac%ac1%e4%bb%a3%e8%b6%85%e5%87%ba%e9%a2%84%e7%ae%97%e3%80%82%e4%b8%a4%e4%bb%a3%e4%b8%80%e8%b5%b7%e8%bf%9b%e8%a1%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%20%e5%9b%be8%20%e7%ac%ac1%e4%bb%a3%e5%b9%b8%e5%ad%98%e8%80%85%e6%8f%90%e5%8d%87%e8%87%b3%e7%ac%ac2%e4%bb%a3%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e5%b9%b8%e5%ad%98%e8%80%85%e6%8f%90%e5%8d%87%e8%87%b3%e7%ac%ac1%e4%bb%a3%ef%bc%8c%e7%ac%ac0%e4%bb%a3%e7%a9%ba%e5%87%ba%20%e6%b3%a8%e6%84%8f" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-gc%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e6%89%98%e7%ae%a1%e5%a0%86%e5%92%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  Alaya 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+  
+
+
+</html>

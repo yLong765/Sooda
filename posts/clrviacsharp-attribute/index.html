@@ -34,9 +34,12 @@
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:title" content="《CLR via C#》 特性" />
 <meta property="og:description" content="定制特性 自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。
-CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。
-应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素
-1using System; 2[assembly: SomeAttr] // 应用于程序集 3[module: SomeAttr] // 应用于模块 4[type: SomeAttr] // 应用于类型 5internal sealed class SomeType&lt;[typevar: SomeAttr] T&gt; { // 应用于泛型类型变量 6 [field: SomeAttr] // 应用于字段 7 public int SomeField = 0; 8 [return: SomeAttr] // 应用于返回值 9 [method: SomeAttr] // 应用于方法 10 public int SomeMethod([param: SomAttr] int SomeParam) { // 应用于参数 11 return SomeParam; 12 } 13 [property: SomAttr] // 应用于属性 14 public string SomeProp { 15 [method: SomeAttr] // 应用于get访问器方法 16 get { return null; } 17 } 18 [event: SomeAttr] // 应用于事件 19 [field: SomeAttr] // 应用于编译器生成的字段 20 [method: SomeAttr] // 应用于编译器生成的add和remove方法 21 public event EventHandler SomeEvent; 22} " />
+定制特性其实是一个类型的实例。定制特性类必须直接或间接从公共抽象类System.Attribute派生。
+定制特性类必须有构造器才能创建实例，所以将特性应用于目标元素时，语法类似于调用类的某个实例构造器。构造器的参数称为定位参数(positional parameter)，而且是强制性的，必须指定参数。而其他的公共字段或属性被称为命名参数(named parameter)，这种参数是可选的。
+1// 自定义特性 2public class AttrAttribute : System.Attribute { 3 public string Name; 4 public int Num; 5 public char Char; 6 public AttrAttribute(string name) { 7 Name = name; 8 } 9} 10 11// name属于定位参数 12// Num与Char属于命名参数 13[Attr(&#34;String&#34;, Num = 1, Char = &#39;c&#39;)] 14public void Func() { 15 16} 提示
+将特性应用于源代码中的目标元素时，C#编译器允许省略Attribute后缀以减少打字量，并提升源代码的可读性。
+CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素。
+1using System; 2[assembly: SomeAttr] // 应用于程序集 3[module: SomeAttr] // 应用于模块 4[type: SomeAttr] // 应用于类型 5internal sealed class SomeType&lt;[typevar: SomeAttr] T&gt; { // 应用于泛型类型变量 6 [field: SomeAttr] // 应用于字段 7 public int SomeField = 0; 8 [return: SomeAttr] // 应用于返回值 9 [method: SomeAttr] // 应用于方法 10 public int SomeMethod([param: SomAttr] int SomeParam) { // 应用于参数 11 return SomeParam; 12 } 13 [property: SomAttr] // 应用于属性 14 public string SomeProp { 15 [method: SomeAttr] // 应用于get访问器方法 16 get { return null; } 17 } 18 [event: SomeAttr] // 应用于事件 19 [field: SomeAttr] // 应用于编译器生成的字段 20 [method: SomeAttr] // 应用于编译器生成的add和remove方法 21 public event EventHandler SomeEvent; 22} 限制特性的应用范围 向特性应用System." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.sooda.net.cn/posts/clrviacsharp-attribute/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-08-22T16:25:27+08:00" />
@@ -46,9 +49,12 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="《CLR via C#》 特性"/>
 <meta name="twitter:description" content="定制特性 自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。
-CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。
-应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素
-1using System; 2[assembly: SomeAttr] // 应用于程序集 3[module: SomeAttr] // 应用于模块 4[type: SomeAttr] // 应用于类型 5internal sealed class SomeType&lt;[typevar: SomeAttr] T&gt; { // 应用于泛型类型变量 6 [field: SomeAttr] // 应用于字段 7 public int SomeField = 0; 8 [return: SomeAttr] // 应用于返回值 9 [method: SomeAttr] // 应用于方法 10 public int SomeMethod([param: SomAttr] int SomeParam) { // 应用于参数 11 return SomeParam; 12 } 13 [property: SomAttr] // 应用于属性 14 public string SomeProp { 15 [method: SomeAttr] // 应用于get访问器方法 16 get { return null; } 17 } 18 [event: SomeAttr] // 应用于事件 19 [field: SomeAttr] // 应用于编译器生成的字段 20 [method: SomeAttr] // 应用于编译器生成的add和remove方法 21 public event EventHandler SomeEvent; 22} "/>
+定制特性其实是一个类型的实例。定制特性类必须直接或间接从公共抽象类System.Attribute派生。
+定制特性类必须有构造器才能创建实例，所以将特性应用于目标元素时，语法类似于调用类的某个实例构造器。构造器的参数称为定位参数(positional parameter)，而且是强制性的，必须指定参数。而其他的公共字段或属性被称为命名参数(named parameter)，这种参数是可选的。
+1// 自定义特性 2public class AttrAttribute : System.Attribute { 3 public string Name; 4 public int Num; 5 public char Char; 6 public AttrAttribute(string name) { 7 Name = name; 8 } 9} 10 11// name属于定位参数 12// Num与Char属于命名参数 13[Attr(&#34;String&#34;, Num = 1, Char = &#39;c&#39;)] 14public void Func() { 15 16} 提示
+将特性应用于源代码中的目标元素时，C#编译器允许省略Attribute后缀以减少打字量，并提升源代码的可读性。
+CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素。
+1using System; 2[assembly: SomeAttr] // 应用于程序集 3[module: SomeAttr] // 应用于模块 4[type: SomeAttr] // 应用于类型 5internal sealed class SomeType&lt;[typevar: SomeAttr] T&gt; { // 应用于泛型类型变量 6 [field: SomeAttr] // 应用于字段 7 public int SomeField = 0; 8 [return: SomeAttr] // 应用于返回值 9 [method: SomeAttr] // 应用于方法 10 public int SomeMethod([param: SomAttr] int SomeParam) { // 应用于参数 11 return SomeParam; 12 } 13 [property: SomAttr] // 应用于属性 14 public string SomeProp { 15 [method: SomeAttr] // 应用于get访问器方法 16 get { return null; } 17 } 18 [event: SomeAttr] // 应用于事件 19 [field: SomeAttr] // 应用于编译器生成的字段 20 [method: SomeAttr] // 应用于编译器生成的add和remove方法 21 public event EventHandler SomeEvent; 22} 限制特性的应用范围 向特性应用System."/>
 
   
   
@@ -104,6 +110,12 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
           </a>
         </li>
         
+        
+        <li>
+          <a class="icon" href="https://www.sooda.net.cn/about/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
         
         <li>
           <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -166,7 +178,7 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-attribute%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e7%89%b9%e6%80%a7&description=%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%20%e8%87%aa%e5%ae%9a%e4%b9%89%e7%89%b9%e6%80%a7%e5%85%b6%e5%ae%9e%e5%b0%b1%e6%98%af%e5%b0%86%e4%b8%80%e4%ba%9b%e9%99%84%e5%8a%a0%e4%bf%a1%e6%81%af%e4%b8%8e%e6%9f%90%e4%b8%aa%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e5%85%b3%e8%81%94%e8%b5%b7%e6%9d%a5%e7%9a%84%e6%96%b9%e5%bc%8f%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e5%9c%a8%e6%89%98%e7%ae%a1%e6%a8%a1%e5%9d%97%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e7%94%9f%e6%88%90%28%e5%b5%8c%e5%85%a5%29%e8%bf%99%e4%ba%9b%e9%a2%9d%e5%a4%96%e7%9a%84%e4%bf%a1%e6%81%af%e3%80%82%0aCLR%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%af%e5%9c%a8%e6%96%87%e4%bb%b6%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e8%a1%a8%e7%a4%ba%e7%9a%84%e5%87%a0%e4%b9%8e%e4%bb%bb%e4%bd%95%e4%b8%9c%e8%a5%bf%e3%80%82C%23%e5%8f%aa%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ae%9a%e4%b9%89%e4%bb%a5%e4%b8%8b%e4%bb%bb%e4%bd%95%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e7%9a%84%e6%ba%90%e4%bb%a3%e7%a0%81%ef%bc%9a%e7%a8%8b%e5%ba%8f%e9%9b%86%e3%80%81%e6%a8%a1%e5%9d%97%e3%80%81%e7%b1%bb%e5%9e%8b%28%e7%b1%bb%e3%80%81%e7%bb%93%e6%9e%84%e3%80%81%e6%9e%9a%e4%b8%be%e3%80%81%e6%8e%a5%e5%8f%a3%e3%80%81%e5%a7%94%e6%89%98%29%e3%80%81%e5%ad%97%e6%ae%b5%e3%80%81%e6%96%b9%e6%b3%95%28%e5%90%ab%e6%9e%84%e9%80%a0%e5%99%a8%29%e3%80%81%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0%e3%80%81%e6%96%b9%e6%b3%95%e8%bf%94%e5%9b%9e%e5%80%bc%e3%80%81%e5%b1%9e%e6%80%a7%e3%80%81%e4%ba%8b%e4%bb%b6%e5%92%8c%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%82%e6%95%b0%e3%80%82%0a%e5%ba%94%e7%94%a8%e7%89%b9%e6%80%a7%e6%97%b6%ef%bc%8cC%23%e5%85%81%e8%ae%b8%e4%bd%bf%e7%94%a8%e4%b8%80%e4%b8%aa%e5%89%8d%e7%bc%80%e6%98%8e%e7%a1%ae%e6%8c%87%e5%ae%9a%e7%89%b9%e6%80%a7%e8%a6%81%e5%ba%94%e7%94%a8%e4%ba%8e%e7%9a%84%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%0a1using%20System%3b%202%5bassembly%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%a8%8b%e5%ba%8f%e9%9b%86%203%5bmodule%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%a8%a1%e5%9d%97%204%5btype%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%205internal%20sealed%20class%20SomeType%26lt%3b%5btypevar%3a%20SomeAttr%5d%20T%26gt%3b%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%206%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ad%97%e6%ae%b5%207%20public%20int%20SomeField%20%3d%200%3b%208%20%5breturn%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e8%bf%94%e5%9b%9e%e5%80%bc%209%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%96%b9%e6%b3%95%2010%20public%20int%20SomeMethod%28%5bparam%3a%20SomAttr%5d%20int%20SomeParam%29%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%82%e6%95%b0%2011%20return%20SomeParam%3b%2012%20%7d%2013%20%5bproperty%3a%20SomAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%b1%9e%e6%80%a7%2014%20public%20string%20SomeProp%20%7b%2015%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8eget%e8%ae%bf%e9%97%ae%e5%99%a8%e6%96%b9%e6%b3%95%2016%20get%20%7b%20return%20null%3b%20%7d%2017%20%7d%2018%20%5bevent%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e4%ba%8b%e4%bb%b6%2019%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84%e5%ad%97%e6%ae%b5%2020%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84add%e5%92%8cremove%e6%96%b9%e6%b3%95%2021%20public%20event%20EventHandler%20SomeEvent%3b%2022%7d%20" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-attribute%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e7%89%b9%e6%80%a7&description=%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%20%e8%87%aa%e5%ae%9a%e4%b9%89%e7%89%b9%e6%80%a7%e5%85%b6%e5%ae%9e%e5%b0%b1%e6%98%af%e5%b0%86%e4%b8%80%e4%ba%9b%e9%99%84%e5%8a%a0%e4%bf%a1%e6%81%af%e4%b8%8e%e6%9f%90%e4%b8%aa%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e5%85%b3%e8%81%94%e8%b5%b7%e6%9d%a5%e7%9a%84%e6%96%b9%e5%bc%8f%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e5%9c%a8%e6%89%98%e7%ae%a1%e6%a8%a1%e5%9d%97%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e7%94%9f%e6%88%90%28%e5%b5%8c%e5%85%a5%29%e8%bf%99%e4%ba%9b%e9%a2%9d%e5%a4%96%e7%9a%84%e4%bf%a1%e6%81%af%e3%80%82%0a%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%e5%85%b6%e5%ae%9e%e6%98%af%e4%b8%80%e4%b8%aa%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e3%80%82%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%e7%b1%bb%e5%bf%85%e9%a1%bb%e7%9b%b4%e6%8e%a5%e6%88%96%e9%97%b4%e6%8e%a5%e4%bb%8e%e5%85%ac%e5%85%b1%e6%8a%bd%e8%b1%a1%e7%b1%bbSystem.Attribute%e6%b4%be%e7%94%9f%e3%80%82%0a%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%e7%b1%bb%e5%bf%85%e9%a1%bb%e6%9c%89%e6%9e%84%e9%80%a0%e5%99%a8%e6%89%8d%e8%83%bd%e5%88%9b%e5%bb%ba%e5%ae%9e%e4%be%8b%ef%bc%8c%e6%89%80%e4%bb%a5%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e6%97%b6%ef%bc%8c%e8%af%ad%e6%b3%95%e7%b1%bb%e4%bc%bc%e4%ba%8e%e8%b0%83%e7%94%a8%e7%b1%bb%e7%9a%84%e6%9f%90%e4%b8%aa%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e5%8f%82%e6%95%b0%e7%a7%b0%e4%b8%ba%e5%ae%9a%e4%bd%8d%e5%8f%82%e6%95%b0%28positional%20parameter%29%ef%bc%8c%e8%80%8c%e4%b8%94%e6%98%af%e5%bc%ba%e5%88%b6%e6%80%a7%e7%9a%84%ef%bc%8c%e5%bf%85%e9%a1%bb%e6%8c%87%e5%ae%9a%e5%8f%82%e6%95%b0%e3%80%82%e8%80%8c%e5%85%b6%e4%bb%96%e7%9a%84%e5%85%ac%e5%85%b1%e5%ad%97%e6%ae%b5%e6%88%96%e5%b1%9e%e6%80%a7%e8%a2%ab%e7%a7%b0%e4%b8%ba%e5%91%bd%e5%90%8d%e5%8f%82%e6%95%b0%28named%20parameter%29%ef%bc%8c%e8%bf%99%e7%a7%8d%e5%8f%82%e6%95%b0%e6%98%af%e5%8f%af%e9%80%89%e7%9a%84%e3%80%82%0a1%2f%2f%20%e8%87%aa%e5%ae%9a%e4%b9%89%e7%89%b9%e6%80%a7%202public%20class%20AttrAttribute%20%3a%20System.Attribute%20%7b%203%20public%20string%20Name%3b%204%20public%20int%20Num%3b%205%20public%20char%20Char%3b%206%20public%20AttrAttribute%28string%20name%29%20%7b%207%20Name%20%3d%20name%3b%208%20%7d%209%7d%2010%2011%2f%2f%20name%e5%b1%9e%e4%ba%8e%e5%ae%9a%e4%bd%8d%e5%8f%82%e6%95%b0%2012%2f%2f%20Num%e4%b8%8eChar%e5%b1%9e%e4%ba%8e%e5%91%bd%e5%90%8d%e5%8f%82%e6%95%b0%2013%5bAttr%28%26%2334%3bString%26%2334%3b%2c%20Num%20%3d%201%2c%20Char%20%3d%20%26%2339%3bc%26%2339%3b%29%5d%2014public%20void%20Func%28%29%20%7b%2015%2016%7d%20%e6%8f%90%e7%a4%ba%0a%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e6%ba%90%e4%bb%a3%e7%a0%81%e4%b8%ad%e7%9a%84%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e6%97%b6%ef%bc%8cC%23%e7%bc%96%e8%af%91%e5%99%a8%e5%85%81%e8%ae%b8%e7%9c%81%e7%95%a5Attribute%e5%90%8e%e7%bc%80%e4%bb%a5%e5%87%8f%e5%b0%91%e6%89%93%e5%ad%97%e9%87%8f%ef%bc%8c%e5%b9%b6%e6%8f%90%e5%8d%87%e6%ba%90%e4%bb%a3%e7%a0%81%e7%9a%84%e5%8f%af%e8%af%bb%e6%80%a7%e3%80%82%0aCLR%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%af%e5%9c%a8%e6%96%87%e4%bb%b6%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e8%a1%a8%e7%a4%ba%e7%9a%84%e5%87%a0%e4%b9%8e%e4%bb%bb%e4%bd%95%e4%b8%9c%e8%a5%bf%e3%80%82C%23%e5%8f%aa%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ae%9a%e4%b9%89%e4%bb%a5%e4%b8%8b%e4%bb%bb%e4%bd%95%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e7%9a%84%e6%ba%90%e4%bb%a3%e7%a0%81%ef%bc%9a%e7%a8%8b%e5%ba%8f%e9%9b%86%e3%80%81%e6%a8%a1%e5%9d%97%e3%80%81%e7%b1%bb%e5%9e%8b%28%e7%b1%bb%e3%80%81%e7%bb%93%e6%9e%84%e3%80%81%e6%9e%9a%e4%b8%be%e3%80%81%e6%8e%a5%e5%8f%a3%e3%80%81%e5%a7%94%e6%89%98%29%e3%80%81%e5%ad%97%e6%ae%b5%e3%80%81%e6%96%b9%e6%b3%95%28%e5%90%ab%e6%9e%84%e9%80%a0%e5%99%a8%29%e3%80%81%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0%e3%80%81%e6%96%b9%e6%b3%95%e8%bf%94%e5%9b%9e%e5%80%bc%e3%80%81%e5%b1%9e%e6%80%a7%e3%80%81%e4%ba%8b%e4%bb%b6%e5%92%8c%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%82%e6%95%b0%e3%80%82%e5%ba%94%e7%94%a8%e7%89%b9%e6%80%a7%e6%97%b6%ef%bc%8cC%23%e5%85%81%e8%ae%b8%e4%bd%bf%e7%94%a8%e4%b8%80%e4%b8%aa%e5%89%8d%e7%bc%80%e6%98%8e%e7%a1%ae%e6%8c%87%e5%ae%9a%e7%89%b9%e6%80%a7%e8%a6%81%e5%ba%94%e7%94%a8%e4%ba%8e%e7%9a%84%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e3%80%82%0a1using%20System%3b%202%5bassembly%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%a8%8b%e5%ba%8f%e9%9b%86%203%5bmodule%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%a8%a1%e5%9d%97%204%5btype%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%205internal%20sealed%20class%20SomeType%26lt%3b%5btypevar%3a%20SomeAttr%5d%20T%26gt%3b%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%206%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ad%97%e6%ae%b5%207%20public%20int%20SomeField%20%3d%200%3b%208%20%5breturn%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e8%bf%94%e5%9b%9e%e5%80%bc%209%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%96%b9%e6%b3%95%2010%20public%20int%20SomeMethod%28%5bparam%3a%20SomAttr%5d%20int%20SomeParam%29%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%82%e6%95%b0%2011%20return%20SomeParam%3b%2012%20%7d%2013%20%5bproperty%3a%20SomAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%b1%9e%e6%80%a7%2014%20public%20string%20SomeProp%20%7b%2015%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8eget%e8%ae%bf%e9%97%ae%e5%99%a8%e6%96%b9%e6%b3%95%2016%20get%20%7b%20return%20null%3b%20%7d%2017%20%7d%2018%20%5bevent%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e4%ba%8b%e4%bb%b6%2019%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84%e5%ad%97%e6%ae%b5%2020%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84add%e5%92%8cremove%e6%96%b9%e6%b3%95%2021%20public%20event%20EventHandler%20SomeEvent%3b%2022%7d%20%e9%99%90%e5%88%b6%e7%89%b9%e6%80%a7%e7%9a%84%e5%ba%94%e7%94%a8%e8%8c%83%e5%9b%b4%20%e5%90%91%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8System." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -182,7 +194,13 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#定制特性">定制特性</a></li>
+    <li><a href="#定制特性">定制特性</a>
+      <ul>
+        <li><a href="#限制特性的应用范围">限制特性的应用范围</a></li>
+        <li><a href="#特性构造器和字段属性数据类型">特性构造器和字段/属性数据类型</a></li>
+        <li><a href="#定制特性的应用">定制特性的应用</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
     </div>
@@ -223,8 +241,28 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     <div class="content" itemprop="articleBody">
       <h2 id="定制特性">定制特性</h2>
 <p><strong>自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式</strong>。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。</p>
-<p>CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。</p>
-<p>应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素</p>
+<p>定制特性其实是一个类型的实例。<strong>定制特性类必须直接或间接从公共抽象类<code>System.Attribute</code>派生</strong>。</p>
+<p>定制特性类必须有构造器才能创建实例，所以将特性应用于目标元素时，语法类似于调用类的某个实例构造器。构造器的参数称为<strong>定位参数</strong>(positional parameter)，而且是强制性的，必须指定参数。而其他的公共字段或属性被称为<strong>命名参数</strong>(named parameter)，这种参数是可选的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// 自定义特性</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">AttrAttribute</span> : System.Attribute {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">string</span> Name;         
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> Num;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">char</span> Char;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#ff79c6">public</span> AttrAttribute(<span style="color:#8be9fd">string</span> name) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        Name = name;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#6272a4">// name属于定位参数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#6272a4">// Num与Char属于命名参数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#50fa7b">[Attr(&#34;String&#34;, Num = 1, Char = &#39;c&#39;)]</span> 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> Func() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
+</span></span></code></pre></div><div class="admonition tip"><p class="admonition-title">提示</p>
+<p>将特性应用于源代码中的目标元素时，C#编译器允许省略<code>Attribute</code>后缀以减少打字量，并提升源代码的可读性。</p>
+</div>
+<p>CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">using</span> System;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#50fa7b">[assembly: SomeAttr]</span>                    <span style="color:#6272a4">// 应用于程序集</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#50fa7b">[module: SomeAttr]</span>                      <span style="color:#6272a4">// 应用于模块</span>
@@ -247,7 +285,68 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#50fa7b">    [method: SomeAttr]</span>                  <span style="color:#6272a4">// 应用于编译器生成的add和remove方法</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#ff79c6">event</span> EventHandler SomeEvent;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>}
-</span></span></code></pre></div>
+</span></span></code></pre></div><h3 id="限制特性的应用范围">限制特性的应用范围</h3>
+<p>向特性应用<code>System.AttributeUsageAttribute</code>特性来限制特性的合法范围</p>
+<table>
+<thead>
+<tr>
+<th><code>AttributeUsage</code>特性的属性</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Inherited</code></td>
+<td>指出特性在应用于基类时，是否同时应用于派生类和重写的方法。默认为true</td>
+</tr>
+<tr>
+<td><code>AllowMultiple</code></td>
+<td>设为<code>true</code>就只能向选定的目标引用一次。默认为false</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// 将特性限制只能应用于枚举类型</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#50fa7b">[AttributeUsage(AttributeTargets.Enum, Inherited = false)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">AttrAttribute</span> : System.Attribute {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">string</span> Name;         
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">int</span> Num;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#ff79c6">public</span> <span style="color:#8be9fd">char</span> Char;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#ff79c6">public</span> AttrAttribute(<span style="color:#8be9fd">string</span> name) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        Name = name;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>}
+</span></span></code></pre></div><h3 id="特性构造器和字段属性数据类型">特性构造器和字段/属性数据类型</h3>
+<p>特性的字段和属性的数据类型只允许基元值类型，<code>String</code>，<code>Type</code>，<code>Object</code>。还可以任意类型的一维0基数组，但使用数组会破坏CLS相容性。</p>
+<p>当编译器检测到向目标元素应用了定制特性时，会调用特性类的构造器，向它传递任何指定参数，从而构造特性类的实例。然后编译器采用增强型构造器语法所指定的值，对任何公共字段和属性进行初始化。构造并初始化好定制特性类的对象之后，编译器将它的状态序列化到目标元素的元数据表记录项中。</p>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>方便理解定制特性：它是类的实例，被序列化成驻留在元数据中的字节流。运行时可对元数据中的字节进行反序列化，从而构造出类的实例。</p>
+<p>定制特性实际发生的事情：编译器在元数据中生成创建特性类的实例所需的信息。每个构造器参数都是1字节的类型ID，后跟具体的值。对构造器的参数进行“序列化”时，编译器先写入字段/属性名称，再跟上1字节的类型ID，最后是具体的值。如果是数组，则会先保存数组元素的个数，再跟上每个单独的元素。</p>
+</div>
+<h3 id="定制特性的应用">定制特性的应用</h3>
+<p><code>System.Reflection.CustomAttributeExtensions</code>类定义的三个静态方法来获取与目标关联的特性：<code>IsDefined</code>，<code>GetCustomAttributes</code>，<code>GetCustomAttribute</code>。</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IsDefined</code></td>
+<td>只判断是否应用了一个特性。效率高。因为它不会构造特性对象，不会调用构造器，也不会设置字段和属性。</td>
+</tr>
+<tr>
+<td><code>GetCustomAttributes</code></td>
+<td>返回应用于目标的指定特性对象的集合。每个实例都使用编译时指定的参数、字段和属性来构造(反序列化)。如果目标没有应用指定特性类的实例，就返回空集合。</td>
+</tr>
+<tr>
+<td><code>GetCustomAttribute</code></td>
+<td>同上，如果没有指定实例，就返回null，如果有多个实例则抛出异常。</td>
+</tr>
+</tbody>
+</table>
+
     </div>
   </article>
 
@@ -280,7 +379,13 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#定制特性">定制特性</a></li>
+    <li><a href="#定制特性">定制特性</a>
+      <ul>
+        <li><a href="#限制特性的应用范围">限制特性的应用范围</a></li>
+        <li><a href="#特性构造器和字段属性数据类型">特性构造器和字段/属性数据类型</a></li>
+        <li><a href="#定制特性的应用">定制特性的应用</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
     </div>
@@ -330,7 +435,7 @@ CLR允许将特性应用于可在文件的元数据中表示的几乎任何东�
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-attribute%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e7%89%b9%e6%80%a7&description=%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%20%e8%87%aa%e5%ae%9a%e4%b9%89%e7%89%b9%e6%80%a7%e5%85%b6%e5%ae%9e%e5%b0%b1%e6%98%af%e5%b0%86%e4%b8%80%e4%ba%9b%e9%99%84%e5%8a%a0%e4%bf%a1%e6%81%af%e4%b8%8e%e6%9f%90%e4%b8%aa%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e5%85%b3%e8%81%94%e8%b5%b7%e6%9d%a5%e7%9a%84%e6%96%b9%e5%bc%8f%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e5%9c%a8%e6%89%98%e7%ae%a1%e6%a8%a1%e5%9d%97%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e7%94%9f%e6%88%90%28%e5%b5%8c%e5%85%a5%29%e8%bf%99%e4%ba%9b%e9%a2%9d%e5%a4%96%e7%9a%84%e4%bf%a1%e6%81%af%e3%80%82%0aCLR%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%af%e5%9c%a8%e6%96%87%e4%bb%b6%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e8%a1%a8%e7%a4%ba%e7%9a%84%e5%87%a0%e4%b9%8e%e4%bb%bb%e4%bd%95%e4%b8%9c%e8%a5%bf%e3%80%82C%23%e5%8f%aa%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ae%9a%e4%b9%89%e4%bb%a5%e4%b8%8b%e4%bb%bb%e4%bd%95%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e7%9a%84%e6%ba%90%e4%bb%a3%e7%a0%81%ef%bc%9a%e7%a8%8b%e5%ba%8f%e9%9b%86%e3%80%81%e6%a8%a1%e5%9d%97%e3%80%81%e7%b1%bb%e5%9e%8b%28%e7%b1%bb%e3%80%81%e7%bb%93%e6%9e%84%e3%80%81%e6%9e%9a%e4%b8%be%e3%80%81%e6%8e%a5%e5%8f%a3%e3%80%81%e5%a7%94%e6%89%98%29%e3%80%81%e5%ad%97%e6%ae%b5%e3%80%81%e6%96%b9%e6%b3%95%28%e5%90%ab%e6%9e%84%e9%80%a0%e5%99%a8%29%e3%80%81%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0%e3%80%81%e6%96%b9%e6%b3%95%e8%bf%94%e5%9b%9e%e5%80%bc%e3%80%81%e5%b1%9e%e6%80%a7%e3%80%81%e4%ba%8b%e4%bb%b6%e5%92%8c%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%82%e6%95%b0%e3%80%82%0a%e5%ba%94%e7%94%a8%e7%89%b9%e6%80%a7%e6%97%b6%ef%bc%8cC%23%e5%85%81%e8%ae%b8%e4%bd%bf%e7%94%a8%e4%b8%80%e4%b8%aa%e5%89%8d%e7%bc%80%e6%98%8e%e7%a1%ae%e6%8c%87%e5%ae%9a%e7%89%b9%e6%80%a7%e8%a6%81%e5%ba%94%e7%94%a8%e4%ba%8e%e7%9a%84%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%0a1using%20System%3b%202%5bassembly%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%a8%8b%e5%ba%8f%e9%9b%86%203%5bmodule%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%a8%a1%e5%9d%97%204%5btype%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%205internal%20sealed%20class%20SomeType%26lt%3b%5btypevar%3a%20SomeAttr%5d%20T%26gt%3b%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%206%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ad%97%e6%ae%b5%207%20public%20int%20SomeField%20%3d%200%3b%208%20%5breturn%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e8%bf%94%e5%9b%9e%e5%80%bc%209%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%96%b9%e6%b3%95%2010%20public%20int%20SomeMethod%28%5bparam%3a%20SomAttr%5d%20int%20SomeParam%29%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%82%e6%95%b0%2011%20return%20SomeParam%3b%2012%20%7d%2013%20%5bproperty%3a%20SomAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%b1%9e%e6%80%a7%2014%20public%20string%20SomeProp%20%7b%2015%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8eget%e8%ae%bf%e9%97%ae%e5%99%a8%e6%96%b9%e6%b3%95%2016%20get%20%7b%20return%20null%3b%20%7d%2017%20%7d%2018%20%5bevent%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e4%ba%8b%e4%bb%b6%2019%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84%e5%ad%97%e6%ae%b5%2020%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84add%e5%92%8cremove%e6%96%b9%e6%b3%95%2021%20public%20event%20EventHandler%20SomeEvent%3b%2022%7d%20" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-attribute%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e7%89%b9%e6%80%a7&description=%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%20%e8%87%aa%e5%ae%9a%e4%b9%89%e7%89%b9%e6%80%a7%e5%85%b6%e5%ae%9e%e5%b0%b1%e6%98%af%e5%b0%86%e4%b8%80%e4%ba%9b%e9%99%84%e5%8a%a0%e4%bf%a1%e6%81%af%e4%b8%8e%e6%9f%90%e4%b8%aa%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e5%85%b3%e8%81%94%e8%b5%b7%e6%9d%a5%e7%9a%84%e6%96%b9%e5%bc%8f%e3%80%82%e7%bc%96%e8%af%91%e5%99%a8%e5%9c%a8%e6%89%98%e7%ae%a1%e6%a8%a1%e5%9d%97%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e7%94%9f%e6%88%90%28%e5%b5%8c%e5%85%a5%29%e8%bf%99%e4%ba%9b%e9%a2%9d%e5%a4%96%e7%9a%84%e4%bf%a1%e6%81%af%e3%80%82%0a%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%e5%85%b6%e5%ae%9e%e6%98%af%e4%b8%80%e4%b8%aa%e7%b1%bb%e5%9e%8b%e7%9a%84%e5%ae%9e%e4%be%8b%e3%80%82%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%e7%b1%bb%e5%bf%85%e9%a1%bb%e7%9b%b4%e6%8e%a5%e6%88%96%e9%97%b4%e6%8e%a5%e4%bb%8e%e5%85%ac%e5%85%b1%e6%8a%bd%e8%b1%a1%e7%b1%bbSystem.Attribute%e6%b4%be%e7%94%9f%e3%80%82%0a%e5%ae%9a%e5%88%b6%e7%89%b9%e6%80%a7%e7%b1%bb%e5%bf%85%e9%a1%bb%e6%9c%89%e6%9e%84%e9%80%a0%e5%99%a8%e6%89%8d%e8%83%bd%e5%88%9b%e5%bb%ba%e5%ae%9e%e4%be%8b%ef%bc%8c%e6%89%80%e4%bb%a5%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e6%97%b6%ef%bc%8c%e8%af%ad%e6%b3%95%e7%b1%bb%e4%bc%bc%e4%ba%8e%e8%b0%83%e7%94%a8%e7%b1%bb%e7%9a%84%e6%9f%90%e4%b8%aa%e5%ae%9e%e4%be%8b%e6%9e%84%e9%80%a0%e5%99%a8%e3%80%82%e6%9e%84%e9%80%a0%e5%99%a8%e7%9a%84%e5%8f%82%e6%95%b0%e7%a7%b0%e4%b8%ba%e5%ae%9a%e4%bd%8d%e5%8f%82%e6%95%b0%28positional%20parameter%29%ef%bc%8c%e8%80%8c%e4%b8%94%e6%98%af%e5%bc%ba%e5%88%b6%e6%80%a7%e7%9a%84%ef%bc%8c%e5%bf%85%e9%a1%bb%e6%8c%87%e5%ae%9a%e5%8f%82%e6%95%b0%e3%80%82%e8%80%8c%e5%85%b6%e4%bb%96%e7%9a%84%e5%85%ac%e5%85%b1%e5%ad%97%e6%ae%b5%e6%88%96%e5%b1%9e%e6%80%a7%e8%a2%ab%e7%a7%b0%e4%b8%ba%e5%91%bd%e5%90%8d%e5%8f%82%e6%95%b0%28named%20parameter%29%ef%bc%8c%e8%bf%99%e7%a7%8d%e5%8f%82%e6%95%b0%e6%98%af%e5%8f%af%e9%80%89%e7%9a%84%e3%80%82%0a1%2f%2f%20%e8%87%aa%e5%ae%9a%e4%b9%89%e7%89%b9%e6%80%a7%202public%20class%20AttrAttribute%20%3a%20System.Attribute%20%7b%203%20public%20string%20Name%3b%204%20public%20int%20Num%3b%205%20public%20char%20Char%3b%206%20public%20AttrAttribute%28string%20name%29%20%7b%207%20Name%20%3d%20name%3b%208%20%7d%209%7d%2010%2011%2f%2f%20name%e5%b1%9e%e4%ba%8e%e5%ae%9a%e4%bd%8d%e5%8f%82%e6%95%b0%2012%2f%2f%20Num%e4%b8%8eChar%e5%b1%9e%e4%ba%8e%e5%91%bd%e5%90%8d%e5%8f%82%e6%95%b0%2013%5bAttr%28%26%2334%3bString%26%2334%3b%2c%20Num%20%3d%201%2c%20Char%20%3d%20%26%2339%3bc%26%2339%3b%29%5d%2014public%20void%20Func%28%29%20%7b%2015%2016%7d%20%e6%8f%90%e7%a4%ba%0a%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e6%ba%90%e4%bb%a3%e7%a0%81%e4%b8%ad%e7%9a%84%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e6%97%b6%ef%bc%8cC%23%e7%bc%96%e8%af%91%e5%99%a8%e5%85%81%e8%ae%b8%e7%9c%81%e7%95%a5Attribute%e5%90%8e%e7%bc%80%e4%bb%a5%e5%87%8f%e5%b0%91%e6%89%93%e5%ad%97%e9%87%8f%ef%bc%8c%e5%b9%b6%e6%8f%90%e5%8d%87%e6%ba%90%e4%bb%a3%e7%a0%81%e7%9a%84%e5%8f%af%e8%af%bb%e6%80%a7%e3%80%82%0aCLR%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%af%e5%9c%a8%e6%96%87%e4%bb%b6%e7%9a%84%e5%85%83%e6%95%b0%e6%8d%ae%e4%b8%ad%e8%a1%a8%e7%a4%ba%e7%9a%84%e5%87%a0%e4%b9%8e%e4%bb%bb%e4%bd%95%e4%b8%9c%e8%a5%bf%e3%80%82C%23%e5%8f%aa%e5%85%81%e8%ae%b8%e5%b0%86%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ae%9a%e4%b9%89%e4%bb%a5%e4%b8%8b%e4%bb%bb%e4%bd%95%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e7%9a%84%e6%ba%90%e4%bb%a3%e7%a0%81%ef%bc%9a%e7%a8%8b%e5%ba%8f%e9%9b%86%e3%80%81%e6%a8%a1%e5%9d%97%e3%80%81%e7%b1%bb%e5%9e%8b%28%e7%b1%bb%e3%80%81%e7%bb%93%e6%9e%84%e3%80%81%e6%9e%9a%e4%b8%be%e3%80%81%e6%8e%a5%e5%8f%a3%e3%80%81%e5%a7%94%e6%89%98%29%e3%80%81%e5%ad%97%e6%ae%b5%e3%80%81%e6%96%b9%e6%b3%95%28%e5%90%ab%e6%9e%84%e9%80%a0%e5%99%a8%29%e3%80%81%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0%e3%80%81%e6%96%b9%e6%b3%95%e8%bf%94%e5%9b%9e%e5%80%bc%e3%80%81%e5%b1%9e%e6%80%a7%e3%80%81%e4%ba%8b%e4%bb%b6%e5%92%8c%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%82%e6%95%b0%e3%80%82%e5%ba%94%e7%94%a8%e7%89%b9%e6%80%a7%e6%97%b6%ef%bc%8cC%23%e5%85%81%e8%ae%b8%e4%bd%bf%e7%94%a8%e4%b8%80%e4%b8%aa%e5%89%8d%e7%bc%80%e6%98%8e%e7%a1%ae%e6%8c%87%e5%ae%9a%e7%89%b9%e6%80%a7%e8%a6%81%e5%ba%94%e7%94%a8%e4%ba%8e%e7%9a%84%e7%9b%ae%e6%a0%87%e5%85%83%e7%b4%a0%e3%80%82%0a1using%20System%3b%202%5bassembly%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%a8%8b%e5%ba%8f%e9%9b%86%203%5bmodule%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%a8%a1%e5%9d%97%204%5btype%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%b1%bb%e5%9e%8b%205internal%20sealed%20class%20SomeType%26lt%3b%5btypevar%3a%20SomeAttr%5d%20T%26gt%3b%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%98%e9%87%8f%206%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%ad%97%e6%ae%b5%207%20public%20int%20SomeField%20%3d%200%3b%208%20%5breturn%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e8%bf%94%e5%9b%9e%e5%80%bc%209%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e6%96%b9%e6%b3%95%2010%20public%20int%20SomeMethod%28%5bparam%3a%20SomAttr%5d%20int%20SomeParam%29%20%7b%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%8f%82%e6%95%b0%2011%20return%20SomeParam%3b%2012%20%7d%2013%20%5bproperty%3a%20SomAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e5%b1%9e%e6%80%a7%2014%20public%20string%20SomeProp%20%7b%2015%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8eget%e8%ae%bf%e9%97%ae%e5%99%a8%e6%96%b9%e6%b3%95%2016%20get%20%7b%20return%20null%3b%20%7d%2017%20%7d%2018%20%5bevent%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e4%ba%8b%e4%bb%b6%2019%20%5bfield%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84%e5%ad%97%e6%ae%b5%2020%20%5bmethod%3a%20SomeAttr%5d%20%2f%2f%20%e5%ba%94%e7%94%a8%e4%ba%8e%e7%bc%96%e8%af%91%e5%99%a8%e7%94%9f%e6%88%90%e7%9a%84add%e5%92%8cremove%e6%96%b9%e6%b3%95%2021%20public%20event%20EventHandler%20SomeEvent%3b%2022%7d%20%e9%99%90%e5%88%b6%e7%89%b9%e6%80%a7%e7%9a%84%e5%ba%94%e7%94%a8%e8%8c%83%e5%9b%b4%20%e5%90%91%e7%89%b9%e6%80%a7%e5%ba%94%e7%94%a8System." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>

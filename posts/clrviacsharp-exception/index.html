@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.1.0/style.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-tc-webfont@1.0.0/style.css" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+  <style>
+    body {
+      font-family: "LXGW WenKai", sans-serif;
+       
+      font-family: "LXGW WenKai Lite", sans-serif;
+       
+      font-family: "LXGW WenKai TC", sans-serif;
+       
+      font-family: "LXGW WenKai Screen", sans-serif;
+    }
+  </style>
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> 《CLR via C#》 异常处理 | Alaya</title>
+  <link rel = 'canonical' href = 'https://www.sooda.net.cn/posts/clrviacsharp-exception/'>
+  <meta name="description" content="Simple Life Simple Coding.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="《CLR via C#》 异常处理" />
+<meta property="og:description" content="定义异常 异常是指成员没有完成它的名称所宣称的行动(方法执行中出错中断)。
+异常处理机制 C#支持用try块、catch块和finally块来处理异常的各个部分。
+负责会抛出异常代码的监听放到一个try块。 负责异常恢复的代码应放到一个或多个catch块。 负责清理的代码应放到一个try块。 try块 一个try块至少要有一个关联的catch块或finally块。
+提示
+如果一个try块中执行多个可能抛出同一个异常类型的操作，但不同的操作有不同的异常恢复措施，就应该将每个操作都放到它自己的try块中，才能正确的恢复状态。
+catch块 一个try块可以关联0个或多个catch块。catch关键字后的圆括号中的表达式称为捕捉类型。C#要求捕捉类型必须是System.Exception或者它的派生类。没有圆括号则默认捕捉所有异常即System.Exception。
+CLR自上而下搜索匹配的catch块，所以应该将较具体的异常放在顶部。也就是说，派生程度最大的异常放在最上边，接着是它的基类型。最后是System.Exception。
+一旦CLR找到匹配的catch块，就会执行内层所有finally块中的代码。所谓“内层finally块”是指从抛出异常的try块开始，到匹配异常的catch块之间的所有finally块。(不是finally块在try块和catch块之间，而是调用函数栈中的finally块)。
+1static void Func() 2{ 3 try { 4 throw new FieldAccessException(); 5 } finally { 6 Console.WriteLine(&#34;Func finally&#34;); 7 } 8} 9 10// 执行Main函数时，调用Func函数，Func函数中的try块会触发异常而 11// 捕捉的catch块在Main函数中，所以Func函数中的finally块被执行。 12// 所有内层`finally`块执行完毕后，匹配异常的`catch`块才开始执行。 13// 输出结果为： 14// Func finally 15// catch FieldAccessException 16// Main finally 17static void Main(string[] args) 18{ 19 try { 20 Func(); 21 } catch(FieldAccessException e) { 22 Console." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.sooda.net.cn/posts/clrviacsharp-exception/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-08-29T09:39:19+08:00" />
+<meta property="article:modified_time" content="2022-08-29T09:39:19+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="《CLR via C#》 异常处理"/>
+<meta name="twitter:description" content="定义异常 异常是指成员没有完成它的名称所宣称的行动(方法执行中出错中断)。
+异常处理机制 C#支持用try块、catch块和finally块来处理异常的各个部分。
+负责会抛出异常代码的监听放到一个try块。 负责异常恢复的代码应放到一个或多个catch块。 负责清理的代码应放到一个try块。 try块 一个try块至少要有一个关联的catch块或finally块。
+提示
+如果一个try块中执行多个可能抛出同一个异常类型的操作，但不同的操作有不同的异常恢复措施，就应该将每个操作都放到它自己的try块中，才能正确的恢复状态。
+catch块 一个try块可以关联0个或多个catch块。catch关键字后的圆括号中的表达式称为捕捉类型。C#要求捕捉类型必须是System.Exception或者它的派生类。没有圆括号则默认捕捉所有异常即System.Exception。
+CLR自上而下搜索匹配的catch块，所以应该将较具体的异常放在顶部。也就是说，派生程度最大的异常放在最上边，接着是它的基类型。最后是System.Exception。
+一旦CLR找到匹配的catch块，就会执行内层所有finally块中的代码。所谓“内层finally块”是指从抛出异常的try块开始，到匹配异常的catch块之间的所有finally块。(不是finally块在try块和catch块之间，而是调用函数栈中的finally块)。
+1static void Func() 2{ 3 try { 4 throw new FieldAccessException(); 5 } finally { 6 Console.WriteLine(&#34;Func finally&#34;); 7 } 8} 9 10// 执行Main函数时，调用Func函数，Func函数中的try块会触发异常而 11// 捕捉的catch块在Main函数中，所以Func函数中的finally块被执行。 12// 所有内层`finally`块执行完毕后，匹配异常的`catch`块才开始执行。 13// 输出结果为： 14// Func finally 15// catch FieldAccessException 16// Main finally 17static void Main(string[] args) 18{ 19 try { 20 Func(); 21 } catch(FieldAccessException e) { 22 Console."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://www.sooda.net.cn/css/styles.166db686fda6f9c6a78da384702e8843f300f1bb91f7a773ad821803d8351c8e7e9e1eea1f977be1888e367f25d0a78d1d9c403ad3255e62df88b0a84b4b24c9.css" integrity="sha512-Fm22hv2m&#43;canjaOEcC6IQ/MA8buR96dzrYIYA9g1HI5&#43;nh7qH5d74YiONn8l0KeNHZxAOtMlXmLfiLCoS0skyQ=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://www.sooda.net.cn/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://www.sooda.net.cn/posts/clrviacsharp-nullable/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://www.sooda.net.cn/posts/clrviacsharp-gc/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86&body=Check out this article: https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86&description=%e5%ae%9a%e4%b9%89%e5%bc%82%e5%b8%b8%20%e5%bc%82%e5%b8%b8%e6%98%af%e6%8c%87%e6%88%90%e5%91%98%e6%b2%a1%e6%9c%89%e5%ae%8c%e6%88%90%e5%ae%83%e7%9a%84%e5%90%8d%e7%a7%b0%e6%89%80%e5%ae%a3%e7%a7%b0%e7%9a%84%e8%a1%8c%e5%8a%a8%28%e6%96%b9%e6%b3%95%e6%89%a7%e8%a1%8c%e4%b8%ad%e5%87%ba%e9%94%99%e4%b8%ad%e6%96%ad%29%e3%80%82%0a%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e6%9c%ba%e5%88%b6%20C%23%e6%94%af%e6%8c%81%e7%94%a8try%e5%9d%97%e3%80%81catch%e5%9d%97%e5%92%8cfinally%e5%9d%97%e6%9d%a5%e5%a4%84%e7%90%86%e5%bc%82%e5%b8%b8%e7%9a%84%e5%90%84%e4%b8%aa%e9%83%a8%e5%88%86%e3%80%82%0a%e8%b4%9f%e8%b4%a3%e4%bc%9a%e6%8a%9b%e5%87%ba%e5%bc%82%e5%b8%b8%e4%bb%a3%e7%a0%81%e7%9a%84%e7%9b%91%e5%90%ac%e6%94%be%e5%88%b0%e4%b8%80%e4%b8%aatry%e5%9d%97%e3%80%82%20%e8%b4%9f%e8%b4%a3%e5%bc%82%e5%b8%b8%e6%81%a2%e5%a4%8d%e7%9a%84%e4%bb%a3%e7%a0%81%e5%ba%94%e6%94%be%e5%88%b0%e4%b8%80%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aacatch%e5%9d%97%e3%80%82%20%e8%b4%9f%e8%b4%a3%e6%b8%85%e7%90%86%e7%9a%84%e4%bb%a3%e7%a0%81%e5%ba%94%e6%94%be%e5%88%b0%e4%b8%80%e4%b8%aatry%e5%9d%97%e3%80%82%20try%e5%9d%97%20%e4%b8%80%e4%b8%aatry%e5%9d%97%e8%87%b3%e5%b0%91%e8%a6%81%e6%9c%89%e4%b8%80%e4%b8%aa%e5%85%b3%e8%81%94%e7%9a%84catch%e5%9d%97%e6%88%96finally%e5%9d%97%e3%80%82%0a%e6%8f%90%e7%a4%ba%0a%e5%a6%82%e6%9e%9c%e4%b8%80%e4%b8%aatry%e5%9d%97%e4%b8%ad%e6%89%a7%e8%a1%8c%e5%a4%9a%e4%b8%aa%e5%8f%af%e8%83%bd%e6%8a%9b%e5%87%ba%e5%90%8c%e4%b8%80%e4%b8%aa%e5%bc%82%e5%b8%b8%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%93%8d%e4%bd%9c%ef%bc%8c%e4%bd%86%e4%b8%8d%e5%90%8c%e7%9a%84%e6%93%8d%e4%bd%9c%e6%9c%89%e4%b8%8d%e5%90%8c%e7%9a%84%e5%bc%82%e5%b8%b8%e6%81%a2%e5%a4%8d%e6%8e%aa%e6%96%bd%ef%bc%8c%e5%b0%b1%e5%ba%94%e8%af%a5%e5%b0%86%e6%af%8f%e4%b8%aa%e6%93%8d%e4%bd%9c%e9%83%bd%e6%94%be%e5%88%b0%e5%ae%83%e8%87%aa%e5%b7%b1%e7%9a%84try%e5%9d%97%e4%b8%ad%ef%bc%8c%e6%89%8d%e8%83%bd%e6%ad%a3%e7%a1%ae%e7%9a%84%e6%81%a2%e5%a4%8d%e7%8a%b6%e6%80%81%e3%80%82%0acatch%e5%9d%97%20%e4%b8%80%e4%b8%aatry%e5%9d%97%e5%8f%af%e4%bb%a5%e5%85%b3%e8%81%940%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aacatch%e5%9d%97%e3%80%82catch%e5%85%b3%e9%94%ae%e5%ad%97%e5%90%8e%e7%9a%84%e5%9c%86%e6%8b%ac%e5%8f%b7%e4%b8%ad%e7%9a%84%e8%a1%a8%e8%be%be%e5%bc%8f%e7%a7%b0%e4%b8%ba%e6%8d%95%e6%8d%89%e7%b1%bb%e5%9e%8b%e3%80%82C%23%e8%a6%81%e6%b1%82%e6%8d%95%e6%8d%89%e7%b1%bb%e5%9e%8b%e5%bf%85%e9%a1%bb%e6%98%afSystem.Exception%e6%88%96%e8%80%85%e5%ae%83%e7%9a%84%e6%b4%be%e7%94%9f%e7%b1%bb%e3%80%82%e6%b2%a1%e6%9c%89%e5%9c%86%e6%8b%ac%e5%8f%b7%e5%88%99%e9%bb%98%e8%ae%a4%e6%8d%95%e6%8d%89%e6%89%80%e6%9c%89%e5%bc%82%e5%b8%b8%e5%8d%b3System.Exception%e3%80%82%0aCLR%e8%87%aa%e4%b8%8a%e8%80%8c%e4%b8%8b%e6%90%9c%e7%b4%a2%e5%8c%b9%e9%85%8d%e7%9a%84catch%e5%9d%97%ef%bc%8c%e6%89%80%e4%bb%a5%e5%ba%94%e8%af%a5%e5%b0%86%e8%be%83%e5%85%b7%e4%bd%93%e7%9a%84%e5%bc%82%e5%b8%b8%e6%94%be%e5%9c%a8%e9%a1%b6%e9%83%a8%e3%80%82%e4%b9%9f%e5%b0%b1%e6%98%af%e8%af%b4%ef%bc%8c%e6%b4%be%e7%94%9f%e7%a8%8b%e5%ba%a6%e6%9c%80%e5%a4%a7%e7%9a%84%e5%bc%82%e5%b8%b8%e6%94%be%e5%9c%a8%e6%9c%80%e4%b8%8a%e8%be%b9%ef%bc%8c%e6%8e%a5%e7%9d%80%e6%98%af%e5%ae%83%e7%9a%84%e5%9f%ba%e7%b1%bb%e5%9e%8b%e3%80%82%e6%9c%80%e5%90%8e%e6%98%afSystem.Exception%e3%80%82%0a%e4%b8%80%e6%97%a6CLR%e6%89%be%e5%88%b0%e5%8c%b9%e9%85%8d%e7%9a%84catch%e5%9d%97%ef%bc%8c%e5%b0%b1%e4%bc%9a%e6%89%a7%e8%a1%8c%e5%86%85%e5%b1%82%e6%89%80%e6%9c%89finally%e5%9d%97%e4%b8%ad%e7%9a%84%e4%bb%a3%e7%a0%81%e3%80%82%e6%89%80%e8%b0%93%e2%80%9c%e5%86%85%e5%b1%82finally%e5%9d%97%e2%80%9d%e6%98%af%e6%8c%87%e4%bb%8e%e6%8a%9b%e5%87%ba%e5%bc%82%e5%b8%b8%e7%9a%84try%e5%9d%97%e5%bc%80%e5%a7%8b%ef%bc%8c%e5%88%b0%e5%8c%b9%e9%85%8d%e5%bc%82%e5%b8%b8%e7%9a%84catch%e5%9d%97%e4%b9%8b%e9%97%b4%e7%9a%84%e6%89%80%e6%9c%89finally%e5%9d%97%e3%80%82%28%e4%b8%8d%e6%98%affinally%e5%9d%97%e5%9c%a8try%e5%9d%97%e5%92%8ccatch%e5%9d%97%e4%b9%8b%e9%97%b4%ef%bc%8c%e8%80%8c%e6%98%af%e8%b0%83%e7%94%a8%e5%87%bd%e6%95%b0%e6%a0%88%e4%b8%ad%e7%9a%84finally%e5%9d%97%29%e3%80%82%0a1static%20void%20Func%28%29%202%7b%203%20try%20%7b%204%20throw%20new%20FieldAccessException%28%29%3b%205%20%7d%20finally%20%7b%206%20Console.WriteLine%28%26%2334%3bFunc%20finally%26%2334%3b%29%3b%207%20%7d%208%7d%209%2010%2f%2f%20%e6%89%a7%e8%a1%8cMain%e5%87%bd%e6%95%b0%e6%97%b6%ef%bc%8c%e8%b0%83%e7%94%a8Func%e5%87%bd%e6%95%b0%ef%bc%8cFunc%e5%87%bd%e6%95%b0%e4%b8%ad%e7%9a%84try%e5%9d%97%e4%bc%9a%e8%a7%a6%e5%8f%91%e5%bc%82%e5%b8%b8%e8%80%8c%2011%2f%2f%20%e6%8d%95%e6%8d%89%e7%9a%84catch%e5%9d%97%e5%9c%a8Main%e5%87%bd%e6%95%b0%e4%b8%ad%ef%bc%8c%e6%89%80%e4%bb%a5Func%e5%87%bd%e6%95%b0%e4%b8%ad%e7%9a%84finally%e5%9d%97%e8%a2%ab%e6%89%a7%e8%a1%8c%e3%80%82%2012%2f%2f%20%e6%89%80%e6%9c%89%e5%86%85%e5%b1%82%60finally%60%e5%9d%97%e6%89%a7%e8%a1%8c%e5%ae%8c%e6%af%95%e5%90%8e%ef%bc%8c%e5%8c%b9%e9%85%8d%e5%bc%82%e5%b8%b8%e7%9a%84%60catch%60%e5%9d%97%e6%89%8d%e5%bc%80%e5%a7%8b%e6%89%a7%e8%a1%8c%e3%80%82%2013%2f%2f%20%e8%be%93%e5%87%ba%e7%bb%93%e6%9e%9c%e4%b8%ba%ef%bc%9a%2014%2f%2f%20Func%20finally%2015%2f%2f%20catch%20FieldAccessException%2016%2f%2f%20Main%20finally%2017static%20void%20Main%28string%5b%5d%20args%29%2018%7b%2019%20try%20%7b%2020%20Func%28%29%3b%2021%20%7d%20catch%28FieldAccessException%20e%29%20%7b%2022%20Console." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#定义异常">定义异常</a></li>
+    <li><a href="#异常处理机制">异常处理机制</a>
+      <ul>
+        <li><a href="#try块">try块</a></li>
+        <li><a href="#catch块">catch块</a></li>
+        <li><a href="#finally块">finally块</a></li>
+      </ul>
+    </li>
+    <li><a href="#systemexception类"><code>System.Exception</code>类</a>
+      <ul>
+        <li><a href="#stacktrace">StackTrace</a></li>
+      </ul>
+    </li>
+    <li><a href="#设计规范和最佳实践">设计规范和最佳实践</a>
+      <ul>
+        <li><a href="#善用finally块">善用finally块</a></li>
+        <li><a href="#不要什么都捕捉">不要什么都捕捉</a></li>
+        <li><a href="#发生不可恢复的异常时回滚部分完成的操作维持状态">发生不可恢复的异常时回滚部分完成的操作————维持状态</a></li>
+        <li><a href="#隐藏实现细节来维系协定">隐藏实现细节来维系协定</a></li>
+      </ul>
+    </li>
+    <li><a href="#未处理异常">未处理异常</a></li>
+    <li><a href="#代码协定">代码协定</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        《CLR via C#》 异常处理
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-08-29 09:39:19 &#43;0800 CST" itemprop="datePublished">2022-08-29</time>
+          
+        </div>
+        
+        
+        
+        <div class="article-category">
+            <i class="fas fa-archive"></i>
+            
+            
+            <a class="category-link" href="/categories/clr-via-csharp">《CLR via CSharp》</a>
+            
+        </div>
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h2 id="定义异常">定义异常</h2>
+<p>异常是指成员没有完成它的名称所宣称的行动(方法执行中出错中断)。</p>
+<h2 id="异常处理机制">异常处理机制</h2>
+<p>C#支持用<code>try</code>块、<code>catch</code>块和<code>finally</code>块来处理异常的各个部分。</p>
+<ul>
+<li>负责会抛出异常代码的监听放到一个<code>try</code>块。</li>
+<li>负责异常恢复的代码应放到一个或多个<code>catch</code>块。</li>
+<li>负责清理的代码应放到一个<code>try</code>块。</li>
+</ul>
+<h3 id="try块">try块</h3>
+<p>一个<code>try</code>块至少要有一个关联的<code>catch</code>块或<code>finally</code>块。</p>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>如果一个<code>try</code>块中执行多个可能抛出<strong>同一个</strong>异常类型的操作，但不同的操作有不同的异常恢复措施，就应该将每个操作都放到它自己的<code>try</code>块中，才能正确的恢复状态。</p>
+</div>
+<h3 id="catch块">catch块</h3>
+<p>一个<code>try</code>块可以关联0个或多个<code>catch</code>块。<code>catch</code>关键字后的圆括号中的表达式称为<code>捕捉类型</code>。C#要求捕捉类型必须是<code>System.Exception</code>或者它的派生类。没有圆括号则默认捕捉所有异常即<code>System.Exception</code>。</p>
+<p>CLR自上而下搜索匹配的<code>catch</code>块，所以应该将较具体的异常放在顶部。也就是说，派生程度最大的异常放在最上边，接着是它的基类型。最后是<code>System.Exception</code>。</p>
+<p>一旦CLR找到匹配的<code>catch</code>块，就会执行内层所有<code>finally</code>块中的代码。所谓“内层<code>finally</code>块”是指从抛出异常的<code>try</code>块开始，到匹配异常的<code>catch</code>块之间的所有<code>finally</code>块。(不是<code>finally</code>块在<code>try</code>块和<code>catch</code>块之间，而是调用函数栈中的<code>finally</code>块)。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Func()
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">try</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> FieldAccessException();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    } <span style="color:#ff79c6">finally</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;Func finally&#34;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#6272a4">// 执行Main函数时，调用Func函数，Func函数中的try块会触发异常而</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#6272a4">// 捕捉的catch块在Main函数中，所以Func函数中的finally块被执行。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#6272a4">// 所有内层`finally`块执行完毕后，匹配异常的`catch`块才开始执行。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#6272a4">// 输出结果为：</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#6272a4">// Func finally</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#6272a4">// catch FieldAccessException</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#6272a4">// Main finally</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Main(<span style="color:#8be9fd">string</span>[] args)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#ff79c6">try</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>        Func();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    } <span style="color:#ff79c6">catch</span>(FieldAccessException e) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;catch FieldAccessException&#34;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    } <span style="color:#ff79c6">finally</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>        Console.WriteLine(<span style="color:#f1fa8c">&#34;Main finally&#34;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>}
+</span></span></code></pre></div><p>在<code>catch</code>块的末尾，有以下三种决策方式：</p>
+<ul>
+<li>重新抛出相同的异常，向调用栈高一层的代码通知该异常的发生。</li>
+<li>抛出一个不同的异常，向调用栈高一层的代码提供更丰富的异常信息。</li>
+<li>让线程从<code>catch</code>块底部退出(不是终止线程，而是“贯穿”<code>catch</code>块的底部，让其接着执行<code>finally</code>块)。</li>
+</ul>
+<p><code>catch</code>块的代码可通过异常变量对象来访问异常的具体信息(如堆栈信息)。</p>
+<h3 id="finally块">finally块</h3>
+<p>一般在<code>finally</code>块中执行<code>try</code>块的行动所要求的资源清理操作。</p>
+<p>例如，打开文件后，就应该把关闭文件的代码放到<code>finally</code>块中保证其执行。避免打开过程中遇到异常从而造成文件保持打开状态(直到下一次垃圾回收)。</p>
+<p><code>catch</code>和<code>finally</code>块中的代码应该非常短，而且要有非常高的成功率，避免自己又抛出异常。</p>
+<p>如果<code>catch</code>或<code>finally</code>块内部抛出了异常，CLR仍会正常运转，好像异常是在<code>finally</code>块之后抛出的一样。但是，出异常的所有信息都会丢失。这个新异常可能不会由你的代码处理，最终变成一个未处理的异常。在这种情况下，CLR会终止进程。</p>
+<h2 id="systemexception类"><code>System.Exception</code>类</h2>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>访问</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message</td>
+<td>只读</td>
+<td>String</td>
+<td>辅助性文字说明，指出抛出异常的原因。</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>只读</td>
+<td>IDictionary</td>
+<td>引用一个“键/值对”集合。抛出异常前在该集合中添加数据，对其异常恢复过程中利用</td>
+</tr>
+<tr>
+<td>Source</td>
+<td>读/写</td>
+<td>String</td>
+<td>包含生成异常的程序集名称</td>
+</tr>
+<tr>
+<td>StackTrace</td>
+<td>只读</td>
+<td>String</td>
+<td>包含抛出异常前调用过的所有方法的名称和签名</td>
+</tr>
+<tr>
+<td>TargetSite</td>
+<td>只读</td>
+<td>MethodBase</td>
+<td>包含抛出异常的方法</td>
+</tr>
+<tr>
+<td>HelpLink</td>
+<td>只读</td>
+<td>String</td>
+<td>帮助文档URL</td>
+</tr>
+<tr>
+<td>InnerException</td>
+<td>只读</td>
+<td>Exception</td>
+<td>当前异常时处理一个异常时抛出的，该属性指向上一个异常</td>
+</tr>
+<tr>
+<td>HResult</td>
+<td>读/写</td>
+<td>Int32</td>
+<td>跨越托管和本机代码边界时使用的一个32位值。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="stacktrace">StackTrace</h3>
+<p>一个异常抛出时，CLR内部记录<code>throw</code>指令的位置(抛出位置)。一个<code>catch</code>块捕捉到异常时，CLR记录捕捉位置。在<code>catch</code>块内访问被抛出的异常对象的<code>StackTrace</code>属性，负责实现该属性的代码会调用CLR内部的代码，后者创建一个字符串来指出从异常抛出位置到异常捕捉位置所有的方法。</p>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>抛出异常时，CLR会重制异常起点；CLR只记录最新的异常对象的抛出位置。但如果调用<code>throw</code>关键字本身来重新抛出异常，CLR就不会重制堆栈起点。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">try</span> { ... }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#6272a4">// ...</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">throw</span> e; <span style="color:#6272a4">// CLR认为是异常起点，会重制重新记录异常。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ff79c6">try</span> { ... }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#ff79c6">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#6272a4">// ...</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#ff79c6">throw</span>; <span style="color:#6272a4">// 不影响CLR对异常起点的认知。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>}
+</span></span></code></pre></div></div>
+<p>要获得从线程起始出到异常<code>catch</code>块之间的完整堆栈跟踪，需要使用<code>System.Diagnostics.StackTrace</code>类型。</p>
+<p>获得堆栈跟踪后，可能发现调用栈中的一些方法没有出现在堆栈跟踪字符中。可能有两方面原因：</p>
+<ul>
+<li>调用栈记录的是线程的返回位置(而非来源位置)。</li>
+<li>JIT编译器可能做了优化，将一些方法内联(inline)。</li>
+</ul>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>编译器开启/debug开关会在生成的程序集中嵌入<code>System.Diagnostics.Debuggabletrribute</code>定制特性，如果该特性指定了<code>DisableOptimizations</code>标志，JIT编译器就不会对程序集的方法进行内联。</p>
+</div>
+<h2 id="设计规范和最佳实践">设计规范和最佳实践</h2>
+<p>建议定义浅而宽的异常类型层次结构(继承深度少，一个父类可有很多子类)，以创建尽量少的基类。原因是基类的主要作用就是将大量错误当作一个错误，而这是危险的。基于同样的思考，永远不要抛出一个<code>System.Exception</code>对象。</p>
+<p>自己设计异常不仅繁琐，还容易出错。主要原因是从<code>Exception</code>派生的所有类型都应该是可序列化的(serializable)，使它们能穿越AppDomain边界或者写入日志/数据库。</p>
+<h3 id="善用finally块">善用finally块</h3>
+<p>应该先用<code>finally</code>块清理那些已成功启动的操作，再返回至调用者或者执行<code>finally</code>块之后的代码。另外，还经常利用<code>finally</code>块显式释放对象以避免资源泄露。</p>
+<p>编辑器在使用一些关键字的时候会自动加入try/finally块。</p>
+<ul>
+<li>使用<code>lock</code>语句时，锁在<code>finally</code>块中释放。</li>
+<li>使用<code>using</code>语句时，在<code>finally</code>块中调用对象的<code>Dispose</code>方法。</li>
+<li>使用<code>foreach</code>语句时，在<code>finally</code>块中调用<code>IEnumerator</code>对象的<code>Dispose</code>方法。</li>
+<li>定义析构器方法时，在<code>finally</code>块中调用基类的<code>Finalize</code>方法。</li>
+</ul>
+<h3 id="不要什么都捕捉">不要什么都捕捉</h3>
+<p>捕捉异常表明你预见到该异常，理级它为什么发生，并知道如何处理它。换句话说，就是为应用程序定义一个策略。任何情况下都不允许捕捉并隐藏所有异常，因为不可能准确预知所有异常。</p>
+<h3 id="发生不可恢复的异常时回滚部分完成的操作维持状态">发生不可恢复的异常时回滚部分完成的操作————维持状态</h3>
+<p>为了正确回滚已部分完成的操作，代码应捕捉所有异常。因为你不关心发生了什么错误，只关心如何将数据恢复为一致状态。捕捉并处理好异常后，不要把它隐藏。而要让调用者知道发生了异常。</p>
+<h3 id="隐藏实现细节来维系协定">隐藏实现细节来维系协定</h3>
+<p>有时需要捕捉一个异常并重新抛出不同的异常。这样做的唯一原因时维系方法的“协定”。另外，抛出的新异常类型应该是一个具体异常。有时，开发人员之所以捕捉一个异常并抛出一个新异常，目的是在异常中添加额外的数据或上下文。</p>
+<div class="admonition tip"><p class="admonition-title">提示</p>
+<p>使用这个技术时，实际是在两个方面欺骗了调用者。首先，在实际发生的错误上欺骗了调用者。其次在错误发生的位置上欺骗了调用者。</p>
+</div>
+<h2 id="未处理异常">未处理异常</h2>
+<p>当异常抛出时，没有找到任何<code>catch</code>块匹配异常，就会发生一个<strong>未处理异常</strong>。CLR检测到进程中的任何线程有未处理的异常，都会终止进行。未处理异常编码应用程序遇到了未预料到的情况，并认为是应用程序真正的bug。</p>
+<h2 id="代码协定">代码协定</h2>
+<p><strong>代码协定</strong>(code contract)提供了直接在代码中声明代码设计决策的一种方式。这些协定采取以下形式。</p>
+<ul>
+<li><strong>前条件</strong>：一般用于对实参进行验证。</li>
+<li><strong>后条件</strong>：方法因为一次普通的返回或者抛出异常而终止时，对状态进行验证。</li>
+<li><strong>对象不变性</strong>(Object Invariant)：在对象的整个声明周期内，确保对象的字段的良好状态。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4">// 前条件方法：[Conditional(&#34;CONTRACTS_FULL&#34;)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Requires(Boolean condition);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> EndContractBlock();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#6272a4">// 前条件：Always</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Requires&lt;TException&gt;(Boolean condition) <span style="color:#ff79c6">where</span> TException : Exception;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#6272a4">// 后条件方法：[Conditional(&#34;CONTRACTS_FULL&#34;)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Ensures(Boolean condition);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> EnsuresOnThrow&lt;TException&gt;(Boolean condition) <span style="color:#ff79c6">where</span> TException : Exception;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#6272a4">// 特殊后条件方法：Always</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> T Result&lt;T&gt;();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> T OldValue&lt;T&gt;(T <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> T ValueAtReturn&lt;T&gt;(<span style="color:#ff79c6">out</span> T <span style="color:#ff79c6">value</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#6272a4">// 对象不变性方法：[Conditional(&#34;CONTRACTS_FULL&#34;)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Invariant(Boolean condition);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#6272a4">// 限定符(Quantifier)方法：Always</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> Boolean Exists&lt;T&gt;(IEnumerable&lt;T&gt; collection, Predicate&lt;T&gt; predicate);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> Boolean Exists(Int32 fromInclusive, Int32 toExclusive, Predicate&lt;Int32&gt; predicate);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style="color:#6272a4">// 辅助(Helper)方法：[Conditional(&#34;CONTRACTS_FULL&#34;)]或[Conditional(&#34;DEBUG&#34;)]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Assert(Boolean condition);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">static</span> <span style="color:#ff79c6">void</span> Assume(Boolean condition);
+</span></span></code></pre></div><p>许多方法都应用了<code>[Condition(&quot;CONTRACTS_FULL&quot;)]或[Condition(&quot;DEBUG&quot;)]</code>特性，意味着除非定义了恰当的符号，否则编译器会忽略调用这些方法的任何代码。标记&quot;Always&quot;的任何方法意味着编译器总是生成调用方法的代码。</p>
+<p>运行时违反协定会引发<code>Contract</code>的<code>ContractFailed</code>事件。如果向这个事件登记了方法，会收到<code>ContractFailedEventArgs</code>对象。</p>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>前条件、后条件或不变性测试中引用的任何成员都一定不能有副作用(改变对象的状态)。这是必须的，因为测试条件不应改变对象本身的状态。</p>
+</div>
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">Writings</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#定义异常">定义异常</a></li>
+    <li><a href="#异常处理机制">异常处理机制</a>
+      <ul>
+        <li><a href="#try块">try块</a></li>
+        <li><a href="#catch块">catch块</a></li>
+        <li><a href="#finally块">finally块</a></li>
+      </ul>
+    </li>
+    <li><a href="#systemexception类"><code>System.Exception</code>类</a>
+      <ul>
+        <li><a href="#stacktrace">StackTrace</a></li>
+      </ul>
+    </li>
+    <li><a href="#设计规范和最佳实践">设计规范和最佳实践</a>
+      <ul>
+        <li><a href="#善用finally块">善用finally块</a></li>
+        <li><a href="#不要什么都捕捉">不要什么都捕捉</a></li>
+        <li><a href="#发生不可恢复的异常时回滚部分完成的操作维持状态">发生不可恢复的异常时回滚部分完成的操作————维持状态</a></li>
+        <li><a href="#隐藏实现细节来维系协定">隐藏实现细节来维系协定</a></li>
+      </ul>
+    </li>
+    <li><a href="#未处理异常">未处理异常</a></li>
+    <li><a href="#代码协定">代码协定</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&text=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&is_video=false&description=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86&body=Check out this article: https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&title=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&name=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86&description=%e5%ae%9a%e4%b9%89%e5%bc%82%e5%b8%b8%20%e5%bc%82%e5%b8%b8%e6%98%af%e6%8c%87%e6%88%90%e5%91%98%e6%b2%a1%e6%9c%89%e5%ae%8c%e6%88%90%e5%ae%83%e7%9a%84%e5%90%8d%e7%a7%b0%e6%89%80%e5%ae%a3%e7%a7%b0%e7%9a%84%e8%a1%8c%e5%8a%a8%28%e6%96%b9%e6%b3%95%e6%89%a7%e8%a1%8c%e4%b8%ad%e5%87%ba%e9%94%99%e4%b8%ad%e6%96%ad%29%e3%80%82%0a%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e6%9c%ba%e5%88%b6%20C%23%e6%94%af%e6%8c%81%e7%94%a8try%e5%9d%97%e3%80%81catch%e5%9d%97%e5%92%8cfinally%e5%9d%97%e6%9d%a5%e5%a4%84%e7%90%86%e5%bc%82%e5%b8%b8%e7%9a%84%e5%90%84%e4%b8%aa%e9%83%a8%e5%88%86%e3%80%82%0a%e8%b4%9f%e8%b4%a3%e4%bc%9a%e6%8a%9b%e5%87%ba%e5%bc%82%e5%b8%b8%e4%bb%a3%e7%a0%81%e7%9a%84%e7%9b%91%e5%90%ac%e6%94%be%e5%88%b0%e4%b8%80%e4%b8%aatry%e5%9d%97%e3%80%82%20%e8%b4%9f%e8%b4%a3%e5%bc%82%e5%b8%b8%e6%81%a2%e5%a4%8d%e7%9a%84%e4%bb%a3%e7%a0%81%e5%ba%94%e6%94%be%e5%88%b0%e4%b8%80%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aacatch%e5%9d%97%e3%80%82%20%e8%b4%9f%e8%b4%a3%e6%b8%85%e7%90%86%e7%9a%84%e4%bb%a3%e7%a0%81%e5%ba%94%e6%94%be%e5%88%b0%e4%b8%80%e4%b8%aatry%e5%9d%97%e3%80%82%20try%e5%9d%97%20%e4%b8%80%e4%b8%aatry%e5%9d%97%e8%87%b3%e5%b0%91%e8%a6%81%e6%9c%89%e4%b8%80%e4%b8%aa%e5%85%b3%e8%81%94%e7%9a%84catch%e5%9d%97%e6%88%96finally%e5%9d%97%e3%80%82%0a%e6%8f%90%e7%a4%ba%0a%e5%a6%82%e6%9e%9c%e4%b8%80%e4%b8%aatry%e5%9d%97%e4%b8%ad%e6%89%a7%e8%a1%8c%e5%a4%9a%e4%b8%aa%e5%8f%af%e8%83%bd%e6%8a%9b%e5%87%ba%e5%90%8c%e4%b8%80%e4%b8%aa%e5%bc%82%e5%b8%b8%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%93%8d%e4%bd%9c%ef%bc%8c%e4%bd%86%e4%b8%8d%e5%90%8c%e7%9a%84%e6%93%8d%e4%bd%9c%e6%9c%89%e4%b8%8d%e5%90%8c%e7%9a%84%e5%bc%82%e5%b8%b8%e6%81%a2%e5%a4%8d%e6%8e%aa%e6%96%bd%ef%bc%8c%e5%b0%b1%e5%ba%94%e8%af%a5%e5%b0%86%e6%af%8f%e4%b8%aa%e6%93%8d%e4%bd%9c%e9%83%bd%e6%94%be%e5%88%b0%e5%ae%83%e8%87%aa%e5%b7%b1%e7%9a%84try%e5%9d%97%e4%b8%ad%ef%bc%8c%e6%89%8d%e8%83%bd%e6%ad%a3%e7%a1%ae%e7%9a%84%e6%81%a2%e5%a4%8d%e7%8a%b6%e6%80%81%e3%80%82%0acatch%e5%9d%97%20%e4%b8%80%e4%b8%aatry%e5%9d%97%e5%8f%af%e4%bb%a5%e5%85%b3%e8%81%940%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aacatch%e5%9d%97%e3%80%82catch%e5%85%b3%e9%94%ae%e5%ad%97%e5%90%8e%e7%9a%84%e5%9c%86%e6%8b%ac%e5%8f%b7%e4%b8%ad%e7%9a%84%e8%a1%a8%e8%be%be%e5%bc%8f%e7%a7%b0%e4%b8%ba%e6%8d%95%e6%8d%89%e7%b1%bb%e5%9e%8b%e3%80%82C%23%e8%a6%81%e6%b1%82%e6%8d%95%e6%8d%89%e7%b1%bb%e5%9e%8b%e5%bf%85%e9%a1%bb%e6%98%afSystem.Exception%e6%88%96%e8%80%85%e5%ae%83%e7%9a%84%e6%b4%be%e7%94%9f%e7%b1%bb%e3%80%82%e6%b2%a1%e6%9c%89%e5%9c%86%e6%8b%ac%e5%8f%b7%e5%88%99%e9%bb%98%e8%ae%a4%e6%8d%95%e6%8d%89%e6%89%80%e6%9c%89%e5%bc%82%e5%b8%b8%e5%8d%b3System.Exception%e3%80%82%0aCLR%e8%87%aa%e4%b8%8a%e8%80%8c%e4%b8%8b%e6%90%9c%e7%b4%a2%e5%8c%b9%e9%85%8d%e7%9a%84catch%e5%9d%97%ef%bc%8c%e6%89%80%e4%bb%a5%e5%ba%94%e8%af%a5%e5%b0%86%e8%be%83%e5%85%b7%e4%bd%93%e7%9a%84%e5%bc%82%e5%b8%b8%e6%94%be%e5%9c%a8%e9%a1%b6%e9%83%a8%e3%80%82%e4%b9%9f%e5%b0%b1%e6%98%af%e8%af%b4%ef%bc%8c%e6%b4%be%e7%94%9f%e7%a8%8b%e5%ba%a6%e6%9c%80%e5%a4%a7%e7%9a%84%e5%bc%82%e5%b8%b8%e6%94%be%e5%9c%a8%e6%9c%80%e4%b8%8a%e8%be%b9%ef%bc%8c%e6%8e%a5%e7%9d%80%e6%98%af%e5%ae%83%e7%9a%84%e5%9f%ba%e7%b1%bb%e5%9e%8b%e3%80%82%e6%9c%80%e5%90%8e%e6%98%afSystem.Exception%e3%80%82%0a%e4%b8%80%e6%97%a6CLR%e6%89%be%e5%88%b0%e5%8c%b9%e9%85%8d%e7%9a%84catch%e5%9d%97%ef%bc%8c%e5%b0%b1%e4%bc%9a%e6%89%a7%e8%a1%8c%e5%86%85%e5%b1%82%e6%89%80%e6%9c%89finally%e5%9d%97%e4%b8%ad%e7%9a%84%e4%bb%a3%e7%a0%81%e3%80%82%e6%89%80%e8%b0%93%e2%80%9c%e5%86%85%e5%b1%82finally%e5%9d%97%e2%80%9d%e6%98%af%e6%8c%87%e4%bb%8e%e6%8a%9b%e5%87%ba%e5%bc%82%e5%b8%b8%e7%9a%84try%e5%9d%97%e5%bc%80%e5%a7%8b%ef%bc%8c%e5%88%b0%e5%8c%b9%e9%85%8d%e5%bc%82%e5%b8%b8%e7%9a%84catch%e5%9d%97%e4%b9%8b%e9%97%b4%e7%9a%84%e6%89%80%e6%9c%89finally%e5%9d%97%e3%80%82%28%e4%b8%8d%e6%98%affinally%e5%9d%97%e5%9c%a8try%e5%9d%97%e5%92%8ccatch%e5%9d%97%e4%b9%8b%e9%97%b4%ef%bc%8c%e8%80%8c%e6%98%af%e8%b0%83%e7%94%a8%e5%87%bd%e6%95%b0%e6%a0%88%e4%b8%ad%e7%9a%84finally%e5%9d%97%29%e3%80%82%0a1static%20void%20Func%28%29%202%7b%203%20try%20%7b%204%20throw%20new%20FieldAccessException%28%29%3b%205%20%7d%20finally%20%7b%206%20Console.WriteLine%28%26%2334%3bFunc%20finally%26%2334%3b%29%3b%207%20%7d%208%7d%209%2010%2f%2f%20%e6%89%a7%e8%a1%8cMain%e5%87%bd%e6%95%b0%e6%97%b6%ef%bc%8c%e8%b0%83%e7%94%a8Func%e5%87%bd%e6%95%b0%ef%bc%8cFunc%e5%87%bd%e6%95%b0%e4%b8%ad%e7%9a%84try%e5%9d%97%e4%bc%9a%e8%a7%a6%e5%8f%91%e5%bc%82%e5%b8%b8%e8%80%8c%2011%2f%2f%20%e6%8d%95%e6%8d%89%e7%9a%84catch%e5%9d%97%e5%9c%a8Main%e5%87%bd%e6%95%b0%e4%b8%ad%ef%bc%8c%e6%89%80%e4%bb%a5Func%e5%87%bd%e6%95%b0%e4%b8%ad%e7%9a%84finally%e5%9d%97%e8%a2%ab%e6%89%a7%e8%a1%8c%e3%80%82%2012%2f%2f%20%e6%89%80%e6%9c%89%e5%86%85%e5%b1%82%60finally%60%e5%9d%97%e6%89%a7%e8%a1%8c%e5%ae%8c%e6%af%95%e5%90%8e%ef%bc%8c%e5%8c%b9%e9%85%8d%e5%bc%82%e5%b8%b8%e7%9a%84%60catch%60%e5%9d%97%e6%89%8d%e5%bc%80%e5%a7%8b%e6%89%a7%e8%a1%8c%e3%80%82%2013%2f%2f%20%e8%be%93%e5%87%ba%e7%bb%93%e6%9e%9c%e4%b8%ba%ef%bc%9a%2014%2f%2f%20Func%20finally%2015%2f%2f%20catch%20FieldAccessException%2016%2f%2f%20Main%20finally%2017static%20void%20Main%28string%5b%5d%20args%29%2018%7b%2019%20try%20%7b%2020%20Func%28%29%3b%2021%20%7d%20catch%28FieldAccessException%20e%29%20%7b%2022%20Console." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fwww.sooda.net.cn%2fposts%2fclrviacsharp-exception%2f&t=%e3%80%8aCLR%20via%20C%23%e3%80%8b%20%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022  Alaya 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">Writings</a></li>
+         
+        <li><a href="/tags">Tags</a></li>
+         
+        <li><a href="/categories">Categories</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+  
+
+
+</html>

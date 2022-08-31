@@ -7,7 +7,79 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Alaya</copyright>
-    <lastBuildDate>Mon, 22 Aug 2022 16:25:27 +0800</lastBuildDate><atom:link href="https://www.sooda.net.cn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 31 Aug 2022 10:24:40 +0800</lastBuildDate><atom:link href="https://www.sooda.net.cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>《CLR via C#》 托管堆和垃圾回收</title>
+      <link>https://www.sooda.net.cn/posts/clrviacsharp-gc/</link>
+      <pubDate>Wed, 31 Aug 2022 10:24:40 +0800</pubDate>
+      
+      <guid>https://www.sooda.net.cn/posts/clrviacsharp-gc/</guid>
+      <description>托管堆基础 访问一个资源所需要的步骤：
+调用IL指定newobj，为代表资源的类型分配内存(一般用C#new操作符来完成)。 初始化内存，设置资源的初始状态并使资源可用。类型的实例构造器负责设置初始化状态。 访问类型的成员来使用资源(有必要可以重复)。 摧毁资源的状态以进行清理。 释放内存。垃圾回收器独自负责这一步骤。 提示
+只要是写可验证的、类型安全的代码(不使用C#unsafe)，应用程序就不可能会出现内存被破坏的情况。但内存仍有可能泄露，但不像C/C++那样是默认行为。现在内存泄漏一般是因为在集合中存储了对象，但不需要对象的时候一直不删除。
+从托管堆中分配资源 CLR要求所有对象都从托管堆分配。进程初始化时，CLR划出一个地址空间区域作为托管堆。CLR还要维护一个指针NextObjPtr，该指针指向下一个对象在堆中的分配位置。刚开始的时候NextObjPtr设为地址空间区域的基地址。
+一个区域被非垃圾对象填满后，CLR会分配更到的区域。这个过程一直重复，直至整个进程地址空间都被填满。所以，应用程序的内存受进程的虚拟地址空间的限制。32位进程最多分配1.5GB，64位进程最多分配8TB。
+new操作符的执行细节：
+计算类型的字段(以及从基类型继承的字段)所需的字节数。 加上对象的开销所需的字节数。每个对象都有两个开销字段：类型对象指针和同步块索引。 CLR检查区域中是否有分配对象所需的字节数。如果托管堆有足够的空间，就在NextObjPtr指针指向的地址处放入对象，为对象分配的字节没被清零。接着调用类型的构造器(为this参数传递NextObjPtr)，new操作符返回对象引用。在返回引用前，NextObjPtr指针的值会加上对象占用的字节数来得到一个新值，即下个对象放入托管堆时的地址。 托管堆的优点
+对于托管堆，分配对象只需要在指针上加一个值(速度非常快)。在许多应用程序中，差不多同时分配的对象彼此间有较强的联系，而且经常差不多在同一时间访问。由于托管堆在内存中连续分配对象，所以因为引用“局部化”(locality)而获得性能上的提升。具体来说，这意味着工作集会非常小，应用程序只需要使用很少的内存，从而提高了速度。还意味着代码使用的对象可以全部驻留在CPU的缓存中。结果是应用程序能以非常快的速度访问这些对象，因为CPU在执行大多数操作时，不会因为“缓存未命中”(cache miss)而被迫访问较慢的RAM。
+发挥此优点的前提是内存无限，但内存不可能无限，所以CLR用“垃圾回收”(GC)的技术“删除”堆中应用程序不再需要的对象。
+垃圾回收算法 应用程序调用new操作符创建对象时，可能没有足够的空间来分配该对象。发现空间不够，CLR就执行垃圾回收(实际上，垃圾回收是在第0代满的时候发生的)。
+引用计数算法 在引用计数算法中，堆上的每个对象都维护着一个内存字段来统计程序中有多少正在使用的对象。随着每一个对象到达代码中某个不再需要对象的地方，就递减对象的计数字段。计数字段变成0，对象就可以从内存中删除了。引用计数系统最大的问题就是处理不好循环引用。
+引用跟踪算法 引用跟踪算法只关心引用类型的变量，因为只有这种变量才能引用堆上的对象；值类型变量直接包含值类型实例。引用类型变量可以在许多场合使用，包括类的静态和实例字段，或者方法的参数和局部变量。将所有引用类型的变量都称为根。
+引用跟踪算法步骤：
+CLR开始GC时，首先暂停进程中所有线程(防止线程在CLR检查期间修改对象的状态)。 CLR进入GC的标记阶段。CLR遍历堆中的所有对象，将同步块索引字段中的一位设为0，这编码所有对象都应删除。 CLR检查所有活动根，查看它们引用了哪些对象。如果一个根包含null，CLR忽略这个根并继续检查下一个根。任何根如果引用了堆上的对象，CLR都会标记那个对象，也就是将该对象的同步块索引中的位设置为1.一个对象被标记后，CLR会检查那个对象中的跟，标记它们引用的对象。如果发现对象已经标记，就不重新检查对象的字段。这就避免了应为循环引用而产生的死循环。 图1 回收之前的托管堆 图2 标记过后的托管堆 检查完毕后，堆中的对象要么已标记，要么未标记。已标记的对象不能被垃圾回收，因为至少有一个根在引用它。这种状态被称为可达的(reachable)。未标记的对象是不可达(unreachable)的。 CLR进入GC的压缩(compact)接端。这个接端，CLR对堆中已标记的对象进行移动，压缩幸存的对象，使它们占用连续的内存空间。但根所引用的位置还未改变，所以CLR需要从每个根减去所引用的对象在内存中偏移的字节数。这样就能保证每个根还是引用和之前一样的对象；只是对象在内存中变化了位置。 压缩的好处
+首先，所有幸存对象在内存中紧挨在一起，恢复了引用的“局部化”，减小了应用程序的工作集，从而提升了将来访问这些对象时的性能。其次，可用空间也全部时连续的，允许其他东西进驻。最后，压缩意味着托管堆解决了本机(原生)堆的空间碎片化问题。
+6. 压缩好内存后，托管堆的`NextObjPtr`指针指向最后一个幸存对象之后的位置。 图3 垃圾回收后的托管堆 注意
+如果CLR在一个GC之后回收不了内存，而且进程中没有空间来分配新的GC区域，就说明进程的内存已耗尽。此时，试图分配更多的内存的new操作符就会抛出OutOfMemoryException。
+注意
+静态字段引用的对象一直存在，直到用于加载类型的AppDomain卸载为止。内存泄漏的一个常见原因就是让静态字段引用某个合集对象。静态对象会使合集对象一直存存活，而合集对象使所有的数据项一直存活。从而导致内存泄漏。
+代：提升性能 CLR的GC是基于代的垃圾回收器(generational garbage collector)，它对代码做出了几点假设。
+对象越新，生存期越短。 对象越老，生存期越长。 回收堆的一部分，速度快于回收整个堆。 托管堆在初始化时不包含对象。添加到堆的对象称为第0代对象。简单地说，第0代对象就是那些新构造的对象，垃圾回收器从未检查过它们。
+图4 新初始化的堆，所有对象都是第0代，垃圾回收尚未发生 CLR初始化时为第0代对象选择一个预算容量(KB单位)。如果分配一个新对象造成第0代超过预算，就必须启动一次垃圾回收。假设上图A到E正好使用完第0代空间，分配对象F时就必须启动垃圾回收。垃圾回收器会判断对象C和E时垃圾，所以会压缩D，使之与对象B相邻。在垃圾回收中存活的对象(A,B和D)现在称为第1代对象。第1代对象已经经历了一个垃圾回收器的检查。
+图5 经历一次垃圾回收，第0代的幸存者被提升至第1代 一次垃圾回收后，第0代就不包含任何对象了。和之前一样，新对象会分配到第0代中。
+图5 第0代分配了新对象；第1代又垃圾产生 假定分配新对象L会造成第0代超出预算，造成垃圾回收。CLR需要决定检查哪些代。CLR初始化时不仅会给第0代对象选择预算，第1代对象也得又预算。假如开启垃圾回收时，第1代占用内存少于预算，垃圾回收只检查第0代对象。由于忽略了第1代对象，所以加快了垃圾回收速度。
+性能的优势和对应的问题
+显然，忽略第1代对象能提升性能。对性能提升的部分更主要是不必变量托管堆中的每个对象。如果根或对象引用了第1代的某个对象，垃圾回收器就会忽略老对象内部的所有引用，能更短的构造好可达对象图。当然，老对象字段也有可能引用新对象。为了确保对老对象的已更新字段进行检查，垃圾回收器利用了JIT编译器内部的一个机制。这个机制在对象的引用字段发生变化时，会设置一个对应的位标志。这样，垃圾回收器就知道自上一次垃圾回收以来，哪些老对象已被写入。只有字段发生变化的老对象才需要检查是否引用了第0代中的任何新对象。
+基于对象越老，生存期越长的假设。第1代对象在应用中很可能是继续可达的。因此对第1代垃圾回收很可能是浪费时间。如果有垃圾在第1代中，那就留在那里。
+图6 经过两次垃圾回收后，第0代的幸存者被提升到第1代(第1代的大小增加)；第0代又空出来了 图7 多次第0代回收后，第1代超出预算。两代一起进行垃圾回收 图8 第1代幸存者提升至第2代，第0代幸存者提升至第1代，第0代空出 注意</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 异常处理</title>
+      <link>https://www.sooda.net.cn/posts/clrviacsharp-exception/</link>
+      <pubDate>Mon, 29 Aug 2022 09:39:19 +0800</pubDate>
+      
+      <guid>https://www.sooda.net.cn/posts/clrviacsharp-exception/</guid>
+      <description>定义异常 异常是指成员没有完成它的名称所宣称的行动(方法执行中出错中断)。
+异常处理机制 C#支持用try块、catch块和finally块来处理异常的各个部分。
+负责会抛出异常代码的监听放到一个try块。 负责异常恢复的代码应放到一个或多个catch块。 负责清理的代码应放到一个try块。 try块 一个try块至少要有一个关联的catch块或finally块。
+提示
+如果一个try块中执行多个可能抛出同一个异常类型的操作，但不同的操作有不同的异常恢复措施，就应该将每个操作都放到它自己的try块中，才能正确的恢复状态。
+catch块 一个try块可以关联0个或多个catch块。catch关键字后的圆括号中的表达式称为捕捉类型。C#要求捕捉类型必须是System.Exception或者它的派生类。没有圆括号则默认捕捉所有异常即System.Exception。
+CLR自上而下搜索匹配的catch块，所以应该将较具体的异常放在顶部。也就是说，派生程度最大的异常放在最上边，接着是它的基类型。最后是System.Exception。
+一旦CLR找到匹配的catch块，就会执行内层所有finally块中的代码。所谓“内层finally块”是指从抛出异常的try块开始，到匹配异常的catch块之间的所有finally块。(不是finally块在try块和catch块之间，而是调用函数栈中的finally块)。
+1static void Func() 2{ 3 try { 4 throw new FieldAccessException(); 5 } finally { 6 Console.WriteLine(&amp;#34;Func finally&amp;#34;); 7 } 8} 9 10// 执行Main函数时，调用Func函数，Func函数中的try块会触发异常而 11// 捕捉的catch块在Main函数中，所以Func函数中的finally块被执行。 12// 所有内层`finally`块执行完毕后，匹配异常的`catch`块才开始执行。 13// 输出结果为： 14// Func finally 15// catch FieldAccessException 16// Main finally 17static void Main(string[] args) 18{ 19 try { 20 Func(); 21 } catch(FieldAccessException e) { 22 Console.</description>
+    </item>
+    
+    <item>
+      <title>《CLR via C#》 可空值类型</title>
+      <link>https://www.sooda.net.cn/posts/clrviacsharp-nullable/</link>
+      <pubDate>Fri, 26 Aug 2022 15:58:14 +0800</pubDate>
+      
+      <guid>https://www.sooda.net.cn/posts/clrviacsharp-nullable/</guid>
+      <description>System.Nullable&amp;lt;T&amp;gt;结构 可空值类型能表示null主要是因为多了一个Boolean类型的字段。其本身是值类型，仍然可存储在栈上。
+1[Serializable, StructLayout(LayoutKind.Squential)] 2public struct Nullable&amp;lt;T&amp;gt; where T : struct { 3 private Boolean hasValue = false; // 假定null 4 internal T value = default(T); // 假定所有位都为零 5 // 其他很多方法... 6} 使用可空值类型 C#用问号表示法来声明可控值类型 1int? x = 5; 2int? y = null; 3// 等价于 4Nullable&amp;lt;int&amp;gt; x = 5; 5Nullable&amp;lt;int&amp;gt; y = null; 对于可空值类型的转换和转型 1// 从int隐式转换为Nullable&amp;lt;int&amp;gt; 2int? a = 5; 3 4// 从&amp;#39;null&amp;#39;隐式转换为Nullable&amp;lt;int&amp;gt; 5int? b = null; 6 7// 从Nullable&amp;lt;int&amp;gt;显式转换为int 8int c = (int) a; 9 10// 从int转型为Nullable&amp;lt;double&amp;gt; 11double?</description>
+    </item>
+    
+    <item>
+      <title>About me</title>
+      <link>https://www.sooda.net.cn/about/</link>
+      <pubDate>Thu, 25 Aug 2022 11:42:00 +0000</pubDate>
+      
+      <guid>https://www.sooda.net.cn/about/</guid>
+      <description>Github: yLong765</description>
+    </item>
+    
     <item>
       <title>《CLR via C#》 特性</title>
       <link>https://www.sooda.net.cn/posts/clrviacsharp-attribute/</link>
@@ -15,9 +87,12 @@
       
       <guid>https://www.sooda.net.cn/posts/clrviacsharp-attribute/</guid>
       <description>定制特性 自定义特性其实就是将一些附加信息与某个目标元素关联起来的方式。编译器在托管模块的元数据中生成(嵌入)这些额外的信息。
-CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。
-应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素
-1using System; 2[assembly: SomeAttr] // 应用于程序集 3[module: SomeAttr] // 应用于模块 4[type: SomeAttr] // 应用于类型 5internal sealed class SomeType&amp;lt;[typevar: SomeAttr] T&amp;gt; { // 应用于泛型类型变量 6 [field: SomeAttr] // 应用于字段 7 public int SomeField = 0; 8 [return: SomeAttr] // 应用于返回值 9 [method: SomeAttr] // 应用于方法 10 public int SomeMethod([param: SomAttr] int SomeParam) { // 应用于参数 11 return SomeParam; 12 } 13 [property: SomAttr] // 应用于属性 14 public string SomeProp { 15 [method: SomeAttr] // 应用于get访问器方法 16 get { return null; } 17 } 18 [event: SomeAttr] // 应用于事件 19 [field: SomeAttr] // 应用于编译器生成的字段 20 [method: SomeAttr] // 应用于编译器生成的add和remove方法 21 public event EventHandler SomeEvent; 22} </description>
+定制特性其实是一个类型的实例。定制特性类必须直接或间接从公共抽象类System.Attribute派生。
+定制特性类必须有构造器才能创建实例，所以将特性应用于目标元素时，语法类似于调用类的某个实例构造器。构造器的参数称为定位参数(positional parameter)，而且是强制性的，必须指定参数。而其他的公共字段或属性被称为命名参数(named parameter)，这种参数是可选的。
+1// 自定义特性 2public class AttrAttribute : System.Attribute { 3 public string Name; 4 public int Num; 5 public char Char; 6 public AttrAttribute(string name) { 7 Name = name; 8 } 9} 10 11// name属于定位参数 12// Num与Char属于命名参数 13[Attr(&amp;#34;String&amp;#34;, Num = 1, Char = &amp;#39;c&amp;#39;)] 14public void Func() { 15 16} 提示
+将特性应用于源代码中的目标元素时，C#编译器允许省略Attribute后缀以减少打字量，并提升源代码的可读性。
+CLR允许将特性应用于可在文件的元数据中表示的几乎任何东西。C#只允许将特性应用于定义以下任何目标元素的源代码：程序集、模块、类型(类、结构、枚举、接口、委托)、字段、方法(含构造器)、方法参数、方法返回值、属性、事件和泛型类型参数。应用特性时，C#允许使用一个前缀明确指定特性要应用于的目标元素。
+1using System; 2[assembly: SomeAttr] // 应用于程序集 3[module: SomeAttr] // 应用于模块 4[type: SomeAttr] // 应用于类型 5internal sealed class SomeType&amp;lt;[typevar: SomeAttr] T&amp;gt; { // 应用于泛型类型变量 6 [field: SomeAttr] // 应用于字段 7 public int SomeField = 0; 8 [return: SomeAttr] // 应用于返回值 9 [method: SomeAttr] // 应用于方法 10 public int SomeMethod([param: SomAttr] int SomeParam) { // 应用于参数 11 return SomeParam; 12 } 13 [property: SomAttr] // 应用于属性 14 public string SomeProp { 15 [method: SomeAttr] // 应用于get访问器方法 16 get { return null; } 17 } 18 [event: SomeAttr] // 应用于事件 19 [field: SomeAttr] // 应用于编译器生成的字段 20 [method: SomeAttr] // 应用于编译器生成的add和remove方法 21 public event EventHandler SomeEvent; 22} 限制特性的应用范围 向特性应用System.</description>
     </item>
     
     <item>
