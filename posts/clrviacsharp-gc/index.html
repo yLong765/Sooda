@@ -246,6 +246,16 @@ CLR开始GC时，首先暂停进程中所有线程(防止线程在CLR检查期�
         <li><a href="#垃圾回收的触发条件">垃圾回收的触发条件</a></li>
         <li><a href="#大对象">大对象</a></li>
         <li><a href="#垃圾回收模式">垃圾回收模式</a></li>
+        <li><a href="#强制垃圾回收">强制垃圾回收</a>
+          <ul>
+            <li><a href="#执行强制垃圾回收的策略">执行强制垃圾回收的策略</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#需要特殊清理的类型">需要特殊清理的类型</a>
+      <ul>
+        <li><a href="#终结的内部工作原理">终结的内部工作原理</a></li>
       </ul>
     </li>
   </ul>
@@ -393,6 +403,85 @@ CLR开始GC时，首先暂停进程中所有线程(防止线程在CLR检查期�
 <li>工作站：对客户端程序进行GC优化。GC延迟低，挂起时间短，避免用户感到焦虑。GC假定机器上运行的其他程序都不会消耗太多CPU资源</li>
 <li>服务器：针对服务器进行GC优化。被优化的主要时吞吐量和资源利用率。GC加油机器上没有运行其他应用程序。该模式造成托管堆拆分成几个区域，每个CPU一个。开始垃圾回收时，垃圾回收器在每个CPU上都运行一个特殊线程；每个线程和其他线程并发回收它自己的区域。</li>
 </ul>
+<p>除了这两种主要模式，还有两种子模式：并发(默认)或非并发。在并发方式中，垃圾回收器有一个额外的后台线程，它能在应用程序运行时并发标记对象。应用程序线程运行时，垃圾回收器运行一个普通优先级的后台线程来查找不可达对象。找到后，垃圾回收器再次挂起所有线程，判断是否要压缩内存(垃圾回收器倾向于不压缩内存。可用内存多，垃圾回收器便不会压缩堆；这有利于增强性能，但会增大应用程序工作集)。</p>
+<p>可使用<code>GCSettings</code>类的<code>GCLatencyMode</code>对垃圾回收进行控制。</p>
+<table>
+<thead>
+<tr>
+<th>符号名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Batch(&ldquo;服务器&quot;GC默认值)</td>
+<td>关闭并发GC</td>
+</tr>
+<tr>
+<td>Interactive(&ldquo;工作站&quot;GC默认值)</td>
+<td>打开并发GC</td>
+</tr>
+<tr>
+<td>LowLatency</td>
+<td>在短期的、时间敏感的操作中使用这个延迟模式。此操作不适合对第2代进行回收</td>
+</tr>
+<tr>
+<td>SustainedLowLatency</td>
+<td>这个模式下，应用程序的大多数操作都不会发生长的GC暂停。只有有足够的内存，它将禁止所有会造成阻塞的第2代回收动作。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="强制垃圾回收">强制垃圾回收</h3>
+<p><code>GC.Collect</code>方法可强制垃圾回收。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">// generation: 最多回收几代</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#6272a4">// mode: </span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#6272a4">//   Default: 等同于Forced</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#6272a4">//   Forced: 强制回收指定的代(以及低于它的所有代)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#6272a4">//   Optimized: 只有在能释放大量内存或者能减少碎片化的前提下，才执行回收。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#6272a4">// blocking: 阻塞(非并发)或后台(并发)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>GC.Collect(Int32 generation, GCCollectionMode mode, Boolean blocking)
+</span></span></code></pre></div><h4 id="执行强制垃圾回收的策略">执行强制垃圾回收的策略</h4>
+<ul>
+<li>大多数时候都要避免调用任何<code>Collect</code>方法。</li>
+<li>Default和Forced模式一般用于调试、测试和查找内存泄漏。</li>
+<li>发送某个非重复性的事件，并导致大量旧对象死亡，就可以考虑手动调用一次<code>Collect</code>方法。由于是非重复性事件，垃圾回收器基于历史的预测可能变的不准确。</li>
+</ul>
+<h2 id="需要特殊清理的类型">需要特殊清理的类型</h2>
+<p>包含本机资源的类型被GC时，GC会回收对象在托管堆中使用的内存。但这样会造成本机资源的泄漏。CLR提供了称为<strong>终结</strong>(finalization)的机制，允许对象在被判定为垃圾后，但在对象内存被回收前执行一些代码。任何包装了本机资源(文件、网络连接、套接字、互斥体)的类型都支持终结。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">internal</span> <span style="color:#ff79c6">sealed</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">SomeType</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#6272a4">// Finalize方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    ~SomeType() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>        <span style="color:#6272a4">// 这里的代码会进入Finalize方法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>}
+</span></span></code></pre></div><p>C#编译器实际是生成了名为<code>Finalize</code>的<code>protected override</code>方法。方法的主体代码被放到一个<code>try</code>块中，并在<code>finally</code>块中放入了<code>base.Finzlize</code>的调用。</p>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>此方法的特殊语法非常类似于C++的析构器。但Finalize的工作方式与C++析构器完全不同。</p>
+</div>
+<p><code>Finalize</code>方法在垃圾回收后才调用，所以这些对象的内存不是马上被回收的。因为<code>Finalize</code>方法可能要执行访问字段的代码。可终结对象在回收时必须存活，造成它被提升到另一代，使对象活得比正常时间长。这增大了内存消耗，所以应尽量避免终结。更糟的是，可终结对象被提升时，其字段引用的所有对象也会被提升，因为它们也必须存活。所以要尽量避免为引用类型的字段定义可终结对象。</p>
+<p><code>Finalize</code>方法的执行时间是不可控的。CLR也不保证多个<code>Finalize</code>方法的调用顺序。所以在<code>Finalized</code>中不要访问定义了<code>Finalize</code>方法的其他对象；那些对象可能已经终结了。但可以安全的访问值类型的实例，或者访问没有定义<code>Finalize</code>方法的引用类型对象。</p>
+<div class="admonition warning"><p class="admonition-title">终结方法的问题</p>
+<p>CLR用一个特殊的、高优先级的专用线程调用<code>Finalize</code>方法来避免死锁。如果<code>Finalize</code>方法阻塞(例如进入死循环，或者等待一个永远不发送的信号)，该特殊线程就调用不了任何更多的<code>Finalize</code>方法。应用程序永远回收不了可终结对象占用的内存，持续内存泄漏。如果<code>Finalize</code>方法抛出未处理的异常，则进程终止，没办法捕捉该异常。</p>
+</div>
+<h3 id="终结的内部工作原理">终结的内部工作原理</h3>
+<p>应用程序创建新对象时，<code>new</code>操作符会从堆中分配内存。如果对象的类型定义了<code>Finalize</code>方法，那么在该类型的实例构造器被调用之前，会将指向该对象的指针放到一个<strong>终结列表</strong>(finalization list)中。终结列表是由垃圾回收器控制的一个内部数据结构。列表中的每一项都指向一个对象，回收该对象的内存前应调用它的<code>Finalize</code>方法。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E6%89%98%E7%AE%A1%E5%A0%86%E7%9A%84%E7%BB%88%E7%BB%93%E5%88%97%E8%A1%A8%E5%8C%85%E5%90%AB%E4%BA%86%E6%8C%87%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%8C%87%E9%92%88.png" alt="托管堆的终结列表包含了指向对象的指针" title="托管堆的终结列表包含了指向对象的指针"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图9 托管堆的终结列表包含了指向对象的指针</center>
+<div class="admonition warning"><p class="admonition-title">注意</p>
+<p>虽然<code>System.Object</code>定义了<code>Finalize</code>方法，但CLR知道忽略它。也就是说，构造类型的实例时，如果该类型的<code>Finalize</code>方法时从<code>System.Object</code>继承的，就不会认为这个对象是可终结的。类型必须重写<code>Object</code>的<code>Finalize</code>方法，这个类型及其派生类型的对象才被认为是可终究的。</p>
+</div>
+<p>垃圾回收开始时，不可达的对象被标记未垃圾。垃圾回收器扫描终结列表以查找对这些对象的引用。找到一个引用后，该引用会从终结列表中移除，并附加到freachable队列。此队列也是垃圾回收器的一种内部数据结构。队列中的每个引用都代码器<code>Finalize</code>方法已经准备好调用。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E5%9C%A8%E6%89%98%E7%AE%A1%E5%A0%86%E4%B8%AD%EF%BC%8C%E4%B8%80%E4%BA%9B%E6%8C%87%E9%92%88%E4%BB%8E%E7%BB%88%E7%BB%93%E5%88%97%E8%A1%A8%E7%A7%BB%E5%8A%A8%E5%88%B0freachable%E9%98%9F%E5%88%97.png" alt="在托管堆中，一些指针从终结列表移动到freachable队列" title="在托管堆中，一些指针从终结列表移动到freachable队列"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图9 在托管堆中，一些指针从终结列表移动到freachable队列</center>
+<p>一个特殊的高优先级CLR线程专门调用<code>Finalize</code>方法。专用线程可以避免潜在的线程同步问题。freachable队列未空时，该线程将睡眠。但一旦队列中有记录项出现，线程就会被唤醒，将每一项都从freachable队列中移除，并同时调用每个对象的<code>Finalize</code>方法。</p>
+<div class="admonition tip"><p class="admonition-title">freachable名称的由来</p>
+<p>freachable的“f”代表“终结”(finalization)；因为freachable队列中的每项都是对托管堆中应调用<code>Finalize</code>方法对象的引用。“reachable”意味着对象是可达的。所以，freachable队列中的引用使它指向的对象保持可达，不是垃圾</p>
+</div>
+<p>当一个对象不可达时，垃圾回收器就把它视为垃圾。但是，当垃圾回收器将对象的引用从终结列表移至freachable队列时，对象不再被认为时垃圾，不能回收它的内存。对象被<strong>复活</strong>了。</p>
+<p>标记freachable对象时，将递归标记对象中的引用类型的字段所引用的对象；所有这些对象也必须复活以便在回收过程中存活。之后，垃圾回收器才结束对垃圾的标识。在这个过程中，一些原本被认为是垃圾的对象复活了。然后垃圾回收器压缩可回收内存，将复活的对象提升到较老的一代。</p>
+<p>下次对老一代垃圾回收时，会发现已终结的对象称为真正的垃圾，因为没有应用程序的根指向它们，freachaable队列也不再指向它们。所以，这些对象的内存会直接回收。整个过程中，注意，<strong>可中介对象需要执行两次垃圾回收才能释放它们占用的内存</strong>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yLong765/images@main/Blog/images/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%90%8E%E6%89%98%E7%AE%A1%E5%A0%86%E7%9A%84%E6%83%85%E5%86%B5.png" alt="第二次垃圾回收后托管堆的情况" title="第二次垃圾回收后托管堆的情况"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">图10 第二次垃圾回收后托管堆的情况</center>
 
     </div>
   </article>
@@ -442,6 +531,16 @@ CLR开始GC时，首先暂停进程中所有线程(防止线程在CLR检查期�
         <li><a href="#垃圾回收的触发条件">垃圾回收的触发条件</a></li>
         <li><a href="#大对象">大对象</a></li>
         <li><a href="#垃圾回收模式">垃圾回收模式</a></li>
+        <li><a href="#强制垃圾回收">强制垃圾回收</a>
+          <ul>
+            <li><a href="#执行强制垃圾回收的策略">执行强制垃圾回收的策略</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#需要特殊清理的类型">需要特殊清理的类型</a>
+      <ul>
+        <li><a href="#终结的内部工作原理">终结的内部工作原理</a></li>
       </ul>
     </li>
   </ul>
