@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Alaya</title>
+    <title>青空皆念</title>
     <link>https://www.sooda.net.cn/</link>
-    <description>Recent content on Alaya</description>
+    <description>Recent content on 青空皆念</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Alaya</copyright>
+    <copyright>青空皆念</copyright>
     <lastBuildDate>Wed, 31 Aug 2022 10:24:40 +0800</lastBuildDate><atom:link href="https://www.sooda.net.cn/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《CLR via C#》 托管堆和垃圾回收</title>
