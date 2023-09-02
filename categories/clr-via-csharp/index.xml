@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>《CLR via CSharp》 on 青空皆念</title>
+    <title>《CLR via CSharp》 on 小青龙</title>
     <link>https://www.sooda.net.cn/categories/clr-via-csharp/</link>
-    <description>Recent content in 《CLR via CSharp》 on 青空皆念</description>
+    <description>Recent content in 《CLR via CSharp》 on 小青龙</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>青空皆念</copyright>
+    <copyright>小青龙</copyright>
     <lastBuildDate>Wed, 31 Aug 2022 10:24:40 +0800</lastBuildDate><atom:link href="https://www.sooda.net.cn/categories/clr-via-csharp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>《CLR via C#》 托管堆和垃圾回收</title>
